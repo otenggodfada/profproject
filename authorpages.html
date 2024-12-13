@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Author Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Firebase UMD Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+        <div id="author-profile" class="max-w-2xl p-8 bg-white shadow-lg rounded-lg text-center">
+          <!-- Author Image -->
+          <img 
+            id="author-image" 
+            src="https://via.placeholder.com/150" 
+            alt="Author Image" 
+            class="w-36 h-36 mx-auto rounded-full shadow-lg border-4 border-blue-600 mb-4"
+          >
+          <!-- Author Name -->
+          <h1 class="text-3xl font-bold text-blue-800 mb-2">
+            <span id="author-name">Author Name</span>
+          </h1>
+          <!-- Platform -->
+          <p class="text-md text-gray-600 mb-6 flex items-center justify-center">
+            <i class="fas fa-globe text-blue-700 mr-2"></i>
+            Platform: <span id="author-platform" class="ml-1">Loading...</span>
+          </p>
+          <!-- Author Details -->
+          <ul class="list-none text-left space-y-4">
+            <li class="flex items-center">
+              <i class="fas fa-envelope text-blue-700 mr-2"></i>
+              <strong>Email:</strong> <span id="author-email">example@example.com</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-video text-blue-700 mr-2"></i>
+              <strong>Zoom ID:</strong>
+              <a 
+                id="author-zoom-id" 
+                href="#" 
+                target="_blank" 
+                class="text-blue-600 hover:text-blue-800 underline ml-1"
+              >
+                Click to Join Meeting
+              </a>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-user-shield text-blue-700 mr-2"></i>
+              <strong>Roles:</strong> <span id="author-roles">Admin, Editor</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fas fa-calendar-alt text-blue-700 mr-2"></i>
+              <strong>Joined:</strong> <span id="author-joined">Jan 1, 2020</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <script>
+        // Your Zoom meeting details
+        const zoomID = "7016029485";
+        const passcode = "RgDG17"; // Replace with your actual passcode
+        const userName = "Oteng Emmanuel"; // Replace with your actual name
+      
+        // Encode the user name to make it URL-safe
+        const encodedUserName = encodeURIComponent(userName);
+      
+        // Update Zoom link with ID, passcode, and name
+        const zoomLinkElement = document.getElementById('author-zoom-id');
+        zoomLinkElement.href = `https://app.zoom.us/wc/join/${zoomID}?pwd=${passcode}&uname=${encodedUserName}`;
+      </script>
+      
+      
+      
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+      authDomain: "profstudymate-6d0fc.firebaseapp.com",
+      projectId: "profstudymate",
+      storageBucket: "profstudymate.appspot.com",
+      messagingSenderId: "141453158869",
+      appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Get the author's document ID (slug) from the URL
+    const params = new URLSearchParams(window.location.search);
+    const authorSlug = params.get('name'); // URL format: author.html?name=documentID
+
+    if (authorSlug) {
+      // Fetch author data from Firebase
+      db.collection('users').doc(authorSlug).get()
+        .then((doc) => {
+          if (doc.exists) {
+            const authorData = doc.data();
+            // Populate fields
+            document.getElementById('author-image').src = authorData.image_url || "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";
+            document.getElementById('author-name').textContent = authorData.name || "No Name Available";
+            document.getElementById('author-platform').textContent = authorData.platform || "Unknown Platform";
+            document.getElementById('author-email').textContent = authorData.email || "No Email Available";
+            document.getElementById('author-zoom-id').textContent = authorData.zoom_id || "No Zoom ID";
+            document.getElementById('author-roles').textContent = (authorData.role && authorData.role.length > 0) ? authorData.role.join(", ") : "No Roles Assigned";
+            document.getElementById('author-joined').textContent = authorData.created_at
+              ? new Date(authorData.created_at.seconds * 1000).toLocaleDateString()
+              : "Unknown Join Date";
+          } else {
+            document.getElementById('author-name').textContent = "Author Not Found";
+            document.getElementById('author-profile').innerHTML += '<p class="text-red-500">No data found for the provided author.</p>';
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching author data:", error);
+          document.getElementById('author-profile').innerHTML += '<p class="text-red-500">Error loading details. Please try again later.</p>';
+        });
+    } else {
+      document.getElementById('author-name').textContent = "Unknown Author";
+      document.getElementById('author-profile').innerHTML += '<p class="text-gray-500">No author slug provided in the URL.</p>';
+    }
+  </script>
+</body>
+</html>

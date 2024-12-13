@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Catalog</title>
+
+  <!-- Firebase Compatibility Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="navbar.js"></script>
+  <script type="module" src="./dynamiccon.js"></script>
+
+  
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 50;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 800px;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+    #course-list {
+
+    }
+  </style>
+</head>
+<body class=" bg-[#172554]    bg-gray-900 text-white">
+
+    <div class=" bg-[#172554] px-5 z-20 w-screen ">
+       
+        <div id="navbar-container"></div></div>
+
+  <!-- Page Container -->
+  <div class="container mx-auto px-4 py-8 ">
+    <!-- Page Title -->
+    <h2 class="text-2xl font-semibold mb-6 text-center">Available Courses</h2>
+
+
+
+ <div id="tags-container" class="tags-container "></div>
+
+    </div>
+    <!-- Courses Container -->
+    <div id="course-list" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- Courses will be dynamically injected here -->
+    </div>
+  </div>
+<!-- Modal -->
+<div id="course-modal" class="modal">
+    <div class="modal-content bg-white shadow-lg rounded-lg p-8 max-w-lg mx-auto">
+      <!-- Close Button -->
+      <span id="close-modal" class="text-gray-600 cursor-pointer text-3xl absolute top-4 right-4 font-bold">&times;</span>
+<!-- Course Image -->
+<div class="mb-6">
+
+    <img id="modal-image" src="" alt="Course Image" class="w-full h-64 object-cover rounded-lg" />
+  </div>
+      <!-- Modal Title -->
+      <h2 id="modal-title" class="text-3xl font-semibold mb-6 text-gray-800"></h2>
+      <div class="flex flex-row"> <div></div> <p id="model-students"></p></div>
+      <p id="model-ratings"></p>
+<div class="flex flex-row justify-start items-center space-x-2 bg-slate-200 p-2">
+      <!-- Price Section -->
+<div class="">
+
+    <span id="modal-price" class="text-[#172554] font-bold p-2 rounded-3xl border border-gray-700 text-lg"></span>
+  </div>
+  
+  <!-- Enroll Button -->
+  <div class="w-full bg-[#172554] text-white font-bold py-2 rounded-3xl text-lg hover:bg-indigo-700 transition duration-300 flex justify-center items-center">
+    <a id="modal-enroll-button" href="#" class="    ">Enroll Now</a>
+  </div>
+</div>
+      <!-- Modal Description -->
+      <div id="modal-description" class="mb-6 text-gray-700 text-lg"></div>
+  
+      <!-- Course Information -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <!-- Created By -->
+        <div>
+          <p class="font-semibold text-gray-600">Created by:</p>
+          <p id="modal-id" style="display: none;"></p>
+          <p id="modal-author" class="text-blue-500"></p>
+        </div>
+        
+        <!-- Updated At -->
+        <div>
+          <p class="font-semibold text-gray-600">Updated at:</p>
+          <p id="modal-updated" class="text-gray-700"></p>
+        </div>
+      </div>
+  
+      <!-- Video URL -->
+      <div class="mb-6">
+        <p class="font-semibold text-gray-600">Video URL:</p>
+        <a id="modal-video" href="#" target="_blank" class="text-blue-500 underline text-lg"></a>
+      </div>
+  
+      <!-- Tags -->
+      <div class="mb-6">
+        <p class="font-semibold text-gray-600">Tags:</p>
+        <span id="modal-tags" class="text-gray-700"></span>
+      </div>
+  
+      <!-- Summary -->
+      <div class="mb-6">
+        <p class="font-semibold text-gray-600">Summary:</p>
+        <span id="modal-summary" class="text-gray-700"></span>
+      </div>
+  
+      <!-- Requirements -->
+      <div class="mb-6">
+        <p class="font-semibold text-gray-600">Requirements:</p>
+        <ul id="modal-requirements" class="list-disc pl-5 text-gray-600"></ul>
+      </div>
+  
+      <!-- Learnings -->
+      <div class="mb-6">
+        <p class="font-semibold text-gray-600">What you'll learn:</p>
+        <ul id="modal-learnings" class="list-disc pl-5 text-gray-600"></ul>
+      </div>
+  
+      <!-- Languages -->
+      <div class="mb-6">
+        <p class="font-semibold text-gray-600">Language(s):</p>
+        <ul id="modal-language" class="list-disc pl-5 text-gray-600"></ul>
+      </div>
+  
+      <!-- Duration -->
+      <div class="mb-6">
+        <p class="font-semibold text-gray-600">Duration:</p>
+        <span id="modal-duration" class="text-gray-700"></span>
+      </div>
+  
+      <!-- Created At -->
+      <div>
+        <p class="font-semibold text-gray-600">Created at:</p>
+        <span id="modal-created" class="text-gray-700"></span>
+      </div>
+    </div>
+    
+  </div>
+  <footer class="md:p-20 bg-[#172554] p-10">
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-4">
+      <div class="gap-4">
+        <div>
+          <span
+            style="
+              box-sizing: border-box;
+              display: inline-block;
+              overflow: hidden;
+              width: initial;
+              height: initial;
+              background: none;
+              opacity: 1;
+              border: 0;
+              margin: 0;
+              padding: 0;
+              position: relative;
+              max-width: 100%;
+            "
+            ><span
+              style="
+                box-sizing: border-box;
+                display: block;
+                width: initial;
+                height: initial;
+                background: none;
+                opacity: 1;
+                border: 0;
+                margin: 0;
+                padding: 0;
+                max-width: 100%;
+              "
+              ><img
+                style="
+                  display: block;
+                  max-width: 100%;
+                  width: initial;
+                  height: initial;
+                  background: none;
+                  opacity: 1;
+                  border: 0;
+                  margin: 0;
+                  padding: 0;
+                "
+                alt=""
+                aria-hidden="true"
+                src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27150%27%20height=%2760%27/%3e" /></span
+            ><img
+              alt="logo"
+              src="./_next/logo_dark.png"
+              decoding="async"
+              data-nimg="intrinsic"
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                box-sizing: border-box;
+                padding: 0;
+                border: none;
+                margin: auto;
+                display: block;
+                width: 0;
+                height: 0;
+                min-width: 100%;
+                max-width: 100%;
+                min-height: 100%;
+                max-height: 100%;
+              " /><noscript
+              ><img
+                alt="logo"
+                srcset="/assets/logo.svg 1x, /assets/logo.svg 2x"
+                src="assets/logo (5).png"
+                decoding="async"
+                data-nimg="intrinsic"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  bottom: 0;
+                  right: 0;
+                  box-sizing: border-box;
+                  padding: 0;
+                  border: none;
+                  margin: auto;
+                  display: block;
+                  width: 0;
+                  height: 0;
+                  min-width: 100%;
+                  max-width: 100%;
+                  min-height: 100%;
+                  max-height: 100%;
+                "
+                loading="lazy" /></noscript
+          ></span>
+        </div>
+        <div class="font-light">
+          Profstudymate is a financial consultancy firm with
+          value-driven professionals in finance and business all with the
+          sole mission of global impact.
+        </div>
+      </div>
+      <div class="flex flex-col gap-6">
+        <h2 class="uppercase text-xl">Get In Touch</h2>
+        <div>
+          <p class="font-light">Questions or feedback?</p>
+          <p class="font-light">We’d love to hear from you</p>
+        </div>
+        <div class="flex gap-4">
+          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
+            <span
+              style="
+                box-sizing: border-box;
+                display: inline-block;
+                overflow: hidden;
+                width: initial;
+                height: initial;
+                background: none;
+                opacity: 1;
+                border: 0;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                max-width: 100%;
+              "
+              ><span
+                style="
+                  box-sizing: border-box;
+                  display: block;
+                  width: initial;
+                  height: initial;
+                  background: none;
+                  opacity: 1;
+                  border: 0;
+                  margin: 0;
+                  padding: 0;
+                  max-width: 100%;
+                "
+                ><img
+                  style="
+                    display: block;
+                    max-width: 100%;
+                    width: initial;
+                    height: initial;
+                    background: none;
+                    opacity: 1;
+                    border: 0;
+                    margin: 0;
+                    padding: 0;
+                  "
+                  alt=""
+                  aria-hidden="true"
+                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
+              ><img
+                alt="twitter"
+                src="./_next/twitter341a.png"
+                decoding="async"
+                data-nimg="intrinsic"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  bottom: 0;
+                  right: 0;
+                  box-sizing: border-box;
+                  padding: 0;
+                  border: none;
+                  margin: auto;
+                  display: block;
+                  width: 0;
+                  height: 0;
+                  min-width: 100%;
+                  max-width: 100%;
+                  min-height: 100%;
+                  max-height: 100%;
+                " /><noscript
+                ><img
+                  alt="twitter"
+                  srcset="
+                    /_next/image?url=%2Fassets%2Ftwitter.png&amp;w=32&amp;q=75 1x,
+                    /_next/image?url=%2Fassets%2Ftwitter.png&amp;w=48&amp;q=75 2x
+                  "
+                  src="_next/twitter341a.png?url=%2Fassets%2Ftwitter.png&amp;w=48&amp;q=75"
+                  decoding="async"
+                  data-nimg="intrinsic"
+                  style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                    box-sizing: border-box;
+                    padding: 0;
+                    border: none;
+                    margin: auto;
+                    display: block;
+                    width: 0;
+                    height: 0;
+                    min-width: 100%;
+                    max-width: 100%;
+                    min-height: 100%;
+                    max-height: 100%;
+                  "
+                  loading="lazy" /></noscript
+            ></span>
+          </div>
+          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
+            <span
+              style="
+                box-sizing: border-box;
+                display: inline-block;
+                overflow: hidden;
+                width: initial;
+                height: initial;
+                background: none;
+                opacity: 1;
+                border: 0;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                max-width: 100%;
+              "
+              ><span
+                style="
+                  box-sizing: border-box;
+                  display: block;
+                  width: initial;
+                  height: initial;
+                  background: none;
+                  opacity: 1;
+                  border: 0;
+                  margin: 0;
+                  padding: 0;
+                  max-width: 100%;
+                "
+                ><img
+                  style="
+                    display: block;
+                    max-width: 100%;
+                    width: initial;
+                    height: initial;
+                    background: none;
+                    opacity: 1;
+                    border: 0;
+                    margin: 0;
+                    padding: 0;
+                  "
+                  alt=""
+                  aria-hidden="true"
+                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
+              ><img
+                alt="twitter"
+                src="./_next/linkedin9c92.png"
+                decoding="async"
+                data-nimg="intrinsic"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  bottom: 0;
+                  right: 0;
+                  box-sizing: border-box;
+                  padding: 0;
+                  border: none;
+                  margin: auto;
+                  display: block;
+                  width: 0;
+                  height: 0;
+                  min-width: 100%;
+                  max-width: 100%;
+                  min-height: 100%;
+                  max-height: 100%;
+                " /><noscript
+                ><img
+                  alt="facebook"
+                  srcset="
+                    /_next/image?url=%2Fassets%2Ffacebook.png&amp;w=32&amp;q=75 1x,
+                    /_next/image?url=%2Fassets%2Ffacebook.png&amp;w=48&amp;q=75 2x
+                  "
+                  src="./_next/facebookdf89.png"
+                  decoding="async"
+                  data-nimg="intrinsic"
+                  style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                    box-sizing: border-box;
+                    padding: 0;
+                    border: none;
+                    margin: auto;
+                    display: block;
+                    width: 0;
+                    height: 0;
+                    min-width: 100%;
+                    max-width: 100%;
+                    min-height: 100%;
+                    max-height: 100%;
+                  "
+                  loading="lazy" /></noscript
+            ></span>
+          </div>
+          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
+            <span
+              style="
+                box-sizing: border-box;
+                display: inline-block;
+                overflow: hidden;
+                width: initial;
+                height: initial;
+                background: none;
+                opacity: 1;
+                border: 0;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                max-width: 100%;
+              "
+              ><span
+                style="
+                  box-sizing: border-box;
+                  display: block;
+                  width: initial;
+                  height: initial;
+                  background: none;
+                  opacity: 1;
+                  border: 0;
+                  margin: 0;
+                  padding: 0;
+                  max-width: 100%;
+                "
+                ><img
+                  style="
+                    display: block;
+                    max-width: 100%;
+                    width: initial;
+                    height: initial;
+                    background: none;
+                    opacity: 1;
+                    border: 0;
+                    margin: 0;
+                    padding: 0;
+                  "
+                  alt=""
+                  aria-hidden="true"
+                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
+              ><img
+                alt="twitter"
+                src="./_next/instagram5e80.png"
+                decoding="async"
+                data-nimg="intrinsic"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  bottom: 0;
+                  right: 0;
+                  box-sizing: border-box;
+                  padding: 0;
+                  border: none;
+                  margin: auto;
+                  display: block;
+                  width: 0;
+                  height: 0;
+                  min-width: 100%;
+                  max-width: 100%;
+                  min-height: 100%;
+                  max-height: 100%;
+                " /><noscript
+                ><img
+                  alt="twitter"
+                  srcset="
+                    /_next/image?url=%2Fassets%2Finstagram.png&amp;w=32&amp;q=75 1x,
+                    /_next/image?url=%2Fassets%2Finstagram.png&amp;w=48&amp;q=75 2x
+                  "
+                  src="./_next/instagram5e80.png"
+                  decoding="async"
+                  data-nimg="intrinsic"
+                  style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                    box-sizing: border-box;
+                    padding: 0;
+                    border: none;
+                    margin: auto;
+                    display: block;
+                    width: 0;
+                    height: 0;
+                    min-width: 100%;
+                    max-width: 100%;
+                    min-height: 100%;
+                    max-height: 100%;
+                  "
+                  loading="lazy" /></noscript
+            ></span>
+          </div>
+          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
+            <span
+              style="
+                box-sizing: border-box;
+                display: inline-block;
+                overflow: hidden;
+                width: initial;
+                height: initial;
+                background: none;
+                opacity: 1;
+                border: 0;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                max-width: 100%;
+              "
+              ><span
+                style="
+                  box-sizing: border-box;
+                  display: block;
+                  width: initial;
+                  height: initial;
+                  background: none;
+                  opacity: 1;
+                  border: 0;
+                  margin: 0;
+                  padding: 0;
+                  max-width: 100%;
+                "
+                ><img
+                  style="
+                    display: block;
+                    max-width: 100%;
+                    width: initial;
+                    height: initial;
+                    background: none;
+                    opacity: 1;
+                    border: 0;
+                    margin: 0;
+                    padding: 0;
+                  "
+                  alt=""
+                  aria-hidden="true"
+                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
+              ><img
+                alt="twitter"
+                src="./_next/facebookdf89.png"
+                decoding="async"
+                data-nimg="intrinsic"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  bottom: 0;
+                  right: 0;
+                  box-sizing: border-box;
+                  padding: 0;
+                  border: none;
+                  margin: auto;
+                  display: block;
+                  width: 0;
+                  height: 0;
+                  min-width: 100%;
+                  max-width: 100%;
+                  min-height: 100%;
+                  max-height: 100%;
+                " /><noscript
+                ><img
+                  alt="twitter"
+                  srcset="
+                    /_next/image?url=%2Fassets%2Flinkedin.png&amp;w=32&amp;q=75 1x,
+                    /_next/image?url=%2Fassets%2Flinkedin.png&amp;w=48&amp;q=75 2x
+                  "
+                  src="./_next/linkedin9c92.png"
+                  decoding="async"
+                  data-nimg="intrinsic"
+                  style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                    box-sizing: border-box;
+                    padding: 0;
+                    border: none;
+                    margin: auto;
+                    display: block;
+                    width: 0;
+                    height: 0;
+                    min-width: 100%;
+                    max-width: 100%;
+                    min-height: 100%;
+                    max-height: 100%;
+                  "
+                  loading="lazy" /></noscript
+            ></span>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-4">
+        <h2 class="uppercase text-xl">Contact Info</h2>
+        <div class="grid gap-3">
+          <span class="text-sm font-light"
+            ><span class="font-semibold">Address:</span> Aspire Plaza,
+            Kwabenya Estate Junction, P.O. Box CT9136 Accra, Ghana</span
+          ><span class="text-sm font-light"
+            ><span class="font-semibold">Phone:</span> +233 55 521
+            3559</span
+          ><span class="text-sm font-light"
+            ><span class="font-semibold">Email:</span>
+            <!-- -->info@aspireproconsult.com</span
+          ><span class="text-sm font-light"
+            ><span class="font-semibold">Office Hours:</span> 8 am - 5
+            pm</span
+          >
+        </div>
+      </div>
+      <div class="flex flex-col gap-4">
+        <h2 class="uppercase text-xl lg:text-center">Download App</h2>
+        <div
+          class="flex flex-col lg:justify-center lg:items-center w-full"
+        >
+          <div>
+            <span
+              style="
+                box-sizing: border-box;
+                display: inline-block;
+                overflow: hidden;
+                width: initial;
+                height: initial;
+                background: none;
+                opacity: 1;
+                border: 0;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                max-width: 100%;
+              "
+              ><span
+                style="
+                  box-sizing: border-box;
+                  display: block;
+                  width: initial;
+                  height: initial;
+                  background: none;
+                  opacity: 1;
+                  border: 0;
+                  margin: 0;
+                  padding: 0;
+                  max-width: 100%;
+                "
+                ><img
+                  style="
+                    display: block;
+                    max-width: 100%;
+                    width: initial;
+                    height: initial;
+                    background: none;
+                    opacity: 1;
+                    border: 0;
+                    margin: 0;
+                    padding: 0;
+                  "
+                  alt=""
+                  aria-hidden="true"
+                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27170%27%20height=%2750%27/%3e" /></span
+              ><img
+                alt="playstore"
+                src="./_next/googleplay4246.png"
+                decoding="async"
+                data-nimg="intrinsic"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  bottom: 0;
+                  right: 0;
+                  box-sizing: border-box;
+                  padding: 0;
+                  border: none;
+                  margin: auto;
+                  display: block;
+                  width: 0;
+                  height: 0;
+                  min-width: 100%;
+                  max-width: 100%;
+                  min-height: 100%;
+                  max-height: 100%;
+                " /><noscript
+                ><img
+                  alt="playstore"
+                  srcset="
+                    /_next/image?url=%2Fassets%2Fgoogleplay.png&amp;w=256&amp;q=75 1x,
+                    /_next/image?url=%2Fassets%2Fgoogleplay.png&amp;w=384&amp;q=75 2x
+                  "
+                  src="./_next/googleplay4246.png"
+                  decoding="async"
+                  data-nimg="intrinsic"
+                  style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                    box-sizing: border-box;
+                    padding: 0;
+                    border: none;
+                    margin: auto;
+                    display: block;
+                    width: 0;
+                    height: 0;
+                    min-width: 100%;
+                    max-width: 100%;
+                    min-height: 100%;
+                    max-height: 100%;
+                  "
+                  loading="lazy" /></noscript
+            ></span>
+          </div>
+          <div>
+            <span
+              style="
+                box-sizing: border-box;
+                display: inline-block;
+                overflow: hidden;
+                width: initial;
+                height: initial;
+                background: none;
+                opacity: 1;
+                border: 0;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                max-width: 100%;
+              "
+              ><span
+                style="
+                  box-sizing: border-box;
+                  display: block;
+                  width: initial;
+                  height: initial;
+                  background: none;
+                  opacity: 1;
+                  border: 0;
+                  margin: 0;
+                  padding: 0;
+                  max-width: 100%;
+                "
+                ><img
+                  style="
+                    display: block;
+                    max-width: 100%;
+                    width: initial;
+                    height: initial;
+                    background: none;
+                    opacity: 1;
+                    border: 0;
+                    margin: 0;
+                    padding: 0;
+                  "
+                  alt=""
+                  aria-hidden="true"
+                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27170%27%20height=%2750%27/%3e" /></span
+              ><img
+                alt="playstore"
+                src="./_next/applestoreb499.png"
+                decoding="async"
+                data-nimg="intrinsic"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  bottom: 0;
+                  right: 0;
+                  box-sizing: border-box;
+                  padding: 0;
+                  border: none;
+                  margin: auto;
+                  display: block;
+                  width: 0;
+                  height: 0;
+                  min-width: 100%;
+                  max-width: 100%;
+                  min-height: 100%;
+                  max-height: 100%;
+                " /><noscript
+                ><img
+                  alt="playstore"
+                  srcset="
+                    /_next/image?url=%2Fassets%2Fapplestore.png&amp;w=256&amp;q=75 1x,
+                    /_next/image?url=%2Fassets%2Fapplestore.png&amp;w=384&amp;q=75 2x
+                  "
+                  src="./_next/applestoreb499.png"
+                  decoding="async"
+                  data-nimg="intrinsic"
+                  style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                    box-sizing: border-box;
+                    padding: 0;
+                    border: none;
+                    margin: auto;
+                    display: block;
+                    width: 0;
+                    height: 0;
+                    min-width: 100%;
+                    max-width: 100%;
+                    min-height: 100%;
+                    max-height: 100%;
+                  "
+                  loading="lazy" /></noscript
+            ></span>
+          </div>
+          <div>
+            <span
+              style="
+                box-sizing: border-box;
+                display: inline-block;
+                overflow: hidden;
+                width: initial;
+                height: initial;
+                background: none;
+                opacity: 1;
+                border: 0;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                max-width: 100%;
+              "
+              ><span
+                style="
+                  box-sizing: border-box;
+                  display: block;
+                  width: initial;
+                  height: initial;
+                  background: none;
+                  opacity: 1;
+                  border: 0;
+                  margin: 0;
+                  padding: 0;
+                  max-width: 100%;
+                "
+                ><img
+                  style="
+                    display: block;
+                    max-width: 100%;
+                    width: initial;
+                    height: initial;
+                    background: none;
+                    opacity: 1;
+                    border: 0;
+                    margin: 0;
+                    padding: 0;
+                  "
+                  alt=""
+                  aria-hidden="true"
+                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27170%27%20height=%2750%27/%3e" /></span
+              ><img
+                alt="windows"
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                decoding="async"
+                data-nimg="intrinsic"
+                style="
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  bottom: 0;
+                  right: 0;
+                  box-sizing: border-box;
+                  padding: 0;
+                  border: none;
+                  margin: auto;
+                  display: block;
+                  width: 0;
+                  height: 0;
+                  min-width: 100%;
+                  max-width: 100%;
+                  min-height: 100%;
+                  max-height: 100%;
+                " /><noscript
+                ><img
+                  alt="windows"
+                  srcset="
+                    /_next/image?url=%2Fassets%2Fmicrosoft.png&amp;w=256&amp;q=75 1x,
+                    /_next/image?url=%2Fassets%2Fmicrosoft.png&amp;w=384&amp;q=75 2x
+                  "
+                  src="_next/microsoft7f89.png?url=%2Fassets%2Fmicrosoft.png&amp;w=384&amp;q=75"
+                  decoding="async"
+                  data-nimg="intrinsic"
+                  style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    right: 0;
+                    box-sizing: border-box;
+                    padding: 0;
+                    border: none;
+                    margin: auto;
+                    display: block;
+                    width: 0;
+                    height: 0;
+                    min-width: 100%;
+                    max-width: 100%;
+                    min-height: 100%;
+                    max-height: 100%;
+                  "
+                  loading="lazy" /></noscript
+            ></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 gap-1 md:flex md:gap-3">
+      <a href="privacy-policy.html">Privacy policy</a
+      ><a href="refund-and-chargeback-policy.html"
+        >Refund and Chargeback policy</a
+      >
+    </div>
+  </footer>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+      authDomain: "profstudymate-6d0fc.firebaseapp.com",
+      projectId: "profstudymate",
+      storageBucket: "profstudymate.appspot.com",
+      messagingSenderId: "141453158869",
+      appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Convert Firestore Timestamp to Human-Readable Date
+    const formatTimestamp = (timestamp) => {
+      if (!timestamp) return "Unknown";
+      const date = new Date(timestamp.seconds * 1000);
+      return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+    };
+
+    // Render Array Data as List
+    const renderArrayAsList = (array, containerId) => {
+      const container = document.getElementById(containerId);
+      container.innerHTML = ""; // Clear previous content
+      if (Array.isArray(array) && array.length > 0) {
+        array.forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          container.appendChild(li);
+        });
+      } else {
+        const li = document.createElement("li");
+        li.textContent = "None";
+        container.appendChild(li);
+      }
+    };
+
+    // Fetch Courses from Firestore
+    const fetchCourses = async (tagId = null) => {
+      try {
+        const coursesRef = db.collection("courses");
+        let query = coursesRef;
+        if (tagId) {
+          query = coursesRef.where('tag_ids', 'array-contains', tagId);
+        }
+        const courseSnapshot = await query.get();
+        const courses = courseSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        return courses;
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+        return [];
+      }
+    };
+
+    // Fetch Tags by IDs
+    const fetchTags = async (tagIds) => {
+      try {
+        const tagsRef = db.collection("tags");
+        const tagPromises = tagIds.map((tagId) => tagsRef.doc(tagId).get());
+        const tagSnapshots = await Promise.all(tagPromises);
+        return tagSnapshots.map((tagSnap) => tagSnap.data()?.name || "Unknown");
+      } catch (error) {
+        console.error("Error fetching tags:", error);
+        return [];
+      }
+    };
+
+
+    // Fetch All Tags
+    const fetchAllTags = async () => {
+    try {
+        const tagsSnapshot = await db.collection("tags").get();
+        const tagsContainer = document.getElementById("tags-container");
+        tagsContainer.innerHTML = ""; // Clear any existing content
+
+        // Create "All" button
+        const allButton = document.createElement("div");
+        allButton.className = "tag"; // Apply styling class
+        allButton.textContent = "All";
+
+        // Add click event listener for "All" button
+        allButton.addEventListener("click", () => {
+            // Remove highlight from all tags
+            const allTags = document.querySelectorAll(".tag");
+            allTags.forEach((t) => t.classList.remove("highlight"));
+
+            // Highlight the "All" button
+            allButton.classList.add("highlight");
+
+            // Show all courses
+            renderCourses(null); // Passing `null` for no filter
+        });
+
+        // Append "All" button to the tags container
+        tagsContainer.appendChild(allButton);
+
+        // Render other tags
+        tagsSnapshot.forEach((doc) => {
+            const tagId = doc.id; // Tag document ID
+            const tagName = doc.data().name; // Assuming each tag has a field 'name'
+
+            const tagElement = document.createElement("div");
+            tagElement.className = "tag"; // Apply styling class
+            tagElement.textContent = tagName;
+
+            // Add click event listener
+            tagElement.addEventListener("click", () => {
+                // Remove highlight from all tags
+                const allTags = document.querySelectorAll(".tag");
+                allTags.forEach((t) => t.classList.remove("highlight"));
+
+                // Highlight the clicked tag
+                tagElement.classList.add("highlight");
+
+                // Filter courses by the selected tag
+                renderCourses(tagId);
+            });
+
+            tagsContainer.appendChild(tagElement);
+        });
+
+        // By default, highlight the "All" button
+        allButton.classList.add("highlight");
+    } catch (error) {
+        console.error("Error fetching tags:", error);
+    }
+};
+
+
+
+const style = document.createElement('style');
+style.innerHTML = `
+    .tag {
+        display: inline-block;
+        background-color: #e0e0e0;
+        color: #333;
+        padding: 10px 15px;
+        margin: 5px;
+        border-radius: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .tag:hover {
+        background-color: #d0d0d0;
+        cursor: pointer;
+    }
+    .tag.highlight {
+        background-color:#172554; /* Blue background */
+        color: #fff; /* White text */
+    }
+    .expandable-content {
+        display: none;
+    }
+    .expandable-content.expanded {
+        display: block;
+    }
+`;
+
+document.head.appendChild(style);
+const renderCourses = async (tagId = null) => {
+    const courseList = document.getElementById("course-list");
+    courseList.innerHTML = `<div class="text-center flex flex-col items-center justify-center w-screen h-screen">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#172554]"></div>
+        <p class="text-[#172554] text-lg font-semibold">Loading...</p>
+    </div>`; // Loading state
+
+    let courses = await fetchCourses(); // Fetch all courses
+    if (tagId) {
+        // Filter courses by tagId
+        courses = courses.filter(course => course.tag_ids.includes(tagId));
+    }
+
+    if (courses.length === 0) {
+        courseList.innerHTML = "<p class='text-center text-gray-500'>No courses available.</p>";
+        return;
+    }
+
+    // Render courses
+    courseList.innerHTML = courses
+        .map((course) => {
+            const imageUrl = course.image_url || 'https://via.placeholder.com/400x200?text=No+Image';
+            return `
+            <div
+              class="shadow-2xl rounded-lg overflow-hidden transform hover:scale-105 hover:shadow-xl transition duration-300 cursor-pointer pr-2 pl-2"
+              onclick="showCourseDetails('${course.id}')"
+            >
+              <img src="${imageUrl}" alt="${course.name}" class="w-full h-48 object-cover" />
+              <div class="p-4 bg-white rounded-b-lg">
+                <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2 mb-2">
+                  <span class="material-icons text-[#172554]">school</span>
+                  ${course.name}
+                </h3>
+                <p class="text-gray-500 text-sm flex items-center gap-2 mb-2">
+                  <span class="material-icons text-[#172554]">group</span>
+                  ${course.students || 0} students
+                </p>
+                <p class="text-gray-600 text-sm flex items-center gap-2 mb-4">
+                  <span class="material-icons text-yellow-500">star</span>
+                  Rating: ${course.rating || 0}/5
+                </p>
+                <p class="text-[#172554] font-semibold text-lg flex items-center gap-2">
+                  <span class="material-icons text-green-500">attach_money</span>
+                  ${course.price_status === "free" ? "Free" : `₵${course.price}`}
+                </p>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+        fetchAllTags()
+};
+
+
+    // Show Course Details in Modal
+    const showCourseDetails = async (courseId) => {
+      const coursesRef = db.collection("courses");
+      const courseDoc = await coursesRef.doc(courseId).get();
+      const course = courseDoc.data();
+
+      // Fetch Tags
+      const tags = course.tag_ids ? await fetchTags(course.tag_ids) : [];
+
+      // Populate Modal
+      document.getElementById("modal-image").src = course.image_url;
+      document.getElementById("modal-title").innerText = course.name;
+      document.getElementById("modal-description").innerHTML = course.meta?.description || "<p>No description available.</p>";
+      document.getElementById("modal-author").innerText = course.author?.name || "Unknown";
+      document.getElementById("modal-updated").innerText = formatTimestamp(course.updated_at);
+      document.getElementById("modal-video").innerText = course.video_url || "No video available";
+      document.getElementById("modal-video").href = course.video_url || "#";
+      document.getElementById("modal-tags").innerText = tags.join(", ") || "None";
+      document.getElementById("modal-summary").innerText = course.meta?.summary || "No summary available";
+      document.getElementById("modal-id").innerText = course.author?.id || "Unknown";
+      renderArrayAsList(course.requirements || [], "modal-requirements");
+      renderArrayAsList(course.learns || [], "modal-learnings");
+      renderArrayAsList(course.language || [], "modal-language");
+      document.getElementById("modal-duration").innerText = course.meta?.duration || "Unknown";
+      document.getElementById("modal-created").innerText = formatTimestamp(course.created_at);
+
+      // Add Price to Modal
+      document.getElementById("modal-price").innerText = course.price_status === "free" ? "Free" : `₵${course.pricee}`;
+
+      // Add Enroll Button Link
+      const enrollButton = document.getElementById("modal-enroll-button");
+      enrollButton.href = course.enroll_url || "#";  // Add a valid URL for enrolling if available
+
+      // Show Modal
+      document.getElementById("course-modal").style.display = "block";
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Example: Set the author's name dynamically
+      const authorElement = document.getElementById("modal-id");
+      const clickElement = document.getElementById("modal-author");
+      const authorName = authorElement.textContent.trim(); // Replace this with dynamic data if needed
+      authorElement.textContent = authorName;
+
+      // Add a click event listener
+      clickElement.addEventListener("click", (event) => {
+        event.preventDefault(); // Prevent default link behavior
+
+        // Navigate to the author page
+        window.location.href = `authorpages.html?name=${authorElement.textContent.trim()}`;
+      });
+    });
+
+    // Close Modal
+    document.getElementById("close-modal").addEventListener("click", () => {
+      document.getElementById("course-modal").style.display = "none";
+    });
+
+    // Initialize
+    renderCourses();
+</script>
+
+
+
+
+
+   <script>
+    document.getElementById("showFormButton").addEventListener("click", function () {
+     window.location.href ='./account.html'
+    });
+
+  
+   
+  </script>
+</body>
+</html>

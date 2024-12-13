@@ -1,0 +1,252 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Authentication</title>
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background-color: #f3f4f6;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .modal-dialog {
+        max-width: 400px;
+        margin: 10vh auto;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        animation: fadeInDown 0.5s ease;
+      }
+      @keyframes fadeInDown {
+        0% {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .modal-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      .form-label {
+        font-size: 0.875rem;
+        font-weight: bold;
+        color: #555;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+      .form-input {
+        padding: 0.75rem;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        transition: border-color 0.3s ease;
+      }
+      .form-input:focus {
+        border-color: #1e90ff;
+        outline: none;
+      }
+      .form-button {
+        background-color: #1e90ff;
+        color: white;
+        border: none;
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: block;
+        width: 100%;
+        font-size: 0.875rem;
+        margin-top: 1rem;
+      }
+      .form-button:hover {
+        background-color: #007bff;
+      }
+      .form-footer {
+        text-align: center;
+        margin-top: 1rem;
+      }
+      .form-footer a {
+        color: #1e90ff;
+        text-decoration: none;
+      }
+      .form-footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar-container"></div>
+    <div id="account-modal" class="modal">
+      <div class="modal-dialog">
+        <div id="create-account-section">
+          <h2 class="modal-title text-2xl mb-4">Create an Account</h2>
+          <!-- User Type Selection -->
+          <div class="form-group">
+            <label for="user-type" class="form-label"
+              >Are you a Student or Author?</label
+            >
+            <select id="user-type" name="user-type" required class="form-input">
+              <option value="" disabled selected>Select your role</option>
+              <option value="student">Student</option>
+              <option value="author">Author</option>
+            </select>
+          </div>
+
+          <!-- Form for Students -->
+          <form id="account-form" class="space-y-4">
+            <!-- Common fields for both Student and Author -->
+            <div class="form-group">
+              <label for="full-name" class="form-label">Full Name</label>
+              <input
+                type="text"
+                id="full-name"
+                name="full-name"
+                autocomplete="name"
+                required
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="email"
+                required
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="new-password"
+                required
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label for="telephone" class="form-label">Telephone Number</label>
+              <input
+                type="tel"
+                id="telephone"
+                name="telephone"
+                autocomplete="tel"
+                required
+                class="form-input"
+              />
+            </div>
+
+            <!-- Additional fields for Authors -->
+            <div id="author-fields" class="hidden">
+              <div class="form-group">
+                <label for="zoom-id" class="form-label">Zoom ID</label>
+                <input
+                  type="text"
+                  id="zoom-id"
+                  name="zoom-id"
+                  
+                  class="form-input"
+                />
+              </div>
+              <div class="form-group">
+                <label for="zoom-passcode" class="form-label"
+                  >Zoom Passcode</label
+                >
+                <input
+                  type="text"
+                  id="zoom-passcode"
+                  name="zoom-passcode"
+                 
+                  class="form-input"
+                />
+              </div>
+            </div>
+
+            <div>
+              <button type="submit" class="form-button">Create Account</button>
+            </div>
+          </form>
+
+          <div class="form-footer">
+            <p class="text-gray-600">
+              Already have an account? <a href="#" id="toggle-login">Login</a>
+            </p>
+          </div>
+        </div>
+        <div id="login-section" style="display: none">
+          <h2 class="modal-title text-2xl mb-4">Login to Your Account</h2>
+          <form id="login-form" class="space-y-4">
+            <div class="form-group">
+              <label for="login-email" class="form-label">Email Address</label>
+              <input
+                type="email"
+                id="login-email"
+                name="login-email"
+                autocomplete="email"
+                required
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label for="login-password" class="form-label">Password</label>
+              <input
+                type="password"
+                id="login-password"
+                name="login-password"
+                autocomplete="current-password"
+                required
+                class="form-input"
+              />
+            </div>
+            <div>
+              <button type="submit" class="form-button">Login</button>
+            </div>
+          </form>
+          <div class="form-footer">
+            <p class="text-gray-600">
+              Don't have an account yet?
+              <a href="#" id="toggle-create">Create Account</a>
+            </p>
+          </div>
+        </div>
+        <button id="close-modal" class="form-button mt-4">Close</button>
+      </div>
+    </div>
+    <script src="navbar.js"></script>
+    <script type="module" src="./dynamiccon.js"></script>
+
+    <script>
+      // JavaScript to show/hide author-specific fields based on user selection
+      document
+        .getElementById("user-type")
+        .addEventListener("change", function () {
+          const authorFields = document.getElementById("author-fields");
+          if (this.value === "author") {
+            authorFields.classList.remove("hidden");
+          } else {
+            authorFields.classList.add("hidden");
+          }
+        });
+    </script>
+  </body>
+</html>

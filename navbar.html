@@ -1,0 +1,176 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Navbar with Firebase User</title>
+    <!-- Add Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <!-- Include Tailwind CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="./indexnav.js"></script>
+    <script type="module" src="./dynamiccon.js"></script>
+    <script type="module" src="./navbar.js"></script>
+    <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/tabs.js"></script>
+    <style>
+      .active-tab {
+        background-color: white;
+        color: #172554;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+
+    <!-- Navbar -->
+    <nav id="sss" class="bg-[#172554] z-20 w-full shadow-lg">
+      <div class="py-8 px-4 md:px-8 lg:px-16">
+        <div class="flex items-center justify-between">
+          <!-- Logo -->
+          
+            <a href="./index.html" class="flex items-center">
+              <img src="assets/logo (5).png" alt="Logo" class="h-10 mr-2" />
+            </a>
+            <!-- Mobile menu button -->
+                  <div class="md:hidden">
+            <button class="outline-none mobile-menu-button focus:outline-none">
+              <svg
+                class="w-6 h-6 text-white"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+          </div>
+       
+          <!-- Primary Navbar items -->
+          <div
+            class="hidden md:flex items-center space-x-4 bg-black p-3 shadow-lg rounded-full"
+          >
+          
+
+  
+            <a
+              id="home-link"
+              href="./"
+              class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
+              >Home</a
+            >
+            <a
+              id="courses-link"
+              href="./courses.html"
+              class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
+              >Courses</a
+            >
+            <a
+              id="shop-link"
+              href="./store.html"
+              class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
+              >Shop</a
+            >
+            <a
+              id="make-money-link"
+              href="./job.html"
+              class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
+              >Make Money</a
+            >
+            <a
+              id="contact-link"
+              href="./support.html"
+              class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
+              >Contact Us</a
+            >
+            <a
+              id="blog-link"
+              href="./blog.html"
+              class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
+              >Blog</a
+            >
+            <div id="sinb">
+              <div
+                class="flex justify-center items-center text-white hover:bg-gray-600 border-[1px] w-[100px] h-10 bg-transparent rounded-2xl"
+              >
+                <a href="./account.html">Sign in</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="textDiv" class="hidden"></div>
+      </div>
+      <!-- Mobile menu -->
+      <div class="hidden mobile-menu p-3">
+        <ul>
+          <li>
+            <a
+              id="mobile-home-link"
+              href="./"
+              class="block text-sm px-4 py-4 text-[#172554] bg-white font-semibold"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a
+              id="mobile-courses-link"
+              href="./courses.html"
+              class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
+              >Courses</a
+            >
+          </li>
+          <li>
+            <a
+              id="mobile-shop-link"
+              href="./store.html"
+              class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
+              >Shop</a
+            >
+          </li>
+          <li>
+            <a
+              id="mobile-make-money-link"
+              href="./job.html"
+              class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
+              >Make Money</a
+            >
+          </li>
+          <li>
+            <a
+              id="mobile-contact-link"
+              href="./support.html"
+              class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
+              >Contact Us</a
+            >
+          </li>
+          <li>
+            <a
+              id="mobile-blog-link"
+              href="./blog.html"
+              class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
+              >Blog</a
+            >
+          </li>
+          <div id="sinm">
+            <div
+              class="flex justify-center items-center text-white hover:bg-gray-600 border-[1px] w-[100px] h-10 bg-transparent rounded-2xl"
+            >
+              <a href="./account.html">Sign in</a>
+            </div>
+          </div>
+        </ul>
+        <div id="textDiv1" class="top-0 right-0 left-0 hidden"></div>
+      </div>
+    </nav>
+  </body>
+</html>

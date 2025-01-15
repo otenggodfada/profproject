@@ -101,7 +101,7 @@ function renderCourses(courses) {
     courseCard.className = 'p-3 shadow-xl rounded-lg overflow-hidden cursor-pointer';
 
     courseCard.innerHTML = `
-      <div class="shadow-2xl rounded-lg overflow-hidden transition duration-300 cursor-pointer mt-[150px]">
+      <div class="shadow-2xl rounded-lg overflow-hidden transition duration-300 cursor-pointer mt-[150px] ">
         <img src="${image_url}" alt="${name}" class="w-full object-cover" />
         <div class="p-4  rounded-b-lg">
           <h3 class="text-lg font-semibold text-gray-400 flex items-center gap-2 mb-2">
@@ -210,10 +210,10 @@ async function loadPurchasedCourses(userId) {
 // Initialize the page
 document.getElementById('app').innerHTML = `
   <div class="min-h-screen bg-gray-900 text-white ">
-   <div class="fixed bg-[#172554] px-5 z-20 w-full">
+   <div class="fixed bg-[#172554] px-5 z-20 w-full ">
        
           <div id="navbar-container"></div></div>
-    <div id="course-container" class="space-y-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    <div id="course-container" class="space-y-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:mr-40 lg:ml-40">
      <div class=" fixed top-0 right-0 bottom-0 left-0 ">
   <div class="text-center flex flex-col items-center justify-center w-screen h-screen">
     <div class="animate-spin  rounded-full h-16 w-16 border-t-4 border-b-4 border-[#f5f5f5] "></div>

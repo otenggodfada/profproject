@@ -6,8 +6,9 @@
   <title>Course Catalog</title>
 
   <!-- Firebase Compatibility Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="navbar.js"></script>
   <script type="module" src="./dynamiccon.js"></script>
@@ -65,7 +66,7 @@
 
     </div>
     <!-- Courses Container -->
-    <div id="course-list" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    <div id="course-list" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:mr-40 lg:ml-40">
       <!-- Courses will be dynamically injected here -->
     </div>
   </div>
@@ -164,830 +165,7 @@
     </div>
     
   </div>
-  <footer class="md:p-20 bg-[#172554] p-10">
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-4">
-      <div class="gap-4">
-        <div>
-          <span
-            style="
-              box-sizing: border-box;
-              display: inline-block;
-              overflow: hidden;
-              width: initial;
-              height: initial;
-              background: none;
-              opacity: 1;
-              border: 0;
-              margin: 0;
-              padding: 0;
-              position: relative;
-              max-width: 100%;
-            "
-            ><span
-              style="
-                box-sizing: border-box;
-                display: block;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                max-width: 100%;
-              "
-              ><img
-                style="
-                  display: block;
-                  max-width: 100%;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                "
-                alt=""
-                aria-hidden="true"
-                src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27150%27%20height=%2760%27/%3e" /></span
-            ><img
-              alt="logo"
-              src="./_next/logo_dark.png"
-              decoding="async"
-              data-nimg="intrinsic"
-              style="
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
-                box-sizing: border-box;
-                padding: 0;
-                border: none;
-                margin: auto;
-                display: block;
-                width: 0;
-                height: 0;
-                min-width: 100%;
-                max-width: 100%;
-                min-height: 100%;
-                max-height: 100%;
-              " /><noscript
-              ><img
-                alt="logo"
-                srcset="/assets/logo.svg 1x, /assets/logo.svg 2x"
-                src="assets/logo (5).png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                "
-                loading="lazy" /></noscript
-          ></span>
-        </div>
-        <div class="font-light">
-          Profstudymate is a financial consultancy firm with
-          value-driven professionals in finance and business all with the
-          sole mission of global impact.
-        </div>
-      </div>
-      <div class="flex flex-col gap-6">
-        <h2 class="uppercase text-xl">Get In Touch</h2>
-        <div>
-          <p class="font-light">Questions or feedback?</p>
-          <p class="font-light">We’d love to hear from you</p>
-        </div>
-        <div class="flex gap-4">
-          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
-              ><img
-                alt="twitter"
-                src="./_next/twitter341a.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="twitter"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Ftwitter.png&amp;w=32&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Ftwitter.png&amp;w=48&amp;q=75 2x
-                  "
-                  src="_next/twitter341a.png?url=%2Fassets%2Ftwitter.png&amp;w=48&amp;q=75"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
-              ><img
-                alt="twitter"
-                src="./_next/linkedin9c92.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="facebook"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Ffacebook.png&amp;w=32&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Ffacebook.png&amp;w=48&amp;q=75 2x
-                  "
-                  src="./_next/facebookdf89.png"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
-              ><img
-                alt="twitter"
-                src="./_next/instagram5e80.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="twitter"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Finstagram.png&amp;w=32&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Finstagram.png&amp;w=48&amp;q=75 2x
-                  "
-                  src="./_next/instagram5e80.png"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
-              ><img
-                alt="twitter"
-                src="./_next/facebookdf89.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="twitter"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Flinkedin.png&amp;w=32&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Flinkedin.png&amp;w=48&amp;q=75 2x
-                  "
-                  src="./_next/linkedin9c92.png"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-        </div>
-      </div>
-      <div class="flex flex-col gap-4">
-        <h2 class="uppercase text-xl">Contact Info</h2>
-        <div class="grid gap-3">
-          <span class="text-sm font-light"
-            ><span class="font-semibold">Address:</span> Aspire Plaza,
-            Kwabenya Estate Junction, P.O. Box CT9136 Accra, Ghana</span
-          ><span class="text-sm font-light"
-            ><span class="font-semibold">Phone:</span> +233 55 521
-            3559</span
-          ><span class="text-sm font-light"
-            ><span class="font-semibold">Email:</span>
-            <!-- -->info@aspireproconsult.com</span
-          ><span class="text-sm font-light"
-            ><span class="font-semibold">Office Hours:</span> 8 am - 5
-            pm</span
-          >
-        </div>
-      </div>
-      <div class="flex flex-col gap-4">
-        <h2 class="uppercase text-xl lg:text-center">Download App</h2>
-        <div
-          class="flex flex-col lg:justify-center lg:items-center w-full"
-        >
-          <div>
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27170%27%20height=%2750%27/%3e" /></span
-              ><img
-                alt="playstore"
-                src="./_next/googleplay4246.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="playstore"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Fgoogleplay.png&amp;w=256&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Fgoogleplay.png&amp;w=384&amp;q=75 2x
-                  "
-                  src="./_next/googleplay4246.png"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-          <div>
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27170%27%20height=%2750%27/%3e" /></span
-              ><img
-                alt="playstore"
-                src="./_next/applestoreb499.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="playstore"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Fapplestore.png&amp;w=256&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Fapplestore.png&amp;w=384&amp;q=75 2x
-                  "
-                  src="./_next/applestoreb499.png"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-          <div>
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27170%27%20height=%2750%27/%3e" /></span
-              ><img
-                alt="windows"
-                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="windows"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Fmicrosoft.png&amp;w=256&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Fmicrosoft.png&amp;w=384&amp;q=75 2x
-                  "
-                  src="_next/microsoft7f89.png?url=%2Fassets%2Fmicrosoft.png&amp;w=384&amp;q=75"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="grid grid-cols-1 gap-1 md:flex md:gap-3">
-      <a href="privacy-policy.html">Privacy policy</a
-      ><a href="refund-and-chargeback-policy.html"
-        >Refund and Chargeback policy</a
-      >
-    </div>
-  </footer>
+ 
 
   <script>
     // Firebase configuration
@@ -1000,10 +178,16 @@
       appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+
+    // Get Firestore and Authentication instances
+    const db = firebase.firestore(app);
+    const auth = firebase.auth(app);
 
     // Convert Firestore Timestamp to Human-Readable Date
+
+    
     const formatTimestamp = (timestamp) => {
       if (!timestamp) return "Unknown";
       const date = new Date(timestamp.seconds * 1000);
@@ -1195,7 +379,7 @@ const renderCourses = async (tagId = null) => {
                 </p>
                 <p class="text-[#172554] font-semibold text-lg flex items-center gap-2">
                   <span class="material-icons text-green-500">attach_money</span>
-                  ${course.price_status === "free" ? "Free" : `₵${course.price}`}
+                  ${course.price_status === "free" ? "Free" : `₵${course.pricee}`}
                 </p>
               </div>
             </div>
@@ -1234,10 +418,45 @@ const renderCourses = async (tagId = null) => {
 
       // Add Price to Modal
       document.getElementById("modal-price").innerText = course.price_status === "free" ? "Free" : `₵${course.pricee}`;
-
+      const userid = auth.currentUser.uid;
+      const user = auth.currentUser;
       // Add Enroll Button Link
-      const enrollButton = document.getElementById("modal-enroll-button");
-      enrollButton.href = course.enroll_url || "#";  // Add a valid URL for enrolling if available
+      document.getElementById("modal-enroll-button").addEventListener("click", async function () {
+
+if(course.price_status === "free"){
+ 
+  try {
+      // Add a new document to the "users" collection with the user's ID as the document ID
+      await db.collection("users").doc(userid).update({
+        course_id: firebase.firestore.FieldValue.arrayUnion(courseId),
+      });
+
+      console.log("Course data successfully written!");
+      // Redirect or show a success message
+    } catch (error) {
+      console.error("Error writing document: ", error);
+    }
+  
+          
+} else{
+  const queryParams = new URLSearchParams({
+                        userid: userid,
+                        id: courseId,
+                        title: course.name,
+                        amount: course.pricee,
+                        description: course.meta?.description,
+                        image_url: course.image_url,
+                      }).toString();
+        window.location.href = `coursecart.html?${queryParams}`;
+}
+
+       
+       
+    });
+
+ 
+
+
 
       // Show Modal
       document.getElementById("course-modal").style.display = "block";
@@ -1280,5 +499,6 @@ const renderCourses = async (tagId = null) => {
   
    
   </script>
+
 </body>
 </html>

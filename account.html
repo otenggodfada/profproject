@@ -155,6 +155,17 @@
                 class="form-input"
               />
             </div>
+            <div class="form-group">
+              <label for="referral" class="form-label">Referral</label>
+              <input disabled
+                type="text"
+                id="referral"
+                name="Referral"
+             
+           
+                class="form-input"
+              />
+            </div>
 
             <!-- Additional fields for Authors -->
             <div id="author-fields" class="hidden">
@@ -236,17 +247,30 @@
     <script type="module" src="./dynamiccon.js"></script>
 
     <script>
-      // JavaScript to show/hide author-specific fields based on user selection
-      document
-        .getElementById("user-type")
-        .addEventListener("change", function () {
-          const authorFields = document.getElementById("author-fields");
-          if (this.value === "author") {
-            authorFields.classList.remove("hidden");
-          } else {
-            authorFields.classList.add("hidden");
-          }
-        });
+ // Function to populate referral field from URL
+ function populateReferral() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const referralCode = urlParams.get('referral');
+    if (referralCode) {
+      const referralInput = document.getElementById('referral');
+      referralInput.value = referralCode;
+    }
+  }
+
+  // Call the function when the page loads
+  window.addEventListener('DOMContentLoaded', populateReferral);
+
+  // Show/hide author-specific fields based on user type selection
+  document
+    .getElementById("user-type")
+    .addEventListener("change", function () {
+      const authorFields = document.getElementById("author-fields");
+      if (this.value === "author") {
+        authorFields.classList.remove("hidden");
+      } else {
+        authorFields.classList.add("hidden");
+      }
+    });
     </script>
   </body>
 </html>

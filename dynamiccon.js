@@ -115,6 +115,7 @@ document.getElementById("account-form").addEventListener("submit", async (e) => 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   const telephone = document.getElementById("telephone").value;
+  const referralcode = document.getElementById("referral").value
   const userType = document.getElementById("user-type").value; // Get the selected user type (student or author)
 
   // Author-specific fields (if user is an author)
@@ -126,11 +127,6 @@ document.getElementById("account-form").addEventListener("submit", async (e) => 
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Update the user profile with the full name and phone number
-    // await user.updateProfile({
-    //   displayName: fullName,
-    //   phoneNumber: telephone,
-    // });
 
     // Save additional author-specific data to Firestore or Realtime Database
     if (userType === "author") {
@@ -141,6 +137,7 @@ document.getElementById("account-form").addEventListener("submit", async (e) => 
         zoomId,
         zoomPasscode,
         role: "author",
+        
       });
     } else {
       // Save student-specific data if needed
@@ -149,6 +146,9 @@ document.getElementById("account-form").addEventListener("submit", async (e) => 
         email,
         telephone,
         role: "student",
+        underef: referralcode,
+        affiliatelink: user.uid,
+        earnings: 0,
       });
     }
 
@@ -205,6 +205,17 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     document.getElementById("login-form").appendChild(errorElement);
   }
 });
+
+
+
+
+
+
+
+
+
+
+
 
 function closeModal() {
   const modal = document.getElementById("account-modal");

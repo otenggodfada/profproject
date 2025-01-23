@@ -149,6 +149,7 @@ document.getElementById("account-form").addEventListener("submit", async (e) => 
         underef: referralcode,
         affiliatelink: user.uid,
         earnings: 0,
+        totalrefs: 10
       });
     }
 

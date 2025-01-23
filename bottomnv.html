@@ -16,6 +16,20 @@
     <script src="./indexnav.js"></script>
     <script type="module" src="./dynamiccon.js"></script>
     <script type="module" src="./bottomnv.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll("nav a");
+        links.forEach(link => {
+          if (link.href === window.location.href) {
+            link.classList.add("text-blue-600");
+          }
+          link.addEventListener("click", () => {
+            links.forEach(l => l.classList.remove("text-blue-600"));
+            link.classList.add("text-blue-600");
+          });
+        });
+      });
+    </script>
   </head>
   <body class="bg-gray-100">
     <!-- Bottom Navigation Bar -->
@@ -93,7 +107,7 @@
           id="account-link" href="./account.html" class="flex flex-col items-center text-white hover:text-blue-600">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8 text-white"
+            class="h-6 w-6 text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

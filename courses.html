@@ -423,6 +423,8 @@ const renderCourses = async (tagId = null) => {
       // Add Enroll Button Link
       document.getElementById("modal-enroll-button").addEventListener("click", async function () {
 
+
+
 if(course.price_status === "free"){
  
   try {
@@ -439,6 +441,10 @@ if(course.price_status === "free"){
   
           
 } else{
+  const coursesRef1 = db.collection("users");
+      const courseDoc1 = await coursesRef1.doc(userid).get();
+      const course1 = courseDoc1.data();
+      const refcode = course1.underef|| '';
   const queryParams = new URLSearchParams({
                         userid: userid,
                         id: courseId,
@@ -446,6 +452,7 @@ if(course.price_status === "free"){
                         amount: course.pricee,
                         description: course.meta?.description,
                         image_url: course.image_url,
+                        referalcode: refcode,
                       }).toString();
         window.location.href = `coursecart.html?${queryParams}`;
 }

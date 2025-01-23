@@ -8,7 +8,10 @@
     <meta name="description" content="Course Shopping Cart" />
     <title>Shopping Cart</title>
     <!-- Include Tailwind CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -40,7 +43,6 @@
               <h2 id="title" class="text-lg font-semibold">Another Product</h2>
               <p id="amount" class="text-gray-600">Price: $29.99</p>
               <!-- Quantity -->
-       
             </div>
             <button
               id="clearb"
@@ -117,28 +119,36 @@
             class="mt-4 w-full bg-gray-900 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
             aria-label="Proceed to Checkout"
           >
-          Pay Online
+            Pay Online
           </button>
-          <button  
-          class="mt-4 w-full bg-gray-900 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          id="showit"
-        >
-        Pay Offline
-        </button>
+          <button
+            class="mt-4 w-full bg-gray-900 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+            id="showit"
+          >
+            Pay Offline
+          </button>
         </div>
       </div>
     </div>
     <!-- Pay Offline Section -->
-    <div id="payOffline" class="w-screen bg-black bg-opacity-50 p-4 hidden fixed z-50 top-0 right-0 left-0 bottom-0 flex items-center justify-center">
+    <div
+      id="payOffline"
+      class="w-screen bg-black bg-opacity-50 p-4 hidden fixed z-50 top-0 right-0 left-0 bottom-0 flex items-center justify-center"
+    >
       <div class="bg-gray-800 w-[90%] max-w-[600px] rounded-lg shadow-lg">
-        <h2 class="text-3xl text-white font-semibold text-center mb-6 mt-4">Pay Offline</h2>
+        <h2 class="text-3xl text-white font-semibold text-center mb-6 mt-4">
+          Pay Offline
+        </h2>
         <div class="space-y-4 p-4">
-          
           <!-- MTN Payment -->
           <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="p-4">
               <div class="flex items-center mb-2">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/2048px-MTN_Logo.svg.png" alt="MTN Logo" class="w-8 h-8 mr-2">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/2048px-MTN_Logo.svg.png"
+                  alt="MTN Logo"
+                  class="w-8 h-8 mr-2"
+                />
                 <h3 class="text-xl font-semibold">MTN Payment</h3>
               </div>
               <p class="text-gray-600">
@@ -147,9 +157,12 @@
               </p>
               <p class="text-gray-600">
                 <i class="fas fa-hashtag text-gray-700 mr-2"></i>
-                <strong>Account Number:</strong> 
+                <strong>Account Number:</strong>
                 <span id="mtnAccount">0242723139</span>
-                <button onclick="copyToClipboard('mtnAccount')" class="ml-2 text-blue-500 underline">
+                <button
+                  onclick="copyToClipboard('mtnAccount')"
+                  class="ml-2 text-blue-500 underline"
+                >
                   <i class="fas fa-copy"></i> Copy
                 </button>
               </p>
@@ -157,17 +170,24 @@
                 <i class="fas fa-user text-gray-700 mr-2"></i>
                 <strong>Account Name:</strong> Oteng Emmanuel
               </p>
-              <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded" data-payment-method="MTN">
+              <button
+                class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded"
+                data-payment-method="MTN"
+              >
                 Send Receipt
               </button>
             </div>
           </div>
-    
+
           <!-- Telecel Payment -->
           <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="p-4">
               <div class="flex items-center mb-2">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4R7lA1tlSlrBzf9OrDXIswYytfI7TfvC0w&s" alt="Telecel Logo" class="w-8 h-8 mr-2">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4R7lA1tlSlrBzf9OrDXIswYytfI7TfvC0w&s"
+                  alt="Telecel Logo"
+                  class="w-8 h-8 mr-2"
+                />
                 <h3 class="text-xl font-semibold">Telecel Payment</h3>
               </div>
               <p class="text-gray-600">
@@ -176,9 +196,12 @@
               </p>
               <p class="text-gray-600">
                 <i class="fas fa-hashtag text-gray-700 mr-2"></i>
-                <strong>Account Number:</strong> 
+                <strong>Account Number:</strong>
                 <span id="telecelAccount">0242723139</span>
-                <button onclick="copyToClipboard('telecelAccount')" class="ml-2 text-blue-500 underline">
+                <button
+                  onclick="copyToClipboard('telecelAccount')"
+                  class="ml-2 text-blue-500 underline"
+                >
                   <i class="fas fa-copy"></i> Copy
                 </button>
               </p>
@@ -186,17 +209,24 @@
                 <i class="fas fa-user text-gray-700 mr-2"></i>
                 <strong>Account Name:</strong> Oteng Emmanuel
               </p>
-              <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded" data-payment-method="Telecel">
+              <button
+                class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded"
+                data-payment-method="Telecel"
+              >
                 Send Receipt
               </button>
             </div>
           </div>
-    
+
           <!-- Bank Payment -->
           <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="p-4">
               <div class="flex items-center mb-2">
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/021/616/845/small_2x/banking-3d-render-icon-illustration-png.png" alt="Bank Logo" class="w-8 h-8 mr-2">
+                <img
+                  src="https://static.vecteezy.com/system/resources/thumbnails/021/616/845/small_2x/banking-3d-render-icon-illustration-png.png"
+                  alt="Bank Logo"
+                  class="w-8 h-8 mr-2"
+                />
                 <h3 class="text-xl font-semibold">Bank Payment</h3>
               </div>
               <p class="text-gray-600">
@@ -205,9 +235,12 @@
               </p>
               <p class="text-gray-600">
                 <i class="fas fa-hashtag text-gray-700 mr-2"></i>
-                <strong>Account Number:</strong> 
+                <strong>Account Number:</strong>
                 <span id="bankAccount">0242723139</span>
-                <button onclick="copyToClipboard('bankAccount')" class="ml-2 text-blue-500 underline">
+                <button
+                  onclick="copyToClipboard('bankAccount')"
+                  class="ml-2 text-blue-500 underline"
+                >
                   <i class="fas fa-copy"></i> Copy
                 </button>
               </p>
@@ -215,23 +248,28 @@
                 <i class="fas fa-user text-gray-700 mr-2"></i>
                 <strong>Account Name:</strong> Oteng Emmanuel
               </p>
-              <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded" data-payment-method="Bank">
+              <button
+                class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded"
+                data-payment-method="Bank"
+              >
                 Send Receipt
               </button>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
     <script>
       function copyToClipboard(elementId) {
         const text = document.getElementById(elementId).textContent;
-        navigator.clipboard.writeText(text).then(() => {
-          alert('Copied to clipboard!');
-        }).catch(err => {
-          console.error('Failed to copy: ', err);
-        });
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            alert("Copied to clipboard!");
+          })
+          .catch((err) => {
+            console.error("Failed to copy: ", err);
+          });
       }
     </script>
     <script src="navbar.js"></script>
@@ -268,7 +306,7 @@
       const title = params.get("title");
       const amount = params.get("amount");
       const image_url = params.get("image_url");
-
+      const refcode = params.get("referalcode");
 
       if (bookid && title && amount && image_url) {
         document.getElementById("title").textContent = title;
@@ -335,14 +373,34 @@
             description: "Online Payment",
             logo: "https://i.ibb.co/GdthH0Y/icon.png",
           },
-          callback: function (data) {
+          callback: async function (data) {
             if (userid && bookid) {
               try {
-                addDoc(collection(db, "users", userid), {
-     
+                try {
+                  const userRef = doc(db, "users", refcode);
+
+                  // Get the current document data
+                  const docSnap = await getDoc(userRef);
+
+                  if (docSnap.exists()) {
+                    let currentRefs = docSnap.data().earnings || 0;
+                    currentRefs += amount;
+
+                    // Update only the totalrefs field
+                    await updateDoc(userRef, { earnings: currentRefs });
+
+                    // console.log("Total refs updated successfully!");
+                  } else {
+                    console.log("No such document, creating a new one.");
+                    // Create a new document with only totalrefs field
+                    await setDoc(userRef, { totalrefs: 1 }, { merge: true });
+                  }
+                } catch (error) {
+                  console.error("Error updating totalrefs:", error);
+                }
+
+                await addDoc(collection(db, "users", userid), {
                   course_id: firebase.firestore.FieldValue.arrayUnion(bookid),
-             
-            
                 });
                 console.log("Cart data successfully written!");
                 // Redirect or show a success message
@@ -366,7 +424,7 @@
 
       document.getElementById("showit").addEventListener("click", () => {
         document.getElementById("payOffline").classList.remove("hidden");
-    });
+      });
 
       // Close pay offline section
       function togglePayOffline() {
@@ -374,23 +432,22 @@
       }
 
       // Send "I have paid" message via WhatsApp
-      document.querySelectorAll('[data-payment-method]').forEach((button) => {
-  button.addEventListener('click', () => {
-    const paymentMethod = button.getAttribute('data-payment-method');
-    sendPaymentDetails(paymentMethod);
-  });
-});
+      document.querySelectorAll("[data-payment-method]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const paymentMethod = button.getAttribute("data-payment-method");
+          sendPaymentDetails(paymentMethod);
+        });
+      });
 
-function sendPaymentDetails(paymentMethod) {
-  const customerName = document.getElementById("name").value;
-  const customerEmail = document.getElementById("email").value;
-  const customerPhone = document.getElementById("phone").value;
-  const message = `I have paid for my order. \n\nName: ${customerName} \nEmail: ${customerEmail} \nPhone: ${customerPhone} \nPayment Method: ${paymentMethod} \nBook Title: ${title} \nAmount: GHS${amount} \nUserId: ${userid} \nBookId: ${bookid}`;
-  window.open(
-    `https://wa.me/+233266306442?text=${encodeURIComponent(message)}`
-  );
-}
-
+      function sendPaymentDetails(paymentMethod) {
+        const customerName = document.getElementById("name").value;
+        const customerEmail = document.getElementById("email").value;
+        const customerPhone = document.getElementById("phone").value;
+        const message = `I have paid for my order. \n\nName: ${customerName} \nEmail: ${customerEmail} \nPhone: ${customerPhone} \nPayment Method: ${paymentMethod} \nBook Title: ${title} \nAmount: GHS${amount} \nUserId: ${userid} \nBookId: ${bookid}`;
+        window.open(
+          `https://wa.me/+233266306442?text=${encodeURIComponent(message)}`
+        );
+      }
     </script>
     <script src="https://checkout.flutterwave.com/v3.js"></script>
   </body>

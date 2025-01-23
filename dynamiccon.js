@@ -4,6 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/fireba
 import {
   getFirestore,
   doc,
+  updateDoc,
   collection,
   getDocs,
   getDoc,
@@ -157,7 +158,34 @@ document
           underef: referralcode,
           affiliatelink: user.uid,
           earnings: 0,
+          totalrefs: 0,
         });
+        try {
+          const userRef = doc(db, "users", referralcode);
+
+          // Get the current document data
+          const docSnap = await getDoc(userRef);
+
+          if (docSnap.exists()) {
+            let currentRefs = docSnap.data().totalrefs || 0;
+            currentRefs += 1;
+
+            // Update only the totalrefs field
+            await updateDoc(userRef, { totalrefs: currentRefs });
+
+            console.log("Total refs updated successfully!");
+          } else {
+            console.log("No such document, creating a new one.");
+            // Create a new document with only totalrefs field
+            await setDoc(userRef, { totalrefs: 1 }, { merge: true });
+          }
+        } catch (error) {
+          console.error("Error updating totalrefs:", error);
+        }
+        // // increaseTotalRefs(referralcode);
+        // await setDoc(doc(db, "users", referralcode), {
+        //   totalrefs: 233,
+        // });
       }
 
       // Close the modal after successful account creation

@@ -38,9 +38,8 @@
     />
     <script type="module" src="./dynamiccon.js"></script>
 
-
     <script src="navbar.js"></script>
-
+    <script src="bottomnv.js"></script>
     <link
       rel="stylesheet"
       href="_next/static/css/096eeec99e574319.css"
@@ -992,17 +991,21 @@
         </main>
 
         <div class="Toastify"></div>
-        <div id="footer"></div>
-
-       
+        <!-- <div id="footer"></div> -->
+        <footer>
+          <div
+            class="fixed z-50 bottom-0 right-0 left-0"
+            id="navbar-container1"
+          ></div>
+        </footer>
       </div>
     </div>
     <script>
       // Get the footer container
-const footerContainer = document.getElementById("footer");
+      const footerContainer = document.getElementById("footer");
 
-// Footer HTML structure
-footerContainer.innerHTML = `
+      // Footer HTML structure
+      footerContainer.innerHTML = `
   <footer class="bg-[#172554] text-white py-10">
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       
@@ -1054,7 +1057,6 @@ footerContainer.innerHTML = `
     </div>
   </footer>
 `;
-
     </script>
     <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
     <script>

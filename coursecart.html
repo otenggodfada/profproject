@@ -376,43 +376,31 @@
           callback: async function (data) {
             if (userid && bookid) {
               try {
-                try {
-                  const userRef = doc(db, "users", refcode);
+                const userRef = doc(db, "users", refcode);
+                const docSnap = await getDoc(userRef);
 
-                  // Get the current document data
-                  const docSnap = await getDoc(userRef);
-
-                  if (docSnap.exists()) {
-                    let currentRefs = docSnap.data().earnings || 0;
-                    currentRefs += amount;
-
-                    // Update only the totalrefs field
-                    await updateDoc(userRef, { earnings: currentRefs });
-
-                    // console.log("Total refs updated successfully!");
-                  } else {
-                    console.log("No such document, creating a new one.");
-                    // Create a new document with only totalrefs field
-                    await setDoc(userRef, { totalrefs: 1 }, { merge: true });
-                  }
-                } catch (error) {
-                  console.error("Error updating totalrefs:", error);
+                if (docSnap.exists()) {
+                  let currentEarnings = docSnap.data().earnings || 0;
+                  currentEarnings += amount;
+                  await updateDoc(userRef, { earnings: currentEarnings });
+                } else {
+                  await setDoc(userRef, { earnings: amount }, { merge: true });
                 }
+              } catch (error) {
+                console.error("Error updating earnings:", error);
+              }
 
+              try {
                 await addDoc(collection(db, "users", userid), {
-                  course_id: firebase.firestore.FieldValue.arrayUnion(bookid),
+                  course_id: arrayUnion(bookid),
                 });
                 console.log("Cart data successfully written!");
-                // Redirect or show a success message
               } catch (error) {
                 console.error("Error writing document: ", error);
               }
             } else {
               console.error("User ID or Book ID is missing");
             }
-          },
-          onclose: function () {
-            console.log("Payment cancelled!");
           },
         });
       }

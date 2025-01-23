@@ -108,70 +108,74 @@ document
     document.getElementById("create-account-section").style.display = "block";
   });
 // Function to handle account creation form submission
-document.getElementById("account-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
+document
+  .getElementById("account-form")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const name= document.getElementById("full-name").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const telephone = document.getElementById("telephone").value;
-  const referralcode = document.getElementById("referral").value
-  const userType = document.getElementById("user-type").value; // Get the selected user type (student or author)
+    const name = document.getElementById("full-name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const telephone = document.getElementById("telephone").value;
+    const referralcode = document.getElementById("referral").value;
+    const userType = document.getElementById("user-type").value; // Get the selected user type (student or author)
 
-  // Author-specific fields (if user is an author)
-  const zoomId = userType === "author" ? document.getElementById("zoom-id").value : null;
-  const zoomPasscode = userType === "author" ? document.getElementById("zoom-passcode").value : null;
+    // Author-specific fields (if user is an author)
+    const zoomId =
+      userType === "author" ? document.getElementById("zoom-id").value : null;
+    const zoomPasscode =
+      userType === "author"
+        ? document.getElementById("zoom-passcode").value
+        : null;
 
-  try {
-    // Create a new user with Firebase Authentication
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-
-    // Save additional author-specific data to Firestore or Realtime Database
-    if (userType === "author") {
-      await setDoc(doc(db, "users", user.uid), {
-        name,
+    try {
+      // Create a new user with Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
         email,
-        telephone,
-        zoomId,
-        zoomPasscode,
-        role: "author",
-        
-      });
-    } else {
-      // Save student-specific data if needed
-      await setDoc(doc(db, "users", user.uid), {
-        name,
-        email,
-        telephone,
-        role: "student",
-        underef: referralcode,
-        affiliatelink: user.uid,
-        earnings: 0,
-        totalrefs: 10
-      });
+        password
+      );
+      const user = userCredential.user;
+
+      // Save additional author-specific data to Firestore or Realtime Database
+      if (userType === "author") {
+        await setDoc(doc(db, "users", user.uid), {
+          name,
+          email,
+          telephone,
+          zoomId,
+          zoomPasscode,
+          role: "author",
+        });
+      } else {
+        // Save student-specific data if needed
+        await setDoc(doc(db, "users", user.uid), {
+          name,
+          email,
+          telephone,
+          role: "student",
+          underef: referralcode,
+          affiliatelink: user.uid,
+          earnings: 0,
+        });
+      }
+
+      // Close the modal after successful account creation
+      closeModal();
+      window.location.href = "./";
+    } catch (error) {
+      // Handle account creation errors
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error("Error creating account:", errorCode, errorMessage);
+
+      // Display error message to the user (you can customize this based on your UI)
+      const errorElement = document.createElement("div");
+      errorElement.textContent = errorMessage;
+      errorElement.classList.add("text-red-500", "text-sm", "mt-2");
+      document.getElementById("account-form").appendChild(errorElement);
     }
-
-    // Close the modal after successful account creation
-    closeModal();
-    window.location.href = "./";
- 
-
-  } catch (error) {
-    // Handle account creation errors
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error("Error creating account:", errorCode, errorMessage);
-
-    // Display error message to the user (you can customize this based on your UI)
-    const errorElement = document.createElement("div");
-    errorElement.textContent = errorMessage;
-    errorElement.classList.add("text-red-500", "text-sm", "mt-2");
-    document.getElementById("account-form").appendChild(errorElement);
-  }
-});
-
+  });
 
 // Function to handle login form submission
 document.getElementById("login-form").addEventListener("submit", async (e) => {
@@ -206,17 +210,6 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     document.getElementById("login-form").appendChild(errorElement);
   }
 });
-
-
-
-
-
-
-
-
-
-
-
 
 function closeModal() {
   const modal = document.getElementById("account-modal");

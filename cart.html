@@ -268,7 +268,7 @@
       const title = params.get("title");
       const amount = params.get("amount");
       const image_url = params.get("image_url");
-
+const refcode = params.get("referalcode");
 
       if (bookid && title && amount && image_url) {
         document.getElementById("title").textContent = title;
@@ -336,7 +336,7 @@
             logo: "https://i.ibb.co/GdthH0Y/icon.png",
           },
           callback: function (data) {
-            fetch(`https://api11-ew5jz6h7wq-uc.a.run.app/update-user-book/${userid}/${bookid}`, {
+            fetch(`https://api11-ew5jz6h7wq-uc.a.run.app/update-user-book/${userid}/${bookid}/${amount}/${refcode}`, {
   method: "PUT",
   headers: {
     "Content-Type": "application/json",

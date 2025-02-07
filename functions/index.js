@@ -11,13 +11,13 @@ app.use(cors());
 app.use(express.json());
 
 // Update user book
-app.put("/update-user-book/:userId/:bookId", async (req, res) => {
-    const { userId, bookId } = req.params;
+app.put("/update-user-book/:userId/:bookId/:amount/:refcode", async (req, res) => {
+    const { userId, bookId, amount, refcode } = req.params;
     const bookData = req.body;
   
     try {
       const bookRef = db.collection("Mybooks").doc(userId).collection("books").doc(bookId);
-  
+  const userRef = db.collection("users").doc(refcode);
       const bookDoc = await bookRef.get();
   
       if (!bookDoc.exists) {
@@ -35,7 +35,7 @@ app.put("/update-user-book/:userId/:bookId", async (req, res) => {
         ...bookData,
         timestamp: admin.firestore.FieldValue.serverTimestamp(),
       });
-  
+  await userRef.update({earnings:amount})
       res.json({ success: true, message: "Book updated successfully" });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });

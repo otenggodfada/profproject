@@ -15,90 +15,101 @@
         <div id="booksContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
 
-    <!-- Modal for PDF Viewer -->
-    <div id="pdfModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <div class="bg-white p-5 rounded-lg shadow-lg w-full max-w-3xl relative">
-            <button onclick="closeModal()" class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600">✖</button>
-            <iframe id="pdfViewer" class="w-full h-[500px]" frameborder="0"></iframe>
-        </div>
+  <!-- Modal for PDF Viewer -->
+  <div id="pdfModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center">
+    <div class="bg-white w-full h-full  rounded-lg relative shadow-lg">
+        <button id="closeModal" class="absolute top-3 w-10 bg-white right-3 text-red-500 text-2xl font-bold">&times;</button>
+        <iframe id="pdfViewer" class="w-full h-full"></iframe>
     </div>
+</div>
 
     <script>
-        window.onload = () => {
-            const firebaseConfig = {
-                apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
-                authDomain: "profstudymate-6d0fc.firebaseapp.com",
-                projectId: "profstudymate",
-                storageBucket: "profstudymate.appspot.com",
-                messagingSenderId: "141453158869",
-                appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
-            };
-            
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.firestore();
-            
-            firebase.auth().onAuthStateChanged(async (user) => {
-                const booksContainer = document.getElementById("booksContainer");
-                booksContainer.innerHTML = "<p class='text-center text-gray-800 font-semibold'>Loading books...</p>";
+      window.onload = () => {
+          const firebaseConfig = {
+              apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+              authDomain: "profstudymate-6d0fc.firebaseapp.com",
+              projectId: "profstudymate",
+              storageBucket: "profstudymate.appspot.com",
+              messagingSenderId: "141453158869",
+              appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+          };
+          
+          firebase.initializeApp(firebaseConfig);
+          const db = firebase.firestore();
 
-                if (!user) {
-                    booksContainer.innerHTML = "<p class='text-center text-red-500 font-semibold'>Please log in to view your books.</p>";
-                    return;
-                }
+          const pdfModal = document.getElementById("pdfModal");
+          const pdfViewer = document.getElementById("pdfViewer");
+          const closeModal = document.getElementById("closeModal");
 
-                const userId = user.uid;
-                
-                try {
-                    // Fetch user's book IDs from Mybooks/{userId}/books
-                    const myBooksSnapshot = await db.collection("Mybooks").doc(userId).collection("books").get();
+          firebase.auth().onAuthStateChanged(async (user) => {
+              const booksContainer = document.getElementById("booksContainer");
+              booksContainer.innerHTML = "<p class='text-center text-gray-800 font-semibold'>Loading books...</p>";
 
-                    if (myBooksSnapshot.empty) {
-                        booksContainer.innerHTML = "<p class='text-center text-gray-600 font-semibold'>No books found.</p>";
-                        return;
-                    }
+              if (!user) {
+                  booksContainer.innerHTML = "<p class='text-center text-red-500 font-semibold'>Please log in to view your books.</p>";
+                  return;
+              }
 
-                    booksContainer.innerHTML = "";
+              const userId = user.uid;
+              
+              try {
+                  const myBooksSnapshot = await db.collection("Mybooks").doc(userId).collection("books").get();
 
-                    // Fetch book details from books collection using the IDs
-                    const bookPromises = myBooksSnapshot.docs.map(async (doc) => {
-                        const bookId = doc.id; // Book ID
-                        const bookDoc = await db.collection("books").doc(bookId).get();
-                        return bookDoc.exists ? { id: bookId, ...bookDoc.data() } : null;
-                    });
+                  if (myBooksSnapshot.empty) {
+                      booksContainer.innerHTML = "<p class='text-center text-gray-600 font-semibold'>No books found.</p>";
+                      return;
+                  }
 
-                    const books = await Promise.all(bookPromises);
+                  booksContainer.innerHTML = "";
 
-                    books.forEach((book) => {
-                        if (book) {
-                            const { id, title, description, image_url, pdf_url } = book;
-                            const bookCard = document.createElement("div");
-                            bookCard.className = "bg-white p-5 rounded-lg shadow-md flex flex-col items-center transform transition duration-300 hover:scale-105 hover:shadow-xl cursor-pointer";
-                            bookCard.innerHTML = `
-                                <img src="${image_url}" alt="${title}" class="w-40 h-52 object-cover rounded-md mb-4">
-                                <h2 class="text-lg font-semibold text-gray-800 text-center">${title}</h2>
-                                <p class="text-sm text-gray-600 text-center px-3 line-clamp-2">${description}</p>
-                                <button class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-indigo-700 transition" onclick="openModal('${pdf_url}')">Read Book</button>
-                            `;
-                            booksContainer.appendChild(bookCard);
-                        }
-                    });
+                  const bookPromises = myBooksSnapshot.docs.map(async (doc) => {
+                      const bookId = doc.id;
+                      const bookDoc = await db.collection("books").doc(bookId).get();
+                      return bookDoc.exists ? { id: bookId, ...bookDoc.data() } : null;
+                  });
 
-                } catch (error) {
-                    console.error("Error fetching books:", error);
-                    booksContainer.innerHTML = "<p class='text-center text-red-500 font-semibold'>Failed to load books.</p>";
-                }
-            });
-        };
+                  const books = await Promise.all(bookPromises);
 
-        function openModal(pdfUrl) {
-            document.getElementById("pdfViewer").src = pdfUrl;
-            document.getElementById("pdfModal").classList.remove("hidden");
-        }
+                  books.forEach((book) => {
+                      if (book) {
+                          const { id, title, description, image_url, pdf_url } = book;
 
-        function closeModal() {
-            document.getElementById("pdfModal").classList.add("hidden");
-            document.getElementById("pdfViewer").src = ""; // Reset PDF src
-        }
-    </script>
+                          // Extract file ID from Google Drive link
+                          const fileIdMatch = pdf_url.match(/\/d\/(.*)\/view/);
+                          const fileId = fileIdMatch ? fileIdMatch[1] : null;
+                          const embeddedPdfUrl = fileId ? `https://drive.google.com/file/d/${fileId}/preview` : pdf_url;
+
+                          const bookCard = document.createElement("div");
+                          bookCard.className = "bg-white p-5 rounded-lg shadow-md flex flex-col items-center transform transition duration-300 hover:scale-105 hover:shadow-xl";
+                          bookCard.innerHTML = `
+                              <img src="${image_url}" alt="${title}" class="w-40 h-52 object-cover rounded-md mb-4">
+                              <h2 class="text-lg font-semibold text-gray-800 text-center">${title}</h2>
+                              <p class="text-sm text-gray-600 text-center px-3 line-clamp-2">${description}</p>
+                              <button class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-indigo-700 transition" onclick="openPdf('${embeddedPdfUrl}')">Read Book</button>
+                          `;
+                          booksContainer.appendChild(bookCard);
+                      }
+                  });
+
+              } catch (error) {
+                  console.error("Error fetching books:", error);
+                  booksContainer.innerHTML = "<p class='text-center text-red-500 font-semibold'>Failed to load books.</p>";
+              }
+          });
+
+          // Open the modal and display PDF
+          window.openPdf = (pdfUrl) => {
+              pdfViewer.src = pdfUrl;
+              pdfModal.classList.remove("hidden");
+          };
+
+          // Close modal
+          closeModal.addEventListener("click", () => {
+              pdfModal.classList.add("hidden");
+              pdfViewer.src = ""; // Reset the iframe
+          });
+      };
+  </script>
+  
 </body>
 </html>

@@ -149,7 +149,7 @@
       import {
         getFirestore,
         collection,
-        getDocs,
+        getDocs, doc, getDoc
       } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
       import {
         getAuth,
@@ -251,44 +251,68 @@
 
             // Adding event listener to each button
             addToCartBtns.forEach((btn, index) => {
-              btn.addEventListener("click", async () => {
-                const user = auth.currentUser;
+  btn.addEventListener("click", async () => {
+    const user = auth.currentUser;
 
-                if (!user) {
-                 window.location.href = "./account.html"// Function to show login modal
-                } else {
-                  try {
-                    // Fetching data based on index
-                    const querySnapshot = await getDocs(
-                      collection(db, "books")
-                    );
-                    const doc = querySnapshot.docs[index];
+    if (!user) {
+      window.location.href = "./account.html"; // Redirect to login page
+      return;
+    }
 
-                    if (doc.exists) {
-                      const data = doc.data();
-                      const { title, amount, description, image_url } = data;
+    try {
+      console.log("Fetching user data for UID:", user.uid); // Debugging step
 
-                      const queryParams = new URLSearchParams({
-                        userid: user.uid,
-                        id: doc.id,
-                        title: title,
-                        amount: amount,
-                        description: description,
-                        image_url: image_url,
-                      }).toString();
+      // ✅ Fetch the logged-in user's document directly
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
 
-                      window.location.href = `cart.html?${queryParams}`;
-                    } else {
-                      console.error("No such document!");
-                      // Handle case where document with given index doesn't exist
-                    }
-                  } catch (error) {
-                    console.error("Error getting document:", error);
-                    // Handle error fetching document from Firebase
-                  }
-                }
-              });
-            });
+      let refcode = ""; // Default value
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        console.log("Fetched user data:", userData); // Debugging step
+
+        if (userData.underef) {
+          refcode = userData.underef;
+          console.log("Referral code found:", refcode); // Debugging step
+        } else {
+          console.warn("Referral code field 'underef' is missing or empty.");
+        }
+      } else {
+        console.warn("User document not found in Firestore.");
+      }
+
+      // ✅ Fetch book based on index
+      const querySnapshot = await getDocs(collection(db, "books"));
+      if (index >= querySnapshot.docs.length) {
+        console.error("Invalid index: No book found");
+        return;
+      }
+      const bookDoc = querySnapshot.docs[index].data();
+      const { title, amount, description, image_url } = bookDoc;
+
+      // ✅ Navigate to cart page with query params
+      const queryParams = new URLSearchParams({
+        userid: user.uid,
+        id: querySnapshot.docs[index].id,
+        title,
+        amount,
+        description,
+        image_url,
+        referalcode: refcode,
+      }).toString();
+
+      console.log("Final query params:", queryParams); // Debugging step
+
+      window.location.href = `cart.html?${queryParams}`;
+    } catch (error) {
+      console.error("Error getting document:", error);
+    }
+  });
+});
+
+
+
           });
 
           renderPagination(filteredBooks.length);

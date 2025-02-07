@@ -336,22 +336,40 @@
             logo: "https://i.ibb.co/GdthH0Y/icon.png",
           },
           callback: function (data) {
-            if (userid && bookid) {
-              try {
-                addDoc(collection(db, "users", userid, "books"), {
+            fetch(`https://api11-ew5jz6h7wq-uc.a.run.app/update-user-book/${userid}/${bookid}`, {
+  method: "PUT",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+bookid: bookid
+  }),
+})
+  .then((response) => response.json())
+  .then((data) => {
+    callback(data); // Handle the response in the callback
+  })
+  .catch((error) => {
+    console.error("Error updating/creating book:", error);
+  });
+
+            
+            // if (userid && bookid) {
+            //   try {
+            //     addDoc(collection(db, "users", userid, "books"), {
      
-                  bookid: bookid,
+            //       bookid: bookid,
              
-                  timestamp: serverTimestamp(),
-                });
-                console.log("Cart data successfully written!");
-                // Redirect or show a success message
-              } catch (error) {
-                console.error("Error writing document: ", error);
-              }
-            } else {
-              console.error("User ID or Book ID is missing");
-            }
+            //       timestamp: serverTimestamp(),
+            //     });
+            //     console.log("Cart data successfully written!");
+            //     // Redirect or show a success message
+            //   } catch (error) {
+            //     console.error("Error writing document: ", error);
+            //   }
+            // } else {
+            //   console.error("User ID or Book ID is missing");
+            // }
           },
           onclose: function () {
             console.log("Payment cancelled!");

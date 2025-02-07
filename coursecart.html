@@ -373,34 +373,26 @@
             description: "Online Payment",
             logo: "https://i.ibb.co/GdthH0Y/icon.png",
           },
-          callback: async function (data) {
-            if (userid && bookid) {
-              try {
-                const userRef = doc(db, "users", refcode);
-                const docSnap = await getDoc(userRef);
+          callback: function (data) {
+            fetch(`https://api11-ew5jz6h7wq-uc.a.run.app/update-user-course/${userid}/${bookid}/${amount}/${refcode}`, {
+  method: "PUT",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+bookid: bookid
+  }),
+})
+  .then((response) => response.json())
+  .then((data) => {
+    callback(data); // Handle the response in the callback
+  })
+  .catch((error) => {
+    console.error("Error updating/creating book:", error);
+  });
 
-                if (docSnap.exists()) {
-                  let currentEarnings = docSnap.data().earnings || 0;
-                  currentEarnings += amount;
-                  await updateDoc(userRef, { earnings: currentEarnings });
-                } else {
-                  await setDoc(userRef, { earnings: amount }, { merge: true });
-                }
-              } catch (error) {
-                console.error("Error updating earnings:", error);
-              }
-
-              try {
-                await addDoc(collection(db, "users", userid), {
-                  course_id: arrayUnion(bookid),
-                });
-                console.log("Cart data successfully written!");
-              } catch (error) {
-                console.error("Error writing document: ", error);
-              }
-            } else {
-              console.error("User ID or Book ID is missing");
-            }
+            
+     
           },
         });
       }

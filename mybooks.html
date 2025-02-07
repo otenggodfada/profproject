@@ -9,10 +9,18 @@
     <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script defer src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-r from-purple-500 to-indigo-600 min-h-screen p-5 flex items-center justify-center">
-    <div class="max-w-5xl w-full bg-white p-8 rounded-lg shadow-2xl">
-        <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-6">My Books</h1>
-        <div id="booksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+<body class="bg-gradient-to-r from-purple-500 to-indigo-600 min-h-screen p-5 flex flex-col items-center">
+    <div class="max-w-6xl w-full bg-white p-8 rounded-lg shadow-2xl">
+        <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-6">📚 My Books</h1>
+        <div id="booksContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <!-- Modal for PDF Viewer -->
+    <div id="pdfModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-5 rounded-lg shadow-lg w-full max-w-3xl relative">
+            <button onclick="closeModal()" class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600">✖</button>
+            <iframe id="pdfViewer" class="w-full h-[500px]" frameborder="0"></iframe>
+        </div>
     </div>
 
     <script>
@@ -31,43 +39,66 @@
             
             firebase.auth().onAuthStateChanged(async (user) => {
                 const booksContainer = document.getElementById("booksContainer");
-                booksContainer.innerHTML = "<p class='text-center text-white'>Loading books...</p>";
+                booksContainer.innerHTML = "<p class='text-center text-gray-800 font-semibold'>Loading books...</p>";
 
-                if (user) {
-                    const userId = user.uid;
-                    try {
-                        const booksRef = db.collection("Mybooks").doc(userId).collection("books");
-                        const snapshot = await booksRef.get();
-                        
-                        booksContainer.innerHTML = "";
+                if (!user) {
+                    booksContainer.innerHTML = "<p class='text-center text-red-500 font-semibold'>Please log in to view your books.</p>";
+                    return;
+                }
 
-                        if (snapshot.empty) {
-                            booksContainer.innerHTML = "<p class='text-center text-gray-600 font-semibold'>No books found.</p>";
-                            return;
-                        }
-                        
-                        snapshot.forEach(doc => {
-                            const { name, description, image_url, pdf_url, title } = doc.data();
-                            
+                const userId = user.uid;
+                
+                try {
+                    // Fetch user's book IDs from Mybooks/{userId}/books
+                    const myBooksSnapshot = await db.collection("Mybooks").doc(userId).collection("books").get();
+
+                    if (myBooksSnapshot.empty) {
+                        booksContainer.innerHTML = "<p class='text-center text-gray-600 font-semibold'>No books found.</p>";
+                        return;
+                    }
+
+                    booksContainer.innerHTML = "";
+
+                    // Fetch book details from books collection using the IDs
+                    const bookPromises = myBooksSnapshot.docs.map(async (doc) => {
+                        const bookId = doc.id; // Book ID
+                        const bookDoc = await db.collection("books").doc(bookId).get();
+                        return bookDoc.exists ? { id: bookId, ...bookDoc.data() } : null;
+                    });
+
+                    const books = await Promise.all(bookPromises);
+
+                    books.forEach((book) => {
+                        if (book) {
+                            const { id, title, description, image_url, pdf_url } = book;
                             const bookCard = document.createElement("div");
-                            bookCard.className = "bg-white p-5 rounded-lg shadow-md flex flex-col items-center transform transition duration-300 hover:scale-105 hover:shadow-xl";
+                            bookCard.className = "bg-white p-5 rounded-lg shadow-md flex flex-col items-center transform transition duration-300 hover:scale-105 hover:shadow-xl cursor-pointer";
                             bookCard.innerHTML = `
                                 <img src="${image_url}" alt="${title}" class="w-40 h-52 object-cover rounded-md mb-4">
-                                <h2 class="text-lg font-semibold text-gray-800">${title}</h2>
-                                <p class="text-sm text-gray-600 text-center px-3">${description}</p>
-                                <button class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-indigo-700 transition" onclick="window.open('${pdf_url}', '_blank')">Read Book</button>
+                                <h2 class="text-lg font-semibold text-gray-800 text-center">${title}</h2>
+                                <p class="text-sm text-gray-600 text-center px-3 line-clamp-2">${description}</p>
+                                <button class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-indigo-700 transition" onclick="openModal('${pdf_url}')">Read Book</button>
                             `;
                             booksContainer.appendChild(bookCard);
-                        });
-                    } catch (error) {
-                        console.error("Error fetching books:", error);
-                        booksContainer.innerHTML = "<p class='text-center text-red-500 font-semibold'>Failed to load books.</p>";
-                    }
-                } else {
-                    booksContainer.innerHTML = "<p class='text-center text-red-500 font-semibold'>Please log in to view your books.</p>";
+                        }
+                    });
+
+                } catch (error) {
+                    console.error("Error fetching books:", error);
+                    booksContainer.innerHTML = "<p class='text-center text-red-500 font-semibold'>Failed to load books.</p>";
                 }
             });
         };
+
+        function openModal(pdfUrl) {
+            document.getElementById("pdfViewer").src = pdfUrl;
+            document.getElementById("pdfModal").classList.remove("hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("pdfModal").classList.add("hidden");
+            document.getElementById("pdfViewer").src = ""; // Reset PDF src
+        }
     </script>
 </body>
 </html>

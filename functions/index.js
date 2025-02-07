@@ -59,7 +59,7 @@ app.put("/update-user-book/:userId/:bookId/:amount/:refcode", async (req, res) =
   
   // Update course
 
-  app.put("/update-user-course/:userId/:courseId/:amount/:refcode", async (req, res) => {
+  app.put("/update-user-course/:userId/:bookId/:amount/:refcode", async (req, res) => {
     const { userId, bookId, amount, refcode } = req.params; // Fixed `bookId` to `courseId`
     const amountNumber = Number(amount);
     const twentyFivePercent = amountNumber * 0.25;

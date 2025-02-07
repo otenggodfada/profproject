@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Page</title>
+  
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+  
+  <script type="module" src="./dynamiccon.js"></script>
+  <script type="module" src="./navbar.js"></script>
+  <script src="bottomnv.js"></script>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen">
+  
+  <div class="w-full max-w-4xl bg-[#1e1e1e] rounded-lg shadow-lg overflow-hidden">
+    <!-- Header Section with Profile Image -->
+    <div class="relative w-full h-48 bg-transparent flex justify-center items-center">
+      <img src="https://play-lh.googleusercontent.com/at2S2YdNuHw37f1WXI5shPIrIQ-rrAdyv-KIE1dHXr218Q9q52eBvE_gcV-AH6bHPfY=w240-h480-rw" alt="Profile Image" class="w-24 h-24 rounded-full border-4 border-white shadow-lg absolute bottom-[-30px]">
+    </div>
+    
+    <!-- Content Section -->
+    <div class="p-6 text-center">
+      <h2 class="text-2xl font-bold">Welcome, User!</h2>
+      <p class="text-gray-400 mt-2">Explore available tools and manage your profile easily.</p>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="px-6 py-4 space-y-4">
+      <a href="./mycourse.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400">
+        <i class="fas fa-book-open"></i>
+        <span>My Courses</span>
+      </a>
+      <a href="https://profstudymateadmin.com/" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400">
+        <i class="fas fa-database"></i>
+        <span>Admin Panel</span>
+      </a>
+      <a href="./mybooks.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400">
+        <i class="fas fa-book"></i>
+        <span>My Books</span>
+      </a>
+      <a href="./myprofile.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400">
+        <i class="fas fa-user-edit"></i>
+        <span>My Profile</span>
+      </a>
+      <a href="./job.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400">
+        <i class="fas fa-money-bill"></i>
+        <span>Affiliate</span>
+      </a>
+    </div>
+
+    <!-- Sign Out Button -->
+    <div class="py-4 text-center border-t border-gray-700">
+      <button id="signOut" class="text-red-400 hover:text-red-600 text-lg font-bold">
+        <i class="fas fa-sign-out-alt"></i> Sign Out
+      </button>
+    </div>
+    <footer>
+        <div
+          class="fixed z-50 bottom-0 right-0 left-0"
+          id="navbar-container1"
+        ></div>
+      </footer>
+  </div>
+  
+</body>
+</html>

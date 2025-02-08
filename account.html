@@ -7,7 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Authentication</title>
     <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
     <style>
       body {
         background-color: #253774;
@@ -134,17 +139,6 @@
               />
             </div>
             <div class="form-group">
-              <label for="password" class="form-label">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                autocomplete="new-password"
-                required
-                class="form-input"
-              />
-            </div>
-            <div class="form-group">
               <label for="telephone" class="form-label">Telephone Number</label>
               <input
                 type="tel"
@@ -155,6 +149,18 @@
                 class="form-input"
               />
             </div>
+            <div class="form-group">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="new-password"
+                required
+                class="form-input"
+              />
+            </div>
+     
             <div class="form-group">
               <label for="referral" class="form-label">Referral</label>
               <input disabled
@@ -239,9 +245,15 @@
               <a href="#" id="toggle-create">Create Account</a>
             </p>
           </div>
+
+        
         </div>
         <button  id="close-modal" class="form-button mt-4">Close</button>
       </div>
+
+      <div id="loading-screen" class="fixed hidden bg-black opacity-60 top-0 right-0 bottom-0 left-0 text-white text-center flex items-center justify-center "><svg class="w-6 h-6 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.93 4.93a10.5 10.5 0 0114.14 0m-14.14 14.14a10.5 10.5 0 0114.14 0M9.17 9.17a5.25 5.25 0 017.66 0m-7.66 7.66a5.25 5.25 0 017.66 0" />
+      </svg></div>
     </div>
     <script src="navbar.js"></script>
     <script type="module" src="./dynamiccon.js"></script>
@@ -275,5 +287,8 @@
       window.location.href = "./index.html"
     })
     </script>
+
+
+</script>
   </body>
 </html>

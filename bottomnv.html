@@ -36,7 +36,7 @@
                     <span class="text-xs">Shop</span>
                 </a>
 
-                <a id="account-link" href="./account.html" class="flex flex-col items-center text-white hover:text-blue-600">
+                <a id="account-link" href="./mprofilepage.html" class="flex flex-col items-center text-white hover:text-blue-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4.978 4.978 0 015 16c0-2.761 2.239-5 5-5s5 2.239 5 5c0 .616-.111 1.206-.304 1.754M16 21v-2a4 4 0 00-8 0v2"/>
                     </svg>
@@ -46,31 +46,6 @@
         </nav>
     </div>
 
-    <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
-      authDomain: "profstudymate-6d0fc.firebaseapp.com",
-      projectId: "profstudymate",
-      storageBucket: "profstudymate.appspot.com",
-      messagingSenderId: "141453158869",
-      appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
-        };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
-        // Listen for authentication status change
-        auth.onAuthStateChanged(user => {
-            const accountLink = document.getElementById("account-link");
-            if (user) {
-                accountLink.href = "./mprofilepage.html";  // Logged in
-            } else {
-                accountLink.href = "./account.html";  // Not logged in
-            }
-        });
-
-    </script>
 </body>
 </html>

@@ -10,6 +10,9 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <script src="navbar.js"></script>
   <script type="module" src="./dynamiccon.js"></script>
   <script src="bottomnv.js"></script>
@@ -397,6 +400,7 @@ const renderCourses = async (tagId = null) => {
 
     // Show Course Details in Modal
     const showCourseDetails = async (courseId) => {
+      showErrorToast()
       const coursesRef = db.collection("courses");
       const courseDoc = await coursesRef.doc(courseId).get();
       const course = courseDoc.data();
@@ -510,6 +514,19 @@ if(course.price_status === "free"){
 
   
    
+  </script>
+    <script>
+      function showErrorToast() {
+          Toastify({
+              text: "🚨 Create an account to view courses!",
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "linear-gradient(to right, #e74c3c, #c0392b)", // Red error gradient
+              stopOnFocus: true,
+          }).showToast();
+      }
   </script>
 
 </body>

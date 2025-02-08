@@ -1,5 +1,7 @@
 /** @format */
 
+
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
 import {
   getFirestore,
@@ -112,6 +114,7 @@ document
 document
   .getElementById("account-form")
   .addEventListener("submit", async (e) => {
+    document.getElementById('loading-screen').classList.remove("hidden");
     e.preventDefault();
 
     const name = document.getElementById("full-name").value;
@@ -182,16 +185,17 @@ document
         } catch (error) {
           console.error("Error updating totalrefs:", error);
         }
-        // // increaseTotalRefs(referralcode);
-        // await setDoc(doc(db, "users", referralcode), {
-        //   totalrefs: 233,
-        // });
+
       }
 
       // Close the modal after successful account creation
       closeModal();
-      window.location.href = "./";
-    } catch (error) {
+      showSuccessToast()
+      setTimeout(() => {
+        window.location.href = "./"; // Change this to your actual dashboard URL
+    }, 3000);
+    } catch (error) { document.getElementById('loading-screen').classList.add("hidden");
+      showerrorToast1(error.message)
       // Handle account creation errors
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -206,7 +210,7 @@ document
   });
 
 // Function to handle login form submission
-document.getElementById("login-form").addEventListener("submit", async (e) => {
+document.getElementById("login-form").addEventListener("submit", async (e) => {  document.getElementById('loading-screen').classList.remove("hidden");
   e.preventDefault();
 
   const email = document.getElementById("login-email").value;
@@ -220,13 +224,19 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     );
     // Login successful
     console.log("User logged in:", userCredential.user.email);
-    window.location.href = "./";
+showSuccessToast1()
+    // window.location.href = "./";
+    setTimeout(() => {
+      window.location.href = "./"; // Change this to your actual dashboard URL
+  }, 3000);
 
     // Optionally, you can add logic here to handle adding the item to the cart after login
     // Replace with your actual add to cart function
     closeModal(); // Close modal after successful login
   } catch (error) {
     // Handle login errors
+    document.getElementById('loading-screen').classList.add("hidden");
+    showerrorToast1(error.message)
     const errorCode = error.code;
     const errorMessage = error.message;
     console.error("Error signing in:", errorCode, errorMessage);
@@ -238,7 +248,40 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     document.getElementById("login-form").appendChild(errorElement);
   }
 });
+function showSuccessToast() {
+  Toastify({
+      text: "🎉 Account created successfully!",
+      duration: 3000, // Auto close after 3 seconds
+      close: true, // Show close button
+      gravity: "top", // Position on top
+      position: "right", // Align to the right
+      backgroundColor: "linear-gradient(to right, #38a169, #2f855a)", // Green gradient
+      stopOnFocus: true, // Stop dismissing on hover
+  }).showToast();
+}
+function showerrorToast1(err) {
+  Toastify({
+      text: err,
+      duration: 3000, // Auto close after 3 seconds
+      close: true, // Show close button
+      gravity: "top", // Position on top
+      position: "right", // Align to the right
+      backgroundColor: "linear-gradient(to right, rgba(231,76,60,0.8), rgba(192,57,43,0.8))", // Green gradient
+      stopOnFocus: true, // Stop dismissing on hover
+  }).showToast();
+}
 
+function showSuccessToast1() {
+  Toastify({
+      text: "🎉 Login successfully!",
+      duration: 3000, // Auto close after 3 seconds
+      close: true, // Show close button
+      gravity: "top", // Position on top
+      position: "right", // Align to the right
+      backgroundColor: "linear-gradient(to right, #38a169, #2f855a)", // Green gradient
+      stopOnFocus: true, // Stop dismissing on hover
+  }).showToast();
+}
 function closeModal() {
   const modal = document.getElementById("account-modal");
   modal.style.display = "none";

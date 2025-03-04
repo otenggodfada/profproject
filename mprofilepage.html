@@ -5,18 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile Page</title>
   
-  <!-- Font Awesome CDN -->
+  <!-- Font Awesome & Tailwind CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  
+  <!-- Framer Motion for Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.14.0/framer-motion.umd.min.js"></script>
   
   <!-- Firebase SDKs -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
-    // Your Firebase config
     const firebaseConfig = {
-        apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+      apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
       authDomain: "profstudymate-6d0fc.firebaseapp.com",
       projectId: "profstudymate",
       storageBucket: "profstudymate.appspot.com",
@@ -24,20 +27,28 @@
       appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    // Check if user is logged in
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        window.location.href = "./account.html"; // Redirect if not logged in
+        window.location.href = "./account.html";
       } else {
-        document.getElementById("userName").textContent = `Welcome, ${user.displayName || "User"}!`;
+        const userNameElement = document.getElementById("userName");
+        const userDocRef = doc(db, "users", user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+          userNameElement.textContent = `Welcome, ${userData.name || "User"}!`;
+          if (userData.role !== "student") {
+            document.getElementById("adminPanelLink").style.display = "flex";
+          }
+        }
       }
     });
 
-    // Logout functionality
     window.addEventListener("DOMContentLoaded", () => {
       document.getElementById("signOut").addEventListener("click", () => {
         signOut(auth).then(() => {
@@ -46,62 +57,52 @@
       });
     });
   </script>
-
+  
   <script type="module" src="./dynamiccon.js"></script>
   <script type="module" src="./navbar.js"></script>
   <script src="bottomnv.js"></script>
 </head>
-<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen">
-  
-  <div class="w-full max-w-4xl bg-[#1e1e1e] rounded-lg shadow-lg overflow-hidden">
-    <!-- Header Section with Profile Image -->
-    <div class="relative w-full h-48 bg-transparent flex justify-center items-center">
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-6" >
+  <div class="w-full max-w-4xl bg-opacity-10 backdrop-blur-lg rounded-lg shadow-xl overflow-hidden p-6 border border-gray-500/30">
+    <div class="relative w-full h-48 flex justify-center items-center">
       <img src="https://play-lh.googleusercontent.com/at2S2YdNuHw37f1WXI5shPIrIQ-rrAdyv-KIE1dHXr218Q9q52eBvE_gcV-AH6bHPfY=w240-h480-rw" 
            alt="Profile Image" 
-           class="w-24 h-24 rounded-full border-4 border-white shadow-lg absolute bottom-[-30px]">
+           class="w-24 h-24 rounded-full border-4 border-white shadow-lg absolute bottom-[-30px] transition-transform duration-300 hover:scale-110">
     </div>
-    
-    <!-- Content Section -->
     <div class="p-6 text-center">
       <h2 class="text-2xl font-bold" id="userName">Welcome, User!</h2>
-      <p class="text-gray-400 mt-2">Explore available tools and manage your profile easily.</p>
+      <p class="text-gray-300 mt-2 animate-pulse">Explore available tools and manage your profile easily.</p>
     </div>
-
-    <!-- Navigation Links -->
     <div class="px-6 py-4 space-y-4">
-      <a href="./mycourse.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400">
+      <a href="./mycourse.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400 transition-transform transform hover:translate-x-2">
         <i class="fas fa-book-open"></i>
         <span>My Courses</span>
       </a>
-      <a href="https://profstudymateadmin.com/" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400">
+      <a href="https://profstudymateadmin.com/" id="adminPanelLink" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400 hidden transition-transform transform hover:translate-x-2">
         <i class="fas fa-database"></i>
         <span>Admin Panel</span>
       </a>
-      <a href="./mybooks.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400">
+      <a href="./mybooks.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400 transition-transform transform hover:translate-x-2">
         <i class="fas fa-book"></i>
         <span>My Books</span>
       </a>
-      <a href="./myprofile.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400">
+      <a href="./myprofile.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400 transition-transform transform hover:translate-x-2">
         <i class="fas fa-user-edit"></i>
         <span>My Profile</span>
       </a>
-      <a href="./job.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400">
+      <a href="./job.html" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400 transition-transform transform hover:translate-x-2">
         <i class="fas fa-money-bill"></i>
         <span>Affiliate</span>
       </a>
     </div>
-
-    <!-- Sign Out Button -->
     <div class="py-4 text-center border-t border-gray-700">
-      <button id="signOut" class="text-red-400 hover:text-red-600 text-lg font-bold">
+      <button id="signOut" class="text-red-400 hover:text-red-600 text-lg font-bold transition-transform transform hover:scale-110">
         <i class="fas fa-sign-out-alt"></i> Sign Out
       </button>
     </div>
-
     <footer>
-        <div class="fixed z-50 bottom-0 right-0 left-0" id="navbar-container1"></div>
+      <div class="fixed z-50 bottom-0 right-0 left-0" id="navbar-container1"></div>
     </footer>
   </div>
-  
 </body>
 </html>

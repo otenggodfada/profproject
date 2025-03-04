@@ -4,48 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bottom Navigation</title>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/framer-motion@10.12.1/dist/framer-motion.umd.js"></script>
+    <style>
+        .nav-item {
+            transition: transform 0.2s ease-in-out, color 0.2s;
+        }
+        .nav-item:hover {
+            transform: scale(1.1);
+        }
+        .nav-item.active {
+            color: #facc15 !important;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const links = document.querySelectorAll(".nav-item");
+            const currentPath = window.location.pathname.replace(/\/?$/, ""); // Normalize trailing slashes
+            
+            links.forEach(link => {
+                const linkPath = new URL(link.href, window.location.origin).pathname.replace(/\/?$/, "");
+                if (linkPath === currentPath) {
+                    link.classList.add("active");
+                }
+            });
+        });
+    </script>
 </head>
 <body class="bg-[#172554]">
-    <!-- Navigation Container -->
-    <div id="nav-container">
-        <!-- Default navbar (shown while Firebase is loading) -->
-        <nav class="fixed bottom-0 left-0 right-0 bg-blue-900 shadow-lg border-t border-gray-300 md:hidden">
-            <div class="flex justify-around items-center py-3">
-                <a href="./" class="flex flex-col items-center text-white hover:text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10l9-7 9 7v11a1 1 0 01-1 1h-6a1 1 0 01-1-1v-5a1 1 0 00-1-1H7a1 1 0 00-1 1v5a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/>
-                    </svg>
-                    <span class="text-xs">Home</span>
-                </a>
-
-                <a href="./courses.html" class="flex flex-col items-center text-white hover:text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
-                    </svg>
-                    <span class="text-xs">Courses</span>
-                </a>
-
-                <a href="./store.html" class="flex flex-col items-center text-white hover:text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M9 3v2m6-2v2m-9 4h12M5 9h14M5 9a2 2 0 002 2h10a2 2 0 002-2"/>
-                    </svg>
-                    <span class="text-xs">Shop</span>
-                </a>
-
-                <a id="account-link" href="./mprofilepage.html" class="flex flex-col items-center text-white hover:text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4.978 4.978 0 015 16c0-2.761 2.239-5 5-5s5 2.239 5 5c0 .616-.111 1.206-.304 1.754M16 21v-2a4 4 0 00-8 0v2"/>
-                    </svg>
-                    <span class="text-xs">Account</span>
-                </a>
-            </div>
-        </nav>
-    </div>
-
-
+    <nav class="fixed bottom-0 left-0 right-0 bg-blue-900 shadow-lg border-t border-gray-300 md:hidden">
+        <div class="flex justify-around items-center py-3">
+            <a href="./" class="nav-item flex flex-col items-center text-white hover:text-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10l9-7 9 7v11a1 1 0 01-1 1h-6a1 1 0 01-1-1v-5a1 1 0 00-1-1H7a1 1 0 00-1 1v5a1 1 0 01-1 1H4a1 1 0 01-1-1V10z"/>
+                </svg>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="./courses.html" class="nav-item flex flex-col items-center text-white hover:text-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                </svg>
+                <span class="text-xs">Courses</span>
+            </a>
+            <a href="./store.html" class="nav-item flex flex-col items-center text-white hover:text-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M9 3v2m6-2v2m-9 4h12M5 9h14M5 9a2 2 0 002 2h10a2 2 0 002-2"/>
+                </svg>
+                <span class="text-xs">Shop</span>
+            </a>
+            <a href="./mprofilepage.html" class="nav-item flex flex-col items-center text-white hover:text-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4.978 4.978 0 015 16c0-2.761 2.239-5 5-5s5 2.239 5 5c0 .616-.111 1.206-.304 1.754M16 21v-2a4 4 0 00-8 0v2"/>
+                </svg>
+                <span class="text-xs">Account</span>
+            </a>
+        </div>
+    </nav>
 </body>
 </html>

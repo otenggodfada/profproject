@@ -18,6 +18,7 @@
     <!-- Add Firebase products that you want to use -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script src="bottomnv.js"></script>
   </head>
   <body class="bg-gray-900">
     <div id="navbar-container"></div>
@@ -223,7 +224,14 @@
           
         </div>
       </div>
+
     </div>
+    <footer>
+      <div
+        class="fixed z-50 bottom-0 right-0 left-0"
+        id="navbar-container1"
+      ></div>
+    </footer>
     <script>
       function copyToClipboard(elementId) {
         const text = document.getElementById(elementId).textContent;

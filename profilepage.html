@@ -16,6 +16,8 @@
       <script src="https://cdn.tailwindcss.com"></script>
       <script type="module" src="./dynamiccon.js"></script>
   <script type="module" src="./navbar.js"></script>
+
+
 </head>
 <body class="bg-transparent ">
 
@@ -50,12 +52,12 @@
    
             <a href="./mycourse.html">My Courses</a>
         </div>
-        <div class="flex items-center space-x-4 cursor-pointer hover:text-blue-600 transition duration-300">
+        <div id="adminPanelLink1" class="flex items-center hidden space-x-4 cursor-pointer hover:text-blue-600 transition duration-300">
             <i class="fas fa-database text-xl"></i>
 
             <a href="https://profstudymateadmin.com/">Admin Panel</a>
         </div>
-        <div class="flex items-center space-x-4 cursor-pointer hover:text-blue-600 transition duration-300">
+        <div  class="flex items-center space-x-4 cursor-pointer hover:text-blue-600 transition duration-300">
             <i class="fas fa-book text-xl"></i>
      
             <a href="./mybooks.html">My Books</a>
@@ -83,7 +85,50 @@
 
       
 <!-- so this profifle page design -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
+    const firebaseConfig = {
+      apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+      authDomain: "profstudymate-6d0fc.firebaseapp.com",
+      projectId: "profstudymate",
+      storageBucket: "profstudymate.appspot.com",
+      messagingSenderId: "141453158869",
+      appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+  return
+      } else {
+        const userNameElement = document.getElementById("userName");
+        const userDocRef = doc(db, "users", user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+          userNameElement.textContent = `Welcome, ${userData.name || "User"}!`;
+          if (userData.role !== "student") {
+  document.getElementById("adminPanelLink1").classList.remove("hidden");
+}
+        }
+      }
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("signOut").addEventListener("click", () => {
+        signOut(auth).then(() => {
+          window.location.href = "./account.html";
+        });
+      });
+    });
+  </script>
 <script>
   document.getElementById("closeit").ontouchend = function() {
     alert("Button clicked!");

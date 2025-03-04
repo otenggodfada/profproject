@@ -68,71 +68,74 @@
       <div id="navbar-container"></div>
     </div>
     <!-- <div id="navbar-container1"></div> -->
-    <div class="container mx-auto p-4 mb-11 ">
-      <div class="flex justify-between mt-[150px]">
-        <h1 class="text-2xl font-bold mb-6">Book Shop</h1>
-        <div class="flex justify-between">
-          <!-- Cart -->
-          <div class="flex mr-5">
-            <h1 class="text-2xl font-bold mb-6">Carts</h1>
-            <div
-              class="font-bold w-5 h-5 bg-[red] rounded-full text-[white] flex items-center justify-center"
-            >
-              <h3 id="cartn">1</h3>
-            </div>
-          </div>
-          <!-- My books -->
-          <div class="flex mr-5">
-   
-          
-          </div>
-        </div>
-      </div>
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Shop</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
 
-      <div class="mb-4">
-        <input
-          type="text"
-          id="search-input"
-          placeholder="Search for books..."
-          class="w-full p-2 rounded-md bg-gray-800 text-white"
-        />
-      </div>
-      <div class="flex space-x-4 mb-4">
-        <div>
-          <input
-            type="radio"
-            id="free-filter"
-            name="price-filter"
-            value="free"
-          />
-          <label for="free-filter">Free</label>
+    <div class="container mx-auto p-6">
+        <!-- Header Section -->
+        <div class="flex justify-between items-center mt-32 mb-8 ">
+            <h1 class="text-3xl font-bold text-white">📚 Book Shop</h1>
+
+            <div class="flex items-center space-x-6">
+                <!-- Cart -->
+                <div class="relative flex items-center">
+                    <h1 class="text-xl font-semibold text-white">🛒 Cart</h1>
+                    <div class="absolute -top-2 -right-4 w-5 h-5 bg-red-500 text-white text-sm font-bold rounded-full flex items-center justify-center">
+                        <h3 id="cartn">1</h3>
+                    </div>
+                </div>
+
+                <!-- My Books Placeholder -->
+                <div class="flex items-center"></div>
+            </div>
         </div>
-        <div>
-          <input
-            type="radio"
-            id="paid-filter"
-            name="price-filter"
-            value="paid"
-          />
-          <label for="paid-filter">Paid</label>
+
+        <!-- Search Bar -->
+        <div class="mb-6">
+            <input
+                type="text"
+                id="search-input"
+                placeholder="🔍 Search for books..."
+                class="w-full p-3 rounded-lg bg-white shadow-md text-gray-700 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
         </div>
-        <button
-          id="clear-filters"
-          class="clear-filters-btn px-4 py-2 flex items-center space-x-2 border border-gray-300 rounded-md"
-        >
-          <i class="fas fa-times-circle"></i>
-          <span>Clear Filters</span>
-        </button>
-      </div>
-      <div
-        id="books-container"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-      >
-        <!-- Book cards will be appended here dynamically -->
-      </div>
-      <div id="pagination" class="flex justify-center mt-4">
-        <!-- Pagination links will be appended here dynamically -->
-      </div>
+
+        <!-- Filters -->
+        <div class="flex items-center space-x-6 mb-6">
+            <div class="flex items-center space-x-2">
+                <input type="radio" id="free-filter" name="price-filter" value="free" class="w-4 h-4 text-blue-500">
+                <label for="free-filter" class="text-white">Free</label>
+            </div>
+            <div class="flex items-center space-x-2">
+                <input type="radio" id="paid-filter" name="price-filter" value="paid" class="w-4 h-4 text-blue-500">
+                <label for="paid-filter" class="text-white">Paid</label>
+            </div>
+            <button
+                id="clear-filters"
+                class="px-4 py-2 flex items-center space-x-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition"
+            >
+                <i class="fas fa-times-circle"></i>
+                <span>Clear Filters</span>
+            </button>
+        </div>
+
+        <!-- Book Container -->
+        <div id="books-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Book cards will be appended here dynamically -->
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="flex justify-center mt-6">
+            <!-- Pagination links will be appended here dynamically -->
+        </div>
     </div>
 
     <!-- Modal for account creation -->

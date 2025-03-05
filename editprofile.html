@@ -18,68 +18,79 @@
     <div class=" bg-[#172554] px-5 z-20 fixed top-0 w-screen ">
        
       <div id="navbar-container"></div></div>
-    <div class="p-9 mt-20 w-full flex justify-center">
-      <div class="w-full max-w-3xl p-8 bg-gray-950/20 rounded-lg">
-        <h2 class="text-3xl font-semibold text-center mb-5">Edit Profile</h2>
-        <form id="editProfileForm" class="space-y-4">
+     <div class=" mt-44  flex  justify-center mb-40 m-8">
+      <div class="w-full max-w-3xl  border  p-10 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-semibold text-center mb-8">Edit Profile</h2>
+        <form id="editProfileForm" class="space-y-6">
           <div>
-            <label class="block text-gray-300">Name</label>
+            <label class="block text-gray-300 flex items-center gap-3 mb-2">
+              <i data-lucide="user"></i> Name
+            </label>
             <input
               type="text"
               id="name"
-              class="w-full p-2 border rounded bg-gray-800 text-white"
+              class="w-full p-3 border rounded bg-gray-800 text-white focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
-
+  
           <div>
-            <label class="block text-gray-300">Email</label>
+            <label class="block text-gray-300 flex items-center gap-3 mb-2">
+              <i data-lucide="mail"></i> Email
+            </label>
             <input
               type="email"
               id="email"
-              class="w-full p-2 border rounded bg-gray-800 text-white"
+              class="w-full p-3 border rounded bg-gray-800 text-white focus:ring-2 focus:ring-blue-500"
               required
               disabled
             />
           </div>
-
+  
           <div>
-            <label class="block text-gray-300">Profile Picture URL</label>
+            <label class="block text-gray-300 flex items-center gap-3 mb-2">
+              <i data-lucide="image"></i> Profile Picture URL
+            </label>
             <input
               type="text"
               id="photoURL"
-              class="w-full p-2 border rounded bg-gray-800 text-white"
+              class="w-full p-3 border rounded bg-gray-800 text-white focus:ring-2 focus:ring-blue-500"
             />
           </div>
-
-          <div id="zoomFields" class="hidden">
+  
+          <div id="zoomFields" class="hidden space-y-6">
             <div>
-              <label class="block text-gray-300">Zoom ID</label>
+              <label class="block text-gray-300 flex items-center gap-3 mb-2">
+                <i data-lucide="video"></i> Zoom ID
+              </label>
               <input
                 type="text"
                 id="zoomId"
-                class="w-full p-2 border rounded bg-gray-800 text-white"
+                class="w-full p-3 border rounded bg-gray-800 text-white focus:ring-2 focus:ring-blue-500"
               />
             </div>
-
+  
             <div>
-              <label class="block text-gray-300">Zoom Passcode</label>
+              <label class="block text-gray-300 flex items-center gap-3 mb-2">
+                <i data-lucide="lock"></i> Zoom Passcode
+              </label>
               <input
                 type="text"
                 id="zoomPasscode"
-                class="w-full p-2 border rounded bg-gray-800 text-white"
+                class="w-full p-3 border rounded bg-gray-800 text-white focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
-
+  
           <button
             type="submit"
-            class="w-full p-3 bg-blue-500 rounded hover:bg-blue-600 transition"
+            class="w-full p-4 bg-[#172554]  border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md"
           >
-            Save Changes
+            <i data-lucide="save"></i> Save Changes
           </button>
         </form>
       </div>
+     </div>
       <footer>
         <div
           class="fixed z-50 bottom-0 right-0 left-0"

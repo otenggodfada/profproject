@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,7 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/framer-motion@4.1.17/dist/framer-motion.umd.js"></script>
+    <script
+      defer
+      src="https://unpkg.com/framer-motion@4.1.17/dist/framer-motion.umd.js"
+    ></script>
     <script type="module" src="navbar.js"></script>
     <script type="module" src="./dynamiccon.js"></script>
     <script src="bottomnv.js"></script>
@@ -24,30 +29,61 @@
     <div class="bg-[#172554] px-5 z-20 fixed w-screen top-0">
       <div id="navbar-container"></div>
     </div>
-    
-    <div class="p-9">
-      <div class="w-full max-w-3xl p-8 mt-56 border bg-gray-950/20 rounded-lg text-white text-center">
-        <motion.div class="relative overflow-hidden rounded-lg" animate="{ opacity: 1, y: 0 }" initial="{ opacity: 0, y: -20 }" transition="{ duration: 0.5 }">
-          <img class="w-full h-56 object-cover rounded-lg shadow-lg" src="https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw" alt="Cover Photo" />
-          <img id="photo" class="w-36 h-36 rounded-full border-4 border-white shadow-xl mx-auto -mt-20 transition duration-300 hover:scale-105" src="https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw" alt="Profile Picture" />
+
+    <div class="p-9 mb-20 mt-32 w-full flex justify-center">
+      <div
+        class="w-full max-w-3xl p-8  border bg-gray-950/20 rounded-lg text-white text-center"
+      >
+        <motion.div
+          class="relative overflow-hidden rounded-lg"
+          animate="{ opacity: 1, y: 0 }"
+          initial="{ opacity: 0, y: -20 }"
+          transition="{ duration: 0.5 }"
+        >
+          <img
+            class="w-full h-56 object-cover rounded-lg shadow-lg"
+            src="https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw"
+            alt="Cover Photo"
+          />
+          <img
+            id="photo"
+            class="w-36 h-36 rounded-full border-4 border-white shadow-xl mx-auto -mt-20 transition duration-300 hover:scale-105"
+            src="https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw"
+            alt="Profile Picture"
+          />
         </motion.div>
-        
+
         <div class="mt-5">
-          <h2 id="name" class="text-3xl font-semibold flex items-center justify-center gap-2">
+          <h2
+            id="name"
+            class="text-3xl font-semibold flex items-center justify-center gap-2"
+          >
             <i data-lucide="user"></i> <span></span>
           </h2>
-          <p id="email" class="text-lg text-gray-300 flex items-center justify-center gap-2">
+          <p
+            id="email"
+            class="text-lg text-gray-300 flex items-center justify-center gap-2"
+          >
             <i data-lucide="mail"></i> <span></span>
           </p>
-        <div id="zoom-info"  class="hidden">
-          <p id="zoomId" class="text-lg text-gray-300 flex items-center justify-center gap-2">
-            <i data-lucide="video"></i> Zoom ID: <span></span>
-          </p>
-          <p id="zoomPasscode" class="text-lg text-gray-300 flex items-center justify-center gap-2">
-            <i data-lucide="lock"></i> Zoom Passcode: <span></span>
-          </p>
-        </div>
-          <a href="editprofile.html" class="mt-5 px-5 py-3 bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center gap-2">
+          <div id="zoom-info" class="hidden">
+            <p
+              id="zoomId"
+              class="text-lg text-gray-300 flex items-center justify-center gap-2"
+            >
+              <i data-lucide="video"></i> Zoom ID: <span></span>
+            </p>
+            <p
+              id="zoomPasscode"
+              class="text-lg text-gray-300 flex items-center justify-center gap-2"
+            >
+              <i data-lucide="lock"></i> Zoom Passcode: <span></span>
+            </p>
+          </div>
+          <a
+            href="editprofile.html"
+            class="mt-5 px-5 py-3 bg-blue-500/50 border rounded-lg hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center gap-2"
+          >
             <i data-lucide="edit"></i> Edit Profile
           </a>
         </div>
@@ -55,13 +91,24 @@
     </div>
 
     <footer>
-      <div class="fixed z-50 bottom-0 right-0 left-0" id="navbar-container1"></div>
+      <div
+        class="fixed z-50 bottom-0 right-0 left-0"
+        id="navbar-container1"
+      ></div>
     </footer>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-      import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
-      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
@@ -86,17 +133,43 @@
               .then((docSnap) => {
                 if (docSnap.exists()) {
                   const userData = docSnap.data();
-                  if(userData.role=="student"){document.getElementById("name").querySelector("span").textContent = userData.name || "N/A";
-                    document.getElementById("email").querySelector("span").textContent = userData.email || "N/A";
-              
-                    document.getElementById("photo").src = userData.photoURL || "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";}
+                  if (userData.role == "student") {
+                    document
+                      .getElementById("name")
+                      .querySelector("span").textContent =
+                      userData.name || "N/A";
+                    document
+                      .getElementById("email")
+                      .querySelector("span").textContent =
+                      userData.email || "N/A";
+
+                    document.getElementById("photo").src =
+                      userData.photoURL ||
+                      "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";
+                  }
                   if (userData.role === "author") {
-                    document.getElementById("name").querySelector("span").textContent = userData.name || "N/A";
-                    document.getElementById("email").querySelector("span").textContent = userData.email || "N/A";
-                    document.getElementById("photo").src = userData.photoURL || "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";
-                    document.getElementById("zoomId").querySelector("span").textContent = userData.zoomId || "N/A";
-                    document.getElementById("zoomPasscode").querySelector("span").textContent = userData.zoomPasscode || "N/A";
-                    document.getElementById("zoom-info").classList.remove("hidden");
+                    document
+                      .getElementById("name")
+                      .querySelector("span").textContent =
+                      userData.name || "N/A";
+                    document
+                      .getElementById("email")
+                      .querySelector("span").textContent =
+                      userData.email || "N/A";
+                    document.getElementById("photo").src =
+                      userData.photoURL ||
+                      "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";
+                    document
+                      .getElementById("zoomId")
+                      .querySelector("span").textContent =
+                      userData.zoomId || "N/A";
+                    document
+                      .getElementById("zoomPasscode")
+                      .querySelector("span").textContent =
+                      userData.zoomPasscode || "N/A";
+                    document
+                      .getElementById("zoom-info")
+                      .classList.remove("hidden");
                   }
                 }
               })

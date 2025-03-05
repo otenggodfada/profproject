@@ -4,94 +4,64 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Profile</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/framer-motion@4.1.17/dist/framer-motion.umd.js"></script>
+    <script type="module" src="navbar.js"></script>
+    <script type="module" src="./dynamiccon.js"></script>
+    <script src="bottomnv.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-      .gradient-bg {
-        background: linear-gradient(to right, #667eea, #764ba2);
-      }
-      .hover-scale:hover {
-        transform: scale(1.05);
-        transition: transform 0.3s ease;
+      .glass {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
       }
     </style>
   </head>
-  <body class="bg-gray-50">
-    <header class="gradient-bg text-white py-6 shadow-lg">
-      <div class="container mx-auto flex items-center justify-between">
-        <h1 class="text-3xl font-bold">My Profile</h1>
-        <button
-          id="logoutButton"
-          class="bg-red-500 px-4 py-2 rounded text-sm font-semibold hover:bg-red-600"
-        >
-          Logout
-        </button>
-      </div>
-    </header>
 
-    <main class="container mx-auto p-6">
-      <div
-        class="max-w-lg mx-auto bg-white rounded-lg shadow-xl overflow-hidden hover-scale"
-      >
-        <div class="relative">
-          <img
-            id="coverPhoto"
-            src="https://via.placeholder.com/600x200"
-            alt="Cover Photo"
-            class="w-full h-48 object-cover"
-          />
-          <img
-            id="photo"
-            src="https://via.placeholder.com/150"
-            alt="Profile Picture"
-            class="absolute -bottom-12 left-6 w-24 h-24 rounded-full border-4 border-white object-cover"
-          />
+  <body class="bg-gray-900">
+    <div class="bg-[#172554] px-5 z-20 fixed w-screen top-0">
+      <div id="navbar-container"></div>
+    </div>
+    
+    <div class="p-9">
+      <div class="w-full max-w-3xl p-8 mt-56 border bg-gray-950/20 rounded-lg text-white text-center">
+        <motion.div class="relative overflow-hidden rounded-lg" animate="{ opacity: 1, y: 0 }" initial="{ opacity: 0, y: -20 }" transition="{ duration: 0.5 }">
+          <img class="w-full h-56 object-cover rounded-lg shadow-lg" src="https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw" alt="Cover Photo" />
+          <img id="photo" class="w-36 h-36 rounded-full border-4 border-white shadow-xl mx-auto -mt-20 transition duration-300 hover:scale-105" src="https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw" alt="Profile Picture" />
+        </motion.div>
+        
+        <div class="mt-5">
+          <h2 id="name" class="text-3xl font-semibold flex items-center justify-center gap-2">
+            <i data-lucide="user"></i> <span></span>
+          </h2>
+          <p id="email" class="text-lg text-gray-300 flex items-center justify-center gap-2">
+            <i data-lucide="mail"></i> <span></span>
+          </p>
+        <div id="zoom-info"  class="hidden">
+          <p id="zoomId" class="text-lg text-gray-300 flex items-center justify-center gap-2">
+            <i data-lucide="video"></i> Zoom ID: <span></span>
+          </p>
+          <p id="zoomPasscode" class="text-lg text-gray-300 flex items-center justify-center gap-2">
+            <i data-lucide="lock"></i> Zoom Passcode: <span></span>
+          </p>
         </div>
-
-        <div class="p-8">
-          <div class="text-center">
-            <h2 id="name" class="text-2xl font-bold">Loading...</h2>
-            <p id="email" class="text-gray-600 mt-1">Loading...</p>
-          </div>
-
-          <div class="mt-6 grid grid-cols-2 gap-4">
-            <a
-              href="editprofile.html"
-              class="block text-center bg-indigo-500 text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:bg-indigo-600"
-            >
-              Edit Profile
-            </a>
-            <button
-              id="uploadPhoto"
-              class="block text-center bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold shadow-md hover:bg-gray-400"
-            >
-              Upload Photo
-            </button>
-          </div>
+          <a href="editprofile.html" class="mt-5 px-5 py-3 bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center gap-2">
+            <i data-lucide="edit"></i> Edit Profile
+          </a>
         </div>
       </div>
-    </main>
+    </div>
 
-    <footer class="bg-gray-800 text-white py-4 mt-12">
-      <div class="container mx-auto text-center">
-        <p>&copy; 2024 My Profile. All rights reserved.</p>
-      </div>
+    <footer>
+      <div class="fixed z-50 bottom-0 right-0 left-0" id="navbar-container1"></div>
     </footer>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-      import {
-        getFirestore,
-        doc,
-        getDoc,
-      } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
-      import {
-        getAuth,
-        onAuthStateChanged,
-        signOut,
-      } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+      import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
@@ -116,34 +86,31 @@
               .then((docSnap) => {
                 if (docSnap.exists()) {
                   const userData = docSnap.data();
-                  document.getElementById("name").textContent = userData.name || "N/A";
-                  document.getElementById("email").textContent = userData.email || "N/A";
-                  document.getElementById("photo").src =
-                    userData.photoURL || "https://via.placeholder.com/150";
-                  document.getElementById("coverPhoto").src =
-                    userData.coverPhotoURL || "https://via.placeholder.com/600x200";
-                } else {
-                  console.log("No such document!");
+                  if(userData.role=="student"){document.getElementById("name").querySelector("span").textContent = userData.name || "N/A";
+                    document.getElementById("email").querySelector("span").textContent = userData.email || "N/A";
+              
+                    document.getElementById("photo").src = userData.photoURL || "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";}
+                  if (userData.role === "author") {
+                    document.getElementById("name").querySelector("span").textContent = userData.name || "N/A";
+                    document.getElementById("email").querySelector("span").textContent = userData.email || "N/A";
+                    document.getElementById("photo").src = userData.photoURL || "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";
+                    document.getElementById("zoomId").querySelector("span").textContent = userData.zoomId || "N/A";
+                    document.getElementById("zoomPasscode").querySelector("span").textContent = userData.zoomPasscode || "N/A";
+                    document.getElementById("zoom-info").classList.remove("hidden");
+                  }
                 }
               })
               .catch((error) => {
                 console.log("Error getting document:", error);
               });
           } else {
-            window.location.href = "./account.html"; // Redirect to login page
+            window.location.href = "./account.html";
           }
         });
-
-        document.getElementById("logoutButton").addEventListener("click", () => {
-          signOut(auth)
-            .then(() => {
-              window.location.href = "./account.html"; // Redirect to login page
-            })
-            .catch((error) => {
-              console.error("Error during sign out:", error);
-            });
-        });
       });
+    </script>
+    <script>
+      lucide.createIcons();
     </script>
   </body>
 </html>

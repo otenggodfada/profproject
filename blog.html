@@ -1,852 +1,285 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog Page</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.3.4/lib/darkmode-js.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script type="module" src="./dynamiccon.js"></script>
-  <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
-<div class="elfsight-app-5837f75c-ade7-4dd8-a1cb-bd1cc2ed68a4" data-elfsight-app-lazy></div>
-</head>
-<body class="bg-gray-900 text-white">
-  <div id="navbar-container"></div>
-  <main class="container ">
-    <div class="overflow-hidden w-screen">
-      <iframe src="https://profblog.vercel.app/" class="w-screen h-[800px] " style="border:none;"></iframe>
-    </div>
-    
-    
-  </main>
-  <footer class="md:p-20 bg-[#172554] p-10">
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-4">
-      <div class="gap-4">
-        <div>
-          <span
-            style="
-              box-sizing: border-box;
-              display: inline-block;
-              overflow: hidden;
-              width: initial;
-              height: initial;
-              background: none;
-              opacity: 1;
-              border: 0;
-              margin: 0;
-              padding: 0;
-              position: relative;
-              max-width: 100%;
-            "
-            ><span
-              style="
-                box-sizing: border-box;
-                display: block;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                max-width: 100%;
-              "
-              ><img
-                style="
-                  display: block;
-                  max-width: 100%;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                "
-                alt=""
-                aria-hidden="true"
-                src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27150%27%20height=%2760%27/%3e" /></span
-            ><img
-              alt="logo"
-              src="./_next/logo_dark.png"
-              decoding="async"
-              data-nimg="intrinsic"
-              style="
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                right: 0;
-                box-sizing: border-box;
-                padding: 0;
-                border: none;
-                margin: auto;
-                display: block;
-                width: 0;
-                height: 0;
-                min-width: 100%;
-                max-width: 100%;
-                min-height: 100%;
-                max-height: 100%;
-              " /><noscript
-              ><img
-                alt="logo"
-                srcset="/assets/logo.svg 1x, /assets/logo.svg 2x"
-                src="assets/logo (5).png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                "
-                loading="lazy" /></noscript
-          ></span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.16.2/framer-motion.umd.min.js"
+      defer
+    ></script>
+    <style>
+      .glassmorphism {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    </style>
+    <script type="module" src="./dynamiccon.js"></script>
+    <script src="bottomnv.js"></script>
+    <script src="navbar.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        query,
+        orderBy,
+        doc,
+        getDoc,
+        addDoc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+      // Firebase Config
+      const firebaseConfig = {
+        apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+        authDomain: "profstudymate-6d0fc.firebaseapp.com",
+        projectId: "profstudymate",
+        storageBucket: "profstudymate.appspot.com",
+        messagingSenderId: "141453158869",
+        appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const postId = urlParams.get("id");
+
+      if (postId) {
+        loadPost(postId);
+      } else {
+        fetchPosts();
+      }
+
+      async function fetchPosts() {
+        const postsContainer = document.getElementById("content");
+        const querySnapshot = await getDocs(
+          query(collection(db, "blogs"), orderBy("timestamp", "desc"))
+        );
+        postsContainer.innerHTML = "";
+
+        querySnapshot.forEach((docSnap) => {
+          const post = docSnap.data();
+          const postId = docSnap.id;
+          const formattedDate = new Date(
+            post.timestamp?.seconds * 1000
+          ).toLocaleDateString();
+
+          postsContainer.innerHTML += `
+                    <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-white/20 transition-transform transform hover:scale-105">
+                        <img src="${post.link}" alt="Thumbnail" class="w-full h-52 object-cover rounded-lg mb-4">
+                        <h2 class="text-2xl font-semibold text-white">${post.title}</h2>
+                        <p class="text-gray-300 mt-2">${post.description}</p>
+                        <p class="text-sm text-gray-400 mt-2">📅 ${formattedDate}</p>
+                        <a href="?id=${postId}" class="mt-4 inline-block px-4 py-3 bg-blue-500/50 border-white/20 border  text-white font-semibold rounded-lg hover:bg-blue-600 transition">Read More</a>
+                    </div>`;
+        });
+      }
+
+      async function loadPost(postId) {
+        const postDoc = await getDoc(doc(db, "blogs", postId));
+
+        if (!postDoc.exists()) {
+          document.getElementById("content").innerHTML =
+            "<h2 class='text-red-500 text-center'>Post Not Found</h2>";
+          return;
+        }
+
+        const post = postDoc.data();
+        const formattedDate = new Date(
+          post.timestamp?.seconds * 1000
+        ).toLocaleDateString();
+
+        document.getElementById("content").innerHTML = `
+  <div class="max-w-6xl mx-auto backdrop-blur-lg p-6 sm:p-12 rounded-2xl shadow-xl border border-white/20 w-full lg:w-screen">
+    <div class="flex flex-col lg:flex-row lg:items-start gap-16">
+        
+        <!-- Main Blog Content -->
+        <div class="lg:w-[65%] w-full">
+            
+         
+
+            <h1 class="text-5xl font-extrabold text-white">${post.title}</h1>
+            <p class="text-sm text-gray-400 mt-4">📅 ${formattedDate}</p>
+
+            <img src="${post.link}" alt="Thumbnail" class="w-full max-h-[500px] object-cover rounded-xl mt-8 shadow-lg">
+
+            <div class="mt-10 text-lg leading-relaxed text-gray-300 space-y-6">
+                ${post.content}
+            </div>
+
+            <a href="blog.html" class="mt-12 inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-lg font-semibold rounded-full shadow-md hover:opacity-80 transition">
+                ⬅ Back to Blogs
+            </a>
         </div>
-        <div class="font-light">
-          Profstudymate is a financial consultancy firm with
-          value-driven professionals in finance and business all with the
-          sole mission of global impact.
-        </div>
-      </div>
-      <div class="flex flex-col gap-6">
-        <h2 class="uppercase text-xl">Get In Touch</h2>
-        <div>
-          <p class="font-light">Questions or feedback?</p>
-          <p class="font-light">We’d love to hear from you</p>
-        </div>
-        <div class="flex gap-4">
-          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
-              ><img
-                alt="twitter"
-                src="./_next/twitter341a.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="twitter"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Ftwitter.png&amp;w=32&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Ftwitter.png&amp;w=48&amp;q=75 2x
-                  "
-                  src="_next/twitter341a.png?url=%2Fassets%2Ftwitter.png&amp;w=48&amp;q=75"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
-              ><img
-                alt="twitter"
-                src="./_next/linkedin9c92.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="facebook"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Ffacebook.png&amp;w=32&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Ffacebook.png&amp;w=48&amp;q=75 2x
-                  "
-                  src="./_next/facebookdf89.png"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
-              ><img
-                alt="twitter"
-                src="./_next/instagram5e80.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="twitter"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Finstagram.png&amp;w=32&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Finstagram.png&amp;w=48&amp;q=75 2x
-                  "
-                  src="./_next/instagram5e80.png"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-          <div class="bg-[#1d4ed8] flex p-2 cursor-pointer rounded-full">
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2720%27%20height=%2720%27/%3e" /></span
-              ><img
-                alt="twitter"
-                src="./_next/facebookdf89.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="twitter"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Flinkedin.png&amp;w=32&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Flinkedin.png&amp;w=48&amp;q=75 2x
-                  "
-                  src="./_next/linkedin9c92.png"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-        </div>
-      </div>
-      <div class="flex flex-col gap-4">
-        <h2 class="uppercase text-xl">Contact Info</h2>
-        <div class="grid gap-3">
-          <span class="text-sm font-light"
-            ><span class="font-semibold">Address:</span> Aspire Plaza,
-            Kwabenya Estate Junction, P.O. Box CT9136 Accra, Ghana</span
-          ><span class="text-sm font-light"
-            ><span class="font-semibold">Phone:</span> +233 55 521
-            3559</span
-          ><span class="text-sm font-light"
-            ><span class="font-semibold">Email:</span>
-            <!-- -->info@aspireproconsult.com</span
-          ><span class="text-sm font-light"
-            ><span class="font-semibold">Office Hours:</span> 8 am - 5
-            pm</span
-          >
-        </div>
-      </div>
-      <div class="flex flex-col gap-4">
-        <h2 class="uppercase text-xl lg:text-center">Download App</h2>
-        <div
-          class="flex flex-col lg:justify-center lg:items-center w-full"
-        >
-          <div>
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27170%27%20height=%2750%27/%3e" /></span
-              ><img
-                alt="playstore"
-                src="./_next/googleplay4246.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="playstore"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Fgoogleplay.png&amp;w=256&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Fgoogleplay.png&amp;w=384&amp;q=75 2x
-                  "
-                  src="./_next/googleplay4246.png"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-          <div>
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27170%27%20height=%2750%27/%3e" /></span
-              ><img
-                alt="playstore"
-                src="./_next/applestoreb499.png"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="playstore"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Fapplestore.png&amp;w=256&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Fapplestore.png&amp;w=384&amp;q=75 2x
-                  "
-                  src="./_next/applestoreb499.png"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-          <div>
-            <span
-              style="
-                box-sizing: border-box;
-                display: inline-block;
-                overflow: hidden;
-                width: initial;
-                height: initial;
-                background: none;
-                opacity: 1;
-                border: 0;
-                margin: 0;
-                padding: 0;
-                position: relative;
-                max-width: 100%;
-              "
-              ><span
-                style="
-                  box-sizing: border-box;
-                  display: block;
-                  width: initial;
-                  height: initial;
-                  background: none;
-                  opacity: 1;
-                  border: 0;
-                  margin: 0;
-                  padding: 0;
-                  max-width: 100%;
-                "
-                ><img
-                  style="
-                    display: block;
-                    max-width: 100%;
-                    width: initial;
-                    height: initial;
-                    background: none;
-                    opacity: 1;
-                    border: 0;
-                    margin: 0;
-                    padding: 0;
-                  "
-                  alt=""
-                  aria-hidden="true"
-                  src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27170%27%20height=%2750%27/%3e" /></span
-              ><img
-                alt="windows"
-                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                decoding="async"
-                data-nimg="intrinsic"
-                style="
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  bottom: 0;
-                  right: 0;
-                  box-sizing: border-box;
-                  padding: 0;
-                  border: none;
-                  margin: auto;
-                  display: block;
-                  width: 0;
-                  height: 0;
-                  min-width: 100%;
-                  max-width: 100%;
-                  min-height: 100%;
-                  max-height: 100%;
-                " /><noscript
-                ><img
-                  alt="windows"
-                  srcset="
-                    /_next/image?url=%2Fassets%2Fmicrosoft.png&amp;w=256&amp;q=75 1x,
-                    /_next/image?url=%2Fassets%2Fmicrosoft.png&amp;w=384&amp;q=75 2x
-                  "
-                  src="_next/microsoft7f89.png?url=%2Fassets%2Fmicrosoft.png&amp;w=384&amp;q=75"
-                  decoding="async"
-                  data-nimg="intrinsic"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    box-sizing: border-box;
-                    padding: 0;
-                    border: none;
-                    margin: auto;
-                    display: block;
-                    width: 0;
-                    height: 0;
-                    min-width: 100%;
-                    max-width: 100%;
-                    min-height: 100%;
-                    max-height: 100%;
-                  "
-                  loading="lazy" /></noscript
-            ></span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="grid grid-cols-1 gap-1 md:flex md:gap-3">
-      <a href="privacy-policy.html">Privacy policy</a
-      ><a href="refund-and-chargeback-policy.html"
-        >Refund and Chargeback policy</a
-      >
-    </div>
-  </footer>
+
   
-  </script>
-       <script src="navbar.js"></script>
-       
-</body>
+
+   
+
+           <!-- Comments Section -->
+        <div class="lg:w-[40%] w-full mt-16 lg:mt-0 lg:pl-6">
+            <h2 class="text-4xl font-bold text-white">💬 Comments</h2>
+
+            <ul id="comments" class="text-gray-300 mt-6 bg-gray-800/50 p-6 rounded-xl shadow-lg space-y-6 max-h-96 overflow-auto"></ul>
+
+            <div class="mt-8 bg-gray-800/60 p-6 rounded-xl shadow-lg">
+                <textarea id="comment-input" class="w-full p-5 bg-gray-700 text-white rounded-xl border border-gray-600 focus:ring focus:ring-blue-500 text-lg" placeholder="Write a comment..."></textarea>
+                <button onclick="addComment('${postId}')" class="mt-6 w-full px-6 py-4 bg-blue-500/50 text-white font-semibold text-lg rounded-xl hover:bg-blue-600 transition shadow-lg">
+                    Add Comment
+                </button>
+            </div>
+        </div>
+      </div>
+
+    </div>
+</div>
+
+
+`;
+
+        loadComments(postId);
+      }
+
+      async function loadComments(postId) {
+        const commentsContainer = document.getElementById("comments");
+        const querySnapshot = await getDocs(
+          collection(db, "blogs", postId, "comments")
+        );
+        let commentsHTML = "";
+        querySnapshot.forEach((doc) => {
+          const comment = doc.data();
+          const formattedDate = new Date(
+            comment.timestamp?.seconds * 1000
+          ).toLocaleDateString();
+          commentsHTML += `
+                    <li class="bg-gray-700 p-3 rounded-lg border border-gray-600 shadow-lg">
+                        <p class="text-white">🗨️ ${comment.content}</p>
+                        <p class="text-sm text-gray-400 mt-1">📅 ${formattedDate}</p>
+                    </li>`;
+        });
+        commentsContainer.innerHTML =
+          commentsHTML ||
+          "<li class='text-gray-500 text-center'>No comments yet.</li>";
+      }
+    </script>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <div class="fixed bg-[#172554] px-5 z-20 w-screen">
+      <div id="navbar-container"></div>
+    </div>
+    <div class="max-w-6xl mx-auto px-6 py-10">
+      <div
+        class="flex flex-col items-center justify-center mb-5 bg-gray-900 text-white"
+      >
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants="{
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+}"
+          class="text-center mt-24"
+        >
+          <h1 class="text-4xl font-bold">PROFSTUDYMATE BLOG</h1>
+          <p class="text-gray-400 mt-2">WE GO TALK MORE CHALE</p>
+          <div class="flex flex-row justify-center space-x-4 mt-4">
+            <a
+              href="#"
+              class="glassmorphism p-2 flex items-center justify-center w-10 h-10"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"
+                class="w-6 h-6"
+                alt="Instagram"
+              />
+            </a>
+            <a
+              href="#"
+              class="glassmorphism p-2 flex items-center justify-center w-10 h-10"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/3046/3046120.png"
+                class="w-6 h-6"
+                alt="TikTok"
+              />
+            </a>
+            <a
+              href="#"
+              class="glassmorphism p-2 flex items-center justify-center w-10 h-10"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"
+                class="w-6 h-6"
+                alt="YouTube"
+              />
+            </a>
+            <a
+              href="#"
+              class="glassmorphism p-2 flex items-center justify-center w-10 h-10"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1384/1384065.png"
+                class="w-6 h-6"
+                alt="Twitter"
+              />
+            </a>
+          </div>
+          <div class="flex flex-wrap gap-4 mb-4 mt-3">
+            <span
+              class="px-4 py-2 bg-blue-600/20 text-blue-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
+              >CITGH - Professional Level</span
+            >
+            <span
+              class="px-4 py-2 bg-green-600/20 text-green-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
+              >ICAGH - Level 1</span
+            >
+            <span
+              class="px-4 py-2 bg-purple-600/20 text-purple-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
+              >ICAGH - Level 3</span
+            >
+            <span
+              class="px-4 py-2 bg-blue-600/20 text-blue-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
+              >ICAGH - Level 2</span
+            >
+            <span
+              class="px-4 py-2 bg-gray-600/20 text-white-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
+              >Digital Marketing and Business Growth</span
+            >
+            <span
+              class="px-4 py-2 bg-purple-600/20 text-purple-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
+              >Corporate Training</span
+            >
+            <span
+              class="px-4 py-2 bg-blue-600/20 text-blue-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
+              >CITGH - Final Level 2</span
+            >
+            <span
+              class="px-4 py-2 bg-red-600/20 text-red-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
+              >CITGH - Final Level 1</span
+            >
+          </div>
+        </motion.div>
+      </div>
+      <div
+        id="content"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-24"
+      ></div>
+    </div>
+    <footer>
+      <div
+        class="fixed z-50 bottom-0 right-0 left-0"
+        id="navbar-container1"
+      ></div>
+    </footer>
+  </body>
 </html>

@@ -46,7 +46,7 @@ app.put("/update-user-book/:userId/:bookId/:amount/:refcode", async (req, res) =
         const currentEarnings = userDoc.data().earnings || 0;
         const updatedEarnings = currentEarnings + twentyFivePercent;
   
-        await userRef.update({ earnings: updatedEarnings });
+        await userRef.update({ earnings: updatedEarnings  });
       } else {
         await userRef.set({ earnings: twentyFivePercent });
       }

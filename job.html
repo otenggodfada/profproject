@@ -28,11 +28,11 @@
           <div>
             <h1 class="text-2xl font-bold text-gray-800">Refer Students. Earn Commission.</h1>
             <p class="text-gray-600 mt-2">Earn 20% of future billings in Profstudymate for any students you introduce. Join the program, then someone will reach out to get you started.</p>
-            <button id="copy-referral" class="mt-4 px-4 py-2 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition">Copy referral link</button>
+            <button id="copy-referral" class="mt-4 px-4 py-2 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition">Copy referral Code</button>
             <p class="text-sm text-gray-500 mt-2">Share with anyone and earn 20%  on all purchases <a id="referral-link" href="#" class="text-blue-400 underline">Loading...</a></p>
           </div>
           <div>
-            <img src="https://www.pngplay.com/wp-content/uploads/6/Affiliate-Program-Network-PNG.png" alt="Icon" class="h-16">
+            <img src="https://www.pngplay.com/wp-content/uploads/6/Affiliate-Program-Network-PNG.png" alt="Icon" class="h-16 w-16">
           </div>
         </div>
       </div>
@@ -49,14 +49,14 @@
           
           <!-- Total Earnings Section -->
           <div class="bg-green-50 rounded-lg p-6 flex flex-col items-center justify-center">
-            <p id="total-earnings" class="font-bold text-3xl text-green-700 animate-text-fade">$0.00</p>
+            <p id="total-earnings" class="font-bold text-3xl text-green-700 animate-text-fade">Ghc0.00</p>
             <p class="text-center text-gray-500 mt-2">Total Earnings</p>
             <button onclick="scrollToSection('withd')" class="bg-black text-white px-6 py-3 mt-4 rounded-lg hover:bg-gray-800 transition duration-300">Withdraw</button>
           </div>
           
           <!-- Total Withdrawals Section -->
           <div class="bg-red-50 rounded-lg p-6 flex flex-col items-center justify-center">
-            <p id="total-withdrawals" class="font-bold text-3xl text-red-700 animate-text-fade">$0.00</p>
+            <p id="total-withdrawals" class="font-bold text-3xl text-red-700 animate-text-fade">Ghc0.00</p>
             <p class="text-center text-gray-500 mt-2">Total Withdrawals</p>
             <button onclick="scrollToSection('withdhistory')" class="bg-black text-white px-6 py-3 mt-4 rounded-lg hover:bg-gray-800 transition duration-300">View</button>
           </div>
@@ -69,7 +69,7 @@
       <div id="withd" class="mt-16 bg-gray-800 p-8 rounded-lg shadow-xl">
         <h3 class="text-5xl font-extrabold mb-6 text-white">Make a Withdrawal</h3>
       
-        <label for="withdraw-amount" class="block text-lg font-medium mb-2 text-white">Amount ($):</label>
+        <label for="withdraw-amount" class="block text-lg font-medium mb-2 text-white">Amount (Ghc):</label>
         <input
           type="number"
           id="withdraw-amount"
@@ -193,7 +193,7 @@
       animateCount('total-withdrawals', 0, 0, 2000);
           const referralLinkElement = document.getElementById("referral-link");
           referralLinkElement.textContent = userData.affiliatelink || "N/A";
-          referralLinkElement.href = `http://127.0.0.1:5500/account.html?referral=${userData.affiliatelink}` || "#";
+          
   // Count animation function
   function animateCount(elementId, start, end, duration) {
       let startTime = null;
@@ -216,7 +216,7 @@
     };
           // Copy to clipboard functionality
 document.getElementById("copy-referral").addEventListener("click", () => {
-    navigator.clipboard.writeText(`http://127.0.0.1:5500/account.html?referral=${userData.affiliatelink}`).then(() => {
+    navigator.clipboard.writeText(`${userData.affiliatelink}`).then(() => {
       alert("Referral link copied to clipboard!");
     }).catch((err) => {
       alert("Failed to copy: " + err);
@@ -224,7 +224,7 @@ document.getElementById("copy-referral").addEventListener("click", () => {
   });
 
   document.getElementById("copy-referral1").addEventListener("click", () => {
-    navigator.clipboard.writeText(`http://127.0.0.1:5500/account.html?referral=${userData.affiliatelink}`).then(() => {
+    navigator.clipboard.writeText(`${userData.affiliatelink}`).then(() => {
       alert("Referral link copied to clipboard!");
     }).catch((err) => {
       alert("Failed to copy: " + err);
@@ -254,7 +254,7 @@ document.getElementById("copy-referral").addEventListener("click", () => {
             const data = doc.data();
             const listItem = document.createElement("li");
             listItem.className = "bg-gray-700 p-6 rounded-lg shadow-lg";
-            listItem.innerHTML = `<strong>Amount:</strong> $${data.amount} | <strong>Method:</strong> ${data.method} | <strong>Address:</strong> ${data.paymentaddress} | <strong>Date:</strong> ${new Date(
+            listItem.innerHTML = `<strong>Amount:</strong> Ghc${data.amount} | <strong>Method:</strong> ${data.method} | <strong>Address:</strong> ${data.paymentaddress} | <strong>Date:</strong> ${new Date(
               data.timestamp.seconds * 1000
             ).toLocaleString()} | <span class="inline-block py-1 px-4 rounded text-white ${data.status === 'pending' ? 'bg-red-500' : 'bg-green-500'}">${data.status}</span>`;
             pendingList.appendChild(listItem);

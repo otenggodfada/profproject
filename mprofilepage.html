@@ -7,11 +7,13 @@
   
   <!-- Font Awesome & Tailwind CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  
+
+  <script src="https://cdn.tailwindcss.com"></script>
   <!-- Framer Motion for Animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.14.0/framer-motion.umd.min.js"></script>
-  
+  <script type="module" src="./dynamiccon.js"></script>
+  <script type="module" src="./navbar.js"></script>
+  <script src="bottomnv.js"></script>
   <!-- Firebase SDKs -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
@@ -58,12 +60,13 @@
     });
   </script>
   
-  <script type="module" src="./dynamiccon.js"></script>
-  <script type="module" src="./navbar.js"></script>
-  <script src="bottomnv.js"></script>
+ 
 </head>
 <body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-6" >
-  <div class="w-full max-w-4xl bg-opacity-10 backdrop-blur-lg rounded-lg shadow-xl overflow-hidden p-6 border border-gray-500/30">
+  <div class=" bg-[#172554] px-5 z-20 fixed top-0 w-screen ">
+       
+    <div id="navbar-container"></div></div>
+  <div class="w-full max-w-4xl bg-opacity-10 backdrop-blur-lg rounded-lg shadow-xl mt-28 mb-28 overflow-hidden p-6 border border-gray-500/30">
     <div class="relative w-full h-48 flex justify-center items-center">
       <img src="https://play-lh.googleusercontent.com/at2S2YdNuHw37f1WXI5shPIrIQ-rrAdyv-KIE1dHXr218Q9q52eBvE_gcV-AH6bHPfY=w240-h480-rw" 
            alt="Profile Image" 
@@ -96,13 +99,14 @@
       </a>
     </div>
     <div class="py-4 text-center border-t border-gray-700">
-      <button id="signOut" class="text-red-400 hover:text-red-600 text-lg font-bold transition-transform transform hover:scale-110">
+      <button id="signOut" class="w-full p-4 bg-[#172554]  border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md">
         <i class="fas fa-sign-out-alt"></i> Sign Out
       </button>
     </div>
-    <footer>
-      <div class="fixed z-50 bottom-0 right-0 left-0" id="navbar-container1"></div>
-    </footer>
+   
   </div>
+  <footer>
+    <div class="fixed z-50 bottom-0 right-0 left-0" id="navbar-container1"></div>
+  </footer>
 </body>
 </html>

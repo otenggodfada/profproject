@@ -367,30 +367,78 @@ const renderCourses = async (tagId = null) => {
         .map((course) => {
             const imageUrl = course.image_url || 'https://via.placeholder.com/400x200?text=No+Image';
             return `
-            <div
-              class="shadow-2xl rounded-lg overflow-hidden transform hover:scale-105 hover:shadow-xl transition duration-300 cursor-pointer pr-2 pl-2"
-              onclick="showCourseDetails('${course.id}')"
-            >
-              <img src="${imageUrl}" alt="${course.name}" class="w-full h-48 object-cover" />
-              <div class="p-4 bg-white rounded-b-lg">
-                <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2 mb-2">
-                  <span class="material-icons text-[#172554]">school</span>
-                  ${course.name}
-                </h3>
-                <p class="text-gray-500 text-sm flex items-center gap-2 mb-2">
-                  <span class="material-icons text-[#172554]">group</span>
-                  ${course.students || 0} students
-                </p>
-                <p class="text-gray-600 text-sm flex items-center gap-2 mb-4">
-                  <span class="material-icons text-yellow-500">star</span>
-                  Rating: ${course.rating || 0}/5
-                </p>
-                <p class="text-[#172554] font-semibold text-lg flex items-center gap-2">
-                  <span class="material-icons text-green-500">attach_money</span>
-                  ${course.price_status === "free" ? "Free" : `₵${course.pricee}`}
-                </p>
-              </div>
-            </div>
+                <div
+  class="relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-pink-500 bg-gray-900 transition-all duration-500 ease-out hover:scale-[1.05] hover:shadow-pink-500/50 hover:border-pink-500/70"
+  onclick="showCourseDetails('${course.id}')"
+> 
+  <!-- Image Wrapper -->
+  <div class="relative overflow-hidden">
+    <img 
+      src="${imageUrl}" 
+      alt="${course.name}" 
+      class="w-full object-cover transition-transform duration-500 ease-out hover:scale-110"
+    />
+    <div class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-500 ease-out hover:opacity-100"></div>
+  </div>
+
+  <!-- Course Info -->
+  <div class="p-5 rounded-b-lg">
+    <!-- Course Title -->
+    <h3 class="text-lg font-semibold text-white flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
+      </svg>
+      ${course.name}
+    </h3>
+
+    <!-- Students Count -->
+    <p class="text-gray-400 text-sm flex items-center gap-2 mb-2 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M7 10l5-5m0 0l5 5m-5-5v12" />
+      </svg>
+      ${course.students || 0} students
+    </p>
+
+    <!-- Rating -->
+    <p class="text-gray-300 text-sm flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg>
+      Rating: ${course.rating || 0}/5
+    </p>
+    <!-- Author -->
+    <p class="text-white font-semibold text-lg flex items-center gap-3 transition-all duration-500 ease-out hover:translate-x-1 mb-10">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 1118.88 17.8M15 19c0-2-3-3-3-3s-3 1-3 3m3-14a4 4 0 110 8 4 4 0 010-8z" />
+      </svg>
+    <span class="text-sm">by-${course.author.name}</span>
+    </p>
+    <!-- Price -->
+   <div class="flex py-5 flex-row justify-between border-t border-gray-700">
+      <p class="text-lg font-semibold flex items-center gap-2 transition-all duration-500 ease-out hover:translate-x-1 ${course.price_status === 'free' ? 'text-green-400' : 'text-white'}">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ${course.price_status === 'free' ? 'text-green-500' : 'text-green-400'} transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.5 0-4 1.5-4 3s1.5 3 4 3 4-1.5 4-3-1.5-3-4-3zm0 10v2m-4-2a4 4 0 018 0" />
+      </svg>
+      ${course.price_status === "free" ? "Free" : `₵${course.pricee}`} 
+    </p>
+     <button  class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Add to cart</span>
+                  </button>
+    </div>
+
+
+
+
+ <!-- Add to Favorite Icon -->
+   <div class="absolute top-3 right-3 bg-white p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300" onclick="addToFavorites(event, '${course.id}')">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
+    </svg>
+  </div>
+
+  </div>
+</div>
           `;
         })
         .join("");

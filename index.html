@@ -1075,25 +1075,32 @@
       </svg>
       Rating: ${course.rating || 0}/5
     </p>
-
-    <!-- Price -->
-    <p class="text-lg font-semibold flex items-center gap-2 transition-all duration-500 ease-out hover:translate-x-1 ${course.price_status === 'free' ? 'text-green-400' : 'text-[#172554]'}">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ${course.price_status === 'free' ? 'text-green-500' : 'text-green-400'} transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.5 0-4 1.5-4 3s1.5 3 4 3 4-1.5 4-3-1.5-3-4-3zm0 10v2m-4-2a4 4 0 018 0" />
-      </svg>
-      ${course.price_status === "free" ? "Free" : `₵${course.pricee}`}
-    </p>
-
     <!-- Author -->
-    <p class="text-white font-semibold text-lg flex items-center gap-3 transition-all duration-500 ease-out hover:translate-x-1">
+    <p class="text-white font-semibold text-lg flex items-center gap-3 transition-all duration-500 ease-out hover:translate-x-1 mb-10">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 1118.88 17.8M15 19c0-2-3-3-3-3s-3 1-3 3m3-14a4 4 0 110 8 4 4 0 010-8z" />
       </svg>
-      <span>${course.author.name}</span>
+    <span class="text-sm">by-${course.author.name}</span>
     </p>
+    <!-- Price -->
+  
+  <div class="flex py-5 flex-row justify-between border-t border-gray-700">
+      <p class="text-lg font-semibold flex items-center gap-2 transition-all duration-500 ease-out hover:translate-x-1 ${course.price_status === 'free' ? 'text-green-400' : 'text-white'}">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ${course.price_status === 'free' ? 'text-green-500' : 'text-green-400'} transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.5 0-4 1.5-4 3s1.5 3 4 3 4-1.5 4-3-1.5-3-4-3zm0 10v2m-4-2a4 4 0 018 0" />
+      </svg>
+      ${course.price_status === "free" ? "Free" : `₵${course.pricee}`} 
+    </p>
+     <button  class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Add to cart</span>
+                  </button>
+    </div>
+
+
  <!-- Add to Favorite Icon -->
-   <div class="absolute top-3 right-3 bg-gray-800 p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300" onclick="addToFavorites(event, '${course.id}')">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <div class="absolute top-3 right-3 bg-white p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300" onclick="addToFavorites(event, '${course.id}')">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
     </svg>
   </div>

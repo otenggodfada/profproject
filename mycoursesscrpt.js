@@ -98,10 +98,10 @@ function renderCourses(courses) {
     } = course;
 
     const courseCard = document.createElement('div');
-    courseCard.className = 'p-3 shadow-xl rounded-lg overflow-hidden cursor-pointer';
+    courseCard.className = 'mt-[150px]  relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-pink-500 bg-gray-900 transition-all duration-500 ease-out hover:scale-[1.05] hover:shadow-pink-500/50 hover:border-pink-500/70';
 
     courseCard.innerHTML = `
-      <div class="shadow-2xl rounded-lg overflow-hidden transition duration-300 cursor-pointer mt-[150px] ">
+      <div class="shadow-2xl rounded-lg overflow-hidden transition duration-300 cursor-pointer ">
         <img src="${image_url}" alt="${name}" class="w-full object-cover" />
         <div class="p-4  rounded-b-lg">
           <h3 class="text-lg font-semibold text-gray-400 flex items-center gap-2 mb-2">

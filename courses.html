@@ -62,8 +62,9 @@
   
   <div class="container mx-auto mt-36 px-4 lg:px-16 flex flex-col lg:flex-row gap-6">
     <!-- Mobile Drawer for Tags -->
+  
     <div class="lg:hidden z-50">
-        <button id="open-drawer" class="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center gap-2">
+        <button id="open-drawer" class="px-4 py-2 bg-transparent border border-gray-500 text-white rounded-lg flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M3 12h12m-12 6h18" />
             </svg>
@@ -71,10 +72,7 @@
         </button>
         <div id="drawer" class="fixed top-0 left-0 w-64 h-full bg-gray-900 shadow-lg p-4 transform -translate-x-full transition-transform overflow-scroll ">
             <button   id="close-drawer" class="mb-4  bg-gray-500/10 p-3 rounded-full hover:bg-red-600 transition-all">X</button>
-            <!-- Search Bar -->
-            <div class="mb-4">
-                <input type="text" id="search" placeholder="Search courses..." class="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
+          
             <!-- Tags Section for Mobile -->
             <div id="tags-container1" class="w-full">
                 <!-- Tags will be dynamically injected here -->
@@ -82,27 +80,48 @@
         </div>
     </div>
     
+<div>
+<!-- Search and Filter -->
+<div class="flex flex-row  justify-between">
+  <!-- Search Input with Icon -->
+  <div class=" items-center border border-gray-700 p-3 rounded-lg hidden lg:flex">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M8 2a6 6 0 104.472 10.472l3.9 3.9a1 1 0 001.415-1.415l-3.9-3.9A6 6 0 008 2zM3 8a5 5 0 1110 0A5 5 0 013 8z" clip-rule="evenodd"/>
+    </svg>
+    <input type="text" placeholder="Search" class="ml-2 outline-none bg-transparent">
+  </div>
+
+  <!-- Dropdown for Sorting -->
+  <select class="border border-gray-700 p-3 rounded-lg bg-transparent">
+    <option  >Release Date (newest first)</option>
+    <option >Release Date (oldest first)</option>
+    <option>Course Title (A-Z)</option>
+    <option>Course Title (Z-A)</option>
+  </select>
+</div>
+
+
+  <div class="flex">
     <!-- Tags Section for Larger Screens -->
     <div id="tags-container" class="hidden lg:block w-full lg:w-1/4  shadow-md rounded-lg p-4">
-        <!-- Search Bar -->
-        <div class="mb-4">
-            <input type="text" id="search-lg" placeholder="Search courses..." class="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <!-- Tags will be dynamically injected here -->
-    </div>
-    
-    <!-- Main Content -->
-    <div class="flex-1">
-        <!-- Page Title -->
-        <div class="mb-8 text-center">
      
-        </div>
-        
-        <!-- Courses Grid -->
-        <div id="course-list" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <!-- Courses will be dynamically injected here -->
-        </div>
-    </div>
+     <!-- Tags will be dynamically injected here -->
+ </div>
+ 
+ <!-- Main Content -->
+ <div class="flex-1">
+     <!-- Page Title -->
+     <div class="mb-8 text-center">
+  
+     </div>
+     
+     <!-- Courses Grid -->
+     <div id="course-list" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+         <!-- Courses will be dynamically injected here -->
+     </div>
+ </div>
+  </div>
+</div>
 </div>
 
 

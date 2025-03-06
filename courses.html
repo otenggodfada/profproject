@@ -23,6 +23,19 @@
     body {
       font-family: 'Inter', sans-serif;
     }
+    select {
+  background-color: transparent;
+  color: inherit;
+
+
+
+}
+
+/* Remove background color from options */
+option {
+  background-color: transparent !important;
+  color: black; /* Adjust text color as needed */
+}
 
     /* Modal Styles */
     .modal {
@@ -63,18 +76,18 @@
   <div class="container mx-auto mt-36 px-4 lg:px-16 flex flex-col lg:flex-row gap-6">
     <!-- Mobile Drawer for Tags -->
   
-    <div class="lg:hidden z-50">
+    <div class="lg:hidden z-10">
         <button id="open-drawer" class="px-4 py-2 bg-transparent border border-gray-500 text-white rounded-lg flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M3 12h12m-12 6h18" />
             </svg>
             Filter
         </button>
-        <div id="drawer" class="fixed top-0 left-0 w-64 h-full bg-gray-900 shadow-lg p-4 transform -translate-x-full transition-transform overflow-scroll ">
+        <div id="drawer" class="fixed mt-24  top-0 left-0 w-64 h-full bg-gray-900 shadow-lg p-4 transform -translate-x-full transition-transform overflow-scroll ">
             <button   id="close-drawer" class="mb-4  bg-gray-500/10 p-3 rounded-full hover:bg-red-600 transition-all">X</button>
           
             <!-- Tags Section for Mobile -->
-            <div id="tags-container1" class="w-full">
+            <div id="tags-container1" class="w-full mb-64">
                 <!-- Tags will be dynamically injected here -->
             </div>
         </div>
@@ -93,7 +106,7 @@
 
   <!-- Dropdown for Sorting -->
   <select class="border border-gray-700 p-3 rounded-lg bg-transparent">
-    <option  >Release Date (newest first)</option>
+    <option   >Release Date (newest first)</option>
     <option >Release Date (oldest first)</option>
     <option>Course Title (A-Z)</option>
     <option>Course Title (Z-A)</option>
@@ -116,7 +129,7 @@
      </div>
      
      <!-- Courses Grid -->
-     <div id="course-list" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+     <div id="course-list" class="mb-44 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
          <!-- Courses will be dynamically injected here -->
      </div>
  </div>
@@ -362,7 +375,7 @@
 
         // Create Clear Filter Button
         const clearButton = document.createElement("button");
-        clearButton.innerHTML = "✖ Clear All Filters";
+        clearButton.innerHTML = "X Clear All Filters";
         clearButton.className = "mt-6 flex items-center justify-center gap-2 px-5 py-2.5 text-blue-400 border border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white transition text-sm font-semibold w-full shadow-md";
         
         clearButton.addEventListener("click", () => {
@@ -379,7 +392,94 @@
     }
 };
 
+const fetchAllTags1 = async () => {
+    try {
+        const tagsSnapshot = await db.collection("tags").get();
+        const tagsContainer = document.getElementById("tags-container1");
+        tagsContainer.innerHTML = ""; // Clear existing content
 
+        // Create category title
+        const categoryTitle = document.createElement("h2");
+        categoryTitle.textContent = "Category";
+        categoryTitle.className = "text-xl font-bold text-gray-100 mb-4 uppercase tracking-wide border-b border-gray-700 pb-2";
+        tagsContainer.appendChild(categoryTitle);
+
+        // Wrapper for tags
+        const tagsWrapper = document.createElement("div");
+        tagsWrapper.className = "space-y-2";
+
+        // Render tags
+        tagsSnapshot.forEach((doc) => {
+            const tagId = doc.id;
+            const tagName = doc.data().name;
+
+            const tagLabel = document.createElement("label");
+            tagLabel.className = "flex items-center space-x-3 cursor-pointer p-3 rounded-lg transition bg-gray-900 hover:bg-gray-800 shadow-md";
+            
+            const tagCheckboxWrapper = document.createElement("div");
+            tagCheckboxWrapper.className = "relative flex items-center justify-center";
+
+            const tagCheckbox = document.createElement("input");
+            tagCheckbox.type = "checkbox";
+            tagCheckbox.className = "tag-checkbox hidden";
+            
+            const customCheckbox = document.createElement("div");
+            customCheckbox.className = "w-6 h-6 border-2 border-gray-500 rounded-md flex items-center justify-center transition-all duration-200 ease-in-out";
+
+            const checkmark = document.createElement("span");
+            checkmark.className = "hidden text-white text-lg";
+            checkmark.innerHTML = "✔";
+            
+            tagCheckboxWrapper.appendChild(tagCheckbox);
+            customCheckbox.appendChild(checkmark);
+            tagCheckboxWrapper.appendChild(customCheckbox);
+            
+            const tagText = document.createElement("span");
+            tagText.className = "text-gray-300 font-medium text-base";
+            tagText.textContent = tagName;
+
+            tagLabel.appendChild(tagCheckboxWrapper);
+            tagLabel.appendChild(tagText);
+
+            tagCheckbox.addEventListener("change", () => {
+                if (tagCheckbox.checked) {
+                    customCheckbox.classList.add("bg-blue-500", "border-blue-500");
+                    checkmark.classList.remove("hidden");
+                } else {
+                    customCheckbox.classList.remove("bg-blue-500", "border-blue-500");
+                    checkmark.classList.add("hidden");
+                }
+                renderCourses(tagId);
+            });
+
+            tagLabel.addEventListener("click", () => {
+                tagCheckbox.checked = !tagCheckbox.checked;
+                tagCheckbox.dispatchEvent(new Event("change"));
+            });
+
+            tagsWrapper.appendChild(tagLabel);
+        });
+
+        tagsContainer.appendChild(tagsWrapper);
+
+        // Create Clear Filter Button
+        const clearButton = document.createElement("button");
+        clearButton.innerHTML = "X Clear All Filters";
+        clearButton.className = "mt-6 flex items-center justify-center gap-2 px-5 py-2.5 text-blue-400 border border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white transition text-sm font-semibold w-full shadow-md";
+        
+        clearButton.addEventListener("click", () => {
+            document.querySelectorAll(".tag-checkbox").forEach(tag => {
+                tag.checked = false;
+                tag.dispatchEvent(new Event("change"));
+            });
+            renderCourses(null);
+        });
+
+        tagsContainer.appendChild(clearButton);
+    } catch (error) {
+        console.error("Error fetching tags:", error);
+    }
+};
 
 
 const style = document.createElement('style');
@@ -418,7 +518,7 @@ const renderCourses = async (tagId = null) => {
             const imageUrl = course.image_url || 'https://via.placeholder.com/400x200?text=No+Image';
             return `
                 <div
-  class="relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-pink-500 bg-gray-900 transition-all duration-500 ease-out hover:scale-[1.05] hover:shadow-pink-500/50 hover:border-pink-500/70"
+  class="relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-gray-500 bg-gray-900 transition-all duration-500 ease-out hover:scale-[1.05] hover:shadow-pink-500/50 hover:border-pink-500/70"
   onclick="showCourseDetails('${course.id}')"
 > 
   <!-- Image Wrapper -->
@@ -502,6 +602,7 @@ const renderCourses = async (tagId = null) => {
         })
         .join("");
         fetchAllTags()
+        fetchAllTags1()
 };
 
 

@@ -52,26 +52,61 @@
     }
   </style>
 </head>
-<body class=" bg-[#172554]    bg-gray-900 text-white">
+<body class="     bg-gray-900 text-white">
 
     <div class=" bg-[#172554] fixed top-0  px-5 z-20 w-screen ">
        
         <div id="navbar-container"></div></div>
 
   <!-- Page Container -->
-  <div class="container mx-auto px-4 py-8 ">
-    <!-- Page Title -->
-    <h2 class="text-2xl font-semibold mb-6 text-center">Available Courses</h2>
-
-
-
- <div id="tags-container" class="tags-container mt-20 "></div>
-
+  
+  <div class="container mx-auto mt-36 px-4 lg:px-16 flex flex-col lg:flex-row gap-6">
+    <!-- Mobile Drawer for Tags -->
+    <div class="lg:hidden z-50">
+        <button id="open-drawer" class="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M3 12h12m-12 6h18" />
+            </svg>
+            Filter
+        </button>
+        <div id="drawer" class="fixed top-0 left-0 w-64 h-full bg-gray-900 shadow-lg p-4 transform -translate-x-full transition-transform overflow-scroll ">
+            <button   id="close-drawer" class="mb-4  bg-gray-500/10 p-3 rounded-full hover:bg-red-600 transition-all">X</button>
+            <!-- Search Bar -->
+            <div class="mb-4">
+                <input type="text" id="search" placeholder="Search courses..." class="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <!-- Tags Section for Mobile -->
+            <div id="tags-container1" class="w-full">
+                <!-- Tags will be dynamically injected here -->
+            </div>
+        </div>
     </div>
-    <!-- Courses Container -->
-    <div id="course-list" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:mr-40 lg:ml-40 mb-40">
-      <!-- Courses will be dynamically injected here -->
+    
+    <!-- Tags Section for Larger Screens -->
+    <div id="tags-container" class="hidden lg:block w-full lg:w-1/4  shadow-md rounded-lg p-4">
+        <!-- Search Bar -->
+        <div class="mb-4">
+            <input type="text" id="search-lg" placeholder="Search courses..." class="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <!-- Tags will be dynamically injected here -->
     </div>
+    
+    <!-- Main Content -->
+    <div class="flex-1">
+        <!-- Page Title -->
+        <div class="mb-8 text-center">
+     
+        </div>
+        
+        <!-- Courses Grid -->
+        <div id="course-list" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <!-- Courses will be dynamically injected here -->
+        </div>
+    </div>
+</div>
+
+
+
   </div>
 <!-- Modal -->
 <div id="course-modal" class="modal">
@@ -236,75 +271,90 @@
       }
     };
 
-    // Fetch Tags by IDs
-    const fetchTags = async (tagIds) => {
-      try {
-        const tagsRef = db.collection("tags");
-        const tagPromises = tagIds.map((tagId) => tagsRef.doc(tagId).get());
-        const tagSnapshots = await Promise.all(tagPromises);
-        return tagSnapshots.map((tagSnap) => tagSnap.data()?.name || "Unknown");
-      } catch (error) {
-        console.error("Error fetching tags:", error);
-        return [];
-      }
-    };
-
-
-    // Fetch All Tags
     const fetchAllTags = async () => {
     try {
         const tagsSnapshot = await db.collection("tags").get();
         const tagsContainer = document.getElementById("tags-container");
-        tagsContainer.innerHTML = ""; // Clear any existing content
+        tagsContainer.innerHTML = ""; // Clear existing content
 
-        // Create "All" button
-        const allButton = document.createElement("div");
-        allButton.className = "tag"; // Apply styling class
-        allButton.textContent = "All";
+        // Create category title
+        const categoryTitle = document.createElement("h2");
+        categoryTitle.textContent = "Category";
+        categoryTitle.className = "text-xl font-bold text-gray-100 mb-4 uppercase tracking-wide border-b border-gray-700 pb-2";
+        tagsContainer.appendChild(categoryTitle);
 
-        // Add click event listener for "All" button
-        allButton.addEventListener("click", () => {
-            // Remove highlight from all tags
-            const allTags = document.querySelectorAll(".tag");
-            allTags.forEach((t) => t.classList.remove("highlight"));
+        // Wrapper for tags
+        const tagsWrapper = document.createElement("div");
+        tagsWrapper.className = "space-y-2";
 
-            // Highlight the "All" button
-            allButton.classList.add("highlight");
-
-            // Show all courses
-            renderCourses(null); // Passing `null` for no filter
-        });
-
-        // Append "All" button to the tags container
-        tagsContainer.appendChild(allButton);
-
-        // Render other tags
+        // Render tags
         tagsSnapshot.forEach((doc) => {
-            const tagId = doc.id; // Tag document ID
-            const tagName = doc.data().name; // Assuming each tag has a field 'name'
+            const tagId = doc.id;
+            const tagName = doc.data().name;
 
-            const tagElement = document.createElement("div");
-            tagElement.className = "tag"; // Apply styling class
-            tagElement.textContent = tagName;
+            const tagLabel = document.createElement("label");
+            tagLabel.className = "flex items-center space-x-3 cursor-pointer p-3 rounded-lg transition bg-gray-900 hover:bg-gray-800 shadow-md";
+            
+            const tagCheckboxWrapper = document.createElement("div");
+            tagCheckboxWrapper.className = "relative flex items-center justify-center";
 
-            // Add click event listener
-            tagElement.addEventListener("click", () => {
-                // Remove highlight from all tags
-                const allTags = document.querySelectorAll(".tag");
-                allTags.forEach((t) => t.classList.remove("highlight"));
+            const tagCheckbox = document.createElement("input");
+            tagCheckbox.type = "checkbox";
+            tagCheckbox.className = "tag-checkbox hidden";
+            
+            const customCheckbox = document.createElement("div");
+            customCheckbox.className = "w-6 h-6 border-2 border-gray-500 rounded-md flex items-center justify-center transition-all duration-200 ease-in-out";
 
-                // Highlight the clicked tag
-                tagElement.classList.add("highlight");
+            const checkmark = document.createElement("span");
+            checkmark.className = "hidden text-blue-500 text-lg";
+            checkmark.innerHTML = "✔";
+            
+            tagCheckboxWrapper.appendChild(tagCheckbox);
+            customCheckbox.appendChild(checkmark);
+            tagCheckboxWrapper.appendChild(customCheckbox);
+            
+            const tagText = document.createElement("span");
+            tagText.className = "text-gray-300 font-medium text-base";
+            tagText.textContent = tagName;
 
-                // Filter courses by the selected tag
+            tagLabel.appendChild(tagCheckboxWrapper);
+            tagLabel.appendChild(tagText);
+
+            tagCheckbox.addEventListener("change", () => {
+                if (tagCheckbox.checked) {
+                    customCheckbox.classList.add("bg-blue-500", "border-blue-500");
+                    checkmark.classList.remove("hidden");
+                } else {
+                    customCheckbox.classList.remove("bg-blue-500", "border-blue-500");
+                    checkmark.classList.add("hidden");
+                }
                 renderCourses(tagId);
             });
 
-            tagsContainer.appendChild(tagElement);
+            tagLabel.addEventListener("click", () => {
+                tagCheckbox.checked = !tagCheckbox.checked;
+                tagCheckbox.dispatchEvent(new Event("change"));
+            });
+
+            tagsWrapper.appendChild(tagLabel);
         });
 
-        // By default, highlight the "All" button
-        allButton.classList.add("highlight");
+        tagsContainer.appendChild(tagsWrapper);
+
+        // Create Clear Filter Button
+        const clearButton = document.createElement("button");
+        clearButton.innerHTML = "✖ Clear All Filters";
+        clearButton.className = "mt-6 flex items-center justify-center gap-2 px-5 py-2.5 text-blue-400 border border-blue-500 rounded-lg hover:bg-blue-500 hover:text-white transition text-sm font-semibold w-full shadow-md";
+        
+        clearButton.addEventListener("click", () => {
+            document.querySelectorAll(".tag-checkbox").forEach(tag => {
+                tag.checked = false;
+                tag.dispatchEvent(new Event("change"));
+            });
+            renderCourses(null);
+        });
+
+        tagsContainer.appendChild(clearButton);
     } catch (error) {
         console.error("Error fetching tags:", error);
     }
@@ -312,34 +362,15 @@
 
 
 
+
 const style = document.createElement('style');
 style.innerHTML = `
-    .tag {
-        display: inline-block;
-        background-color: #e0e0e0;
-        color: #333;
-        padding: 10px 15px;
-        margin: 5px;
-        border-radius: 20px;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s, color 0.3s;
-    }
-    .tag:hover {
-        background-color: #d0d0d0;
-        cursor: pointer;
-    }
-    .tag.highlight {
-        background-color:#172554; /* Blue background */
-        color: #fff; /* White text */
-    }
+  
     .expandable-content {
         display: none;
     }
     .expandable-content.expanded {
-        display: block;
+        display: flex;
     }
 `;
 
@@ -383,6 +414,21 @@ const renderCourses = async (tagId = null) => {
 
   <!-- Course Info -->
   <div class="p-5 rounded-b-lg">
+        <!-- Rating -->
+    <p class="text-gray-300 text-sm flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg>
+    </p>
     <!-- Course Title -->
     <h3 class="text-lg font-semibold text-white flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -399,13 +445,7 @@ const renderCourses = async (tagId = null) => {
       ${course.students || 0} students
     </p>
 
-    <!-- Rating -->
-    <p class="text-gray-300 text-sm flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg>
-      Rating: ${course.rating || 0}/5
-    </p>
+
     <!-- Author -->
     <p class="text-white font-semibold text-lg flex items-center gap-3 transition-all duration-500 ease-out hover:translate-x-1 mb-10">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -576,6 +616,14 @@ if(course.price_status === "free"){
           }).showToast();
       }
   </script>
+<script>
+  document.getElementById("open-drawer").addEventListener("click", function() {
+      document.getElementById("drawer").classList.remove("-translate-x-full");
+  });
+  document.getElementById("close-drawer").addEventListener("click", function() {
+      document.getElementById("drawer").classList.add("-translate-x-full");
+  });
+</script>
 
 </body>
 </html>

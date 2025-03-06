@@ -27,10 +27,14 @@
       content="Profstudymate is a registered Partner in Learning of the ICAG and CTIG, providing world class tuition to prepare students for their professional exams"
     />
     <meta name="next-head-count" content="4" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <link
       rel="preload"
       href="_next/static/css/096eeec99e574319.css"
@@ -126,22 +130,133 @@
   <body class="bg-gray-900 text-white">
     <div id="__next">
       <div class="oveflow-x-hidden w-[100vw]">
-        <div class="fixed bg-[#172554] px-5 z-20 w-full">
+        <div class="fixed bg-[#172554]  z-20 w-full">
           <div id="navbar-container"></div>
         </div>
-        <main class="py-16 px-3 lg:px-32">
+        <main class="py-16  ">
           <!-- Introduction Section -->
           <section
-            class="introduction-section text-center mb-16 mt-16 animate__animated animate__fadeInDown rounded-b-lg overflow-hidden"
+            class="introduction-section text-center  mt-16 animate__animated animate__fadeInDown rounded-b-lg overflow-hidden"
           >
             <!-- Background Image -->
             <div>
               <img src="./assets/bgs.png" alt="" />
             </div>
           </section>
+          <!-- Features Course Sections -->
+        <section class="bg-gradient-to-r from-blue-500 to-purple-500 py-10  px-4 lg:px-48">
+          <h2 class="text-3xl font-bold mb-6 text-center">Featured Courses</h2>
+          <p class="text-lg sm:text-xl text-white max-w-4xl mx-auto">
+            Learning should be Easier. Use Profs Study Hub to facilitate your CITG $ ICAG learning experience to pass your first attempt.
+          </p>
+          <div id="course-list" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:mr-40 lg:ml-40 mb-10 mt-6">
+            <!-- Courses will be dynamically injected here -->
+             
+          </div>
+          <div class="lg:px-48">
+            <div onclick="window.location.href='courses.html';" class="p-4 bg-[#172554] border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md w-40 cursor-pointer">
+              Explore Courses
+            </div>
+          </div>
+          
+        </section>
+          <!-- Modal -->
+<div hidden id="course-modal" class="modal">
+  <div class="modal-content bg-white shadow-lg rounded-lg p-8 max-w-lg mx-auto">
+    <!-- Close Button -->
+    <span id="close-modal" class="text-gray-600 cursor-pointer text-3xl absolute top-4 right-4 font-bold">&times;</span>
+<!-- Course Image -->
+<div class="mb-6">
 
+  <img id="modal-image" src="" alt="Course Image" class="w-full h-64 object-cover rounded-lg" />
+</div>
+    <!-- Modal Title -->
+    <h2 id="modal-title" class="text-3xl font-semibold mb-6 text-gray-800"></h2>
+    <div class="flex flex-row"> <div></div> <p id="model-students"></p></div>
+    <p id="model-ratings"></p>
+<div class="flex flex-row justify-start items-center space-x-2 bg-slate-200 p-2">
+    <!-- Price Section -->
+<div class="">
+
+  <span id="modal-price" class="text-[#172554] font-bold p-2 rounded-3xl border border-gray-700 text-lg"></span>
+</div>
+
+<!-- Enroll Button -->
+<div class="w-full bg-[#172554] text-white font-bold py-2 rounded-3xl text-lg hover:bg-indigo-700 transition duration-300 flex justify-center items-center">
+  <a id="modal-enroll-button" href="#" class="    ">Enroll Now</a>
+</div>
+</div>
+    <!-- Modal Description -->
+    <div id="modal-description" class="mb-6 text-gray-700 text-lg"></div>
+
+    <!-- Course Information -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+      <!-- Created By -->
+      <div>
+        <p class="font-semibold text-gray-600">Created by:</p>
+        <p id="modal-id" style="display: none;"></p>
+        <p id="modal-author" class="text-blue-500"></p>
+      </div>
+      
+      <!-- Updated At -->
+      <div>
+        <p class="font-semibold text-gray-600">Updated at:</p>
+        <p id="modal-updated" class="text-gray-700"></p>
+      </div>
+    </div>
+
+    <!-- Video URL -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Video URL:</p>
+      <a id="modal-video" href="#" target="_blank" class="text-blue-500 underline text-lg"></a>
+    </div>
+
+    <!-- Tags -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Tags:</p>
+      <span id="modal-tags" class="text-gray-700"></span>
+    </div>
+
+    <!-- Summary -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Summary:</p>
+      <span id="modal-summary" class="text-gray-700"></span>
+    </div>
+
+    <!-- Requirements -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Requirements:</p>
+      <ul id="modal-requirements" class="list-disc pl-5 text-gray-600"></ul>
+    </div>
+
+    <!-- Learnings -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">What you'll learn:</p>
+      <ul id="modal-learnings" class="list-disc pl-5 text-gray-600"></ul>
+    </div>
+
+    <!-- Languages -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Language(s):</p>
+      <ul id="modal-language" class="list-disc pl-5 text-gray-600"></ul>
+    </div>
+
+    <!-- Duration -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Duration:</p>
+      <span id="modal-duration" class="text-gray-700"></span>
+    </div>
+
+    <!-- Created At -->
+    <div>
+      <p class="font-semibold text-gray-600">Created at:</p>
+      <span id="modal-created" class="text-gray-700"></span>
+    </div>
+  </div>
+  
+</div>
           <!-- Features Section -->
-          <section class="mb-16">
+          <section class="mb-16 py-10 px-4 lg:px-48  bg-gradient-to-r from-purple-800 to-blue-500">
             <h2 class="text-3xl font-bold mb-6 text-center">Features</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               <!-- Feature 1 -->
@@ -370,7 +485,7 @@
           </section>
 
           <!-- Courses Categories Section -->
-          <section class="mb-16 bg-[#172554] p-[20px] rounded-lg">
+          <section class="mb-16 bg-[#172554] p-[20px] rounded-lg flex flex-col justify-center items-center ">
             <h2 class="text-3xl font-bold mb-8 text-center text-white">
               Our Courses Categories
             </h2>
@@ -386,134 +501,30 @@
                   alt="ICAG Image"
                   class="w-full mb-4 rounded"
                 />
-                <h3 class="text-xl font-semibold mb-2">ICAG</h3>
+                <h3 class="text-xl font-semibold mb-2">ICAG Courses</h3>
                 <p>
-                  Receive top-notch education and guidance that aligns with
-                  ICAG's standards of excellence
+               Explore the best Exam-focused ICAG courses
                 </p>
-                <a href="#" class="text-yellow-300 font-bold hover:underline"
-                  >ABOUT ICAG</a
-                >
+              
               </div>
-              <!-- CITG -->
-              <div
-                class="bg-gradient-to-t from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <img
-                  src="./assets/icag.png"
-                  alt="CITG Image"
-                  class="w-full mb-4 rounded"
-                />
-                <h3 class="text-xl font-semibold mb-2">CITG</h3>
-                <p>
-                  Receive top-notch education and guidance that aligns with
-                  CITG's standards of excellence
-                </p>
-                <a href="#" class="text-yellow-300 font-bold hover:underline"
-                  >ABOUT CITG</a
-                >
-              </div>
-              <!-- PMP -->
-              <div
-                class="bg-gradient-to-t from-purple-500 to-purple-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <img
-                  src="./assets/icag.png"
-                  alt="PMP Image"
-                  class="w-full mb-4 rounded"
-                />
-                <h3 class="text-xl font-semibold mb-2">PMP</h3>
-                <p>
-                  Receive top-notch education and guidance that aligns with
-                  PMP's standards of excellence
-                </p>
-                <a href="#" class="text-yellow-300 font-bold hover:underline"
-                  >ABOUT PMP</a
-                >
-              </div>
-              <!-- ADIT -->
-              <div
-                class="bg-gradient-to-t from-red-500 to-red-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <img
-                  src="./assets/icag.png"
-                  alt="ADIT Image"
-                  class="w-full mb-4 rounded"
-                />
-                <h3 class="text-xl font-semibold mb-2">ADIT</h3>
-                <p>
-                  Receive top-notch education and guidance that aligns with
-                  ADIT's standards of excellence
-                </p>
-                <a href="#" class="text-yellow-300 font-bold hover:underline"
-                  >ABOUT ADIT</a
-                >
-              </div>
-              <!-- Alumini Training -->
-              <div
-                class="bg-gradient-to-t from-yellow-500 to-yellow-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <img
-                  src="./assets/icag.png"
-                  alt="Alumini Training Image"
-                  class="w-full mb-4 rounded"
-                />
-                <h3 class="text-xl font-semibold mb-2">Alumini Training</h3>
-                <p>
-                  Receive top-notch education and guidance that aligns with
-                  Alumini Training's standards of excellence
-                </p>
-                <a href="#" class="text-yellow-300 font-bold hover:underline"
-                  >ABOUT Alumini Training</a
-                >
-              </div>
-              <!-- Online Business -->
-              <div
-                class="bg-gradient-to-t from-indigo-500 to-indigo-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <img
-                  src="./assets/icag.png"
-                  alt="Online Business Image"
-                  class="w-full mb-4 rounded"
-                />
-                <h3 class="text-xl font-semibold mb-2">Online Business</h3>
-                <p>
-                  Receive top-notch education and guidance that aligns with
-                  Online Business's standards of excellence
-                </p>
-                <a href="#" class="text-yellow-300 font-bold hover:underline"
-                  >ABOUT Online Business</a
-                >
-              </div>
-              <!-- Digital Marketing -->
-              <div
-                class="bg-gradient-to-t from-pink-500 to-pink-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <img
-                  src="./assets/icag.png"
-                  alt="Digital Marketing Image"
-                  class="w-full mb-4 rounded"
-                />
-                <h3 class="text-xl font-semibold mb-2">Digital Marketing</h3>
-                <p>
-                  Receive top-notch education and guidance that aligns with
-                  Digital Marketing's standards of excellence
-                </p>
-                <a href="#" class="text-yellow-300 font-bold hover:underline"
-                  >ABOUT Digital Marketing</a
-                >
-              </div>
-            </div>
-            <a href="./courses.html">
-              <div
-                class="mt-10 w-[200px] h-[50px] border border-blue-500 text-blue-500 text-center flex justify-center items-center rounded-md hover:bg-blue-500 hover:text-white transition"
-              >
-                Start Learning
-              </div></a
-            >
+             <!-- ICAG -->
+             <div
+             class="bg-gradient-to-t from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+           >
+             <img
+               src="./assets/icag.png"
+               alt="ICAG Image"
+               class="w-full mb-4 rounded"
+             />
+             <h3 class="text-xl font-semibold mb-2">CITG Courses</h3>
+             <p>
+            Explore the best Exam-focused CITG courses
+             </p>
+           
+           </div>
           </section>
 
-          <section class="mb-16 text-center bg-[#172554] p-10">
+          <section class="mb-16 text-center bg-[#172554] py-10 px-4 lg:px-48 ">
             <h2 class="text-3xl font-bold mb-8 text-white">
               Quantitative Insights of Our Institute
             </h2>
@@ -568,174 +579,7 @@
               </div>
             </div>
           </section>
-          <!-- book shop -->
-          <div class="p-10 rounded-lg bg-gray-800 mb-16 text-center">
-            <h2 class="text-3xl font-bold mb-8 text-white">Book Shop</h2>
-            <div
-              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10"
-            >
-              <div
-                class="max-w-sm mx-auto bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 flex flex-col h-full"
-              >
-                <div class="relative flex-shrink-0">
-                  <a href="#" class="block">
-                    <div class=" ">
-                      <img
-                        src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/covers%2FStrategy%20and%20Governance%20Study%20Notes.jpg?alt=media&token=4e841181-233a-477d-a5ac-be61354f5277"
-                        alt="${book.title}"
-                        class="w-full h-full object-cover"
-                      />
-                    </div>
-                  </a>
-                </div>
-                <div class="p-4 flex flex-col flex-grow">
-                  <div class="flex items-center mb-2">
-                    <!-- Star icons -->
-                    <div class="flex space-x-1">
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                    </div>
-                  </div>
-                  <h3 class="text-xl font-semibold mb-3" title="${book.title}">
-                    <a href="#" class="hover:text-blue-400"
-                      >Strategy and Governance Study Notes</a
-                    >
-                  </h3>
-                  <p class="text-gray-400 mb-3 flex-grow">
-                    This study text provides complete syllabus coverage for the
-                    CITG Strategy and Governance Exam
-                  </p>
-                  <div class="mt-auto">
-                    <div class="flex items-center justify-between">
-                      <div class="text-white font-bold text-lg">
-                        <span>₵80</span>
-                      </div>
-                      <button
-                        class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn"
-                      >
-                        <i class="fas fa-shopping-cart"></i>
-                        <span>Add to cart</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Second book -->
-
-              <div
-                class="max-w-sm mx-auto bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 flex flex-col h-full"
-              >
-                <div class="relative flex-shrink-0">
-                  <a href="#" class="block">
-                    <div class=" ">
-                      <img
-                        src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/covers%2FStrategy%20and%20Governance%20Study%20Notes.jpg?alt=media&token=4e841181-233a-477d-a5ac-be61354f5277"
-                        alt="${book.title}"
-                        class="w-full h-full object-cover"
-                      />
-                    </div>
-                  </a>
-                </div>
-                <div class="p-4 flex flex-col flex-grow">
-                  <div class="flex items-center mb-2">
-                    <!-- Star icons -->
-                    <div class="flex space-x-1">
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                    </div>
-                  </div>
-                  <h3 class="text-xl font-semibold mb-3" title="${book.title}">
-                    <a href="#" class="hover:text-blue-400"
-                      >Strategy and Governance Study Notes</a
-                    >
-                  </h3>
-                  <p class="text-gray-400 mb-3 flex-grow">
-                    This study text provides complete syllabus coverage for the
-                    CITG Strategy and Governance Exam
-                  </p>
-                  <div class="mt-auto">
-                    <div class="flex items-center justify-between">
-                      <div class="text-white font-bold text-lg">
-                        <span>₵80</span>
-                      </div>
-                      <button
-                        class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn"
-                      >
-                        <i class="fas fa-shopping-cart"></i>
-                        <span>Add to cart</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- third book -->
-              <div
-                class="max-w-sm mx-auto bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 flex flex-col h-full"
-              >
-                <div class="relative flex-shrink-0">
-                  <a href="#" class="block">
-                    <div class=" ">
-                      <img
-                        src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/covers%2FStrategy%20and%20Governance%20Study%20Notes.jpg?alt=media&token=4e841181-233a-477d-a5ac-be61354f5277"
-                        alt="${book.title}"
-                        class="w-full h-full object-cover"
-                      />
-                    </div>
-                  </a>
-                </div>
-                <div class="p-4 flex flex-col flex-grow">
-                  <div class="flex items-center mb-2">
-                    <!-- Star icons -->
-                    <div class="flex space-x-1">
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                      <i class="fas fa-star star-icon"></i>
-                    </div>
-                  </div>
-                  <h3 class="text-xl font-semibold mb-3" title="${book.title}">
-                    <a href="#" class="hover:text-blue-400"
-                      >Strategy and Governance Study Notes</a
-                    >
-                  </h3>
-                  <p class="text-gray-400 mb-3 flex-grow">
-                    This study text provides complete syllabus coverage for the
-                    CITG Strategy and Governance Exam
-                  </p>
-                  <div class="mt-auto">
-                    <div class="flex items-center justify-between">
-                      <div class="text-white font-bold text-lg">
-                        <span>₵80</span>
-                      </div>
-                      <button
-                        class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn"
-                      >
-                        <i class="fas fa-shopping-cart"></i>
-                        <span>Add to cart</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <a href="./store.html">
-              <div
-                class="w-[200px] h-[50px] border border-blue-500 text-blue-500 text-center flex justify-center items-center rounded-md hover:bg-blue-500 hover:text-white transition"
-              >
-                More Books
-              </div></a
-            >
-          </div>
-          <!-- App Section -->
+      
           <section
             class="mb-16 text-center animate__animated animate__fadeInUp relative"
           >
@@ -1000,63 +844,377 @@
       </div>
     </div>
     <script>
-      // Get the footer container
-      const footerContainer = document.getElementById("footer");
+      // Firebase configuration
+      const firebaseConfig = {
+          apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+        authDomain: "profstudymate-6d0fc.firebaseapp.com",
+        projectId: "profstudymate",
+        storageBucket: "profstudymate.appspot.com",
+        messagingSenderId: "141453158869",
+        appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+      };
+  
+      // Initialize Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+  
+      // Get Firestore and Authentication instances
+      const db = firebase.firestore(app);
+      const auth = firebase.auth(app);
+  
+      // Convert Firestore Timestamp to Human-Readable Date
+  
+      
+      const formatTimestamp = (timestamp) => {
+        if (!timestamp) return "Unknown";
+        const date = new Date(timestamp.seconds * 1000);
+        return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+      };
+  
+      // Render Array Data as List
+      const renderArrayAsList = (array, containerId) => {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ""; // Clear previous content
+        if (Array.isArray(array) && array.length > 0) {
+          array.forEach((item) => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            container.appendChild(li);
+          });
+        } else {
+          const li = document.createElement("li");
+          li.textContent = "None";
+          container.appendChild(li);
+        }
+      };
+  
+      // Fetch Courses from Firestore
+      const fetchCourses = async (tagId = null) => {
+        try {
+          const coursesRef = db.collection("courses");
+          let query = coursesRef;
+          if (tagId) {
+            query = coursesRef.where('tag_ids', 'array-contains', tagId);
+          }
+          const courseSnapshot = await query.get();
+          const courses = courseSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+          return courses;
+        } catch (error) {
+          console.error("Error fetching courses:", error);
+          return [];
+        }
+      };
+  
+      // Fetch Tags by IDs
+      const fetchTags = async (tagIds) => {
+        try {
+          const tagsRef = db.collection("tags");
+          const tagPromises = tagIds.map((tagId) => tagsRef.doc(tagId).get());
+          const tagSnapshots = await Promise.all(tagPromises);
+          return tagSnapshots.map((tagSnap) => tagSnap.data()?.name || "Unknown");
+        } catch (error) {
+          console.error("Error fetching tags:", error);
+          return [];
+        }
+      };
+  
+  
+      // Fetch All Tags
+      const fetchAllTags = async () => {
+      try {
+          const tagsSnapshot = await db.collection("tags").get();
+          const tagsContainer = document.getElementById("tags-container");
+          tagsContainer.innerHTML = ""; // Clear any existing content
+  
+          // Create "All" button
+          const allButton = document.createElement("div");
+          allButton.className = "tag"; // Apply styling class
+          allButton.textContent = "All";
+  
+          // Add click event listener for "All" button
+          allButton.addEventListener("click", () => {
+              // Remove highlight from all tags
+              const allTags = document.querySelectorAll(".tag");
+              allTags.forEach((t) => t.classList.remove("highlight"));
+  
+              // Highlight the "All" button
+              allButton.classList.add("highlight");
+  
+              // Show all courses
+              renderCourses(null); // Passing `null` for no filter
+          });
+  
+          // Append "All" button to the tags container
+          tagsContainer.appendChild(allButton);
+  
+          // Render other tags
+          tagsSnapshot.forEach((doc) => {
+              const tagId = doc.id; // Tag document ID
+              const tagName = doc.data().name; // Assuming each tag has a field 'name'
+  
+              const tagElement = document.createElement("div");
+              tagElement.className = "tag"; // Apply styling class
+              tagElement.textContent = tagName;
+  
+              // Add click event listener
+              tagElement.addEventListener("click", () => {
+                  // Remove highlight from all tags
+                  const allTags = document.querySelectorAll(".tag");
+                  allTags.forEach((t) => t.classList.remove("highlight"));
+  
+                  // Highlight the clicked tag
+                  tagElement.classList.add("highlight");
+  
+                  // Filter courses by the selected tag
+                  renderCourses(tagId);
+              });
+  
+              tagsContainer.appendChild(tagElement);
+          });
+  
+          // By default, highlight the "All" button
+          allButton.classList.add("highlight");
+      } catch (error) {
+          console.error("Error fetching tags:", error);
+      }
+  };
+  
+  
+  
+  const style = document.createElement('style');
+  style.innerHTML = `
+      .tag {
+          display: inline-block;
+          background-color: #e0e0e0;
+          color: #333;
+          padding: 10px 15px;
+          margin: 5px;
+          border-radius: 20px;
+          font-size: 16px;
+          font-weight: bold;
+          text-align: center;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          transition: background-color 0.3s, color 0.3s;
+      }
+      .tag:hover {
+          background-color: #d0d0d0;
+          cursor: pointer;
+      }
+      .tag.highlight {
+          background-color:#172554; /* Blue background */
+          color: #fff; /* White text */
+      }
+      .expandable-content {
+          display: none;
+      }
+      .expandable-content.expanded {
+          display: block;
+      }
+  `;
+  
+  document.head.appendChild(style);
+  const renderCourses = async (tagId = null) => {
+      const courseList = document.getElementById("course-list");
+      courseList.innerHTML = `<div class="text-center flex flex-col items-center justify-center ">
+          <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>
+          <p class="text-white text-lg font-semibold">Loading...</p>
+          
+      </div>`; // Loading state
+  
+      let courses = await fetchCourses(); // Fetch all courses
+      if (tagId) {
+          // Filter courses by tagId
+          courses = courses.filter(course => course.tag_ids.includes(tagId));
+      }
+  
+      if (courses.length === 0) {
+          courseList.innerHTML = "<p class='text-center text-gray-500'>No courses available.</p>";
+          return;
+      }
+  
+      // Render courses
+      courseList.innerHTML = courses
+          .map((course) => {
+              const imageUrl = course.image_url || 'https://via.placeholder.com/400x200?text=No+Image';
+              return `
+          <div
+  class="relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-pink-500 bg-gray-900 transition-all duration-500 ease-out hover:scale-[1.05] hover:shadow-pink-500/50 hover:border-pink-500/70"
+  onclick="showCourseDetails('${course.id}')"
+> 
+  <!-- Image Wrapper -->
+  <div class="relative overflow-hidden">
+    <img 
+      src="${imageUrl}" 
+      alt="${course.name}" 
+      class="w-full object-cover transition-transform duration-500 ease-out hover:scale-110"
+    />
+    <div class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-500 ease-out hover:opacity-100"></div>
+  </div>
 
-      // Footer HTML structure
-      footerContainer.innerHTML = `
-  <footer class="bg-[#172554] text-white py-10">
-    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      
-      <!-- Logo and Description -->
-      <div>
-        <img src="./assets/logo (5).png" alt="YourLogo" class="h-12 mb-4">
-        <p class="text-gray-400">Profstudymate is a financial consultancy firm with value-driven professionals in finance and business all with the sole mission of global impact.</p>
-      </div>
-      
-      <!-- Privacy Policy -->
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Privacy & Terms</h3>
-        <ul class="space-y-2">
-          <li><a href="/privacy" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
-          <li><a href="/terms" class="text-gray-400 hover:text-white">Terms of Service</a></li>
-          <li><a href="/faq" class="text-gray-400 hover:text-white">FAQs</a></li>
-        </ul>
-      </div>
-      
-      <!-- Get in Touch -->
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Get in Touch</h3>
-        <ul class="space-y-2">
-          <li>Email: <a href="mailto:support@example.com" class="text-gray-400 hover:text-white">support@example.com</a></li>
-          <li>Phone: <a href="tel:+1234567890" class="text-gray-400 hover:text-white">+1 234 567 890</a></li>
-        </ul>
-      </div>
-      
-      <!-- Download App -->
-      <div>
-        <h3 class="text-lg font-semibold mb-4">Download Our App</h3>
-        <div class="flex space-x-4">
-          <!-- Google Play -->
-          <a href="https://play.google.com" class="bg-gray-700 p-2 rounded-lg hover:bg-gray-600">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
-                 alt="Google Play" class="h-10">
-          </a>
-          <!-- App Store -->
-          <a href="https://www.apple.com/app-store/" class="bg-gray-700 p-2 rounded-lg hover:bg-gray-600">
-            <img src="https://w7.pngwing.com/pngs/663/177/png-transparent-app-store-ios-apple-apple-text-logo-fruit-nut.png" 
-                 alt="App Store" class="h-10">
-          </a>
-        </div>
-      </div>
-    </div>
+  <!-- Course Info -->
+  <div class="p-5 rounded-b-lg">
+    <!-- Course Title -->
+    <h3 class="text-lg font-semibold text-white flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
+      </svg>
+      ${course.name}
+    </h3>
+
+    <!-- Students Count -->
+    <p class="text-gray-400 text-sm flex items-center gap-2 mb-2 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M7 10l5-5m0 0l5 5m-5-5v12" />
+      </svg>
+      ${course.students || 0} students
+    </p>
+
+    <!-- Rating -->
+    <p class="text-gray-300 text-sm flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg>
+      Rating: ${course.rating || 0}/5
+    </p>
+
+    <!-- Price -->
+    <p class="text-lg font-semibold flex items-center gap-2 transition-all duration-500 ease-out hover:translate-x-1 ${course.price_status === 'free' ? 'text-green-400' : 'text-[#172554]'}">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ${course.price_status === 'free' ? 'text-green-500' : 'text-green-400'} transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.5 0-4 1.5-4 3s1.5 3 4 3 4-1.5 4-3-1.5-3-4-3zm0 10v2m-4-2a4 4 0 018 0" />
+      </svg>
+      ${course.price_status === "free" ? "Free" : `₵${course.pricee}`}
+    </p>
+
+    <!-- Author -->
+    <p class="text-white font-semibold text-lg flex items-center gap-3 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 1118.88 17.8M15 19c0-2-3-3-3-3s-3 1-3 3m3-14a4 4 0 110 8 4 4 0 010-8z" />
+      </svg>
+      <span>${course.author.name}</span>
+    </p>
+ <!-- Add to Favorite Icon -->
+   <div class="absolute top-3 right-3 bg-gray-800 p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300" onclick="addToFavorites(event, '${course.id}')">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
+    </svg>
+  </div>
+
+  </div>
+</div>
+
+              
+            `;
+           
+          })
+          .join("");
+          fetchAllTags()
+  };
+  
+  
+      // Show Course Details in Modal
+      const showCourseDetails = async (courseId) => {
+        showErrorToast()
+        const coursesRef = db.collection("courses");
+        const courseDoc = await coursesRef.doc(courseId).get();
+        const course = courseDoc.data();
+  
+        // Fetch Tags
+        const tags = course.tag_ids ? await fetchTags(course.tag_ids) : [];
+  
+        // Populate Modal
+        document.getElementById("modal-image").src = course.image_url;
+        document.getElementById("modal-title").innerText = course.name;
+        document.getElementById("modal-description").innerHTML = course.meta?.description || "<p>No description available.</p>";
+        document.getElementById("modal-author").innerText = course.author?.name || "Unknown";
+        document.getElementById("modal-updated").innerText = formatTimestamp(course.updated_at);
+        document.getElementById("modal-video").innerText = course.video_url || "No video available";
+        document.getElementById("modal-video").href = course.video_url || "#";
+        document.getElementById("modal-tags").innerText = tags.join(", ") || "None";
+        document.getElementById("modal-summary").innerText = course.meta?.summary || "No summary available";
+        document.getElementById("modal-id").innerText = course.author?.id || "Unknown";
+        renderArrayAsList(course.requirements || [], "modal-requirements");
+        renderArrayAsList(course.learns || [], "modal-learnings");
+        renderArrayAsList(course.language || [], "modal-language");
+        document.getElementById("modal-duration").innerText = course.meta?.duration || "Unknown";
+        document.getElementById("modal-created").innerText = formatTimestamp(course.created_at);
+  
+        // Add Price to Modal
+        document.getElementById("modal-price").innerText = course.price_status === "free" ? "Free" : `₵${course.pricee}`;
+        const userid = auth.currentUser.uid;
+        const user = auth.currentUser;
+        // Add Enroll Button Link
+        document.getElementById("modal-enroll-button").addEventListener("click", async function () {
+  
+  
+  
+  if(course.price_status === "free"){
+   
+    try {
+        // Add a new document to the "users" collection with the user's ID as the document ID
+        await db.collection("users").doc(userid).update({
+          course_id: firebase.firestore.FieldValue.arrayUnion(courseId),
+        });
+  
+        console.log("Course data successfully written!");
+        // Redirect or show a success message
+      } catch (error) {
+        console.error("Error writing document: ", error);
+      }
     
-    <div class="mt-10 text-center text-gray-500 text-sm">
-      © 2024 ProfStudymate. All rights reserved.
-    </div>
-  </footer>
-`;
-    </script>
+            
+  } else{
+    const coursesRef1 = db.collection("users");
+        const courseDoc1 = await coursesRef1.doc(userid).get();
+        const course1 = courseDoc1.data();
+        const refcode = course1.underef|| '';
+    const queryParams = new URLSearchParams({
+                          userid: userid,
+                          id: courseId,
+                          title: course.name,
+                          amount: course.pricee,
+                          description: course.meta?.description,
+                          image_url: course.image_url,
+                          referalcode: refcode,
+                        }).toString();
+          window.location.href = `coursecart.html?${queryParams}`;
+  }
+  
+         
+         
+      });
+  
+   
+  
+  
+  
+        // Show Modal
+        document.getElementById("course-modal").style.display = "block";
+      };
+  
+      document.addEventListener("DOMContentLoaded", () => {
+        // Example: Set the author's name dynamically
+        const authorElement = document.getElementById("modal-id");
+        const clickElement = document.getElementById("modal-author");
+        const authorName = authorElement.textContent.trim(); // Replace this with dynamic data if needed
+        authorElement.textContent = authorName;
+  
+        // Add a click event listener
+        clickElement.addEventListener("click", (event) => {
+          event.preventDefault(); // Prevent default link behavior
+  
+          // Navigate to the author page
+          window.location.href = `authorpages.html?name=${authorElement.textContent.trim()}`;
+        });
+      });
+  
+      // Close Modal
+      document.getElementById("close-modal").addEventListener("click", () => {
+        document.getElementById("course-modal").style.display = "none";
+      });
+  
+      // Initialize
+      renderCourses();
+  </script>
+   
     <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
     <script>
       // Scroll Reveal Function

@@ -39,6 +39,7 @@
         ]
     };
 </script>
+
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -50,6 +51,8 @@
 
 
 }
+
+
 
 /* Remove background color from options */
 option {
@@ -195,7 +198,7 @@ option {
       
       <div class="flex flex-row"> <div></div> <p id="model-students"></p></div>
       <p id="model-ratings"></p>
-<div class="flex flex-row justify-start items-center space-x-2  p-2">
+<div class="flex flex-row sm:flex-row items-center justify-between   p-4 rounded-2xl w-full  mx-auto border border-white/20">
       <!-- Price Section -->
 <div class="">
 
@@ -203,7 +206,7 @@ option {
 
 
   
-    <span id="modal-price" class="text-green-500 font-bold p-2  text-lg"></span>
+  <span class="text-lg font-semibold text-gray-700 dark:text-white">Price:</span> <span id="modal-price" class="text-green-500 font-bold p-2  text-lg"></span>
   </div>
   
   <!-- Enroll Button -->
@@ -214,8 +217,12 @@ option {
     <span>Enroll Now</span>
   </button>
 </div>
+
+<div class="mt-5 mb-4"></div>
       <!-- Modal Description -->
-      <div id="modal-description" class="mb-6 text-gray-700 text-lg"></div>
+      <div id="modal-description" 
+     class="mb-6 text-gray-500 text-lg leading-relaxed space-y-3"></div>
+
   
       <!-- Course Information -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -242,11 +249,19 @@ option {
       </div>
       
   
-      <!-- Tags -->
-      <div class="mb-6">
-        <p class="font-semibold text-gray-600">Tags:</p>
-        <span id="modal-tags" class="text-gray-700"></span>
-      </div>
+<!-- Tags Section -->
+
+<div class="mb-6">
+  <p class="font-semibold text-gray-600">Tags:</p>
+  <div id="modal-tags" class="flex flex-wrap gap-2 mt-2 p-3 ">
+    <!-- Tags will be dynamically inserted here -->
+  </div>
+</div>
+
+
+
+
+
   
       <!-- Summary -->
       <div class="mb-6 p-5 border border-gray-300 rounded-xl shadow-md bg-white">
@@ -804,38 +819,62 @@ const renderCourses = async (tagId = null) => {
       const course = courseDoc.data();
 
       // Fetch Tags
-      const tags = course.tag_ids ? await fetchTags(course.tag_ids) : [];
+// Fetch Tags
+const tags = course.tag_ids ? await fetchTags(course.tag_ids) : [];
+// Define an array of colors for tags
+const tagColors = [
+  "bg-blue-500", "bg-green-500", "bg-red-500", 
+  "bg-yellow-500", "bg-purple-500", "bg-pink-500", 
+  "bg-indigo-500", "bg-teal-500", "bg-orange-500"
+];
+// Populate Modal
+document.getElementById("modal-image").src = course.image_url;
+document.getElementById("modal-title").innerText = course.name;
+document.getElementById("modal-description").innerHTML = course.meta?.description || "<p>No description available.</p>";
+document.getElementById("modal-author").innerText = course.author?.name || "Unknown";
+document.getElementById("modal-updated").innerText = formatTimestamp(course.updated_at);
+document.getElementById("modal-video").innerText = course.video_url || "No video available";
+document.getElementById("modal-video").href = course.video_url || "#";
+document.getElementById("modal-summary").innerText = course.meta?.summary || "No summary available";
+document.getElementById("modal-id").innerText = course.author?.id || "Unknown";
+document.getElementById("modal-duration").innerText = course.meta?.duration || "Unknown";
+document.getElementById("modal-created").innerText = formatTimestamp(course.created_at);
 
-      // Populate Modal
-      document.getElementById("modal-image").src = course.image_url;
-      document.getElementById("modal-title").innerText = course.name;
-      document.getElementById("modal-description").innerHTML = course.meta?.description || "<p>No description available.</p>";
-      document.getElementById("modal-author").innerText = course.author?.name || "Unknown";
-      document.getElementById("modal-updated").innerText = formatTimestamp(course.updated_at);
-      document.getElementById("modal-video").innerText = course.video_url || "No video available";
-      document.getElementById("modal-video").href = course.video_url || "#";
-      document.getElementById("modal-tags").innerText = tags.join(", ") || "None";
-      document.getElementById("modal-summary").innerText = course.meta?.summary || "No summary available";
-      document.getElementById("modal-id").innerText = course.author?.id || "Unknown";
-      renderArrayAsList(course.requirements || [], "modal-requirements");
-      renderArrayAsList(course.learns || [], "modal-learnings");
-      renderArrayAsList(course.language || [], "modal-language");
-      document.getElementById("modal-duration").innerText = course.meta?.duration || "Unknown";
-      document.getElementById("modal-created").innerText = formatTimestamp(course.created_at);
+// Render lists
+renderArrayAsList(course.requirements || [], "modal-requirements");
+renderArrayAsList(course.learns || [], "modal-learnings");
+renderArrayAsList(course.language || [], "modal-language");
 
-      // Add Price to Modal
-      document.getElementById("modal-price").innerText = course.price_status === "free" ? "Free" : `₵${course.pricee}`;
-      const userid = auth.currentUser.uid;
-      const user = auth.currentUser;
-      // Add Enroll Button Link
-      document.getElementById("modal-enroll-button").addEventListener("click", async function () {
+// Render capsule-styled tags
+const tagContainer = document.getElementById("modal-tags");
+tagContainer.innerHTML = ""; // Clear previous tags
 
+if (tags.length > 0) {
+  tags.forEach((tag, index) => {
+    const tagElement = document.createElement("span");
+    tagElement.textContent = tag;
 
+    // Assign a color based on the index (loops through the colors array)
+    const colorClass = tagColors[index % tagColors.length];
 
-if(course.price_status === "free"){
- 
-  try {
-      // Add a new document to the "users" collection with the user's ID as the document ID
+    tagElement.className = `px-3 py-1 text-sm font-medium text-white ${colorClass} rounded-full`;
+    tagContainer.appendChild(tagElement);
+  });
+} else {
+  tagContainer.innerText = "None";
+}
+
+// Add Price to Modal
+document.getElementById("modal-price").innerText = course.price_status === "free" ? "Free" : `₵${course.pricee}`;
+
+const userid = auth.currentUser.uid;
+const user = auth.currentUser;
+
+// Add Enroll Button Link
+document.getElementById("modal-enroll-button").addEventListener("click", async function () {
+  if (course.price_status === "free") {
+    try {
+      // Update user's enrolled courses
       await db.collection("users").doc(userid).update({
         course_id: firebase.firestore.FieldValue.arrayUnion(courseId),
       });
@@ -845,35 +884,31 @@ if(course.price_status === "free"){
     } catch (error) {
       console.error("Error writing document: ", error);
     }
-  
-          
-} else{
-  const coursesRef1 = db.collection("users");
-      const courseDoc1 = await coursesRef1.doc(userid).get();
-      const course1 = courseDoc1.data();
-      const refcode = course1.underef|| '';
-  const queryParams = new URLSearchParams({
-                        userid: userid,
-                        id: courseId,
-                        title: course.name,
-                        amount: course.pricee,
-                        description: course.meta?.description,
-                        image_url: course.image_url,
-                        referalcode: refcode,
-                      }).toString();
-        window.location.href = `coursecart.html?${queryParams}`;
-}
+  } else {
+    // Fetch user referral code
+    const coursesRef1 = db.collection("users");
+    const courseDoc1 = await coursesRef1.doc(userid).get();
+    const course1 = courseDoc1.data();
+    const refcode = course1.underef || '';
 
-       
-       
-    });
+    // Generate query params
+    const queryParams = new URLSearchParams({
+      userid: userid,
+      id: courseId,
+      title: course.name,
+      amount: course.pricee,
+      description: course.meta?.description,
+      image_url: course.image_url,
+      referalcode: refcode,
+    }).toString();
 
- 
+    window.location.href = `coursecart.html?${queryParams}`;
+  }
+});
 
+// Show Modal
+document.getElementById("course-modal").style.display = "block";
 
-
-      // Show Modal
-      document.getElementById("course-modal").style.display = "block";
     };
 
     document.addEventListener("DOMContentLoaded", () => {

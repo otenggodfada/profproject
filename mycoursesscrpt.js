@@ -151,12 +151,10 @@ function renderCourses(courses) {
             <p class="text-gray-500">${meta?.description || 'No description available.'}</p> </details>
 
               <!-- Start Learning -->
-             <button id="showl"  onclick="showMessage()" class="flex w-full items-center justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-4 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
-    <i class="fas fa-book-open"></i>
+    
+     <div class="flex w-full items-center justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-4 rounded-md hover:bg-blue-500 hover:text-white transition"><i class="fas fa-book-open"></i>
     <span>Continue Learning</span>
-</button>
-     
-            <div id="kapo" class="hidden">
+            <details class="">
                 <!-- Sections and Lessons List -->
 <div id="modal-container" class="fixed top-0 bottom-0 z-50 inset-0 flex items-center justify-center bg-black ">
   <div class="bg-gray-900 rounded-lg shadow-2xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto scrollbar-hide ">
@@ -233,7 +231,7 @@ function renderCourses(courses) {
     </div>
   </div>
 </div>
-
+</details>
 <style>
   .rotate-180 {
     transform: rotate(180deg);
@@ -309,4 +307,3 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // Show Lessons
-

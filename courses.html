@@ -91,7 +91,15 @@ option {
     <div class=" bg-[#172554] fixed top-0  px-5 z-20 w-screen ">
        
         <div id="navbar-container"></div></div>
-
+        <div style="display: none;" id="loading-screen" class="fixed z-50 bg-black opacity-75 top-0 right-0 bottom-0 left-0 text-white text-center flex items-center justify-center "><svg class="w-6 h-6 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.93 4.93a10.5 10.5 0 0114.14 0m-14.14 14.14a10.5 10.5 0 0114.14 0M9.17 9.17a5.25 5.25 0 017.66 0m-7.66 7.66a5.25 5.25 0 017.66 0" />
+        </svg></div>
+        <footer>
+          <div
+            class="fixed z-50 bottom-0 right-0 left-0"
+            id="navbar-container1"
+          ></div>
+        </footer>
   <!-- Page Container -->
   
   <div class="container mx-auto mt-36 px-4 lg:px-16 flex flex-col lg:flex-row gap-6">
@@ -162,7 +170,7 @@ option {
 
   </div>
 <!-- Modal -->
-<div id="course-modal" class="modal px-2 ">
+<div id="course-modal" class="modal px-2 z-40">
     <div class="relative modal-content bg-white p-0 shadow-lg rounded-lg w-full   lg:max-w-2xl mx-auto shadow-2xl rounded-lg  cursor-pointer border border-gray-500 bg-gray-900 scrollbar-hide  ">
       <!-- Close Button -->
      
@@ -235,8 +243,8 @@ option {
   <div class="flex items-center gap-2">
     <i class="fas fa-clock text-gray-500"></i>
     <div>
-      <p class="font-semibold text-gray-600">Updated at:</p>
-      <p id="modal-updated" class="text-gray-700"></p>
+      <p class="font-semibold text-gray-600">Created at:</p>
+      <span id="modal-created" class="text-gray-700"></span>
     </div>
   </div>
 </div>
@@ -307,19 +315,16 @@ option {
   <p class="font-semibold text-gray-600 flex items-center gap-2">
     <i class="fas fa-calendar-alt text-gray-500"></i> Created at:
   </p>
-  <span id="modal-created" class="text-gray-700"></span>
+ 
+  
+  <p id="modal-updated" class="text-gray-700"></p>
 </div>
 
 
     
   </div>
  
-  <footer>
-    <div
-      class="fixed z-50 bottom-0 right-0 left-0"
-      id="navbar-container1"
-    ></div>
-  </footer>
+ 
   <script>
     // Firebase configuration
     const firebaseConfig = {
@@ -896,17 +901,27 @@ const user = auth.currentUser;
 // Add Enroll Button Link
 document.getElementById("modal-enroll-button").addEventListener("click", async function () {
   if (course.price_status === "free") {
+    document.getElementById("loading-screen").style.display = "block";
     try {
-      // Update user's enrolled courses
-      await db.collection("users").doc(userid).update({
-        course_id: firebase.firestore.FieldValue.arrayUnion(courseId),
-      });
+  // Update user's enrolled courses
+  await db.collection("users").doc(userid).update({
+    course_id: firebase.firestore.FieldValue.arrayUnion(courseId),
+  });
 
-      console.log("Course data successfully written!");
-      // Redirect or show a success message
-    } catch (error) {
-      console.error("Error writing document: ", error);
-    }
+  console.log("Course data successfully written!");
+  showSuccessToast1();
+
+  // Wait for 10 seconds before redirecting
+  setTimeout(() => {
+    window.location.href = "mycourse.html";
+  }, 3000);
+} catch (error) {
+  console.error("Error writing document: ", error);
+}finally {
+  // Hide loading screen after process is done
+  document.getElementById("loading-screen").style.display = "none";
+}
+
   } else {
     // Fetch user referral code
     const coursesRef1 = db.collection("users");
@@ -928,7 +943,17 @@ document.getElementById("modal-enroll-button").addEventListener("click", async f
     window.location.href = `coursecart.html?${queryParams}`;
   }
 });
-
+function showSuccessToast1() {
+  Toastify({
+      text: "🎉 Enrolled Successfully",
+      duration: 3000, // Auto close after 3 seconds
+      close: true, // Show close button
+      gravity: "top", // Position on top
+      position: "right", // Align to the right
+      backgroundColor: "linear-gradient(to right, #38a169, #2f855a)", // Green gradient
+      stopOnFocus: true, // Stop dismissing on hover
+  }).showToast();
+}
 // Show Modal
 document.getElementById("course-modal").style.display = "block";
 

@@ -80,7 +80,24 @@ function renderCourses(courses) {
   courseContainer.innerHTML = '';
 
   if (courses.length === 0) {
-    courseContainer.innerHTML = '<p class="">No courses purchased.</p>';
+    courseContainer.innerHTML = `
+    <div class="flex flex-col items-center justify-center h-[60vh] text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-32 h-32 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422M12 14l-6.16-3.422M12 14v7M12 14l6.16-3.422" />
+      </svg>
+      <p class="text-2xl font-semibold opacity-80 mt-4">No Courses Purchased</p>
+      <p class="text-sm opacity-60 mt-2 text-center">Browse our catalog and start learning today!</p>
+    
+        <div class="lg:px-48 mt-4">
+            <div onclick="window.location.href='courses.html';" class="p-4 bg-[#172554] border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md w-40 cursor-pointer">
+              Explore Courses
+            </div>
+          </div>
+    </div>
+  `;
+  
+  
     return;
   }
 
@@ -98,7 +115,7 @@ function renderCourses(courses) {
     } = course;
 
     const courseCard = document.createElement('div');
-    courseCard.className = ' relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-gray-500 bg-gray-900 m-3 hover:shadow-pink-500/50 hover:border-pink-500/70';
+    courseCard.className = ' mt-48 relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-gray-500 bg-gray-900 m-3 hover:shadow-pink-500/50 hover:border-pink-500/70';
 
     courseCard.innerHTML = `
       <div class=" overflow-hidden transition duration-300 cursor-pointer ">

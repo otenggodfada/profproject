@@ -1,5 +1,21 @@
 {
   "dependencies": {
     "toastify-js": "^1.12.0"
-  }
+  },
+  "name": "profproject",
+  "version": "1.0.0",
+  "main": "bottomnv.js",
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.3",
+    "tailwind-scrollbar-hide": "^2.0.0",
+    "tailwindcss": "^4.0.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

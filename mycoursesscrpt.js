@@ -80,7 +80,7 @@ function renderCourses(courses) {
   courseContainer.innerHTML = '';
 
   if (courses.length === 0) {
-    courseContainer.innerHTML = '<p class="text-center text-gray-500">No courses purchased.</p>';
+    courseContainer.innerHTML = '<p class="">No courses purchased.</p>';
     return;
   }
 
@@ -98,10 +98,10 @@ function renderCourses(courses) {
     } = course;
 
     const courseCard = document.createElement('div');
-    courseCard.className = 'mt-[150px]  relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-pink-500 bg-gray-900   hover:shadow-pink-500/50 hover:border-pink-500/70';
+    courseCard.className = ' relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-gray-500 bg-gray-900 m-3 hover:shadow-pink-500/50 hover:border-pink-500/70';
 
     courseCard.innerHTML = `
-      <div class="shadow-2xl rounded-lg overflow-hidden transition duration-300 cursor-pointer ">
+      <div class=" overflow-hidden transition duration-300 cursor-pointer ">
         <img src="${image_url}" alt="${name}" class="w-full object-cover" />
         <div class="p-4  rounded-b-lg">
           <h3 class="text-lg font-semibold text-gray-400 flex items-center gap-2 mb-2">
@@ -119,7 +119,7 @@ function renderCourses(courses) {
         </div>
       </div>
 
-      <div class="p-4 bg-gray-800">
+      <div class="p-4 ">
         <p class="text-gray-500 text-sm mb-2">Language: <span class="font-medium">${language || 'Not specified'}</span></p>
         
         <!-- Tags Section -->
@@ -128,13 +128,21 @@ function renderCourses(courses) {
         </div>
         
         <!-- Show More Details -->
-        <details class="text-sm text-gray-500 mb-4">
-          <summary class="cursor-pointer text-blue-500 hover:text-blue-700">Show More</summary>
+           <details class="text-sm text-gray-500 mb-4">
+   
           <div class="mt-2">
-            <p class="text-gray-500">${meta?.description || 'No description available.'}</p>
+            <p class="text-gray-500">${meta?.description || 'No description available.'}</p> </details>
+
+              <!-- Start Learning -->
+             <button class="flex w-full items-center justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-4 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
+    <i class="fas fa-book-open"></i>
+    <span>Continue Learning</span>
+</button>
+     
+            <div class="hidden">
                 <!-- Sections and Lessons List -->
-<div id="modal-container" class="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
-  <div class="bg-gray-900 rounded-lg shadow-2xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto">
+<div id="modal-container" class="fixed top-0 bottom-0 z-50 inset-0 flex items-center justify-center bg-black ">
+  <div class="bg-gray-900 rounded-lg shadow-2xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto scrollbar-hide ">
     
     <!-- Close Button -->
     <button onclick="closeModal();" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -153,6 +161,7 @@ function renderCourses(courses) {
     <div class="space-y-4 p-4">
       ${sections.map((section, sectionIndex) => `
         <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+        
           <button onclick="
             const container = document.getElementById('lessons-container-${sectionIndex}');
             container.classList.toggle('hidden');
@@ -222,7 +231,7 @@ function renderCourses(courses) {
   }
 </style>
 
-</div>
+</details>
 
 <style>
   .full-height {
@@ -233,17 +242,13 @@ function renderCourses(courses) {
 
 </div>
           </div>
-        </details>
+        </div>
 
-        <!-- Watch Video Link -->
-        <a href="${video_url || '#'}" target="_blank" class="inline-block text-blue-500 hover:text-blue-700 text-sm mb-2">Watch Course Video</a>
+   
 
     
 
-        <!-- Button for continuing -->
-        <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full transition duration-200 transform hover:scale-105">
-          Continue Learning
-        </button>
+   
       </div>
     `;
 
@@ -287,6 +292,7 @@ document.getElementById('app').innerHTML = `
   </div>
 </div>
     </div>
+    
   </div>
 `;
 

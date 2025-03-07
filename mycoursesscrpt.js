@@ -134,12 +134,12 @@ function renderCourses(courses) {
             <p class="text-gray-500">${meta?.description || 'No description available.'}</p> </details>
 
               <!-- Start Learning -->
-             <button class="flex w-full items-center justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-4 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
+             <button id="showl"  onclick="showMessage()" class="flex w-full items-center justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-4 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
     <i class="fas fa-book-open"></i>
     <span>Continue Learning</span>
 </button>
      
-            <div class="hidden">
+            <div id="kapo" class="hidden">
                 <!-- Sections and Lessons List -->
 <div id="modal-container" class="fixed top-0 bottom-0 z-50 inset-0 flex items-center justify-center bg-black ">
   <div class="bg-gray-900 rounded-lg shadow-2xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto scrollbar-hide ">
@@ -284,7 +284,7 @@ document.getElementById('app').innerHTML = `
    <div class="fixed bg-[#172554] px-5 z-20 w-full ">
        
           <div id="navbar-container"></div></div>
-    <div id="course-container" class="space-y-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:mr-40 lg:ml-40">
+    <div id="course-container" class="space-y-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 flex">
      <div class=" fixed top-0 right-0 bottom-0 left-0 ">
   <div class="text-center flex flex-col items-center justify-center w-screen h-screen">
     <div class="animate-spin  rounded-full h-16 w-16 border-t-4 border-b-4 border-[#f5f5f5] "></div>
@@ -305,3 +305,6 @@ onAuthStateChanged(auth, (user) => {
     courseContainer.innerHTML = '<p class="text-center text-gray-500">Please log in to view your courses.</p>';
   }
 });
+
+// Show Lessons
+

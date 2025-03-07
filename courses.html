@@ -19,6 +19,26 @@
   
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+        theme: {
+            extend: {}
+        },
+        plugins: [
+            function ({ addUtilities }) {
+                addUtilities({
+                    '.scrollbar-hide': {
+                        '-ms-overflow-style': 'none', /* Hide scrollbar for IE and Edge */
+                        'scrollbar-width': 'none', /* Hide scrollbar for Firefox */
+                    },
+                    '.scrollbar-hide::-webkit-scrollbar': {
+                        display: 'none' /* Hide scrollbar for Chrome, Safari */
+                    }
+                })
+            }
+        ]
+    };
+</script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -139,31 +159,40 @@ option {
 
   </div>
 <!-- Modal -->
-<div id="course-modal" class="modal ">
-    <div class="modal-content bg-white shadow-lg rounded-lg  max-w-2xl mx-auto shadow-2xl rounded-lg  cursor-pointer border border-gray-500 bg-gray-900  ">
+<div id="course-modal" class="modal  ">
+    <div class="relative modal-content bg-white p-0 shadow-lg rounded-lg w-full  lg:max-w-2xl mx-auto shadow-2xl rounded-lg  cursor-pointer border border-gray-500 bg-gray-900 scrollbar-hide  ">
       <!-- Close Button -->
      
-     <button id="close-modal" class="absolute top-4 right-4 text-gray-600 text-3xl font-bold hover:text-gray-800">&times;</button>
+     <button id="close-modal" class="absolute top-4 right-4 mb-4 text-center w-14 h-14 bg-gray-500/10 p-3 rounded-full text-2xl text-gray-500 hover:text-white hover:bg-red-600 transition-all">&times;</button>
         
     <!-- Course Image -->
     <div class="mb-6">
-      <img id="modal-image" src="" alt="Course Image" class="w-full  object-cover rounded-xl" />
+      <img id="modal-image" src="" alt="Course Image" class="w-full  object-cover " />
   </div>
       <!-- Modal Title -->
+     <div class="p-5">
       <h2 id="modal-title" class="text-3xl font-semibold mb-6 text-gray-800"></h2>
+      
       <div class="flex flex-row"> <div></div> <p id="model-students"></p></div>
       <p id="model-ratings"></p>
-<div class="flex flex-row justify-start items-center space-x-2 bg-slate-200 p-2">
+<div class="flex flex-row justify-start items-center space-x-2  p-2">
       <!-- Price Section -->
 <div class="">
 
+
+
+
+  
     <span id="modal-price" class="text-[#172554] font-bold p-2 rounded-3xl border border-gray-700 text-lg"></span>
   </div>
   
   <!-- Enroll Button -->
-  <div class="w-full bg-[#172554] text-white font-bold py-2 rounded-3xl text-lg hover:bg-indigo-700 transition duration-300 flex justify-center items-center">
-    <a id="modal-enroll-button" href="#" class="    ">Enroll Now</a>
-  </div>
+
+
+  <button id="modal-enroll-button"  class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition ">
+    <i class="fas fa-school"></i>
+    <span>Enroll Now</span>
+  </button>
 </div>
       <!-- Modal Description -->
       <div id="modal-description" class="mb-6 text-gray-700 text-lg"></div>
@@ -232,6 +261,7 @@ option {
         <span id="modal-created" class="text-gray-700"></span>
       </div>
     </div>
+     </div>
     
   </div>
  

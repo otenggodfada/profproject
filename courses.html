@@ -219,88 +219,98 @@ option {
 </div>
 
 <div class="mt-5 mb-4"></div>
-      <!-- Modal Description -->
-      <div id="modal-description" 
-     class="mb-6 text-gray-500 text-lg leading-relaxed space-y-3"></div>
+    <!-- Course Information -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6 p-5 bg-white rounded-xl shadow-lg border border-gray-200">
+  <!-- Created By -->
+  <div class="flex items-center gap-2">
+    <i class="fas fa-user text-gray-500"></i>
+    <div>
+      <p class="font-semibold text-gray-600">Created by:</p>
+      <p id="modal-id" style="display: none;"></p>
+      <p id="modal-author" class="text-blue-500 font-medium"></p>
+    </div>
+  </div>
+  
+  <!-- Updated At -->
+  <div class="flex items-center gap-2">
+    <i class="fas fa-clock text-gray-500"></i>
+    <div>
+      <p class="font-semibold text-gray-600">Updated at:</p>
+      <p id="modal-updated" class="text-gray-700"></p>
+    </div>
+  </div>
+</div>
 
-  
-      <!-- Course Information -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-        <!-- Created By -->
-        <div>
-          <p class="font-semibold text-gray-600">Created by:</p>
-          <p id="modal-id" style="display: none;"></p>
-          <p id="modal-author" class="text-blue-500"></p>
-        </div>
-        
-        <!-- Updated At -->
-        <div>
-          <p class="font-semibold text-gray-600">Updated at:</p>
-          <p id="modal-updated" class="text-gray-700"></p>
-        </div>
-      </div>
-  
-      <!-- Video URL -->
-      <div class="mb-6">
-        <p class="font-semibold text-gray-600">Video Preview:</p>
-        <iframe id="modal-video" class="w-full h-64 rounded-lg shadow-md border border-gray-300" 
-                src="#" allowfullscreen>
-        </iframe>
-      </div>
-      
-  
-<!-- Tags Section -->
-
+<!-- Video URL -->
 <div class="mb-6">
-  <p class="font-semibold text-gray-600">Tags:</p>
-  <div id="modal-tags" class="flex flex-wrap gap-2 mt-2 p-3 ">
+  <p class="font-semibold text-gray-600 flex items-center gap-2">
+    <i class="fas fa-video text-gray-500"></i> Video Preview:
+  </p>
+  <iframe id="modal-video" class="w-full h-64 rounded-lg shadow-md border border-gray-300 mt-2" src="#" allowfullscreen></iframe>
+</div>
+
+<!-- Tags Section -->
+<div class="mb-6">
+  <p class="font-semibold text-gray-600 flex items-center gap-2">
+    <i class="fas fa-tags text-gray-500"></i> Tags:
+  </p>
+  <div id="modal-tags" class="flex flex-wrap gap-2 mt-2 p-3 bg-gray-100 rounded-lg">
     <!-- Tags will be dynamically inserted here -->
   </div>
 </div>
 
+<!-- Summary -->
+<div class="mb-6 p-5 border border-gray-300 rounded-xl shadow-md bg-white">
+  <h3 class="font-semibold text-gray-800 text-lg flex items-center gap-2">
+    <i class="fas fa-info-circle text-gray-500"></i> Summary:
+  </h3>
+  <p id="modal-summary" class="text-gray-600 text-sm mt-2"></p>
+</div>
+
+<!-- Modal Description -->
+<div id="modal-description" class="mb-6 text-gray-500 text-lg leading-relaxed space-y-3"></div>
+
+<!-- Requirements -->
+<div class="mb-6">
+  <p class="font-semibold text-gray-600 flex items-center gap-2">
+    <i class="fas fa-list-check text-gray-500"></i> Requirements:
+  </p>
+  <ul id="modal-requirements" class="list-disc pl-5 text-gray-600"></ul>
+</div>
+
+<!-- Learnings -->
+<div class="mb-6">
+  <p class="font-semibold text-gray-600 flex items-center gap-2">
+    <i class="fas fa-graduation-cap text-gray-500"></i> What you'll learn:
+  </p>
+  <ul id="modal-learnings" class="list-disc pl-5 text-gray-600"></ul>
+</div>
+
+<!-- Languages -->
+<div class="mb-6">
+  <p class="font-semibold text-gray-600 flex items-center gap-2">
+    <i class="fas fa-language text-gray-500"></i> Language(s):
+  </p>
+  <ul id="modal-language" class="list-disc pl-5 text-gray-600"></ul>
+</div>
+
+<!-- Duration -->
+<div class="mb-6">
+  <p class="font-semibold text-gray-600 flex items-center gap-2">
+    <i class="fas fa-hourglass-half text-gray-500"></i> Duration:
+  </p>
+  <span id="modal-duration" class="text-gray-700"></span>
+</div>
+
+<!-- Created At -->
+<div>
+  <p class="font-semibold text-gray-600 flex items-center gap-2">
+    <i class="fas fa-calendar-alt text-gray-500"></i> Created at:
+  </p>
+  <span id="modal-created" class="text-gray-700"></span>
+</div>
 
 
-
-
-  
-      <!-- Summary -->
-      <div class="mb-6 p-5 border border-gray-300 rounded-xl shadow-md bg-white">
-        <h3 class="font-semibold text-gray-800 text-lg">Summary:</h3>
-        <p id="modal-summary" class="text-gray-600 text-sm mt-2"></p>
-      </div>
-      
-  
-      <!-- Requirements -->
-      <div class="mb-6">
-        <p class="font-semibold text-gray-600">Requirements:</p>
-        <ul id="modal-requirements" class="list-disc pl-5 text-gray-600"></ul>
-      </div>
-  
-      <!-- Learnings -->
-      <div class="mb-6">
-        <p class="font-semibold text-gray-600">What you'll learn:</p>
-        <ul id="modal-learnings" class="list-disc pl-5 text-gray-600"></ul>
-      </div>
-  
-      <!-- Languages -->
-      <div class="mb-6">
-        <p class="font-semibold text-gray-600">Language(s):</p>
-        <ul id="modal-language" class="list-disc pl-5 text-gray-600"></ul>
-      </div>
-  
-      <!-- Duration -->
-      <div class="mb-6">
-        <p class="font-semibold text-gray-600">Duration:</p>
-        <span id="modal-duration" class="text-gray-700"></span>
-      </div>
-  
-      <!-- Created At -->
-      <div>
-        <p class="font-semibold text-gray-600">Created at:</p>
-        <span id="modal-created" class="text-gray-700"></span>
-      </div>
-    </div>
-     </div>
     
   </div>
  
@@ -337,22 +347,33 @@ option {
       return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
     };
 
-    // Render Array Data as List
-    const renderArrayAsList = (array, containerId) => {
-      const container = document.getElementById(containerId);
-      container.innerHTML = ""; // Clear previous content
-      if (Array.isArray(array) && array.length > 0) {
-        array.forEach((item) => {
-          const li = document.createElement("li");
-          li.textContent = item;
-          container.appendChild(li);
-        });
-      } else {
+    function renderArrayAsList(array, elementId) {
+    const container = document.getElementById(elementId);
+    
+    if (!container) {
+        console.error(`Element with ID "${elementId}" not found.`);
+        return;
+    }
+
+    container.innerHTML = ""; // Clear previous content
+
+    if (!Array.isArray(array) || array.length === 0) {
+        container.innerHTML = "<p>No learnings available.</p>";
+        return;
+    }
+
+    const ul = document.createElement("ul");
+    ul.style.listStyleType = "disc"; // Bullet points
+
+    array.forEach(item => {
         const li = document.createElement("li");
-        li.textContent = "None";
-        container.appendChild(li);
-      }
-    };
+        li.textContent = item; // Assuming `item` is a string
+        ul.appendChild(li);
+    });
+
+    container.appendChild(ul);
+}
+
 
     // Fetch Courses from Firestore
     const fetchCourses = async (tagId = null) => {
@@ -808,6 +829,7 @@ const renderCourses = async (tagId = null) => {
         .join("");
         fetchAllTags()
         fetchAllTags1()
+    
 };
 
 
@@ -821,6 +843,7 @@ const renderCourses = async (tagId = null) => {
       // Fetch Tags
 // Fetch Tags
 const tags = course.tag_ids ? await fetchTags(course.tag_ids) : [];
+const learning = course.learnings || [];
 // Define an array of colors for tags
 const tagColors = [
   "bg-blue-500", "bg-green-500", "bg-red-500", 
@@ -839,10 +862,10 @@ document.getElementById("modal-summary").innerText = course.meta?.summary || "No
 document.getElementById("modal-id").innerText = course.author?.id || "Unknown";
 document.getElementById("modal-duration").innerText = course.meta?.duration || "Unknown";
 document.getElementById("modal-created").innerText = formatTimestamp(course.created_at);
-
+;
 // Render lists
 renderArrayAsList(course.requirements || [], "modal-requirements");
-renderArrayAsList(course.learns || [], "modal-learnings");
+renderArrayAsList(course.learnings || [], "modal-learnings");
 renderArrayAsList(course.language || [], "modal-language");
 
 // Render capsule-styled tags

@@ -284,7 +284,7 @@ document.getElementById('app').innerHTML = `
    <div class="fixed bg-[#172554] px-5 z-20 w-full ">
        
           <div id="navbar-container"></div></div>
-    <div id="course-container" class="space-y-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 flex">
+    <div id="course-container" class=" mb-72 space-y-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 flex">
      <div class=" fixed top-0 right-0 bottom-0 left-0 ">
   <div class="text-center flex flex-col items-center justify-center w-screen h-screen">
     <div class="animate-spin  rounded-full h-16 w-16 border-t-4 border-b-4 border-[#f5f5f5] "></div>

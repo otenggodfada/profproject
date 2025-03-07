@@ -60,9 +60,7 @@ option {
       overflow-y: auto;
       max-height: 90vh;
     }
-    #course-list {
-
-    }
+  
   </style>
 </head>
 <body class="     bg-gray-900 text-white">
@@ -84,7 +82,7 @@ option {
             Filter
         </button>
         <div id="drawer" class="fixed mt-24  top-0 left-0 w-64 h-full bg-gray-900 shadow-lg p-4 transform -translate-x-full transition-transform overflow-scroll ">
-            <button   id="close-drawer" class="mb-4  bg-gray-500/10 p-3 rounded-full hover:bg-red-600 transition-all">X</button>
+            <button   id="close-drawer" class="mb-4 w-14 h-14 bg-gray-500/10 p-3 rounded-full hover:bg-red-600 transition-all">X</button>
           
             <!-- Tags Section for Mobile -->
             <div id="tags-container1" class="w-full mb-64">
@@ -299,6 +297,18 @@ option {
         return courses;
       } catch (error) {
         console.error("Error fetching courses:", error);
+        return [];
+      }
+    };
+    // Fetch Tags by IDs
+    const fetchTags = async (tagIds) => {
+      try {
+        const tagsRef = db.collection("tags");
+        const tagPromises = tagIds.map((tagId) => tagsRef.doc(tagId).get());
+        const tagSnapshots = await Promise.all(tagPromises);
+        return tagSnapshots.map((tagSnap) => tagSnap.data()?.name || "Unknown");
+      } catch (error) {
+        console.error("Error fetching tags:", error);
         return [];
       }
     };
@@ -644,9 +654,9 @@ const renderCourses = async (tagId = null) => {
             return `
                 <div
   class="relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-gray-500 bg-gray-900 transition-all duration-500 ease-out hover:scale-[1.05] hover:shadow-pink-500/50 hover:border-pink-500/70"
-  onclick="showCourseDetails('${course.id}')"
+         onclick="showCourseDetails('${course.id}')"
 > 
-  <!-- Image Wrapper -->
+
   <div class="relative overflow-hidden">
     <img 
       src="${imageUrl}" 
@@ -731,8 +741,8 @@ const renderCourses = async (tagId = null) => {
 };
 
 
-    // Show Course Details in Modal
-    const showCourseDetails = async (courseId) => {
+      // Show Course Details in Modal
+      const showCourseDetails = async (courseId) => {
       showErrorToast()
       const coursesRef = db.collection("courses");
       const courseDoc = await coursesRef.doc(courseId).get();

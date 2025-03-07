@@ -1,18 +1,7 @@
-/** @format */
-
 // Import the required Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  collection,
-  getDocs,
-} from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
-import {
-  getAuth,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -31,11 +20,11 @@ const auth = getAuth(app);
 // Fetch user purchased courses along with sections and lessons
 async function fetchPurchasedCourses(userId) {
   try {
-    const userDocRef = doc(db, "users", userId);
+    const userDocRef = doc(db, 'users', userId);
     const userDoc = await getDoc(userDocRef);
 
     if (!userDoc.exists()) {
-      console.error("User not found");
+      console.error('User not found');
       return [];
     }
 
@@ -46,7 +35,7 @@ async function fetchPurchasedCourses(userId) {
     }
 
     const coursePromises = purchasedCourseIds.map(async (courseId) => {
-      const courseDocRef = doc(db, "courses", courseId);
+      const courseDocRef = doc(db, 'courses', courseId);
       const courseDoc = await getDoc(courseDocRef);
 
       if (!courseDoc.exists()) return null; // In case the course doesn't exist
@@ -54,20 +43,14 @@ async function fetchPurchasedCourses(userId) {
       const courseData = courseDoc.data();
 
       // Fetch sections for this course
-      const sectionsQuerySnapshot = await getDocs(
-        collection(courseDocRef, "sections")
-      );
+      const sectionsQuerySnapshot = await getDocs(collection(courseDocRef, 'sections'));
       const sections = [];
 
       // Fetch lessons for each section
       for (const sectionDoc of sectionsQuerySnapshot.docs) {
         const sectionData = sectionDoc.data();
-        const lessonsQuerySnapshot = await getDocs(
-          collection(sectionDoc.ref, "lessons")
-        );
-        const lessons = lessonsQuerySnapshot.docs.map((lessonDoc) =>
-          lessonDoc.data()
-        );
+        const lessonsQuerySnapshot = await getDocs(collection(sectionDoc.ref, 'lessons'));
+        const lessons = lessonsQuerySnapshot.docs.map(lessonDoc => lessonDoc.data());
 
         sections.push({
           name: sectionData.name,
@@ -83,20 +66,18 @@ async function fetchPurchasedCourses(userId) {
     });
 
     // Filter out any null values in case some courses don't exist
-    const courseDocs = (await Promise.all(coursePromises)).filter(
-      (course) => course !== null
-    );
+    const courseDocs = (await Promise.all(coursePromises)).filter(course => course !== null);
     return courseDocs;
   } catch (error) {
-    console.error("Error fetching courses:", error);
+    console.error('Error fetching courses:', error);
     return [];
   }
 }
 
 // Render purchased courses to the page
 function renderCourses(courses) {
-  const courseContainer = document.getElementById("course-container");
-  courseContainer.innerHTML = "";
+  const courseContainer = document.getElementById('course-container');
+  courseContainer.innerHTML = '';
 
   if (courses.length === 0) {
     courseContainer.innerHTML = `
@@ -115,26 +96,26 @@ function renderCourses(courses) {
           </div>
     </div>
   `;
-
+  
+  
     return;
   }
 
-  courses.forEach((course) => {
-    const {
-      name,
+  courses.forEach(course => {
+    const { 
+      name, 
       meta,
       rating,
       students,
-      video_url,
-      tags = [],
-      language,
-      image_url,
-      sections = [], // Sections with lessons
+      video_url, 
+      tags = [], 
+      language, 
+      image_url, 
+      sections = [] // Sections with lessons
     } = course;
 
-    const courseCard = document.createElement("div");
-    courseCard.className =
-      " mt-48 mb-48 relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-gray-500 bg-gray-900 m-3 hover:shadow-pink-500/50 hover:border-pink-500/70";
+    const courseCard = document.createElement('div');
+    courseCard.className = '  relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-gray-500 bg-gray-900 m-3 hover:shadow-pink-500/50 hover:border-pink-500/70';
 
     courseCard.innerHTML = `
       <div class=" overflow-hidden transition duration-300 cursor-pointer ">
@@ -156,24 +137,18 @@ function renderCourses(courses) {
       </div>
 
       <div class="p-4 ">
-        <p class="text-gray-500 text-sm mb-2">Language: <span class="font-medium">${
-          language || "Not specified"
-        }</span></p>
+        <p class="text-gray-500 text-sm mb-2">Language: <span class="font-medium">${language || 'Not specified'}</span></p>
         
         <!-- Tags Section -->
         <div class="text-sm text-gray-500 mb-4">
-          <strong class="font-medium">Tags:</strong> ${
-            tags.length > 0 ? tags.join(", ") : "None"
-          }
+          <strong class="font-medium">Tags:</strong> ${tags.length > 0 ? tags.join(', ') : 'None'}
         </div>
         
         <!-- Show More Details -->
            <details class="text-sm text-gray-500 mb-4">
    
           <div class="mt-2">
-            <p class="text-gray-500">${
-              meta?.description || "No description available."
-            }</p> </details>
+            <p class="text-gray-500">${meta?.description || 'No description available.'}</p> </details>
 
               <!-- Start Learning -->
              <button id="showl"  onclick="showMessage()" class="flex w-full items-center justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-4 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
@@ -201,9 +176,7 @@ function renderCourses(courses) {
     </h2>
     
     <div class="space-y-4 p-4">
-      ${sections
-        .map(
-          (section, sectionIndex) => `
+      ${sections.map((section, sectionIndex) => `
         <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
         
           <button onclick="
@@ -223,9 +196,7 @@ function renderCourses(courses) {
           </button>
       
           <div id="lessons-container-${sectionIndex}" class="mt-3 hidden space-y-2">
-            ${section.lessons
-              .map(
-                (lesson, lessonIndex) => `
+            ${section.lessons.map((lesson, lessonIndex) => `
               <div class="bg-gray-700 p-3 rounded-md shadow-md">
                 <button onclick="
                   const lessonDetails = document.getElementById('lesson-details-${sectionIndex}-${lessonIndex}');
@@ -246,34 +217,19 @@ function renderCourses(courses) {
                 
                 <div id="lesson-details-${sectionIndex}-${lessonIndex}" class="hidden mt-2 text-gray-400 text-sm">
                   <p>Type: ${lesson.content_type}</p>
-                  <p>${lesson.description || "No description available"}</p>
-                  ${
-                    lesson.quiz
-                      ? `<p class="text-gray-300 font-medium">Quiz Available</p>`
-                      : ""
-                  }
-                  ${
-                    lesson.video_url
-                      ? `
+                  <p>${lesson.description || 'No description available'}</p>
+                  ${lesson.quiz ? `<p class="text-gray-300 font-medium">Quiz Available</p>` : ''}
+                  ${lesson.video_url ? `
                     <div class="mt-3 rounded-md overflow-hidden">
-                      <iframe class="w-full h-64 rounded-md shadow-md" src="${lesson.video_url.replace(
-                        "watch?v=",
-                        "embed/"
-                      )}" frameborder="0" allowfullscreen></iframe>
+                      <iframe class="w-full h-64 rounded-md shadow-md" src="${lesson.video_url.replace('watch?v=', 'embed/')}" frameborder="0" allowfullscreen></iframe>
                     </div>
-                  `
-                      : "<p>No video available</p>"
-                  }
+                  ` : '<p>No video available</p>'}
                 </div>
               </div>
-            `
-              )
-              .join("")}
+            `).join('')}
           </div>
         </div>
-      `
-        )
-        .join("")}
+      `).join('')}
     </div>
   </div>
 </div>
@@ -321,18 +277,17 @@ function renderCourses(courses) {
 document.querySelectorAll(".toggle-lessons").forEach((button) => {
   button.addEventListener("click", function () {
     const sectionIndex = this.getAttribute("data-section-index");
-    const container = document.getElementById(
-      `lessons-container-${sectionIndex}`
-    );
-
+    const container = document.getElementById(`lessons-container-${sectionIndex}`);
+    
     if (container) {
       container.classList.toggle("hidden");
-      this.textContent = container.classList.contains("hidden")
-        ? "Show Lessons"
-        : "Hide Lessons";
+      this.textContent = container.classList.contains("hidden") ? "Show Lessons" : "Hide Lessons";
     }
   });
 });
+
+
+
 
 // Main function to load user purchased courses
 async function loadPurchasedCourses(userId) {
@@ -341,32 +296,17 @@ async function loadPurchasedCourses(userId) {
 }
 
 // Initialize the page
-document.getElementById("app").innerHTML = `
-  <div class="min-h-screen bg-gray-900 text-white ">
-   <div class="fixed bg-[#172554] px-5 z-20 w-full ">
-       
-          <div id="navbar-container"></div></div>
-    <div id="course-container" class=" space-y-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 flex">
-     <div class=" fixed top-0 right-0 bottom-0 left-0 ">
-  <div class="text-center flex flex-col items-center justify-center w-screen h-screen">
-    <div class="animate-spin  rounded-full h-16 w-16 border-t-4 border-b-4 border-[#f5f5f5] "></div>
-    <p class="text-[#dbdbdb] text-lg font-semibold">Loading...</p>
-  </div>
-</div>
-    </div>
-    
-  </div>
-`;
+
 
 // Fetch and load courses for the authenticated user
 onAuthStateChanged(auth, (user) => {
   if (user) {
     loadPurchasedCourses(user.uid);
   } else {
-    const courseContainer = document.getElementById("course-container");
-    courseContainer.innerHTML =
-      '<p class="text-center text-gray-500">Please log in to view your courses.</p>';
+    const courseContainer = document.getElementById('course-container');
+    courseContainer.innerHTML = '<p class="text-center text-gray-500">Please log in to view your courses.</p>';
   }
 });
 
 // Show Lessons
+

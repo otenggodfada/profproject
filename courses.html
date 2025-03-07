@@ -319,6 +319,60 @@ option {
         const tagsWrapper = document.createElement("div");
         tagsWrapper.className = "space-y-2";
 
+        // Create "All" filter
+        const allTagLabel = document.createElement("label");
+        allTagLabel.className = "flex items-center space-x-3 cursor-pointer p-3 rounded-lg transition bg-gray-900 hover:bg-gray-800 shadow-md";
+        
+        const allTagCheckboxWrapper = document.createElement("div");
+        allTagCheckboxWrapper.className = "relative flex items-center justify-center";
+
+        const allTagCheckbox = document.createElement("input");
+        allTagCheckbox.type = "checkbox";
+        allTagCheckbox.className = "tag-checkbox hidden";
+        allTagCheckbox.checked = true; // Default selected
+
+        const allCustomCheckbox = document.createElement("div");
+        allCustomCheckbox.className = "w-6 h-6 border-2 border-gray-500 rounded-md flex items-center justify-center transition-all duration-200 ease-in-out bg-blue-500 border-blue-500";
+
+        const allCheckmark = document.createElement("span");
+        allCheckmark.className = "text-blue-500 text-lg";
+        allCheckmark.innerHTML = "✔";
+
+        allCustomCheckbox.appendChild(allCheckmark);
+        allTagCheckboxWrapper.appendChild(allTagCheckbox);
+        allTagCheckboxWrapper.appendChild(allCustomCheckbox);
+
+        const allTagText = document.createElement("span");
+        allTagText.className = "text-gray-300 font-medium text-base";
+        allTagText.textContent = "All";
+
+        allTagLabel.appendChild(allTagCheckboxWrapper);
+        allTagLabel.appendChild(allTagText);
+
+        // Handle "All" filter selection
+        allTagCheckbox.addEventListener("change", () => {
+            if (allTagCheckbox.checked) {
+                allCustomCheckbox.classList.add("bg-blue-500", "border-blue-500");
+                allCheckmark.classList.remove("hidden");
+
+                document.querySelectorAll(".tag-checkbox").forEach(tag => {
+                    if (tag !== allTagCheckbox) {
+                        tag.checked = false;
+                        tag.dispatchEvent(new Event("change"));
+                    }
+                });
+
+                renderCourses(null);
+            }
+        });
+
+        allTagLabel.addEventListener("click", () => {
+            allTagCheckbox.checked = true;
+            allTagCheckbox.dispatchEvent(new Event("change"));
+        });
+
+        tagsWrapper.appendChild(allTagLabel);
+
         // Render tags
         tagsSnapshot.forEach((doc) => {
             const tagId = doc.id;
@@ -333,18 +387,18 @@ option {
             const tagCheckbox = document.createElement("input");
             tagCheckbox.type = "checkbox";
             tagCheckbox.className = "tag-checkbox hidden";
-            
+
             const customCheckbox = document.createElement("div");
             customCheckbox.className = "w-6 h-6 border-2 border-gray-500 rounded-md flex items-center justify-center transition-all duration-200 ease-in-out";
 
             const checkmark = document.createElement("span");
             checkmark.className = "hidden text-blue-500 text-lg";
             checkmark.innerHTML = "✔";
-            
+
             tagCheckboxWrapper.appendChild(tagCheckbox);
             customCheckbox.appendChild(checkmark);
             tagCheckboxWrapper.appendChild(customCheckbox);
-            
+
             const tagText = document.createElement("span");
             tagText.className = "text-gray-300 font-medium text-base";
             tagText.textContent = tagName;
@@ -356,6 +410,11 @@ option {
                 if (tagCheckbox.checked) {
                     customCheckbox.classList.add("bg-blue-500", "border-blue-500");
                     checkmark.classList.remove("hidden");
+
+                    // Uncheck "All" when selecting any tag
+                    allTagCheckbox.checked = false;
+                    allCustomCheckbox.classList.remove("bg-blue-500", "border-blue-500");
+                    allCheckmark.classList.add("hidden");
                 } else {
                     customCheckbox.classList.remove("bg-blue-500", "border-blue-500");
                     checkmark.classList.add("hidden");
@@ -383,7 +442,9 @@ option {
                 tag.checked = false;
                 tag.dispatchEvent(new Event("change"));
             });
-            renderCourses(null);
+
+            allTagCheckbox.checked = true;
+            allTagCheckbox.dispatchEvent(new Event("change"));
         });
 
         tagsContainer.appendChild(clearButton);
@@ -391,6 +452,7 @@ option {
         console.error("Error fetching tags:", error);
     }
 };
+
 
 const fetchAllTags1 = async () => {
     try {
@@ -408,6 +470,60 @@ const fetchAllTags1 = async () => {
         const tagsWrapper = document.createElement("div");
         tagsWrapper.className = "space-y-2";
 
+        // Create "All" filter
+        const allTagLabel = document.createElement("label");
+        allTagLabel.className = "flex items-center space-x-3 cursor-pointer p-3 rounded-lg transition bg-gray-900 hover:bg-gray-800 shadow-md";
+        
+        const allTagCheckboxWrapper = document.createElement("div");
+        allTagCheckboxWrapper.className = "relative flex items-center justify-center";
+
+        const allTagCheckbox = document.createElement("input");
+        allTagCheckbox.type = "checkbox";
+        allTagCheckbox.className = "tag-checkbox hidden";
+        allTagCheckbox.checked = true; // Default selected
+
+        const allCustomCheckbox = document.createElement("div");
+        allCustomCheckbox.className = "w-6 h-6 border-2 border-gray-500 rounded-md flex items-center justify-center transition-all duration-200 ease-in-out bg-blue-500 border-blue-500";
+
+        const allCheckmark = document.createElement("span");
+        allCheckmark.className = "text-blue-500 text-lg";
+        allCheckmark.innerHTML = "✔";
+
+        allCustomCheckbox.appendChild(allCheckmark);
+        allTagCheckboxWrapper.appendChild(allTagCheckbox);
+        allTagCheckboxWrapper.appendChild(allCustomCheckbox);
+
+        const allTagText = document.createElement("span");
+        allTagText.className = "text-gray-300 font-medium text-base";
+        allTagText.textContent = "All";
+
+        allTagLabel.appendChild(allTagCheckboxWrapper);
+        allTagLabel.appendChild(allTagText);
+
+        // Handle "All" filter selection
+        allTagCheckbox.addEventListener("change", () => {
+            if (allTagCheckbox.checked) {
+                allCustomCheckbox.classList.add("bg-blue-500", "border-blue-500");
+                allCheckmark.classList.remove("hidden");
+
+                document.querySelectorAll(".tag-checkbox").forEach(tag => {
+                    if (tag !== allTagCheckbox) {
+                        tag.checked = false;
+                        tag.dispatchEvent(new Event("change"));
+                    }
+                });
+
+                renderCourses(null);
+            }
+        });
+
+        allTagLabel.addEventListener("click", () => {
+            allTagCheckbox.checked = true;
+            allTagCheckbox.dispatchEvent(new Event("change"));
+        });
+
+        tagsWrapper.appendChild(allTagLabel);
+
         // Render tags
         tagsSnapshot.forEach((doc) => {
             const tagId = doc.id;
@@ -422,18 +538,18 @@ const fetchAllTags1 = async () => {
             const tagCheckbox = document.createElement("input");
             tagCheckbox.type = "checkbox";
             tagCheckbox.className = "tag-checkbox hidden";
-            
+
             const customCheckbox = document.createElement("div");
             customCheckbox.className = "w-6 h-6 border-2 border-gray-500 rounded-md flex items-center justify-center transition-all duration-200 ease-in-out";
 
             const checkmark = document.createElement("span");
-            checkmark.className = "hidden text-white text-lg";
+            checkmark.className = "hidden text-blue-500 text-lg";
             checkmark.innerHTML = "✔";
-            
+
             tagCheckboxWrapper.appendChild(tagCheckbox);
             customCheckbox.appendChild(checkmark);
             tagCheckboxWrapper.appendChild(customCheckbox);
-            
+
             const tagText = document.createElement("span");
             tagText.className = "text-gray-300 font-medium text-base";
             tagText.textContent = tagName;
@@ -445,6 +561,11 @@ const fetchAllTags1 = async () => {
                 if (tagCheckbox.checked) {
                     customCheckbox.classList.add("bg-blue-500", "border-blue-500");
                     checkmark.classList.remove("hidden");
+
+                    // Uncheck "All" when selecting any tag
+                    allTagCheckbox.checked = false;
+                    allCustomCheckbox.classList.remove("bg-blue-500", "border-blue-500");
+                    allCheckmark.classList.add("hidden");
                 } else {
                     customCheckbox.classList.remove("bg-blue-500", "border-blue-500");
                     checkmark.classList.add("hidden");
@@ -472,7 +593,9 @@ const fetchAllTags1 = async () => {
                 tag.checked = false;
                 tag.dispatchEvent(new Event("change"));
             });
-            renderCourses(null);
+
+            allTagCheckbox.checked = true;
+            allTagCheckbox.dispatchEvent(new Event("change"));
         });
 
         tagsContainer.appendChild(clearButton);
@@ -494,12 +617,14 @@ style.innerHTML = `
 `;
 
 document.head.appendChild(style);
+
+
 const renderCourses = async (tagId = null) => {
     const courseList = document.getElementById("course-list");
-    courseList.innerHTML = `<div class="text-center flex flex-col items-center justify-center w-screen h-screen">
-        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#172554]"></div>
-        <p class="text-[#172554] text-lg font-semibold">Loading...</p>
-    </div>`; // Loading state
+    courseList.innerHTML = `  <div class="fixed top-0 right-0 left-0 bottom-0"><div class="text-center flex flex-col items-center justify-center w-screen h-screen">
+    <div class="animate-spin  rounded-full h-16 w-16 border-t-4 border-b-4 border-[#f5f5f5] "></div>
+    <p class="text-[#dbdbdb] text-lg font-semibold">Loading...</p>
+  </div></div> `; // Loading state
 
     let courses = await fetchCourses(); // Fetch all courses
     if (tagId) {

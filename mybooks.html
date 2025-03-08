@@ -8,8 +8,17 @@
     <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script defer src="https://cdn.tailwindcss.com"></script>
+    <script src="kaka.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="navbar.js"></script>
+    <script type="module" src="./dynamiccon.js"></script>
+    <script src="bottomnv.js"></script>
 </head>
 <body class="bg-gradient-to-r from-purple-500 to-indigo-600 min-h-screen p-5 flex flex-col items-center">
+    <div class="fixed top-0 bg-[#172554] px-5 z-20 w-full">
+        <div id="navbar-container"></div>
+      </div>
     <div class="max-w-6xl w-full bg-white p-8 rounded-lg shadow-2xl">
         <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-6">📚 My Books</h1>
         <div id="booksContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>

@@ -106,14 +106,14 @@ option {
     <!-- Mobile Drawer for Tags -->
   
     <div class="lg:hidden z-10">
-      <div class="flex items-center">
+      <div class="flex items-center space-x-24">
         <button id="open-drawer" class="px-4 py-2 bg-transparent border border-gray-500 text-white rounded-lg flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M3 12h12m-12 6h18" />
           </svg>
           Filter
       </button>
-      <div>dddddd</div>
+     <h1 id="lolo" class="text-3xl font-bold text-white">All Courses</h1>
       </div>
         <div id="drawer" class="fixed mt-24  top-0 left-0 w-64 h-full bg-gray-900 shadow-lg p-4 transform -translate-x-full transition-transform overflow-scroll ">
             <button   id="close-drawer" class="mb-4 w-14 h-14 bg-gray-500/10 p-3 rounded-full hover:bg-red-600 transition-all">X</button>
@@ -348,7 +348,13 @@ option {
 
     // Convert Firestore Timestamp to Human-Readable Date
 
-    
+    const urlParams = new URLSearchParams(window.location.search);
+const courseTitle = urlParams.get("title");
+
+if (courseTitle) {
+  document.getElementById("lolo").textContent = courseTitle;
+}
+
     const formatTimestamp = (timestamp) => {
       if (!timestamp) return "Unknown";
       const date = new Date(timestamp.seconds * 1000);

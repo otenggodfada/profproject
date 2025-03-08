@@ -15,17 +15,17 @@
     <script type="module" src="./dynamiccon.js"></script>
     <script src="bottomnv.js"></script>
 </head>
-<body class="bg-gradient-to-r from-purple-500 to-indigo-600 min-h-screen p-5 flex flex-col items-center">
+<body class="bg-gray-900 text-white p-5 flex flex-col items-center">
     <div class="fixed top-0 bg-[#172554] px-5 z-20 w-full">
         <div id="navbar-container"></div>
       </div>
-    <div class="max-w-6xl w-full bg-white p-8 rounded-lg shadow-2xl">
-        <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-6">📚 My Books</h1>
+    <div class="max-w-6xl w-full  p-8 mt-36 rounded-lg ">
+      
         <div id="booksContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
 
   <!-- Modal for PDF Viewer -->
-  <div id="pdfModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center">
+  <div id="pdfModal" class="hidden fixed mt-36 inset-0 bg-black bg-opacity-80 flex items-center justify-center">
     <div class="bg-white w-full h-full  rounded-lg relative shadow-lg">
         <button id="closeModal" class="absolute top-3 w-10 bg-white right-3 text-red-500 text-2xl font-bold">&times;</button>
         <iframe id="pdfViewer" class="w-full h-full"></iframe>

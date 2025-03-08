@@ -151,10 +151,11 @@ function renderCourses(courses) {
             <p class="text-gray-500">${meta?.description || 'No description available.'}</p> </details>
 
               <!-- Start Learning -->
-    
-     <div class="flex w-full items-center justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-4 rounded-md hover:bg-blue-500 hover:text-white transition"><i class="fas fa-book-open"></i>
-    <span>Continue Learning</span>
-            <details class="">
+   
+     <div class="flex w-full items-center justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-4 rounded-md hover:bg-blue-500 hover:text-white transition">
+            <details  class="">
+            <summary class="font-semibold cursor-pointer list-none">  <i class="fas fa-book-open"></i>
+    <span>Continue Learning</span></summary>
                 <!-- Sections and Lessons List -->
 <div id="modal-container" class="fixed top-0 bottom-0 z-50 inset-0 flex items-center justify-center bg-black ">
   <div class="bg-gray-900 rounded-lg shadow-2xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto scrollbar-hide ">
@@ -173,62 +174,80 @@ function renderCourses(courses) {
       Course Sections
     </h2>
     
-    <div class="space-y-4 p-4">
-      ${sections.map((section, sectionIndex) => `
-        <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
-        
-          <button onclick="
-            const container = document.getElementById('lessons-container-${sectionIndex}');
-            container.classList.toggle('hidden');
-            this.querySelector('svg').classList.toggle('rotate-180');
-          " class="w-full flex justify-between items-center bg-blue-600 text-white px-4 py-3 rounded-md hover:bg-blue-700 transition">
-            <span class="text-xl font-semibold flex items-center gap-2">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
+ <div class="space-y-6 p-6 max-w-4xl mx-auto">
+  ${sections.map((section, sectionIndex) => `
+    <div class="bg-gray-900 p-5 rounded-lg shadow-xl border border-gray-800">
+    
+      <button onclick="
+        const container = document.getElementById('lessons-container-${sectionIndex}');
+        container.classList.toggle('hidden');
+        this.querySelector('.arrow-icon').classList.toggle('rotate-180');
+      " 
+      class="w-full flex justify-between items-center bg-purple-600 text-white px-5 py-4 rounded-lg hover:bg-purple-700 transition-all duration-300">
+        <span class="text-xl font-semibold flex items-center gap-3">
+          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+          ${section.name}
+        </span>
+        <svg class="w-5 h-5 text-white transition-transform arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </button>
+  
+      <div id="lessons-container-${sectionIndex}" class="mt-4 hidden space-y-3">
+        ${section.lessons.map((lesson, lessonIndex) => `
+          <div class="bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-700 relative">
+            <button onclick="
+              const lessonDetails = document.getElementById('lesson-details-${sectionIndex}-${lessonIndex}');
+              lessonDetails.classList.toggle('hidden');
+              this.querySelector('.lesson-arrow').classList.toggle('rotate-180');
+            " 
+            class="w-full flex justify-between items-center text-gray-300 text-lg font-semibold hover:text-white transition">
+              <span class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.58M6.16 10.42L12 14v7"></path>
+                </svg>
+                ${lesson.name}
+              </span>
+              <svg class="w-4 h-4 text-gray-400 transition-transform lesson-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
               </svg>
-              ${section.name}
-            </span>
-            <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-      
-          <div id="lessons-container-${sectionIndex}" class="mt-3 hidden space-y-2">
-            ${section.lessons.map((lesson, lessonIndex) => `
-              <div class="bg-gray-700 p-3 rounded-md shadow-md">
-                <button onclick="
-                  const lessonDetails = document.getElementById('lesson-details-${sectionIndex}-${lessonIndex}');
-                  lessonDetails.classList.toggle('hidden');
-                  this.querySelector('svg').classList.toggle('rotate-180');
-                " class="w-full flex justify-between items-center text-gray-300 text-lg font-semibold">
-                  <span class="flex items-center gap-2">
-                    <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.58M6.16 10.42L12 14v7"></path>
-                    </svg>
-                    ${lesson.name}
-                  </span>
-                  <svg class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </button>
-                
-                <div id="lesson-details-${sectionIndex}-${lessonIndex}" class="hidden mt-2 text-gray-400 text-sm">
-                  <p>Type: ${lesson.content_type}</p>
-                  <p>${lesson.description || 'No description available'}</p>
-                  ${lesson.quiz ? `<p class="text-gray-300 font-medium">Quiz Available</p>` : ''}
-                  ${lesson.video_url ? `
-                    <div class="mt-3 rounded-md overflow-hidden">
-                      <iframe class="w-full h-64 rounded-md shadow-md" src="${lesson.video_url.replace('watch?v=', 'embed/')}" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                  ` : '<p>No video available</p>'}
+            </button>
+            
+            <div id="lesson-details-${sectionIndex}-${lessonIndex}" class="hidden mt-3 text-gray-400 text-sm space-y-2">
+              <p><span class="font-medium text-gray-300">Type:</span> ${lesson.content_type}</p>
+              <p>${lesson.description || '<span class="italic text-gray-500">No description available</span>'}</p>
+              ${lesson.quiz ? `<p class="text-green-400 font-medium">✅ Quiz Available</p>` : ''}
+              
+              ${lesson.video_url ? `
+                <div class="relative mt-4 rounded-lg overflow-hidden border border-gray-700 shadow-md">
+                  <button onclick="openFullScreen('${sectionIndex}', '${lessonIndex}')" 
+                    class="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 text-sm rounded-md hover:bg-opacity-75 transition">
+                    ⛶ Full Screen
+                  </button>
+                  <iframe class="w-full h-64 rounded-lg" src="${lesson.video_url.replace('watch?v=', 'embed/')}" frameborder="0" allowfullscreen></iframe>
                 </div>
-              </div>
-            `).join('')}
+              ` : '<p class="italic text-gray-500">No video available</p>'}
+            </div>
           </div>
-        </div>
-      `).join('')}
+        `).join('')}
+      </div>
     </div>
+  `).join('')}
+</div>
+
+<!-- Full-Screen Overlay -->
+<div id="fullscreen-overlay" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center hidden z-50">
+  <div class="relative w-full max-w-5xl p-4">
+    <button onclick="closeFullScreen()" 
+      class="absolute top-4 right-4 bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+      ✖ Close
+    </button>
+    <div id="fullscreen-content" class="w-full h-screen flex items-center justify-center"></div>
+  </div>
+</div>
   </div>
 </div>
 </details>
@@ -268,7 +287,10 @@ function renderCourses(courses) {
     `;
 
     courseContainer.appendChild(courseCard);
-  });
+  }
+);
+
+  
 }
 
 // Toggle lessons visibility
@@ -307,3 +329,4 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // Show Lessons
+

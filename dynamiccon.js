@@ -149,7 +149,7 @@ document
           telephone,
           zoomId,
           zoomPasscode,
-          role: "author",
+          role: ['author'],
         });
       } else {
         // Save student-specific data if needed
@@ -157,7 +157,7 @@ document
           name,
           email,
           telephone,
-          role: "student",
+          role: ['student'],
           underef: referralcode,
           affiliatelink: user.uid,
           earnings: 0,

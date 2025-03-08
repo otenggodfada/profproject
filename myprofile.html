@@ -185,5 +185,21 @@
     <script>
       lucide.createIcons();
     </script>
+
+<script>
+  function openFullScreen(sectionIndex, lessonIndex) {
+    
+    const videoContainer = document.querySelector(`#lesson-details-\${sectionIndex}-\${lessonIndex} iframe`);
+    const content = videoContainer ? videoContainer.outerHTML : 'No video available';
+
+    document.getElementById("fullscreen-content").innerHTML = content;
+    document.getElementById("fullscreen-overlay").classList.remove("hidden");
+  }
+
+  function closeFullScreen() {
+    document.getElementById("fullscreen-overlay").classList.add("hidden");
+    document.getElementById("fullscreen-content").innerHTML = '';
+  }
+</script>
   </body>
 </html>

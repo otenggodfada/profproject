@@ -46,14 +46,14 @@
                 if (Array.isArray(user.role) && user.role.includes("author") && user.zoomId) {
                     const zoomLink = extractZoomLink(user.zoomId);
                     const status = user.status === "Online" ? "Online" : "Offline";
-                    const statusColor = user.status === "Online" ? "bg-green-500" : "bg-red-500";
+                    const statusColor = user.status === "Online" ? "bg-green-800" : "bg-red-800";
 
                     userList.innerHTML += `
                         <li class="p-4  rounded-lg shadow-md flex flex-col sm:flex-row items-center justify-between border border-gray-500 transition-transform transform hover:scale-105 w-full overflow-hidden">
                             <div class="flex items-center gap-4 w-full sm:w-auto">
-                                <span class=" ${statusColor} flex items-center space-x-2 px-4 py-2 rounded-md  ">${status}</span>
+                                <span class=" ${statusColor} flex items-center space-x-2 px-2 py-1 rounded-md text-[12px]  ">${status}</span>
                                 <div class="text-center sm:text-left">
-                                    <p class="font-semibold text-lg">${user.name}</p>
+                                    <p class="font-semibold text-lg">Prof. ${user.name}</p>
                                     <p class="text-sm text-gray-500 break-all">${user.email}</p>
                                 </div>
                             </div>

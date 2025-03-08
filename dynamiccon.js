@@ -144,7 +144,7 @@ document
           email,
           telephone,
           zoomId,
-      
+      status: "Offline",
           role: ['author'],
         });
       } else {

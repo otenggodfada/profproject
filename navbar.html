@@ -20,6 +20,27 @@
     <script type="module" src="./dynamiccon.js"></script>
     <script type="module" src="./navbar.js"></script>
     <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/tabs.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+          theme: {
+              extend: {}
+          },
+          plugins: [
+              function ({ addUtilities }) {
+                  addUtilities({
+                      '.scrollbar-hide': {
+                          '-ms-overflow-style': 'none', /* Hide scrollbar for IE and Edge */
+                          'scrollbar-width': 'none', /* Hide scrollbar for Firefox */
+                      },
+                      '.scrollbar-hide::-webkit-scrollbar': {
+                          display: 'none' /* Hide scrollbar for Chrome, Safari */
+                      }
+                  })
+              }
+          ]
+      };
+  </script>
     <style>
       .active-tab {
         background-color: white;
@@ -159,8 +180,10 @@
               >About Us</a
             >
           </li>
+<div class="border-t border-gray-500">
 
-          <div class="flex flex-row justify-center space-x-4 mt-4 mb-4">
+</div>
+          <div class="flex flex-row justify-center space-x-4 mt-4 mb-4 overflow-auto scrollbar-hide">
           <div>
             <a
             href="http://instagram.com/profs_training_solutions/"

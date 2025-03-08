@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoom Video List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="navbar.js"></script>
+    <script type="module" src="./dynamiccon.js"></script>
+    <script src="bottomnv.js"></script>
+    <script type="module" src="./dynamiccon.js"></script>
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2wzM",
+            authDomain: "profstudymate-6d0fc.firebaseapp.com",
+            projectId: "profstudymate",
+            storageBucket: "profstudymate.appspot.com",
+            messagingSenderId: "141453158869",
+            appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const extractZoomLink = (zoomInvitation) => {
+            const startIndex = zoomInvitation.indexOf("https://");
+            return startIndex === -1 ? "#" : zoomInvitation.substring(startIndex).split("\n")[0].trim();
+        };
+
+        const loadUsers = async () => {
+            const userList = document.getElementById("userList");
+            userList.innerHTML = `<p class='text-gray-500 text-center'>Loading...</p>`;
+
+            const usersRef = collection(db, "users");
+            const querySnapshot = await getDocs(usersRef);
+            userList.innerHTML = "";
+
+            querySnapshot.forEach((doc) => {
+                const user = doc.data();
+                if (Array.isArray(user.role) && user.role.includes("author") && user.zoomId) {
+                    const zoomLink = extractZoomLink(user.zoomId);
+                    const status = user.status === "Online" ? "Online" : "Offline";
+                    const statusColor = user.status === "Online" ? "bg-green-500" : "bg-red-500";
+
+                    userList.innerHTML += `
+                        <li class="p-4 bg-white rounded-lg shadow-md flex flex-col sm:flex-row items-center justify-between border border-gray-300 transition-transform transform hover:scale-105 w-full overflow-hidden">
+                            <div class="flex items-center gap-4 w-full sm:w-auto">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-full ${statusColor} text-white font-bold text-lg">
+                                    ${user.name.charAt(0).toUpperCase()}
+                                </div>
+                                <div class="text-center sm:text-left">
+                                    <p class="font-semibold text-lg">${user.name}</p>
+                                    <p class="text-sm text-gray-500 break-all">${user.email}</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row items-center gap-4 mt-2 sm:mt-0 w-full sm:w-auto">
+                                <a href="${zoomLink}" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition flex items-center gap-2 text-sm w-full sm:w-auto text-center" target="_blank">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.5 4.5M19.5 14.5L15 19m0 0H9m6 0V9" />
+                                    </svg>
+                                    Join Meeting
+                                </a>
+                                <span class="text-sm font-medium ${statusColor} text-white px-3 py-1 rounded-lg w-full sm:w-auto text-center">${status}</span>
+                            </div>
+                        </li>
+                    `;
+                }
+            });
+        };
+
+        document.addEventListener("DOMContentLoaded", loadUsers);
+    </script>
+</head>
+<body class="bg-gradient-to-r from-blue-50 to-blue-100 p-8  flex items-center justify-center">
+    <div class="max-w-4xl w-full  p-8 ">
+        <h1 class="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2 text-blue-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.5 4.5M19.5 14.5L15 19m0 0H9m6 0V9" />
+            </svg>
+            Authors' Zoom Meetings
+        </h1>
+        <ul id="userList" class="space-y-4 w-full"></ul>
+    </div>
+    <footer>
+        <div
+          class="fixed z-50 bottom-0 right-0 left-0"
+          id="navbar-container1"
+        ></div>
+      </footer>
+</body>
+</html>

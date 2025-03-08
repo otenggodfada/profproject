@@ -127,11 +127,7 @@ document
     // Author-specific fields (if user is an author)
     const zoomId =
       userType === "author" ? document.getElementById("zoom-id").value : null;
-    const zoomPasscode =
-      userType === "author"
-        ? document.getElementById("zoom-passcode").value
-        : null;
-
+    
     try {
       // Create a new user with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(
@@ -148,7 +144,7 @@ document
           email,
           telephone,
           zoomId,
-          zoomPasscode,
+      
           role: ['author'],
         });
       } else {

@@ -38,23 +38,36 @@
       const db = getFirestore(app);
 
       const extractZoomLink = (zoomInvitation) => {
-    // Find the start index of the Zoom link
-    const startIndex = zoomInvitation.indexOf("https://");
+    // Split the invitation into lines
+    const lines = zoomInvitation.split("\n");
 
-    if (startIndex === -1) {
-        return "No valid Zoom link found"; // Return if no link is present
+    let zoomID = "";
+    let passcode = "";
+
+    // Loop through each line to extract Zoom ID and Passcode
+    for (let line of lines) {
+        if (line.includes("https://")) {
+            // Extract Zoom ID from the link (format: /j/{id}?)
+            const match = line.match(/\/j\/(\d+)\?/);
+            if (match) zoomID = match[1];
+        } 
+        else if (line.toLowerCase().includes("Passcode:")) {
+            // Extract the passcode after "Passcode:"
+            passcode = line.split(":")[1].trim();
+        }
     }
 
-    // Extract substring from the first occurrence of "https://"
-    let link = zoomInvitation.substring(startIndex).split("\n")[0].trim();
-
-    // Replace the Zoom link format if it matches the given pattern
-    if (link.includes("https://us05web.zoom.us/s/")) {
-        link = link.replace("https://us05web.zoom.us/s/", "https://app.zoom.us/wc/join/");
+    // Construct the new Zoom link format
+    if (zoomID && passcode) {
+        return `https://app.zoom.us/wc/join/${zoomID}?pwd=${passcode}`;
+    } else if (zoomID) {
+        return `https://app.zoom.us/wc/join/${zoomID}`; // In case there's no passcode
     }
 
-    return link;
+    return "No valid Zoom link found";
 };
+
+
 
 
       const loadUsers = async () => {
@@ -92,6 +105,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.5 4.5M19.5 14.5L15 19m0 0H9m6 0V9" />
                                     </svg>
                                     Join Meeting
+                                    ${zoomLink}
                                 </a>
                                
                             </div>

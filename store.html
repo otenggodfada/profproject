@@ -82,7 +82,7 @@
     <div class="container mx-auto p-6">
         <!-- Header Section -->
         <div class="flex justify-between items-center mt-32 mb-8 ">
-            <h1 class="text-3xl font-bold text-white">📚 Book Shop</h1>
+            <h1 id="lolo" class="text-3xl font-bold text-white">📚 Book Shop</h1>
 
             <div class="flex items-center space-x-6">
                 <!-- Cart -->
@@ -178,6 +178,12 @@
       const booksPerPage = 7; // Number of books per page
       let currentPage = 1; // Current page
       var booktitle = "sssss";
+      const urlParams = new URLSearchParams(window.location.search);
+const courseTitle = urlParams.get("title");
+
+if (courseTitle) {
+  document.getElementById("lolo").textContent = courseTitle;
+}
 
       // Function to fetch and display books
       async function fetchBooks(query = "", filter = "") {

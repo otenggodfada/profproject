@@ -19,7 +19,7 @@
     <div class="fixed top-0 bg-[#172554] px-5 z-20 w-full">
         <div id="navbar-container"></div>
       </div>
-    <div class="max-w-6xl w-full  p-8 mt-36 rounded-lg ">
+    <div class="max-w-6xl w-full  p-8 mt-28 mb-28 rounded-lg ">
       
         <div id="booksContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
@@ -91,10 +91,22 @@
                           const bookCard = document.createElement("div");
                           bookCard.className = "bg-white p-5 rounded-lg shadow-md flex flex-col items-center transform transition duration-300 hover:scale-105 hover:shadow-xl";
                           bookCard.innerHTML = `
-                              <img src="${image_url}" alt="${title}" class="w-40 h-52 object-cover rounded-md mb-4">
-                              <h2 class="text-lg font-semibold text-gray-800 text-center">${title}</h2>
-                              <p class="text-sm text-gray-600 text-center px-3 line-clamp-2">${description}</p>
-                              <button class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-indigo-700 transition" onclick="openPdf('${embeddedPdfUrl}')">Read Book</button>
+                             <div class="flex flex-col items-center ">
+    <img src="${image_url}" alt="${title}" class=" object-cover rounded-md mb-3">
+    
+    <h2 class="text-lg font-semibold text-gray-800 text-center">${title}</h2>
+    
+    <p class="text-sm text-gray-600 text-center px-3 line-clamp-2">${description}</p>
+    
+    <button class="flex w-full items-center justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 mt-3 rounded-md hover:bg-blue-500 hover:text-white transition"
+        onclick="openPdf('${embeddedPdfUrl}')">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l-7-7 7-7m8 14l-7-7 7-7" />
+        </svg>
+        <span>Read Book</span>
+    </button>
+</div>
+
                           `;
                           booksContainer.appendChild(bookCard);
                       }

@@ -6,44 +6,67 @@
     <title>Bottom Navigation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/framer-motion@10.12.1/dist/framer-motion.umd.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const title = urlParams.get("title");
-            
-            if (title) {
-                const activeNavItem = document.getElementById(title);
-                if (activeNavItem) {
-                    activeNavItem.classList.add("text-red-500", "bg-red-500", "rounded-md", "p-2");
-                }
-            }
-        });
-    </script>
+    <script src="https://kit.fontawesome.com/YOUR_KIT_CODE.js" crossorigin="anonymous"></script>
 </head>
 <body class="bg-[#172554]">
+
     <nav class="fixed bottom-0 left-0 right-0 bg-[#172554] shadow-lg border-t border-gray-300 md:hidden">
         <div class="flex justify-around items-center py-3">
-            <a id="/" onclick="window.location.href='/?title=/'" class="flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
+            <a id="/" href="/?title=/" class="nav-link flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
                 <i class="fas fa-home text-xl"></i>
                 <span class="text-xs">Home</span>
             </a>
-            <a id="courses" onclick="window.location.href='courses.html?title=courses'" class="flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
+            <a id="courses" href="courses.html?title=courses" class="nav-link flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
                 <i class="fas fa-book text-xl"></i>
                 <span class="text-xs">Courses</span>
             </a>
-            <a id="shop" onclick="window.location.href='store.html?title=shop'" class="flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
+            <a id="shop" href="store.html?title=shop" class="nav-link flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
                 <i class="fas fa-shopping-cart text-xl"></i>
                 <span class="text-xs">Shop</span>
             </a>
-            <a id="meeting" onclick="window.location.href='meeting.html?title=meeting'" class="flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
+            <a id="meeting" href="meeting.html?title=meeting" class="nav-link flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
                 <i class="fas fa-video text-xl"></i>
                 <span class="text-xs">Meeting</span>
             </a>
-            <a id="account" onclick="window.location.href='mprofilepage.html?title=account'" class="flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
+            <a id="account" href="mprofilepage.html?title=account" class="nav-link flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
                 <i class="fas fa-user text-xl"></i>
                 <span class="text-xs">Account</span>
             </a>
         </div>
     </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("✅ DOM fully loaded");
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const activePage = urlParams.get("title");
+
+            console.log("🔍 Extracted Page Title:", activePage); // Debugging log
+
+            if (activePage) {
+                const activeElement = document.getElementById(activePage);
+                
+                if (activeElement) {
+                    console.log("🎯 Element found:", activeElement); // Debugging log
+
+                    // Remove active styles from all elements
+                    document.querySelectorAll(".nav-link").forEach(link => {
+                        link.classList.remove("bg-blue-600", "text-white", "rounded-lg", "px-3", "py-2");
+                        link.classList.add("text-gray-300"); // Default text color
+                    });
+
+                    // Apply styles to the active element
+                    activeElement.classList.add("bg-blue-600", "text-white", "rounded-lg", "px-3", "py-2");
+                    activeElement.classList.remove("text-gray-300");
+                } else {
+                    console.warn("⚠️ No element found with ID:", activePage);
+                }
+            } else {
+                console.warn("⚠️ No 'title' parameter found in the URL.");
+            }
+        });
+    </script>
+    
 </body>
 </html>

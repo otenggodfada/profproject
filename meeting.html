@@ -38,11 +38,24 @@
       const db = getFirestore(app);
 
       const extractZoomLink = (zoomInvitation) => {
-        const startIndex = zoomInvitation.indexOf("https://");
-        return startIndex === -1
-          ? "#"
-          : zoomInvitation.substring(startIndex).split("\n")[0].trim();
-      };
+    // Find the start index of the Zoom link
+    const startIndex = zoomInvitation.indexOf("https://");
+
+    if (startIndex === -1) {
+        return "No valid Zoom link found"; // Return if no link is present
+    }
+
+    // Extract substring from the first occurrence of "https://"
+    let link = zoomInvitation.substring(startIndex).split("\n")[0].trim();
+
+    // Replace the Zoom link format if it matches the given pattern
+    if (link.includes("https://us05web.zoom.us/s/")) {
+        link = link.replace("https://us05web.zoom.us/s/", "https://app.zoom.us/wc/join/");
+    }
+
+    return link;
+};
+
 
       const loadUsers = async () => {
         const userList = document.getElementById("userList");

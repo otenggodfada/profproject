@@ -61,29 +61,50 @@
       }
 
       async function fetchPosts() {
-        const postsContainer = document.getElementById("content");
-        const querySnapshot = await getDocs(
-          query(collection(db, "blogs"), orderBy("timestamp", "desc"))
-        );
-        postsContainer.innerHTML = "";
+  const postsContainer = document.getElementById("content");
+  const searchInput = document.getElementById("searchInput");
+  const querySnapshot = await getDocs(
+    query(collection(db, "blogs"), orderBy("timestamp", "desc"))
+  );
 
-        querySnapshot.forEach((docSnap) => {
-          const post = docSnap.data();
-          const postId = docSnap.id;
-          const formattedDate = new Date(
-            post.timestamp?.seconds * 1000
-          ).toLocaleDateString();
+  let posts = [];
+  querySnapshot.forEach((docSnap) => {
+    let post = { id: docSnap.id, ...docSnap.data() };
+    posts.push(post);
+  });
 
-          postsContainer.innerHTML += `
-                    <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-white/20 transition-transform transform hover:scale-105">
-                        <img src="${post.link}" alt="Thumbnail" class="w-full h-52 object-cover rounded-lg mb-4">
-                        <h2 class="text-2xl font-semibold text-white">${post.title}</h2>
-                        <p class="text-gray-300 mt-2">${post.description}</p>
-                        <p class="text-sm text-gray-400 mt-2">📅 ${formattedDate}</p>
-                        <a href="?id=${postId}" class="mt-4 inline-block px-4 py-3 bg-blue-500/50 border-white/20 border  text-white font-semibold rounded-lg hover:bg-blue-600 transition">Read More</a>
-                    </div>`;
-        });
-      }
+  function displayPosts(filteredPosts) {
+    postsContainer.innerHTML = "";
+    filteredPosts.forEach((post) => {
+      const formattedDate = new Date(
+        post.timestamp?.seconds * 1000
+      ).toLocaleDateString();
+
+      postsContainer.innerHTML += `
+        <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-white/20 transition-transform transform hover:scale-105">
+          <img src="${post.link}" alt="Thumbnail" class="w-full h-52 object-cover rounded-lg mb-4">
+          <h2 class="text-2xl font-semibold text-white">${post.title}</h2>
+          <p class="text-gray-300 mt-2">${post.description}</p>
+          <p class="text-sm text-gray-400 mt-2">📅 ${formattedDate}</p>
+          <a href="?id=${post.id}" class="mt-4 inline-block px-4 py-3 bg-blue-500/50 border-white/20 border text-white font-semibold rounded-lg hover:bg-blue-600 transition">Read More</a>
+        </div>`;
+    });
+  }
+
+ // Initial display
+ displayPosts(posts);
+
+// Search functionality
+searchInput.addEventListener("input", () => {
+  const searchTerm = searchInput.value.toLowerCase();
+  const filteredPosts = posts.filter(
+    (post) =>
+      post.title.toLowerCase().includes(searchTerm) ||
+      post.description.toLowerCase().includes(searchTerm)
+  );
+  displayPosts(filteredPosts);
+});
+}
 
       async function loadPost(postId) {
         const postDoc = await getDoc(doc(db, "blogs", postId));
@@ -269,6 +290,12 @@
             >
           </div>
         </motion.div>
+        <input
+  type="text"
+  id="searchInput"
+  placeholder="Search blog posts..."
+  class="w-full p-3 mb-6 text-lg rounded-lg bg-gray-800 text-white border border-gray-600 focus:ring focus:ring-blue-500"
+/>
       </div>
       <div
         id="content"

@@ -6,51 +6,40 @@
     <title>Bottom Navigation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/framer-motion@10.12.1/dist/framer-motion.umd.js"></script>
-    <style>
-        .nav-item {
-            transition: transform 0.2s ease-in-out, color 0.2s;
-        }
-        .nav-item:hover {
-            transform: scale(1.1);
-        }
-        .nav-item.active {
-            color: #facc15 !important;
-        }
-    </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const links = document.querySelectorAll(".nav-item");
-            const currentPath = window.location.pathname.replace(/\/?$/, ""); // Normalize trailing slashes
+            const urlParams = new URLSearchParams(window.location.search);
+            const title = urlParams.get("title");
             
-            links.forEach(link => {
-                const linkPath = new URL(link.href, window.location.origin).pathname.replace(/\/?$/, "");
-                if (linkPath === currentPath) {
-                    link.classList.add("active");
+            if (title) {
+                const activeNavItem = document.getElementById(title);
+                if (activeNavItem) {
+                    activeNavItem.classList.add("text-red-500", "bg-red-500", "rounded-md", "p-2");
                 }
-            });
+            }
         });
     </script>
 </head>
 <body class="bg-[#172554]">
     <nav class="fixed bottom-0 left-0 right-0 bg-[#172554] shadow-lg border-t border-gray-300 md:hidden">
         <div class="flex justify-around items-center py-3">
-            <a href="./" class="nav-item flex flex-col items-center text-white hover:text-blue-400">
+            <a id="/" onclick="window.location.href='/?title=/'" class="flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
                 <i class="fas fa-home text-xl"></i>
                 <span class="text-xs">Home</span>
             </a>
-            <a href="./courses.html" class="nav-item flex flex-col items-center text-white hover:text-blue-400">
+            <a id="courses" onclick="window.location.href='courses.html?title=courses'" class="flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
                 <i class="fas fa-book text-xl"></i>
                 <span class="text-xs">Courses</span>
             </a>
-            <a href="./store.html" class="nav-item flex flex-col items-center text-white hover:text-blue-400">
+            <a id="shop" onclick="window.location.href='store.html?title=shop'" class="flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
                 <i class="fas fa-shopping-cart text-xl"></i>
                 <span class="text-xs">Shop</span>
             </a>
-            <a href="./meeting.html" class="nav-item flex flex-col items-center text-white hover:text-blue-400">
+            <a id="meeting" onclick="window.location.href='meeting.html?title=meeting'" class="flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
                 <i class="fas fa-video text-xl"></i>
                 <span class="text-xs">Meeting</span>
             </a>
-            <a href="./mprofilepage.html" class="nav-item flex flex-col items-center text-white hover:text-blue-400">
+            <a id="account" onclick="window.location.href='mprofilepage.html?title=account'" class="flex flex-col items-center text-white hover:text-blue-400 cursor-pointer">
                 <i class="fas fa-user text-xl"></i>
                 <span class="text-xs">Account</span>
             </a>

@@ -1,5 +1,3 @@
-<!-- @format -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,20 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zoom Video List</title>
     <script src="https://cdn.tailwindcss.com"></script>
- 
-
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-      import {
-        getFirestore,
-        collection,
-        getDocs,
-      } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+      import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2wzM",
@@ -35,114 +24,87 @@
       const db = getFirestore(app);
 
       const extractZoomLink = (zoomInvitation) => {
-    let zoomID = "";
-    let passcode = "";
+        let zoomID = "";
+        let passcode = "";
+        const idMatch = zoomInvitation.match(/Meeting ID:\s*([\d\s]+)/i);
+        if (idMatch) zoomID = idMatch[1].replace(/\s+/g, "");
+        const passMatch = zoomInvitation.match(/Passcode:\s*([\S]+)/i);
+        if (passMatch) passcode = passMatch[1];
+        return zoomID && passcode ? `https://app.zoom.us/wc/join/${zoomID}?pwd=${passcode}` : zoomID ? `https://app.zoom.us/wc/join/${zoomID}` : "No valid Zoom link found";
+      };
 
-    // Extract Meeting ID (Format: "Meeting ID: 123 456 7890")
-    const idMatch = zoomInvitation.match(/Meeting ID:\s*([\d\s]+)/i);
-    if (idMatch) zoomID = idMatch[1].replace(/\s+/g, ""); // Remove spaces
+      let users = [];
+      let currentPage = 1;
+      const usersPerPage = 5;
 
-    // Extract Passcode (Format: "Passcode: xyz123")
-    const passMatch = zoomInvitation.match(/Passcode:\s*([\S]+)/i);
-    if (passMatch) passcode = passMatch[1];
-
-    // Construct the Zoom link
-    if (zoomID && passcode) {
-        return `https://app.zoom.us/wc/join/${zoomID}?pwd=${passcode}`;
-    } else if (zoomID) {
-        return `https://app.zoom.us/wc/join/${zoomID}`;
-    }
-
-    return "No valid Zoom link found";
-};
-
-
-
+      const renderUsers = () => {
+        const userList = document.getElementById("userList");
+        const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+        userList.innerHTML = "";
+        const filteredUsers = users.filter(user => user.name.toLowerCase().includes(searchQuery));
+        const start = (currentPage - 1) * usersPerPage;
+        const paginatedUsers = filteredUsers.slice(start, start + usersPerPage);
+        paginatedUsers.forEach(user => {
+          const zoomLink = extractZoomLink(user.zoomId);
+          const statusColor = user.status === "Online" ? "bg-green-800" : "bg-red-800";
+          userList.innerHTML += `
+            <li class="p-4 rounded-lg shadow-md flex flex-col sm:flex-row items-center justify-between border border-gray-500 transition-transform transform hover:scale-105 w-full overflow-hidden">
+              <div class="flex items-center gap-4 w-full sm:w-auto">
+                <span class="${statusColor} flex items-center space-x-2 px-2 py-1 rounded-md text-[12px]">${user.status}</span>
+                <div class="text-center sm:text-left">
+                  <p class="font-semibold text-lg">Prof. ${user.name}</p>
+                  <p class="text-sm text-gray-500 break-all">${user.email}</p>
+                </div>
+              </div>
+              <div class="flex flex-row sm:flex-row items-center gap-4 mt-2 sm:mt-0 w-full sm:w-auto">
+                <a target="_blank" href="${zoomLink}" class="flex items-center w-full justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
+                  <i class="fas fa-video"></i> Join Meeting
+                </a>
+              </div>
+            </li>`;
+        });
+        document.getElementById("pagination").innerText = `Page ${currentPage} of ${Math.ceil(filteredUsers.length / usersPerPage)}`;
+      };
 
       const loadUsers = async () => {
-        const userList = document.getElementById("userList");
-        userList.innerHTML = `<p class='text-gray-500 text-center'>Loading...</p>`;
-
+        document.getElementById("loadingScreen").classList.remove("hidden");
         const usersRef = collection(db, "users");
         const querySnapshot = await getDocs(usersRef);
-        userList.innerHTML = "";
-
+        users = [];
         querySnapshot.forEach((doc) => {
           const user = doc.data();
-          if (
-            Array.isArray(user.role) &&
-            user.role.includes("author") &&
-            user.zoomId
-          ) {
-            const zoomLink = extractZoomLink(user.zoomId);
-            const status = user.status === "Online" ? "Online" : "Offline";
-            const statusColor =
-              user.status === "Online" ? "bg-green-800" : "bg-red-800";
-
-            userList.innerHTML += `
-                        <li class="p-4  rounded-lg shadow-md flex flex-col sm:flex-row items-center justify-between border border-gray-500 transition-transform transform hover:scale-105 w-full overflow-hidden">
-                            <div class="flex items-center gap-4 w-full sm:w-auto">
-                                <span class=" ${statusColor} flex items-center space-x-2 px-2 py-1 rounded-md text-[12px]  ">${status}</span>
-                                <div class="text-center sm:text-left">
-                                    <p class="font-semibold text-lg">Prof. ${user.name}</p>
-                                    <p class="text-sm text-gray-500 break-all">${user.email}</p>
-                                </div>
-                            </div>
-                            <div class="flex flex-row sm:flex-row items-center gap-4 mt-2 sm:mt-0 w-full sm:w-auto">
-                                <a  target="_blank" rel="noopener noreferrer" href="${zoomLink} " class="flex items-center w-full justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition" target="_blank">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.5 4.5M19.5 14.5L15 19m0 0H9m6 0V9" />
-                                    </svg>
-                                    Join Meeting
-                                 
-                                </a>
-                               
-                            </div>
-                        </li>
-                    `;
-          }
+          if (Array.isArray(user.role) && user.role.includes("author") && user.zoomId) users.push(user);
         });
+        document.getElementById("loadingScreen").classList.add("hidden");
+        renderUsers();
       };
 
       document.addEventListener("DOMContentLoaded", loadUsers);
+      document.getElementById("searchInput").addEventListener("input", renderUsers);
+      document.getElementById("prevPage").addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderUsers(); }});
+      document.getElementById("nextPage").addEventListener("click", () => { if (currentPage * usersPerPage < users.length) { currentPage++; renderUsers(); }});
     </script>
-
-<script type="module" src="./dynamiccon.js"></script>
-<script type="module" src="./navbar.js"></script>
-<script src="bottomnv.js"></script>
-<script src="kaka.js"></script>
+    <script type="module" src="./dynamiccon.js"></script>
+    <script type="module" src="./navbar.js"></script>
+    <script src="bottomnv.js"></script>
+    <script src="kaka.js"></script>
   </head>
-  <body class="bg-gray-900 text-white flex items-center justify-center">
+  <body class="bg-gray-900 text-white flex items-center justify-center flex-col">
     <div class="fixed top-0 bg-[#172554]  z-20 w-full">
-      <div id="navbar-container"></div>
+        <div id="navbar-container"></div>
+      </div>
+    <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
+      <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
     </div>
     <div class="max-w-4xl w-full mt-32 p-2 lg:p-8">
-      <h1
-        class="text-2xl font-bold mb-6 text-center flex items-center justify-center gap-2 text-blue-700"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15 10l4.5 4.5M19.5 14.5L15 19m0 0H9m6 0V9"
-          />
-        </svg>
-        Authors' Zoom Meetings
-      </h1>
+      <h1 class="text-2xl font-bold mb-6 text-center text-blue-700">Authors' Zoom Meetings</h1>
+      <input id="searchInput" type="text" placeholder="Search authors..." class="w-full px-4 py-2 mb-4 rounded-lg bg-gray-800 text-white border border-gray-600 focus:outline-none"/>
       <ul id="userList" class="space-y-4 w-full"></ul>
+      <div class="flex justify-between items-center mt-4">
+        <button id="prevPage" class="px-4 py-2 bg-gray-700 text-white rounded">Previous</button>
+        <span id="pagination" class="text-gray-400"></span>
+        <button id="nextPage" class="px-4 py-2 bg-gray-700 text-white rounded">Next</button>
+      </div>
     </div>
-    <footer>
-      <div
-        class="fixed z-50 bottom-0 right-0 left-0"
-        id="navbar-container1"
-      ></div>
-    </footer>
   </body>
 </html>

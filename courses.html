@@ -1039,20 +1039,50 @@ document.getElementById("course-modal").style.display = "block";
       document.getElementById("course-modal").style.display = "none";
     });
 
-
     document.getElementById("searchInput").addEventListener("input", function () {
-    let query = this.value.toLowerCase();
+    let query = this.value.toLowerCase().trim();
     let courses = document.querySelectorAll("#course-list > div");
+    let courseList = document.getElementById("course-list");
 
-    courses.forEach((course) => {
+    // Remove existing "No courses available" message
+    let noCoursesMessage = document.getElementById("noCoursesMessage");
+    if (noCoursesMessage) {
+        noCoursesMessage.remove();
+    }
+
+    if (!query) {
+        courses.forEach(course => course.style.display = "block");
+        return;
+    }
+
+    let queryWords = query.split(/\s+/); // Split input into words
+    let matchFound = false;
+
+    courses.forEach(course => {
         let courseTitle = course.querySelector("h3").textContent.toLowerCase();
-        if (courseTitle.includes(query)) {
+        let titleWords = courseTitle.split(/\s+/); // Split course title into words
+
+        let matchCount = queryWords.filter(word => titleWords.includes(word)).length; // Count matching words
+
+        if (matchCount >= 2) { // Change to 3 for stricter matching
             course.style.display = "block";
+            matchFound = true;
         } else {
             course.style.display = "none";
         }
     });
+
+    // If no courses match, show the message
+    if (!matchFound) {
+        let message = document.createElement("p");
+        message.id = "noCoursesMessage";
+        message.className = "text-center text-gray-500 mt-4";
+        message.textContent = "No courses available.";
+        courseList.appendChild(message);
+    }
 });
+
+
 
     // Initialize
     renderCourses();

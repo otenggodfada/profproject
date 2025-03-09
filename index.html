@@ -29,14 +29,53 @@
         animation: spin-slow 3s linear infinite;
       }
     </style>
+
+<script type="module">
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+        authDomain: "profstudymate-6d0fc.firebaseapp.com",
+        projectId: "profstudymate",
+        storageBucket: "profstudymate.appspot.com",
+        messagingSenderId: "141453158869",
+        appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  // Function to update username
+  const updateUsername = async (userId) => {
+    const userRef = doc(db, "users", userId);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      document.getElementById("username").textContent = `Hello, ${userSnap.data().name}`;
+    }
+  };
+
+  // Check if user is logged in
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      updateUsername(user.uid);
+    }
+  });
+</script>
+
   </head>
   <body class="bg-gray-900 text-white">
     <div class="fixed top-0 bg-[#172554] z-20 w-full">
       <div id="navbar-container"></div>
       <div class="flex justify-between items-center py-6  px-6 bg-gray-900 ">
         <div>
-          <h1 id="username" class="text-3xl font-extrabold text-white">
-            Hello, Oteng
+          <h1 id="username" class="text-3xl mb-2 font-extrabold text-white">
+            Hello, Studymate
           </h1>
           <p class="text-white text-sm">What do you want to learn today?</p>
         </div>

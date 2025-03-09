@@ -106,70 +106,76 @@ searchInput.addEventListener("input", () => {
 });
 }
 
-      async function loadPost(postId) {
-        const postDoc = await getDoc(doc(db, "blogs", postId));
+async function loadPost(postId) {
+    const postDoc = await getDoc(doc(db, "blogs", postId));
 
-        if (!postDoc.exists()) {
-          document.getElementById("content").innerHTML =
-            "<h2 class='text-red-500 text-center'>Post Not Found</h2>";
-          return;
-        }
+    if (!postDoc.exists()) {
+        document.getElementById("content").innerHTML = "<h2 class='text-red-500 text-center'>Post Not Found</h2>";
+        return;
+    }
 
-        const post = postDoc.data();
-        const formattedDate = new Date(
-          post.timestamp?.seconds * 1000
-        ).toLocaleDateString();
+    const post = postDoc.data();
+    const formattedDate = new Date(post.timestamp?.seconds * 1000).toLocaleDateString();
 
-        document.getElementById("content").innerHTML = `
-  <div class="max-w-6xl mx-auto backdrop-blur-lg p-6 sm:p-12 rounded-2xl shadow-xl border border-white/20 w-full lg:w-screen">
-    <div class="flex flex-col lg:flex-row lg:items-start gap-16">
-        
-        <!-- Main Blog Content -->
-        <div class="lg:w-[65%] w-full">
-            
+    document.getElementById("content").innerHTML = `
+        <div class="max-w-6xl mx-auto backdrop-blur-lg p-6 sm:p-12 rounded-2xl shadow-xl border border-white/20 w-full lg:w-screen">
+            <div class="flex flex-col lg:flex-row lg:items-start gap-16">
+                <div class="lg:w-[65%] w-full">
+                    <h1 class="text-5xl font-extrabold text-white">${post.title}</h1>
+                    <p class="text-sm text-gray-400 mt-4">📅 ${formattedDate}</p>
+                    <img src="${post.link}" alt="Thumbnail" class="w-full max-h-[500px] object-cover rounded-xl mt-8 shadow-lg">
+                    <div class="mt-10 text-lg leading-relaxed text-gray-300 space-y-6">
+                        ${post.content}
+                    </div>
+                    <a href="blog.html" class="mt-12 inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-lg font-semibold rounded-full shadow-md hover:opacity-80 transition">
+                        ⬅ Back to Blogs
+                    </a>
+                </div>
+                <div class="lg:w-[40%] w-full mt-16 lg:mt-0 lg:pl-6">
+                    <h2 class="text-4xl font-bold text-white">💬 Comments</h2>
+                    <ul id="comments" class="text-gray-300 mt-6 bg-gray-800/50 p-6 rounded-xl shadow-lg space-y-6 max-h-96 overflow-auto"></ul>
+                    <div class="mt-8 bg-gray-800/60 p-6 rounded-xl shadow-lg">
+                        <textarea id="comment-input" class="w-full p-5 bg-gray-700 text-white rounded-xl border border-gray-600 focus:ring focus:ring-blue-500 text-lg" placeholder="Write a comment..."></textarea>
+                        <button onclick="addComment('${postId}')" class="mt-6 w-full px-6 py-4 bg-blue-500/50 text-white font-semibold text-lg rounded-xl hover:bg-blue-600 transition shadow-lg">
+                            Add Comment
+                        </button>
+                    </div>
+                       <h2 class="text-3xl font-bold text-white mt-16">📝 More Blogs</h2>
+            <div id="more-blogs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-8 mt-8"></div>
+                </div>
+            </div>
          
-
-            <h1 class="text-5xl font-extrabold text-white">${post.title}</h1>
-            <p class="text-sm text-gray-400 mt-4">📅 ${formattedDate}</p>
-
-            <img src="${post.link}" alt="Thumbnail" class="w-full max-h-[500px] object-cover rounded-xl mt-8 shadow-lg">
-
-            <div class="mt-10 text-lg leading-relaxed text-gray-300 space-y-6">
-                ${post.content}
-            </div>
-
-            <a href="blog.html" class="mt-12 inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-lg font-semibold rounded-full shadow-md hover:opacity-80 transition">
-                ⬅ Back to Blogs
-            </a>
         </div>
+    `;
+    
+    loadComments(postId);
+    loadMoreBlogs(postId);
+}
 
-  
+async function loadMoreBlogs(excludePostId) {
+    const blogsContainer = document.getElementById("more-blogs");
+    blogsContainer.innerHTML = "<p class='text-gray-400'>Loading...</p>";
 
-   
-
-           <!-- Comments Section -->
-        <div class="lg:w-[40%] w-full mt-16 lg:mt-0 lg:pl-6">
-            <h2 class="text-4xl font-bold text-white">💬 Comments</h2>
-
-            <ul id="comments" class="text-gray-300 mt-6 bg-gray-800/50 p-6 rounded-xl shadow-lg space-y-6 max-h-96 overflow-auto"></ul>
-
-            <div class="mt-8 bg-gray-800/60 p-6 rounded-xl shadow-lg">
-                <textarea id="comment-input" class="w-full p-5 bg-gray-700 text-white rounded-xl border border-gray-600 focus:ring focus:ring-blue-500 text-lg" placeholder="Write a comment..."></textarea>
-                <button onclick="addComment('${postId}')" class="mt-6 w-full px-6 py-4 bg-blue-500/50 text-white font-semibold text-lg rounded-xl hover:bg-blue-600 transition shadow-lg">
-                    Add Comment
-                </button>
-            </div>
-        </div>
-      </div>
-
-    </div>
-</div>
-
-
-`;
-
-        loadComments(postId);
-      }
+    const querySnapshot = await getDocs(collection(db, "blogs"));
+    let blogsHTML = "";
+    
+    querySnapshot.forEach((doc) => {
+        if (doc.id !== excludePostId) {
+            const blog = doc.data();
+            const formattedDate = new Date(blog.timestamp?.seconds * 1000).toLocaleDateString();
+            blogsHTML += `
+                <div class="bg-gray-800/50 p-6 rounded-xl shadow-lg">
+                    <img src="${blog.link}" class="w-full h-48 object-cover rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-white mt-4">${blog.title}</h3>
+                    <p class="text-sm text-gray-400">📅 ${formattedDate}</p>
+                    <a href="id=${doc.id}" class="mt-4 inline-block text-blue-400 hover:text-blue-300 transition">Read More →</a>
+                </div>
+            `;
+        }
+      
+    });
+    blogsContainer.innerHTML = blogsHTML || "<p class='text-gray-400'>No other blogs available.</p>";
+}
 
       async function loadComments(postId) {
         const commentsContainer = document.getElementById("comments");
@@ -192,6 +198,21 @@ searchInput.addEventListener("input", () => {
           commentsHTML ||
           "<li class='text-gray-500 text-center'>No comments yet.</li>";
       }
+
+      function shareBlog(postId, title, url) {
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: "Check out this amazing blog post!",
+            url: url,
+        })
+        .then(() => console.log("Successfully shared"))
+        .catch((error) => console.log("Error sharing:", error));
+    } else {
+        alert("Sharing not supported on this browser. Use the social media buttons instead.");
+    }
+}
+
     </script>
      <script type="module" src="./dynamiccon.js"></script>
      <script src="bottomnv.js"></script>

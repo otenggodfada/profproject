@@ -33,35 +33,30 @@
   <body class="bg-gray-900 text-white">
     <div class="fixed top-0 bg-[#172554] z-20 w-full">
       <div id="navbar-container"></div>
-    </div>
-    <div class="max-w-md mx-auto mt-32 mb-36">
-      <div class="flex justify-between items-center mt-4 px-6 mb-6">
+      <div class="flex justify-between items-center py-6  px-6 bg-gray-900 ">
         <div>
           <h1 id="username" class="text-3xl font-extrabold text-white">
             Hello, Oteng
           </h1>
           <p class="text-white text-sm">What do you want to learn today?</p>
         </div>
-        <div
-          onclick="window.location.href='mprofilepage.html'"
-          class="relative w-14 h-14 flex justify-center items-center cursor-pointer"
-        >
-          <!-- Animated Glowing Border -->
-          <div
-            class="absolute w-full h-full rounded-full border-2 border-transparent animate-pulse bg-white/10 group-hover:bg-white/20"
-          ></div>
-
-          <!-- Rotating Outer Ring -->
-          <div
-            class="absolute w-full h-full rounded-full border border-white/50 animate-spin-slow"
-          ></div>
-
-          <!-- Settings Icon -->
-          <i
-            class="ph ph-gear text-3xl text-white/80 transition-transform group-hover:rotate-180 duration-500"
-          ></i>
+        <div onclick="window.location.href='mprofilepage.html'" 
+        class="relative w-16 h-16 flex justify-center items-center cursor-pointer group">
+        
+        <!-- Rotating Outer Gear -->
+        <i class=" border w-16 h-16 rounded-full border-b-2 border-white absolute  bg-white/10 animate-spin-slow"></i>
+    
+        <!-- User Profile with Gear (Middle Icon) -->
+        <div class="relative flex items-center">
+            <i class="ph ph-user text-2xl text-white/80"></i>
+            <i class="ph ph-gear text-xl text-white/80 absolute -bottom-2 -right-3 
+                      transition-transform group-hover:rotate-180 duration-500"></i>
         </div>
+    </div>
       </div>
+    </div>
+    <div class="max-w-md mx-auto mt-60 mb-36">
+    
 
       <!-- Cards Section -->
       <div class="space-y-6" id="card-container">

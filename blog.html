@@ -127,6 +127,38 @@ async function loadPost(postId) {
                     <div class="mt-10 text-lg leading-relaxed text-gray-300 space-y-6">
                         ${post.content}
                     </div>
+
+                    <div class="mt-8 flex flex-wrap gap-4 items-center">
+    <button onclick="shareBlog('${postId}', '${post.title}', '${window.location.href}')"
+        class="flex items-center gap-2 px-6 py-3 bg-green-500/50 text-white font-semibold rounded-lg hover:bg-green-600 transition shadow-lg">
+        <i class="fas fa-share-alt"></i> Share
+    </button>
+    
+    <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(window.location.href)}"
+        target="_blank"
+        class="flex items-center gap-2 px-6 py-3 bg-blue-500/50 text-white font-semibold rounded-lg hover:bg-blue-600 transition shadow-lg">
+        <i class="fab fa-twitter"></i> Twitter
+    </a>
+
+    <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}"
+        target="_blank"
+        class="flex items-center gap-2 px-6 py-3 bg-blue-700/50 text-white font-semibold rounded-lg hover:bg-blue-800 transition shadow-lg">
+        <i class="fab fa-facebook"></i> Facebook
+    </a>
+
+    <a href="https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(post.title)}"
+        target="_blank"
+        class="flex items-center gap-2 px-6 py-3 bg-blue-800/50 text-white font-semibold rounded-lg hover:bg-blue-900 transition shadow-lg">
+        <i class="fab fa-linkedin"></i> LinkedIn
+    </a>
+
+    <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + ' ' + window.location.href)}"
+        target="_blank"
+        class="flex items-center gap-2 px-6 py-3 bg-green-600/50 text-white font-semibold rounded-lg hover:bg-green-700 transition shadow-lg">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+    </a>
+</div>
+
                     <a href="blog.html" class="mt-12 inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-lg font-semibold rounded-full shadow-md hover:opacity-80 transition">
                         ⬅ Back to Blogs
                     </a>

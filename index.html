@@ -16,6 +16,19 @@
     <script type="module" src="./navbar.js"></script>
     <script src="bottomnv.js"></script>
     <script src="kaka.js"></script>
+    <style>
+      @keyframes spin-slow {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .animate-spin-slow {
+        animation: spin-slow 3s linear infinite;
+      }
+    </style>
   </head>
   <body class="bg-gray-900 text-white">
     <div class="fixed top-0 bg-[#172554] z-20 w-full">
@@ -24,13 +37,30 @@
     <div class="max-w-md mx-auto mt-32 mb-36">
       <div class="flex justify-between items-center mt-4 px-6 mb-6">
         <div>
-          <h1 id="username" class="text-3xl font-extrabold text-white">Hello, Oteng</h1>
-          <p class="text-white text-sm">What do you want to do learn today?</p>
+          <h1 id="username" class="text-3xl font-extrabold text-white">
+            Hello, Oteng
+          </h1>
+          <p class="text-white text-sm">What do you want to learn today?</p>
         </div>
-        <div onclick="window.location.href='mprofilepage.html'" class="border border-white/70 p-3 text-center rounded-full w-12 h-12 flex justify-center items-center cursor-pointer">
-            <i class="ph ph-user text-2xl text-white/70"></i>
-          </div>
-          
+        <div
+          onclick="window.location.href='mprofilepage.html'"
+          class="relative w-14 h-14 flex justify-center items-center cursor-pointer"
+        >
+          <!-- Animated Glowing Border -->
+          <div
+            class="absolute w-full h-full rounded-full border-2 border-transparent animate-pulse bg-white/10 group-hover:bg-white/20"
+          ></div>
+
+          <!-- Rotating Outer Ring -->
+          <div
+            class="absolute w-full h-full rounded-full border border-white/50 animate-spin-slow"
+          ></div>
+
+          <!-- Settings Icon -->
+          <i
+            class="ph ph-gear text-3xl text-white/80 transition-transform group-hover:rotate-180 duration-500"
+          ></i>
+        </div>
       </div>
 
       <!-- Cards Section -->
@@ -40,46 +70,46 @@
             {
               title1: "CITG",
               description: "Certified IT Governance program for professionals.",
-               link: "courses.html"
+              link: "courses.html",
             },
             {
               title1: "ICAGH",
               description: "Institute of Chartered Accountants Ghana program.",
-               link: "courses.html"
+              link: "courses.html",
             },
             {
               title1: "BOOKSHOP",
               description:
                 "Access a wide range of educational books and resources.",
-                link: "store.html"
+              link: "store.html",
             },
             {
               title1: "ALUMNI TRAINING PROGRAMS",
               description: "Exclusive training for our alumni members.",
-               link: "courses.html"
+              link: "courses.html",
             },
             {
               title1: "Grow your business (Digital marketing)",
               description:
                 "Master digital marketing strategies to grow your business.",
-                 link: "blog.html"
+              link: "blog.html",
             },
             {
               title1: "MAKE MONEY WITH PROFS (BECOME an affiliate)",
               description: "Join our affiliate program and earn commissions.",
-               link: "job.html"
+              link: "job.html",
             },
             {
               title1: "ADIT",
               description:
                 "Advanced Diploma in International Taxation program.",
-                 link: "courses.html"
+              link: "courses.html",
             },
             {
               title1: "PMP PROFESSIONAL",
               description:
                 "Project Management Professional certification training.",
-                 link: "courses.html"
+              link: "courses.html",
             },
           ];
 
@@ -87,7 +117,9 @@
             options
               .map(
                 (option) => `
-                        <div onclick="window.location.href='${option.link}?title1=${encodeURIComponent(option.title1)}'"
+                        <div onclick="window.location.href='${
+                          option.link
+                        }?title1=${encodeURIComponent(option.title1)}'"
  class="card flex items-stretch justify-between  rounded-xl    border border-gray-500">
                             <div class="m-6">
                                             <!-- Rating -->
@@ -110,9 +142,13 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
       </svg>
              </div>               
-                            <h2 class="text-lg font-semibold text-white">${option.title1}</h2></div>
+                            <h2 class="text-lg font-semibold text-white">${
+                              option.title1
+                            }</h2></div>
                     
-                                <p class="text-sm text-gray-500">${option.description}</p>
+                                <p class="text-sm text-gray-500">${
+                                  option.description
+                                }</p>
                             </div>
                             <div  class="bg-[#172554] text-white px-5 flex flex-col items-center justify-center rounded-r-xl transform transition hover:scale-105 ">
                                 <i class="ph ph-arrow-right text-xl"></i>

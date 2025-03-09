@@ -360,9 +360,45 @@ class="w-full p-3  text-lg rounded-lg bg-gray-900 text-white border mt-3 border-
 const courseTitle = urlParams.get("title1");
 
 if (courseTitle) {
-  document.getElementById("lolo").textContent = courseTitle;
-  document.getElementById("searchInput").value = courseTitle;
+    document.getElementById("lolo").textContent = courseTitle;
+    const searchInput = document.getElementById("searchInput");
+
+    searchInput.focus();
+    searchInput.value = ""; // Clear input before typing
+
+    let index = 0;
+
+    function typeCharacter() {
+        if (index < courseTitle.length) {
+            searchInput.value += courseTitle[index];
+
+            // Dispatch an actual "input" event to mimic real typing
+            searchInput.dispatchEvent(new InputEvent("input", { bubbles: true }));
+
+            index++;
+            setTimeout(typeCharacter, 50); // Adjust typing speed (50ms per character)
+        } else {
+            // Start backspacing after a short delay
+            setTimeout(simulateBackspace, 500);
+        }
+    }
+
+    function simulateBackspace() {
+        if (searchInput.value.length > 0) {
+            searchInput.value = searchInput.value.slice(0, -1);
+
+            // Dispatch InputEvent again to simulate real input change
+            searchInput.dispatchEvent(new InputEvent("input", { bubbles: true }));
+
+            setTimeout(simulateBackspace, 100); // Adjust backspace speed
+        }
+    }
+
+    typeCharacter();
 }
+
+
+
 
     const formatTimestamp = (timestamp) => {
       if (!timestamp) return "Unknown";
@@ -754,11 +790,15 @@ const renderCourses = async (tagId = null) => {
     if (tagId) {
         // Filter courses by tagId
         courses = courses.filter(course => course.tag_ids.includes(tagId));
+    }else{
+      courseList.innerHTML = "<p class='text-center text-gray-500'>No courses available.</p>";
+      document.getElementById("loadingScreen").classList.add("hidden");
     }
 
     if (courses.length === 0) {
         courseList.innerHTML = "<p class='text-center text-gray-500'>No courses available.</p>";
         return;
+        document.getElementById("loadingScreen").classList.add("hidden");
     }
     document.getElementById("loadingScreen").classList.add("hidden");
     // Render courses
@@ -997,6 +1037,21 @@ document.getElementById("course-modal").style.display = "block";
     document.getElementById("close-modal").addEventListener("click", () => {
       document.getElementById("course-modal").style.display = "none";
     });
+
+
+    document.getElementById("searchInput").addEventListener("input", function () {
+    let query = this.value.toLowerCase();
+    let courses = document.querySelectorAll("#course-list > div");
+
+    courses.forEach((course) => {
+        let courseTitle = course.querySelector("h3").textContent.toLowerCase();
+        if (courseTitle.includes(query)) {
+            course.style.display = "block";
+        } else {
+            course.style.display = "none";
+        }
+    });
+});
 
     // Initialize
     renderCourses();

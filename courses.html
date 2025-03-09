@@ -146,7 +146,12 @@ option {
     <option>Course Title (Z-A)</option>
   </select>
 </div>
-
+<input
+type="text" 
+id="searchInput"
+placeholder="Search courses..."
+class="w-full p-3  text-lg rounded-lg bg-gray-900 text-white border mt-3 border-gray-600 focus:ring focus:ring-blue-500"
+/>
 
   <div class="flex">
     <!-- Tags Section for Larger Screens -->
@@ -352,10 +357,11 @@ option {
     // Convert Firestore Timestamp to Human-Readable Date
 
     const urlParams = new URLSearchParams(window.location.search);
-const courseTitle = urlParams.get("title");
+const courseTitle = urlParams.get("title1");
 
 if (courseTitle) {
   document.getElementById("lolo").textContent = courseTitle;
+  document.getElementById("searchInput").value = courseTitle;
 }
 
     const formatTimestamp = (timestamp) => {

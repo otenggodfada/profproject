@@ -24,7 +24,7 @@
     <div class="max-w-md mx-auto mt-32 mb-36">
       <div class="flex justify-between items-center mt-4 px-6 mb-6">
         <div>
-          <h1 class="text-3xl font-extrabold text-white">Hello, Oteng</h1>
+          <h1 id="username" class="text-3xl font-extrabold text-white">Hello, Oteng</h1>
           <p class="text-white text-sm">What do you want to do learn today?</p>
         </div>
         <div onclick="window.location.href='mprofilepage.html'" class="border border-white/70 p-3 text-center rounded-full w-12 h-12 flex justify-center items-center cursor-pointer">
@@ -38,45 +38,45 @@
         <script>
           const options = [
             {
-              title: "CITG",
+              title1: "CITG",
               description: "Certified IT Governance program for professionals.",
                link: "courses.html"
             },
             {
-              title: "ICAGH",
+              title1: "ICAGH",
               description: "Institute of Chartered Accountants Ghana program.",
                link: "courses.html"
             },
             {
-              title: "BOOKSHOP",
+              title1: "BOOKSHOP",
               description:
                 "Access a wide range of educational books and resources.",
                 link: "store.html"
             },
             {
-              title: "ALUMNI TRAINING PROGRAMS",
+              title1: "ALUMNI TRAINING PROGRAMS",
               description: "Exclusive training for our alumni members.",
                link: "courses.html"
             },
             {
-              title: "Grow your business (Digital marketing)",
+              title1: "Grow your business (Digital marketing)",
               description:
                 "Master digital marketing strategies to grow your business.",
                  link: "blog.html"
             },
             {
-              title: "MAKE MONEY WITH PROFS (BECOME an affiliate)",
+              title1: "MAKE MONEY WITH PROFS (BECOME an affiliate)",
               description: "Join our affiliate program and earn commissions.",
                link: "job.html"
             },
             {
-              title: "ADIT",
+              title1: "ADIT",
               description:
                 "Advanced Diploma in International Taxation program.",
                  link: "courses.html"
             },
             {
-              title: "PMP PROFESSIONAL",
+              title1: "PMP PROFESSIONAL",
               description:
                 "Project Management Professional certification training.",
                  link: "courses.html"
@@ -87,7 +87,7 @@
             options
               .map(
                 (option) => `
-                        <div onclick="window.location.href='${option.link}?title=${encodeURIComponent(option.title)}'"
+                        <div onclick="window.location.href='${option.link}?title1=${encodeURIComponent(option.title1)}'"
  class="card flex items-stretch justify-between  rounded-xl    border border-gray-500">
                             <div class="m-6">
                                             <!-- Rating -->
@@ -110,7 +110,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
       </svg>
              </div>               
-                            <h2 class="text-lg font-semibold text-white">${option.title}</h2></div>
+                            <h2 class="text-lg font-semibold text-white">${option.title1}</h2></div>
                     
                                 <p class="text-sm text-gray-500">${option.description}</p>
                             </div>

@@ -1,5 +1,3 @@
-<!-- @format -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,9 +21,7 @@
     <script type="module" src="./dynamiccon.js"></script>
     <script src="bottomnv.js"></script>
     <script src="navbar.js"></script>
-    <script src="kaka.js"></script>
     <script type="module">
-    
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
         getFirestore,
@@ -83,12 +79,16 @@
       ).toLocaleDateString();
 
       postsContainer.innerHTML += `
-        <div class="bg-white/10 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-white/20 transition-transform transform hover:scale-105">
-          <img src="${post.link}" alt="Thumbnail" class="w-full h-52 object-cover rounded-lg mb-4">
+        <div class="bg-white/10 backdrop-blur-lg  rounded-xl shadow-lg border border-white/20 transition-transform transform hover:scale-105">
+           <img src="${post.link}" alt="Thumbnail" class="w-full h-52 object-cover rounded-t-lg mb-4">
+          <div class="p-6">
+           
           <h2 class="text-2xl font-semibold text-white">${post.title}</h2>
           <p class="text-gray-300 mt-2">${post.description}</p>
           <p class="text-sm text-gray-400 mt-2">📅 ${formattedDate}</p>
           <a href="?id=${post.id}" class="mt-4 inline-block px-4 py-3 bg-blue-500/50 border-white/20 border text-white font-semibold rounded-lg hover:bg-blue-600 transition">Read More</a>
+            
+            </div
         </div>`;
     });
   }
@@ -200,7 +200,7 @@ searchInput.addEventListener("input", () => {
     <div class="fixed bg-[#172554]  z-20 w-screen">
       <div id="navbar-container"></div>
     </div>
-    <div class="max-w-6xl mx-auto px-6 py-4">
+    <div class="max-w-6xl mx-auto px-6 py-10">
       <div
         class="flex flex-col items-center justify-center mb-5 bg-gray-900 text-white"
       >
@@ -213,106 +213,101 @@ searchInput.addEventListener("input", () => {
 }"
           class="text-center mt-24"
         >
-        
           <h1 class="text-4xl font-bold">PROFSTUDYMATE BLOG</h1>
           <p class="text-gray-400 mt-2">Welcome to Profstudymate, your ultimate companion for ICAG and <br> CITG studies in Ghana! Developed by Profs Training Solutions, our blog provides valuable insights, <br> study tips, and resources to help you succeed in your professional journey. Stay informed, stay ahead! 🚀</p>
-     
-      
-
-          </div>
-                    <div class="flex flex-row justify-center space-x-4 mt-4 mb-4 overflow-auto scrollbar-hide mx-6">
-                    <div>
-                      <a
-                      href="http://instagram.com/profs_training_solutions/"
-                      target="_blank"
-                      class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-pink-500/50"
-                    >
-                      <img
-                        src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"
-                        class="w-6 h-6"
-                        alt="Instagram"
-                      />
-                    </a>
-                    </div>
-                   <div>
-                    <a
-                    href="http://tiktok.com/@profstraining"
-                    target="_blank"
-                    class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-gray-500/50"
-                  >
-                    <img
-                      src="https://cdn-icons-png.flaticon.com/512/3046/3046120.png"
-                      class="w-6 h-6"
-                      alt="TikTok"
-                    />
-                  </a>
-                   </div>
-                     <div>
-                      <a
-                      href="http://youtube.com/@ProfsTrainingSolutions"
-                      target="_blank"
-                      class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-red-500/50"
-                    >
-                      <img
-                        src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"
-                        class="w-6 h-6"
-                        alt="YouTube"
-                      />
-                    </a>
-                     </div>
-                    <div>
-                      <a
-                      href="https://linkedin.com/in/profs-training-solutions/"
-                      target="_blank"
-                      class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50"
-                    >
-                      <img
-                        src="https://cdn-icons-png.flaticon.com/512/1384/1384062.png"
-                        class="w-6 h-6"
-                        alt="LinkedIn"
-                      />
-                    </a>
-                    </div>
-                   <div>
-                    <a
-                    href="http://facebook.com/ProfsTraining"
-                    target="_blank"
-                    class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-600/50"
-                  >
-                    <img
-                      src="https://cdn-icons-png.flaticon.com/512/1384/1384053.png"
-                      class="w-6 h-6"
-                      alt="Facebook"
-                    />
-                  </a>
-                   </div>
-                   <div>
-                    <a
-                    href="https://whatsapp.com/channel/0029VaZV6OeEAKWHHdSdiR1S"
-                    target="_blank"
-                    class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-green-500/50"
-                  >
-                    <img
-                      src="https://cdn-icons-png.flaticon.com/512/1384/1384055.png"
-                      class="w-6 h-6"
-                      alt="WhatsApp"
-                    />
-                  </a>
-                   </div>
-               <div>
-                <a
-                href="https://t.me/Profstrainingsolutions"
-                target="_blank"
-                class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-400/50"
-              >
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"
-                  class="w-6 h-6"
-                  alt="Telegram"
-                />
-              </a>
-               </div>
-                    </div>
+          <div class="flex flex-row justify-center space-x-4 mt-4 mb-4 overflow-auto scrollbar-hide mx-6">
+            <div>
+              <a
+              href="http://instagram.com/profs_training_solutions/"
+              target="_blank"
+              class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-pink-500/50"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"
+                class="w-6 h-6"
+                alt="Instagram"
+              />
+            </a>
+            </div>
+           <div>
+            <a
+            href="http://tiktok.com/@profstraining"
+            target="_blank"
+            class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-gray-500/50"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3046/3046120.png"
+              class="w-6 h-6"
+              alt="TikTok"
+            />
+          </a>
+           </div>
+             <div>
+              <a
+              href="http://youtube.com/@ProfsTrainingSolutions"
+              target="_blank"
+              class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-red-500/50"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"
+                class="w-6 h-6"
+                alt="YouTube"
+              />
+            </a>
+             </div>
+            <div>
+              <a
+              href="https://linkedin.com/in/profs-training-solutions/"
+              target="_blank"
+              class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1384/1384062.png"
+                class="w-6 h-6"
+                alt="LinkedIn"
+              />
+            </a>
+            </div>
+           <div>
+            <a
+            href="http://facebook.com/ProfsTraining"
+            target="_blank"
+            class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-600/50"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1384/1384053.png"
+              class="w-6 h-6"
+              alt="Facebook"
+            />
+          </a>
+           </div>
+           <div>
+            <a
+            href="https://whatsapp.com/channel/0029VaZV6OeEAKWHHdSdiR1S"
+            target="_blank"
+            class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-green-500/50"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1384/1384055.png"
+              class="w-6 h-6"
+              alt="WhatsApp"
+            />
+          </a>
+           </div>
+       <div>
+        <a
+        href="https://t.me/Profstrainingsolutions"
+        target="_blank"
+        class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-400/50"
+      >
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"
+          class="w-6 h-6"
+          alt="Telegram"
+        />
+      </a>
+       </div>
+            </div>
           <div class="flex flex-wrap gap-4 mb-4 mt-3">
             <span
               class="px-4 py-2 bg-blue-600/20 text-blue-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
@@ -349,15 +344,16 @@ searchInput.addEventListener("input", () => {
           </div>
         </motion.div>
         <input
-  type="text"
-  id="searchInput"
-  placeholder="Search blog posts..."
-  class="w-full p-3  text-lg rounded-lg bg-gray-800 text-white border border-gray-600 focus:ring focus:ring-blue-500"
-/>
+        type="text"
+        id="searchInput"
+        placeholder="Search blog posts..."
+        class="w-full p-3  text-lg rounded-lg bg-gray-800 text-white border border-gray-600 focus:ring focus:ring-blue-500"
+      />
       </div>
+      
       <div
         id="content"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-2 mb-24"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-24"
       ></div>
     </div>
     <footer>
@@ -366,5 +362,8 @@ searchInput.addEventListener("input", () => {
         id="navbar-container1"
       ></div>
     </footer>
+    <script src="footerp.js"></script>
+    <div id="footer-container"></div>
+    <script src="kaka.js"></script>
   </body>
 </html>

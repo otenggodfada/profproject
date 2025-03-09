@@ -231,6 +231,27 @@ async function loadMoreBlogs(excludePostId) {
           "<li class='text-gray-500 text-center'>No comments yet.</li>";
       }
 
+
+      async function addComment(postId) {
+    const commentInput = document.getElementById("comment-input");
+    const commentText = commentInput.value.trim();
+    
+    if (!commentText) {
+        alert("Please enter a comment before submitting.");
+        return;
+    }
+
+    const commentRef = collection(db, "blogs", postId, "comments");
+    
+    await addDoc(commentRef, {
+        content: commentText,
+        timestamp: serverTimestamp()
+    });
+    
+    commentInput.value = ""; // Clear input field after submission
+    loadComments(postId); // Refresh comments
+}
+
       function shareBlog(postId, title, url) {
     if (navigator.share) {
         navigator.share({
@@ -379,42 +400,42 @@ async function loadMoreBlogs(excludePostId) {
       
            
           <div class="flex flex-wrap gap-4 mb-4 mt-3">
-            <span
+            <span onclick="changeInputContent('CITGH - Professional Level')"
               class="px-4 py-2 bg-blue-600/20 text-blue-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
               >#CITGH - Professional Level</span
             >
-            <span
+            <span onclick="changeInputContent('ICAGH - Level 1')"
               class="px-4 py-2 bg-green-600/20 text-green-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
               >#ICAGH - Level 1</span
             >
-            <span
+            <span onclick="changeInputContent('ICAGH - Level 3')"
               class="px-4 py-2 bg-purple-600/20 text-purple-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
               >#ICAGH - Level 3</span
             >
-            <span
+            <span onclick="changeInputContent('ICAGH - Level 2')"
               class="px-4 py-2 bg-blue-600/20 text-blue-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
               >#ICAGH - Level 2</span
             >
-            <span
+            <span onclick="changeInputContent('Digital Marketing and Business Growth')"
               class="px-4 py-2 bg-gray-600/20 text-white-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
               >#Digital Marketing and Business Growth</span
             >
-            <span
+            <span onclick="changeInputContent('Corporate Training')"
               class="px-4 py-2 bg-purple-600/20 text-purple-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
               >#Corporate Training</span
             >
-            <span
+            <span onclick="changeInputContent('CITGH - Final Level 2')"
               class="px-4 py-2 bg-blue-600/20 text-blue-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
               >#CITGH - Final Level 2</span
             >
-            <span
+            <span onclick="changeInputContent('CITGH - Final Level 1')"
               class="px-4 py-2 bg-red-600/20 text-red-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
               >#CITGH - Final Level 1</span
             >
           </div>
         </motion.div>
         <input
-        type="text"
+        type="text" 
         id="searchInput"
         placeholder="Search blog posts..."
         class="w-full p-3  text-lg rounded-lg bg-gray-800 text-white border border-gray-600 focus:ring focus:ring-blue-500"
@@ -432,6 +453,34 @@ async function loadMoreBlogs(excludePostId) {
         id="navbar-container1"
       ></div>
     </footer>
+    <script>
+      function changeInputContent(text1) {
+        let inputField = document.getElementById("searchInput");
+        inputField.focus();
+    
+        // Simulate typing "Updated Content!"
+        let text =text1;
+        inputField.value = ""; // Clear input before typing
+    
+        text.split("").forEach((char, index) => {
+          setTimeout(() => {
+            inputField.value += char;
+    
+            // Dispatch an actual "input" event to mimic real typing
+            let event = new InputEvent("input", { bubbles: true });
+            inputField.dispatchEvent(event);
+          }, index * 100); // Typing speed: 100ms per character
+        });
+    
+        // After 1 second, delete the last character as if the user pressed backspace
+        setTimeout(() => {
+          let event = new KeyboardEvent("keydown", { key: "Backspace", bubbles: true });
+          inputField.value
+          inputField.dispatchEvent(event);
+        }, text.length * 100 + 1000); // Wait for typing to finish + 1 second delay
+      }
+    </script>
+    <script src=""></script>
     <script src="footerp.js"></script>
     <div id="footer-container"></div>
     <script src="kaka.js"></script>

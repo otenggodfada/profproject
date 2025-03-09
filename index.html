@@ -56,7 +56,9 @@
     const userRef = doc(db, "users", userId);
     const userSnap = await getDoc(userRef);
     if (userSnap.exists()) {
-      document.getElementById("username").textContent = `Hello, ${userSnap.data().name}`;
+      let fullName = userSnap.data().name;
+      let displayName = fullName.length > 8 ? fullName.substring(0, 8) + "..." : fullName;
+      document.getElementById("username").textContent = `Hello, ${displayName}`;
     }
   };
 
@@ -94,7 +96,7 @@
     </div>
       </div>
     </div>
-    <div class="max-w-md mx-auto mt-60 mb-36">
+    <div class="max-w-md mx-auto mt-36 py-14 mb-36">
     
 
       <!-- Cards Section -->

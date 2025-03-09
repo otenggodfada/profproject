@@ -27,13 +27,13 @@
   </head>
 
   <body class="bg-gray-900">
-    <div class="bg-[#172554]  z-20 fixed w-screen top-0">
+    <div class="bg-[#172554] z-20 fixed w-screen top-0">
       <div id="navbar-container"></div>
     </div>
 
     <div class="p-9 mb-20 mt-48 w-full flex justify-center">
       <div
-        class="w-full max-w-3xl p-8  border border-gray-500/30 bg-gray-950/20 rounded-lg text-white text-center"
+        class="w-full max-w-3xl p-8 border border-gray-500/30 bg-gray-950/20 rounded-lg text-white text-center"
       >
         <motion.div
           class="relative overflow-hidden rounded-lg"
@@ -41,7 +41,6 @@
           initial="{ opacity: 0, y: -20 }"
           transition="{ duration: 0.5 }"
         >
-        
           <img
             id="photo"
             class="w-36 h-36 rounded-full border-4 border-white shadow-xl mx-auto -mt-20 transition duration-300 hover:scale-105"
@@ -50,27 +49,23 @@
           />
         </motion.div>
 
-        <div class="mt-5">
-          <h2
-            id="name"
-            class="text-3xl font-semibold flex items-center justify-center gap-2"
-          >
-            <i data-lucide="user"></i> <span></span>
+        <div class="mt-10 max-w-md mx-auto bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-6 text-center border border-white/20">
+          <h2 id="role" class="text-xl font-medium text-gray-300 flex items-center justify-center gap-2">
+            <i data-lucide="database"></i> <span>User Role</span>
           </h2>
-          <p
-            id="email"
-            class="text-lg text-gray-300 flex items-center justify-center gap-2"
-          >
-            <i data-lucide="mail"></i> <span></span>
+          <h2 id="name" class="text-3xl font-semibold text-white mt-2 flex items-center justify-center gap-2">
+            <i data-lucide="user"></i> <span>John Doe</span>
+          </h2>
+          <p id="email" class="text-lg text-gray-400 mt-1 flex items-center justify-center gap-2">
+            <i data-lucide="mail"></i> <span>johndoe@example.com</span>
           </p>
         
-          <a
-            href="editprofile.html"
-            class="mt-5 px-5 py-3 bg-[#172554] border rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center gap-2"
-          >
+          <a href="editprofile.html"
+            class="mt-5 px-5 py-3 bg-[#172554] border rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center gap-2">
             <i data-lucide="edit"></i> Edit Profile
           </a>
         </div>
+        
       </div>
     </div>
 
@@ -133,6 +128,10 @@
                   }
                   if (userData.role && !userData.role.includes("author")) {
                     document
+                      .getElementById("role")
+                      .querySelector("span").textContent =
+                      userData.role || "N/A";
+                    document
                       .getElementById("name")
                       .querySelector("span").textContent =
                       userData.name || "N/A";
@@ -143,7 +142,6 @@
                     document.getElementById("photo").src =
                       userData.photoURL ||
                       "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";
-                   
                   }
                 }
               })
@@ -160,34 +158,43 @@
       lucide.createIcons();
     </script>
 
-<script>
-  function openFullScreen(sectionIndex, lessonIndex) {
-    
-    const videoContainer = document.querySelector(`#lesson-details-\${sectionIndex}-\${lessonIndex} iframe`);
-    const content = videoContainer ? videoContainer.outerHTML : 'No video available';
+    <script>
+      function openFullScreen(sectionIndex, lessonIndex) {
+        const videoContainer = document.querySelector(
+          `#lesson-details-\${sectionIndex}-\${lessonIndex} iframe`
+        );
+        const content = videoContainer
+          ? videoContainer.outerHTML
+          : "No video available";
 
-    document.getElementById("fullscreen-content").innerHTML = content;
-    document.getElementById("fullscreen-overlay").classList.remove("hidden");
-  }
+        document.getElementById("fullscreen-content").innerHTML = content;
+        document
+          .getElementById("fullscreen-overlay")
+          .classList.remove("hidden");
+      }
 
-  function closeFullScreen() {
-    document.getElementById("fullscreen-overlay").classList.add("hidden");
-    document.getElementById("fullscreen-content").innerHTML = '';
-  }
-</script>
-<script>
-  window.addEventListener("load", () => {
-    const loadingScreen = document.getElementById("loadingScreen");
-    loadingScreen.classList.add("opacity-0");
-    setTimeout(() => {
-      loadingScreen.style.display = "none";
-    }, 500); // Wait for fade-out transition
-  });
-</script>
-<!-- Loading Screen -->
-<div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
-  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
-</div>
-
+      function closeFullScreen() {
+        document.getElementById("fullscreen-overlay").classList.add("hidden");
+        document.getElementById("fullscreen-content").innerHTML = "";
+      }
+    </script>
+    <script>
+      window.addEventListener("load", () => {
+        const loadingScreen = document.getElementById("loadingScreen");
+        loadingScreen.classList.add("opacity-0");
+        setTimeout(() => {
+          loadingScreen.style.display = "none";
+        }, 500); // Wait for fade-out transition
+      });
+    </script>
+    <!-- Loading Screen -->
+    <div
+      id="loadingScreen"
+      class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100"
+    >
+      <div
+        class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"
+      ></div>
+    </div>
   </body>
 </html>

@@ -73,44 +73,46 @@
   </div>
 
   <!-- Profile Card -->
-  <div class="w-full max-w-4xl bg-opacity-10 backdrop-blur-lg rounded-lg shadow-xl mt-28 mb-28 overflow-hidden p-6 border border-gray-500/30">
+  <div class="w-full max-w-4xl bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl mt-28 mb-28 overflow-hidden p-8 border border-white/20">
    
-    <div class="p-6 text-center">
-      <h2 class="text-2xl font-bold" id="userName">Welcome, User!</h2>
+    <div class="text-center">
+      <h2 class="text-3xl font-bold text-white" id="userName">Welcome, User!</h2>
       <p class="text-gray-300 mt-2 animate-pulse">Explore available tools and manage your profile easily.</p>
     </div>
     
     <!-- Menu Options -->
-    <div class="px-6 py-4 space-y-4">
-      <a href="./mycourse.html?title=account" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
-        <i class="fas fa-book-open"></i>
+    <div class="mt-6 space-y-4">
+      <a href="./mycourse.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
+        <i class="fas fa-book-open text-xl"></i>
         <span>My Courses</span>
       </a>
-      <a href="https://profstudymateadmin.com/" id="adminPanelLink" class="hidden flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
-        <i class="fas fa-database"></i>
+      <a href="https://profstudymateadmin.com/" id="adminPanelLink" class="hidden flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
+        <i class="fas fa-database text-xl"></i>
         <span>Admin Panel</span>
       </a>
-      <a href="./mybooks.html?title=account" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
-        <i class="fas fa-book"></i>
+      <a href="./mybooks.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
+        <i class="fas fa-book text-xl"></i>
         <span>My Books</span>
       </a>
-      <a href="./myprofile.html?title=account" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
-        <i class="fas fa-user-edit"></i>
+      <a href="./myprofile.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
+        <i class="fas fa-user-edit text-xl"></i>
         <span>My Profile</span>
       </a>
-      <a href="./job.html?title=account" class="flex items-center space-x-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
-        <i class="fas fa-money-bill"></i>
+      <a href="./job.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
+        <i class="fas fa-money-bill text-xl"></i>
         <span>Affiliate</span>
       </a>
     </div>
     
     <!-- Logout Button -->
-    <div class="py-4 text-center border-t border-gray-700">
-      <button id="signOut" class="w-full p-4 bg-[#172554] border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md">
-        <i class="fas fa-sign-out-alt"></i> Sign Out
+    <div class="mt-6 text-center border-t border-gray-700 pt-4">
+      <button id="signOut" class="mt-5 w-full px-5 py-3 bg-[#172554] border rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center gap-2">
+        <i class="fas fa-sign-out-alt text-xl"></i> Sign Out
       </button>
     </div>
+  
   </div>
+  
   <!-- Loading Screen -->
 <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
   <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>

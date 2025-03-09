@@ -478,7 +478,7 @@ async function loadMoreBlogs(excludePostId) {
             // Dispatch an actual "input" event to mimic real typing
             let event = new InputEvent("input", { bubbles: true });
             inputField.dispatchEvent(event);
-          }, index * 100); // Typing speed: 100ms per character
+          }, index * 40); // Typing speed: 100ms per character
         });
     
         // After 1 second, delete the last character as if the user pressed backspace

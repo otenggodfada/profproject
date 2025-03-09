@@ -376,10 +376,9 @@ if (courseTitle) {
             searchInput.dispatchEvent(new InputEvent("input", { bubbles: true }));
 
             index++;
-            setTimeout(typeCharacter, 50); // Adjust typing speed (50ms per character)
+            setTimeout(typeCharacter, 500); // Adjust typing speed (100ms per character)
         } else {
-            // Start backspacing after a short delay
-            setTimeout(simulateBackspace, 500);
+      
         }
     }
 
@@ -390,12 +389,14 @@ if (courseTitle) {
             // Dispatch InputEvent again to simulate real input change
             searchInput.dispatchEvent(new InputEvent("input", { bubbles: true }));
 
-            setTimeout(simulateBackspace, 100); // Adjust backspace speed
+            setTimeout(simulateBackspace, 50); // Adjust backspace speed
         }
     }
 
+    // Start typing first
     typeCharacter();
 }
+
 
 
 

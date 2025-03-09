@@ -52,7 +52,9 @@
 
           firebase.auth().onAuthStateChanged(async (user) => {
               const booksContainer = document.getElementById("booksContainer");
-              booksContainer.innerHTML = "<p class='text-center text-gray-800 font-semibold'>Loading books...</p>";
+              booksContainer.innerHTML = ` <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
+      <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
+    </div>`;
 
               if (!user) {
                   booksContainer.innerHTML = "<p class='text-center text-red-500 font-semibold'>Please log in to view your books.</p>";

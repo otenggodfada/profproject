@@ -91,9 +91,9 @@ option {
     <div class=" bg-[#172554] fixed top-0 z-20 w-screen ">
        
         <div id="navbar-container"></div></div>
-        <div style="display: none;" id="loading-screen" class="fixed z-50 bg-black opacity-75 top-0 right-0 bottom-0 left-0 text-white text-center flex items-center justify-center "><svg class="w-6 h-6 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.93 4.93a10.5 10.5 0 0114.14 0m-14.14 14.14a10.5 10.5 0 0114.14 0M9.17 9.17a5.25 5.25 0 017.66 0m-7.66 7.66a5.25 5.25 0 017.66 0" />
-        </svg></div>
+        <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
+          <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
+        </div>
         <footer>
           <div
             class="fixed z-50 bottom-0 right-0 left-0"
@@ -751,7 +751,7 @@ const renderCourses = async (tagId = null) => {
         courseList.innerHTML = "<p class='text-center text-gray-500'>No courses available.</p>";
         return;
     }
-
+    document.getElementById("loadingScreen").classList.add("hidden");
     // Render courses
     courseList.innerHTML = courses
         .map((course) => {
@@ -910,7 +910,7 @@ const user = auth.currentUser;
 // Add Enroll Button Link
 document.getElementById("modal-enroll-button").addEventListener("click", async function () {
   if (course.price_status === "free") {
-    document.getElementById("loading-screen").style.display = "block";
+    document.getElementById("loadingScreen").classList.remove("hidden");
     try {
   // Update user's enrolled courses
   await db.collection("users").doc(userid).update({
@@ -928,7 +928,7 @@ document.getElementById("modal-enroll-button").addEventListener("click", async f
   console.error("Error writing document: ", error);
 }finally {
   // Hide loading screen after process is done
-  document.getElementById("loading-screen").style.display = "none";
+  document.getElementById("loadingScreen").classList.add("hidden");
 }
 
   } else {

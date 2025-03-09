@@ -66,20 +66,7 @@
           >
             <i data-lucide="mail"></i> <span></span>
           </p>
-          <div id="zoom-info" class="hidden">
-            <p
-              id="zoomId"
-              class="text-lg text-gray-300 flex items-center justify-center gap-2"
-            >
-              <i data-lucide="video"></i> Zoom ID: <span></span>
-            </p>
-            <p
-              id="zoomPasscode"
-              class="text-lg text-gray-300 flex items-center justify-center gap-2"
-            >
-              <i data-lucide="lock"></i> Zoom Passcode: <span></span>
-            </p>
-          </div>
+        
           <a
             href="editprofile.html"
             class="mt-5 px-5 py-3 bg-[#172554] border rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center gap-2"
@@ -133,7 +120,7 @@
               .then((docSnap) => {
                 if (docSnap.exists()) {
                   const userData = docSnap.data();
-                  if (userData.role == "student") {
+                  if (userData.role && !userData.role.includes("student")) {
                     document
                       .getElementById("name")
                       .querySelector("span").textContent =
@@ -147,7 +134,7 @@
                       userData.photoURL ||
                       "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";
                   }
-                  if (userData.role === "author") {
+                  if (userData.role && !userData.role.includes("author")) {
                     document
                       .getElementById("name")
                       .querySelector("span").textContent =
@@ -159,17 +146,7 @@
                     document.getElementById("photo").src =
                       userData.photoURL ||
                       "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";
-                    document
-                      .getElementById("zoomId")
-                      .querySelector("span").textContent =
-                      userData.zoomId || "N/A";
-                    document
-                      .getElementById("zoomPasscode")
-                      .querySelector("span").textContent =
-                      userData.zoomPasscode || "N/A";
-                    document
-                      .getElementById("zoom-info")
-                      .classList.remove("hidden");
+                   
                   }
                 }
               })
@@ -201,5 +178,19 @@
     document.getElementById("fullscreen-content").innerHTML = '';
   }
 </script>
+<script>
+  window.addEventListener("load", () => {
+    const loadingScreen = document.getElementById("loadingScreen");
+    loadingScreen.classList.add("opacity-0");
+    setTimeout(() => {
+      loadingScreen.style.display = "none";
+    }, 500); // Wait for fade-out transition
+  });
+</script>
+<!-- Loading Screen -->
+<div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
+  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
+</div>
+
   </body>
 </html>

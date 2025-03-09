@@ -19,6 +19,7 @@
   <script src="kaka.js"></script>
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <script>
     tailwind.config = {
         theme: {
@@ -100,6 +101,7 @@ option {
             id="navbar-container1"
           ></div>
         </footer>
+        
   <!-- Page Container -->
   
   <div class="container mx-auto mt-36 px-4 lg:px-16 flex flex-col lg:flex-row gap-6">
@@ -327,8 +329,9 @@ option {
     
   </div>
  
- 
+  <div id="footer-container"></div>
   <script>
+
     // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
@@ -1030,5 +1033,7 @@ document.getElementById("course-modal").style.display = "block";
   const videoLink = "https://www.youtube.com/watch?v=xyz123"; // Example link
   document.getElementById("modal-video").src = videoLink.replace("watch?v=", "embed/");
 </script>
+<script src="footerp.js"></script>
+
 </body>
 </html>

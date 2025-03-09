@@ -96,14 +96,23 @@
 
 // Search functionality
 searchInput.addEventListener("input", () => {
-  const searchTerm = searchInput.value.toLowerCase();
-  const filteredPosts = posts.filter(
-    (post) =>
-      post.title.toLowerCase().includes(searchTerm) ||
-      post.description.toLowerCase().includes(searchTerm)
-  );
+  const searchTerm = searchInput.value.toLowerCase().trim();
+  if (!searchTerm) {
+    displayPosts(posts);
+    return;
+  }
+
+  const searchWords = searchTerm.split(/\s+/); // Split by spaces
+  const filteredPosts = posts.filter((post) => {
+    const postContent = `${post.title} ${post.description}`.toLowerCase();
+    const matchCount = searchWords.filter((word) => postContent.includes(word)).length;
+    
+    return matchCount >= 2; // Require at least two matches
+  });
+
   displayPosts(filteredPosts);
 });
+
 }
 
 async function loadPost(postId) {
@@ -420,15 +429,15 @@ async function loadMoreBlogs(excludePostId) {
               class="px-4 py-2 bg-gray-600/20 text-white-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
               >#Digital Marketing and Business Growth</span
             >
-            <span onclick="changeInputContent('Corporate Training')"
+            <span onclick="changeInputContent('IAS 7 Corporate Training')"
               class="px-4 py-2 bg-purple-600/20 text-purple-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
-              >#Corporate Training</span
+              >#IAS 7 Corporate Training</span
             >
             <span onclick="changeInputContent('CITGH - Final Level 2')"
               class="px-4 py-2 bg-blue-600/20 text-blue-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
               >#CITGH - Final Level 2</span
             >
-            <span onclick="changeInputContent('CITGH - Final Level 1')"
+            <span onclick="changeInputContent('CITGH - Statement of Cash Flows')"
               class="px-4 py-2 bg-red-600/20 text-red-400 text-sm font-semibold rounded-full shadow-md border border-white/20 transition-transform transform hover:scale-105"
               >#CITGH - Final Level 1</span
             >

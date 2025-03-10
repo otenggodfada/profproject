@@ -288,7 +288,7 @@ function renderCourses(courses) {
                 <h2 class="text-2xl font-bold text-gray-200 flex items-center gap-2 border-b border-gray-700 p-4">
                   <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h11M9 21V3m7 0l4 4m0 0l-4 4m4-4H13"></path>
-                  </svg> Course Sections
+                  </svg>   ${course.name}
                 </h2>
 
                         <!-- ✅ Progress Bar -->

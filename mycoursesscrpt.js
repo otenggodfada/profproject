@@ -300,24 +300,34 @@ function renderCourses(courses) {
             </div>
           </details>
         ` : ''}
+<!-- ✅ Review Form - Modern UI -->
+<div class="mt-6 border-t border-gray-600 pt-4">
+  <h4 class="text-gray-300 font-semibold mb-2">Leave a Review</h4>
 
-         <!-- ✅ Review Form -->
-        <div class="mt-4 border-t border-gray-600 pt-3">
-          <h4 class="text-gray-300 font-semibold">Leave a Review</h4>
-          <select class="rating-select bg-gray-800 text-white p-2 rounded w-full mt-2" data-course-id="${course.id}">
-            <option value="5">⭐ 5 - Excellent</option>
-            <option value="4">⭐ 4 - Good</option>
-            <option value="3">⭐ 3 - Average</option>
-            <option value="2">⭐ 2 - Poor</option>
-            <option value="1">⭐ 1 - Terrible</option>
-          </select>
-          <textarea class="review-text bg-gray-800 text-white p-2 rounded w-full mt-2" rows="3" placeholder="Write your review..." data-course-id="${course.id}"></textarea>
-          <button class="submit-review bg-blue-500 text-white px-4 py-2 rounded mt-2" data-course-id="${course.id}">Submit Review</button>
-        </div>
+  <!-- ⭐ Star Rating -->
+  <div class="flex space-x-2 text-yellow-400 text-xl rating-stars" data-course-id="${course.id}">
+    <i class="fas fa-star cursor-pointer" data-value="1"></i>
+    <i class="fas fa-star cursor-pointer" data-value="2"></i>
+    <i class="fas fa-star cursor-pointer" data-value="3"></i>
+    <i class="fas fa-star cursor-pointer" data-value="4"></i>
+    <i class="fas fa-star cursor-pointer" data-value="5"></i>
+  </div>
 
-        <!-- ✅ Reviews Section -->
-        <div class="reviews-container mt-4" id="reviews-${course.id}"></div>
-      </div>
+  <!-- Hidden Input for Rating -->
+  <input type="hidden" class="rating-value" data-course-id="${course.id}" value="5">
+
+  <!-- Review Textarea -->
+  <textarea class="review-text bg-gray-800 text-white p-3 rounded w-full mt-3 focus:ring-2 focus:ring-blue-500" 
+    rows="3" placeholder="Write your review..." data-course-id="${course.id}"></textarea>
+
+  <!-- Submit Button -->
+  <button class="submit-review bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded mt-3 transition 
+    hover:scale-105 hover:shadow-lg" data-course-id="${course.id}">
+    Submit Review
+  </button>
+</div>
+
+    
       </div>
     `;
   
@@ -343,6 +353,25 @@ function renderCourses(courses) {
         fetchReviews(courseId);
       });
     });
+
+
+// ⭐ Handle Star Rating Selection
+document.querySelectorAll(".rating-stars").forEach(starContainer => {
+  const stars = starContainer.querySelectorAll("i");
+  const courseId = starContainer.getAttribute("data-course-id");
+
+  stars.forEach(star => {
+    star.addEventListener("click", () => {
+      const ratingValue = star.getAttribute("data-value");
+      document.querySelector(`.rating-value[data-course-id="${courseId}"]`).value = ratingValue;
+
+      // Update star colors
+      stars.forEach(s => s.classList.toggle("text-yellow-500", s.getAttribute("data-value") <= ratingValue));
+    });
+  });
+});
+
+
 
   // Attach event listeners for lesson completion
   document.querySelectorAll(".lesson-complete-btn").forEach(button => {

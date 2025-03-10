@@ -139,12 +139,36 @@ option {
   </div>
 
   <!-- Dropdown for Sorting -->
+ <div>
   <select class="border border-gray-700 p-3 rounded-lg bg-transparent">
     <option   >Release Date (newest first)</option>
     <option >Release Date (oldest first)</option>
     <option>Course Title (A-Z)</option>
     <option>Course Title (Z-A)</option>
   </select>
+
+  <!-- Shopping Cart -->
+<div id="cart-container" class="fixed z-50 bottom-20 right-5 bg-gray-900 shadow-lg border border-gray-700 rounded-lg w-80 p-4 hidden">
+  <div class="flex justify-between items-center border-b pb-3">
+    <h2 class="text-lg font-semibold text-white">Shopping Cart</h2>
+    <button id="close-cart" class="text-red-500 text-xl">&times;</button>
+  </div>
+  <div id="cart-items" class="mt-4 space-y-2">
+    <p class="text-gray-400 text-sm">Your cart is empty.</p>
+  </div>
+  <div class="mt-4 border-t pt-3">
+    <p class="text-white font-semibold">Total: <span id="cart-total" class="text-green-400">₵0.00</span></p>
+    <button id="checkout-btn" class="w-full mt-3 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition">
+      Checkout
+    </button>
+  </div>
+</div>
+  <!-- Cart Icon -->
+<button id="open-cart" class="fixed bottom-5 z-50 mb-20 right-5 bg-blue-500/20 border border-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition">
+  <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full ">0</span>
+  🛒
+</button>
+ </div>
 </div>
 <input
 type="text" 
@@ -870,10 +894,19 @@ const renderCourses = async (tagId = null) => {
       </svg>
       ${course.price_status === "free" ? "Free" : `₵${course.pricee}`} 
     </p>
-     <button  class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Add to cart</span>
-                  </button>
+<button class="add-to-cart-btn flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition"
+  data-id="${course.id}"
+  data-title="${course.name}" 
+  data-price="${course.price_status === 'free' ? '0' : course.pricee}"
+
+  data-image="${course.image_url || 'https://via.placeholder.com/150'}">
+  <i class="fas fa-shopping-cart"></i>
+  <span>Add to cart</span>
+</button>
+
+
+
+
     </div>
 
 
@@ -1095,6 +1128,187 @@ document.getElementById("course-modal").style.display = "block";
           }).showToast();
       }
   </script>
+
+<script>
+  const cart = [];
+
+  function updateCartUI() {
+    const cartItemsContainer = document.getElementById("cart-items");
+    const cartTotalElement = document.getElementById("cart-total");
+    const cartCountElement = document.getElementById("cart-count");
+
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = `<p class="text-gray-400 text-sm">Your cart is empty.</p>`;
+      cartTotalElement.textContent = "₵0.00";
+      cartCountElement.classList.add("hidden");
+      return;
+    }
+
+    cartItemsContainer.innerHTML = "";
+    let total = 0;
+
+    cart.forEach((item, index) => {
+      total += parseFloat(item.price);
+
+      const cartItem = document.createElement("div");
+      cartItem.className = "flex justify-between items-center p-2 border-b";
+
+      cartItem.innerHTML = `
+        <div>
+          <p class="text-white text-sm">${item.name}</p>
+          <p class="text-green-400 text-xs">₵${item.price}</p>
+        </div>
+        <button class="text-red-500 text-sm" onclick="removeFromCart(${index})">Remove</button>
+      `;
+
+      cartItemsContainer.appendChild(cartItem);
+    });
+
+    cartTotalElement.textContent = `₵${total.toFixed(2)}`;
+    cartCountElement.textContent = cart.length;
+    cartCountElement.classList.remove("hidden");
+  }
+
+  function addToCart(event, courseName, coursePrice, courseId, courseDescription, courseImageUrl) {
+  event.stopPropagation();
+
+  const price = parseFloat(coursePrice) || 0;
+  cart.push({
+    id: courseId,
+    name: courseName,
+    price,
+    description: courseDescription,
+    image_url: courseImageUrl
+  });
+
+  updateCartUI();
+  document.getElementById("cart-container").classList.remove("hidden");
+}
+
+
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCartUI();
+  }
+
+  document.getElementById("open-cart").addEventListener("click", () => {
+    document.getElementById("cart-container").classList.toggle("hidden");
+  });
+
+  document.getElementById("close-cart").addEventListener("click", () => {
+    document.getElementById("cart-container").classList.add("hidden");
+  });
+  document.getElementById("checkout-btn").addEventListener("click", async () => {
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  // Get the current user
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    alert("Please log in to proceed to checkout.");
+    return;
+  }
+  const userid = user.uid;
+
+  // Fetch referral code from Firestore
+  let refcode = "";
+  try {
+    const userDoc = await db.collection("users").doc(userid).get();
+    if (userDoc.exists) {
+      refcode = userDoc.data().underef || "";
+    }
+  } catch (error) {
+    console.error("Error fetching referral code:", error);
+  }
+
+  // Check if all courses in cart are free
+  const freeCourses = cart.filter(course => parseFloat(course.price) === 0);
+  const paidCourses = cart.filter(course => parseFloat(course.price) > 0);
+
+  if (freeCourses.length > 0 && paidCourses.length === 0) {
+    // Enroll user in free courses
+    try {
+      document.getElementById("loadingScreen").classList.remove("hidden");
+
+      for (const course of freeCourses) {
+        await db.collection("users").doc(userid).update({
+          course_id: firebase.firestore.FieldValue.arrayUnion(course.id)
+        });
+      }
+
+      console.log("Free courses enrolled successfully!");
+      showSuccessToast();
+
+      // Redirect to "My Courses" after enrolling
+      setTimeout(() => {
+        window.location.href = "mycourse.html";
+      }, 3000);
+    } catch (error) {
+      console.error("Error enrolling in free courses:", error);
+    } finally {
+      document.getElementById("loadingScreen").classList.add("hidden");
+    }
+  } else {
+    // Use URLSearchParams for paid courses checkout
+    const params = new URLSearchParams();
+    params.append("userid", userid);
+    params.append("referalcode", refcode);
+
+    // Add only paid courses
+    paidCourses.forEach((item) => {
+      params.append("id", item.id);
+      params.append("title", item.name);
+      params.append("amount", item.price);
+      params.append("description", item.description || "No description");
+      params.append("image_url", item.image_url || "https://via.placeholder.com/150");
+    });
+
+    // Redirect to checkout page for paid courses
+    window.location.href = `coursecart.html?${params.toString()}`;
+  }
+});
+
+// Toast notification for successful enrollment
+function showSuccessToast() {
+  Toastify({
+    text: "🎉 Enrolled in free courses successfully!",
+    duration: 3000,
+    close: true,
+    gravity: "top",
+    position: "right",
+    backgroundColor: "linear-gradient(to right, #38a169, #2f855a)",
+    stopOnFocus: true,
+  }).showToast();
+}
+
+
+
+
+
+document.addEventListener("click", (event) => {
+  const button = event.target.closest(".add-to-cart-btn");
+
+  if (button) {
+    const courseId = button.dataset.id || "unknown";
+    const courseName = button.dataset.title || "Unknown Course";
+    const coursePrice = button.dataset.price || "0";
+    const courseDescription = button.dataset.description || "No description";
+    const courseImageUrl = button.dataset.image || "https://via.placeholder.com/150";
+
+    addToCart(event, courseName, coursePrice, courseId, courseDescription, courseImageUrl);
+  }
+});
+
+
+
+
+
+</script>
+
+
 <script>
   document.getElementById("open-drawer").addEventListener("click", function() {
       document.getElementById("drawer").classList.remove("-translate-x-full");

@@ -445,7 +445,27 @@ bookid: bookid
         const customerEmail = document.getElementById("email").value;
         const customerPhone = document.getElementById("phone").value;
         
-        const message = `I have paid for my order. \n\nName: ${customerName} \nEmail: ${customerEmail} \nPhone: ${customerPhone} \nPayment Method: ${paymentMethod} \nBook Title: ${title} \nAmount: GHS${amount} \nUserId: ${userid} \nCourseId: ${bookid} \nRefereeCode: ${refcode}`;
+        const message = `📢 *Payment Confirmation*  
+
+Dear Team,  
+
+I have successfully completed my payment. Below are the details:  
+
+👤 *Name:* ${customerName}  
+📧 *Email:* ${customerEmail}  
+📞 *Phone:* ${customerPhone}  
+💳 *Payment Method:* ${paymentMethod}  
+📖 *Book Title:* ${title}  
+💰 *Amount Paid:* GHS${amount}  
+🆔 *User ID:* ${userid}  
+📚 *Course ID:* ${bookid}  
+🔗 *Referee Code:* ${refcode}  
+
+Kindly process my order at your earliest convenience. Thank you!  
+
+*Best regards,*  
+${customerName}  
+`;
         window.open(
           `https://wa.me/+233266306442?text=${encodeURIComponent(message)}`
         );

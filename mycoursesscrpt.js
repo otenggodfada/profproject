@@ -298,11 +298,11 @@ function renderCourses(courses) {
               <div class="bg-green-500 h-2 rounded-full" style="width: ${progress}%"></div>
             </div>
           </div>
-                <div class="space-y-6 p-6 max-w-4xl mx-auto">
+                <div class="space-y-6 p-2 max-w-4xl mx-auto">
                   ${course.sections
                     .map(
                       (section, sectionIndex) => `
-                    <div class="bg-gray-900 p-5 rounded-lg shadow-xl border border-gray-800">
+                    <div class="bg-gray-900 p-2 rounded-lg shadow-xl border border-gray-800">
                       <button onclick="
                         const container = document.getElementById('lessons-container-${sectionIndex}');
                         container.classList.toggle('hidden');
@@ -310,9 +310,9 @@ function renderCourses(courses) {
                       " 
                       class="w-full flex justify-between items-center bg-purple-600 text-white px-5 py-4 rounded-lg hover:bg-purple-700 transition-all duration-300">
                         <span class="text-xl font-semibold flex items-center gap-3">
-                          <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <div><svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
-                          </svg> ${section.name}
+                          </svg></div> ${section.name}
                         </span>
                         <svg class="w-5 h-5 text-white transition-transform arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>

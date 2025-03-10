@@ -55,6 +55,13 @@ async function fetchPurchasedCourses(userId) {
 
     const sectionResults = await Promise.allSettled(sectionPromises);
 
+    // ✅ Fetch reviews for each course
+    const reviewPromises = validCourses.map(course =>
+      getDocs(collection(db, "courses", course.id, "reviews"))
+    );
+
+    const reviewResults = await Promise.allSettled(reviewPromises);
+
     for (let i = 0; i < validCourses.length; i++) {
       if (sectionResults[i].status === "fulfilled") {
         const sections = sectionResults[i].value.docs.map(sectionDoc => ({
@@ -93,6 +100,16 @@ async function fetchPurchasedCourses(userId) {
         validCourses[i].totalLessons = totalLessons;
         validCourses[i].completedLessons = completedCount;
       }
+
+      // ✅ Process reviews and calculate average rating
+      if (reviewResults[i].status === "fulfilled") {
+        const reviews = reviewResults[i].value.docs.map(reviewDoc => reviewDoc.data());
+        validCourses[i].reviews = reviews;
+
+        // Calculate the average rating
+        const totalRatings = reviews.reduce((sum, review) => sum + review.rating, 0);
+        validCourses[i].averageRating = reviews.length > 0 ? (totalRatings / reviews.length).toFixed(1) : "No ratings yet";
+      }
     }
 
     return validCourses;
@@ -119,7 +136,21 @@ async function markLessonComplete(userId, lessonId) {
   }
 }
 
+async function submitReview(courseId, userId, rating, reviewText) {
+  try {
+    const reviewRef = collection(db, "courses", courseId, "reviews");
+    await addDoc(reviewRef, {
+      userId,
+      rating: Number(rating),
+      reviewText,
+      timestamp: Date.now(),
+    });
 
+    console.log(`✅ Review submitted for course ${courseId}`);
+  } catch (error) {
+    console.error("❌ Error submitting review:", error);
+  }
+}
 
 // Render purchased courses to the page
 function renderCourses(courses) {
@@ -166,10 +197,9 @@ function renderCourses(courses) {
             <span class="material-icons text-[#172554]">group</span>
             ${course.students || 0} students
           </p>
-          <p class="text-gray-200 text-sm flex items-center gap-2 mb-4">
-            <span class="material-icons text-yellow-500">star</span>
-            Rating: ${course.rating || 0}/5
-          </p>
+          <!-- ⭐ Course Rating -->
+          <p class="text-yellow-400 font-semibold mt-2">⭐ ${course.averageRating || 'No ratings yet'}</p>
+
             <!-- ✅ Progress Bar -->
           <div class="mt-2">
             <p class="text-gray-300 text-sm mb-1">Progress: ${progress}%</p>
@@ -270,12 +300,49 @@ function renderCourses(courses) {
             </div>
           </details>
         ` : ''}
+
+         <!-- ✅ Review Form -->
+        <div class="mt-4 border-t border-gray-600 pt-3">
+          <h4 class="text-gray-300 font-semibold">Leave a Review</h4>
+          <select class="rating-select bg-gray-800 text-white p-2 rounded w-full mt-2" data-course-id="${course.id}">
+            <option value="5">⭐ 5 - Excellent</option>
+            <option value="4">⭐ 4 - Good</option>
+            <option value="3">⭐ 3 - Average</option>
+            <option value="2">⭐ 2 - Poor</option>
+            <option value="1">⭐ 1 - Terrible</option>
+          </select>
+          <textarea class="review-text bg-gray-800 text-white p-2 rounded w-full mt-2" rows="3" placeholder="Write your review..." data-course-id="${course.id}"></textarea>
+          <button class="submit-review bg-blue-500 text-white px-4 py-2 rounded mt-2" data-course-id="${course.id}">Submit Review</button>
+        </div>
+
+        <!-- ✅ Reviews Section -->
+        <div class="reviews-container mt-4" id="reviews-${course.id}"></div>
+      </div>
       </div>
     `;
   
     courseContainer.appendChild(courseCard);
   });
   
+
+    // Attach event listeners for submitting reviews
+    document.querySelectorAll(".submit-review").forEach(button => {
+      button.addEventListener("click", async function () {
+        const courseId = this.getAttribute("data-course-id");
+        const userId = auth.currentUser?.uid;
+        const rating = document.querySelector(`.rating-select[data-course-id="${courseId}"]`).value;
+        const reviewText = document.querySelector(`.review-text[data-course-id="${courseId}"]`).value;
+  
+        if (!userId) {
+          alert("Please log in to submit a review.");
+          return;
+        }
+  
+        await submitReview(courseId, userId, rating, reviewText);
+        alert("Review submitted successfully!");
+        fetchReviews(courseId);
+      });
+    });
 
   // Attach event listeners for lesson completion
   document.querySelectorAll(".lesson-complete-btn").forEach(button => {

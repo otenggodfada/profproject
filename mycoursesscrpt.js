@@ -289,6 +289,14 @@ function renderCourses(courses) {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h11M9 21V3m7 0l4 4m0 0l-4 4m4-4H13"></path>
                   </svg> Course Sections
                 </h2>
+
+                        <!-- ✅ Progress Bar -->
+          <div class="mt-2 mx-6">
+            <p class="text-gray-300 text-sm mb-1">Progress: ${progress}%</p>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full" style="width: ${progress}%"></div>
+            </div>
+          </div>
                 <div class="space-y-6 p-6 max-w-4xl mx-auto">
                   ${course.sections
                     .map(

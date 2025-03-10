@@ -67,8 +67,15 @@
   <script>
 
 function closeModal() {
-document.getElementById("modal-container").style.display = "none"
+  const modal = document.getElementById("modal-container");
+  if (modal) {
+    const detailsElement = modal.closest("details");
+    if (detailsElement) {
+      detailsElement.removeAttribute("open"); // Close the specific details element
+    }
+  }
 }
+
   </script>
   <script>
 function showMessage() {

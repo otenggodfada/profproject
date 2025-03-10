@@ -1,6 +1,6 @@
 // Import the required Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
 
 // Initialize Firebase
@@ -20,11 +20,11 @@ const auth = getAuth(app);
 // Fetch user purchased courses along with sections and lessons
 async function fetchPurchasedCourses(userId) {
   try {
-    const userDocRef = doc(db, 'users', userId);
+    const userDocRef = doc(db, "users", userId);
     const userDoc = await getDoc(userDocRef);
 
     if (!userDoc.exists()) {
-      console.error('User not found');
+      console.error("User not found");
       return [];
     }
 
@@ -33,58 +33,92 @@ async function fetchPurchasedCourses(userId) {
       return [];
     }
 
-    // Fetch all course documents in parallel
-    const coursePromises = purchasedCourseIds.map(courseId => getDoc(doc(db, 'courses', courseId)));
+    // ✅ Fetch all completed lessons in one query
+    const completedLessonsSnapshot = await getDocs(collection(db, "users", userId, "completedLessons"));
+    const completedLessons = new Set(completedLessonsSnapshot.docs.map(doc => doc.id));
+
+    // Fetch courses
+    const coursePromises = purchasedCourseIds.map(courseId => getDoc(doc(db, "courses", courseId)));
     const courseDocs = await Promise.allSettled(coursePromises);
-    
-    // Process only successful fetches
+
     const validCourses = courseDocs
       .filter(result => result.status === "fulfilled" && result.value.exists())
       .map(result => ({
         id: result.value.id,
-        ...result.value.data()
+        ...result.value.data(),
       }));
 
-    // Fetch sections for each course in parallel
+    // Fetch sections for each course
     const sectionPromises = validCourses.map(course =>
-      getDocs(collection(db, 'courses', course.id, 'sections'))
+      getDocs(collection(db, "courses", course.id, "sections"))
     );
 
     const sectionResults = await Promise.allSettled(sectionPromises);
 
-    // Attach sections and lessons
     for (let i = 0; i < validCourses.length; i++) {
       if (sectionResults[i].status === "fulfilled") {
         const sections = sectionResults[i].value.docs.map(sectionDoc => ({
           id: sectionDoc.id,
           name: sectionDoc.data().name,
-          lessons: [] // Placeholder for lessons
+          lessons: []
         }));
 
-        // Fetch lessons for all sections in parallel
+        // Fetch lessons for each section
         const lessonPromises = sections.map(section =>
-          getDocs(collection(db, 'courses', validCourses[i].id, 'sections', section.id, 'lessons'))
+          getDocs(collection(db, "courses", validCourses[i].id, "sections", section.id, "lessons"))
         );
 
         const lessonResults = await Promise.allSettled(lessonPromises);
-        
-        // Attach lessons to sections
+        let totalLessons = 0;
+        let completedCount = 0;
+
         lessonResults.forEach((result, index) => {
           if (result.status === "fulfilled") {
-            sections[index].lessons = result.value.docs.map(lessonDoc => lessonDoc.data());
+            const lessons = result.value.docs.map(lessonDoc => {
+              totalLessons++;
+              const isCompleted = completedLessons.has(lessonDoc.id);
+              if (isCompleted) completedCount++;
+              return {
+                ...lessonDoc.data(),
+                id: lessonDoc.id,
+                completed: isCompleted
+              };
+            });
+
+            sections[index].lessons = lessons;
           }
         });
 
         validCourses[i].sections = sections;
+        validCourses[i].totalLessons = totalLessons;
+        validCourses[i].completedLessons = completedCount;
       }
     }
 
     return validCourses;
   } catch (error) {
-    console.error('Error fetching courses:', error);
+    console.error("Error fetching courses:", error);
     return [];
   }
 }
+
+
+async function markLessonComplete(userId, lessonId) {
+  try {
+    console.log(`Marking lesson ${lessonId} as completed for user ${userId}`);
+
+    const lessonRef = doc(db, "users", userId, "completedLessons", lessonId);
+    await setDoc(lessonRef, {
+      completed: true,
+      timestamp: Date.now(),
+    });
+
+    console.log(`✅ Lesson ${lessonId} marked as completed in Firestore`);
+  } catch (error) {
+    console.error("❌ Error marking lesson complete:", error);
+  }
+}
+
 
 
 // Render purchased courses to the page
@@ -116,7 +150,7 @@ function renderCourses(courses) {
 
   courses.forEach(course => {
     const hasLessons = course.sections.some(section => section.lessons.length > 0);
-  
+    const progress = course.totalLessons > 0 ? Math.round((course.completedLessons / course.totalLessons) * 100) : 0;
     const courseCard = document.createElement('div');
     courseCard.className = 'relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-gray-500 bg-gray-900 m-3 hover:shadow-pink-500/50 hover:border-pink-500/70';
   
@@ -136,10 +170,20 @@ function renderCourses(courses) {
             <span class="material-icons text-yellow-500">star</span>
             Rating: ${course.rating || 0}/5
           </p>
+            <!-- ✅ Progress Bar -->
+          <div class="mt-2">
+            <p class="text-gray-300 text-sm mb-1">Progress: ${progress}%</p>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full" style="width: ${progress}%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
         </div>
       </div>
   
       <div class="p-4">
+      
         <p class="text-gray-500 text-sm mb-2">Language: <span class="font-medium">${course.language || 'Not specified'}</span></p>
   
         <div class="text-sm text-gray-500 mb-4">
@@ -210,7 +254,13 @@ function renderCourses(courses) {
                                 </div>
                               ` : '<p class="italic text-gray-500">No video available</p>'}
                             </div>
+                               <button class="lesson-complete-btn mt-3 text-sm px-3 py-1 rounded-lg ${lesson.completed ? 'bg-green-500 text-white' : 'bg-gray-600 text-gray-300'}" 
+                                data-lesson-id="${lesson.id}" 
+                                data-course-id="${course.id}">
+                          ${lesson.completed ? '✔ Completed' : 'Mark as Complete'}
+                        </button>
                           </div>
+                          
                         `).join('')}
                       </div>
                     </div>
@@ -227,9 +277,21 @@ function renderCourses(courses) {
   });
   
 
-
-  
+  // Attach event listeners for lesson completion
+  document.querySelectorAll(".lesson-complete-btn").forEach(button => {
+    button.addEventListener("click", async function () {
+      const lessonId = this.getAttribute("data-lesson-id");
+      const userId = auth.currentUser.uid;
+      await markLessonComplete(userId, lessonId);
+      this.classList.add("bg-green-500", "text-white");
+      this.textContent = "✔ Completed";
+    });
+  });
 }
+  
+
+
+
 
 // Toggle lessons visibility
 document.querySelectorAll(".toggle-lessons").forEach((button) => {

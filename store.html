@@ -14,6 +14,26 @@
     <script type="module" src="./navbar.js"></script>
     <script src="bottomnv.js"></script>
     <script src="kaka.js"></script>
+    <script>
+      tailwind.config = {
+          theme: {
+              extend: {}
+          },
+          plugins: [
+              function ({ addUtilities }) {
+                  addUtilities({
+                      '.scrollbar-hide': {
+                          '-ms-overflow-style': 'none', /* Hide scrollbar for IE and Edge */
+                          'scrollbar-width': 'none', /* Hide scrollbar for Firefox */
+                      },
+                      '.scrollbar-hide::-webkit-scrollbar': {
+                          display: 'none' /* Hide scrollbar for Chrome, Safari */
+                      }
+                  })
+              }
+          ]
+      };
+  </script>
 </head>
 <body class="bg-gray-900 text-white">
   <div class="fixed top-0 bg-[#172554] z-20 w-full">
@@ -38,9 +58,9 @@
         </div>
 
         <!-- Filters -->
-        <div class="flex flex-wrap mb-4 items-center justify-center gap-4 bg-gray-800 bg-opacity-60 p-4 rounded-lg shadow-md sm:justify-start">
+        <div class="flex items-center mb-4 space-x-6 bg-gray-800 bg-opacity-60 p-4 rounded-lg shadow-md overflow-auto scrollbar-hide ">
           <!-- All Checkbox -->
-          <label for="all-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition sm:w-auto w-full justify-center">
+          <label for="all-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition">
               <input type="checkbox" id="all-filter" class="hidden peer">
               <div class="w-5 h-5 flex items-center justify-center border border-gray-500 rounded-md peer-checked:bg-blue-500 peer-checked:border-blue-500">
                   <i class="fas fa-check text-white text-sm hidden peer-checked:block"></i>
@@ -49,7 +69,7 @@
           </label>
       
           <!-- Free Checkbox -->
-          <label for="free-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition sm:w-auto w-full justify-center">
+          <label for="free-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition">
               <input type="checkbox" id="free-filter" value="free" class="hidden peer">
               <div class="w-5 h-5 flex items-center justify-center border border-gray-500 rounded-md peer-checked:bg-blue-500 peer-checked:border-blue-500">
                   <i class="fas fa-check text-white text-sm hidden peer-checked:block"></i>
@@ -58,7 +78,7 @@
           </label>
       
           <!-- Paid Checkbox -->
-          <label for="paid-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition sm:w-auto w-full justify-center">
+          <label for="paid-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition">
               <input type="checkbox" id="paid-filter" value="paid" class="hidden peer">
               <div class="w-5 h-5 flex items-center justify-center border border-gray-500 rounded-md peer-checked:bg-blue-500 peer-checked:border-blue-500">
                   <i class="fas fa-check text-white text-sm hidden peer-checked:block"></i>
@@ -71,7 +91,7 @@
       
 
         <!-- Book Container -->
-   <div id="books-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+   <div id="books-container" class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-2">
             <!-- Book cards will be appended here dynamically -->
         </div>
 
@@ -194,7 +214,7 @@ if (selectedFilters.length > 0) {
                   </div>
                   <button  class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
                     <i class="fas fa-shopping-cart"></i>
-                    <span>Add to cart</span>
+                    <span>Checkout</span>
                   </button>
                 </div>
               </div>

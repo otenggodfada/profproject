@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const footer = `
-        <footer class="hidden md:block  bottom-0 left-0 right-0 w-full bg-[#172554] text-white py-4 px-4">
+        <footer class="hidden md:block  bottom-0 left-0 right-0 w-full bg-[#172554] border-t text-white py-4 px-4">
             <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
                 <!-- Brand Info -->
                 <div>

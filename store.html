@@ -188,7 +188,12 @@ if (selectedFilters.length > 0) {
             <div class="relative flex-shrink-0">
               <a href="#" class="block">
                 <div class="aspect-w-16 aspect-h-9 ">
-                  <img src="${book.image_url}" alt="${book.title}" class="w-full h-56 hover:h-full object-cover">
+                  <img src="${book.image_url}" alt="${book.title}" class="w-full h-56 lg:hover:h-full object-cover">
+                     <!-- Fullscreen Icon -->
+      <button class="absolute top-2 right-2 bg-black bg-opacity-50 w-12 h-12 p-2 rounded-full text-white hover:bg-opacity-75 transition" 
+              onclick="openFullscreen('${book.image_url}')">
+        <i class="fas fa-expand"></i>
+      </button>
                 </div>
               </a>
             </div>
@@ -296,7 +301,13 @@ if (selectedFilters.length > 0) {
         } catch (error) {
           console.error("Error fetching books: ", error);
         }
+
+        
       }
+
+
+
+
 
       // Function to render pagination
       function renderPagination(totalBooks) {
@@ -529,6 +540,25 @@ function getSelectedFilters() {
         const modal = document.getElementById("account-modal");
         modal.style.display = "none";
       }
+
+      
+    </script>
+    <script>
+            function openFullscreen(imageUrl) {
+        console.log('dddddddd')
+    const fullscreenDiv = document.createElement("div");
+    fullscreenDiv.className = "fixed top-0 right-0 left-0  flex items-center justify-center z-50";
+    fullscreenDiv.innerHTML = `
+        <div class="relative max-w-3xl w-full p-4">
+            <button class="absolute top-4 w-12 h-12 right-4 bg-black bg-opacity-50  text-white p-2 rounded-full hover:bg-opacity-75 transition" onclick="document.body.removeChild(this.parentNode.parentNode)">
+                <i class="fas fa-times"></i>
+            </button>
+            <img src="${imageUrl}" class="w-full h-auto rounded-lg shadow-lg">
+        </div>
+    `;
+
+    document.body.appendChild(fullscreenDiv);
+}
     </script>
     <script src="footerp.js"></script>
     <div id="footer-container"></div>

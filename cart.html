@@ -19,6 +19,27 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
     <script src="bottomnv.js"></script>
+    <script src="kaka.js"></script>
+    <script>
+      tailwind.config = {
+          theme: {
+              extend: {}
+          },
+          plugins: [
+              function ({ addUtilities }) {
+                  addUtilities({
+                      '.scrollbar-hide': {
+                          '-ms-overflow-style': 'none', /* Hide scrollbar for IE and Edge */
+                          'scrollbar-width': 'none', /* Hide scrollbar for Firefox */
+                      },
+                      '.scrollbar-hide::-webkit-scrollbar': {
+                          display: 'none' /* Hide scrollbar for Chrome, Safari */
+                      }
+                  })
+              }
+          ]
+      };
+  </script>
   </head>
   <body class="bg-gray-900">
     <div class="fixed bg-[#172554] top-0 z-20 w-full">
@@ -144,7 +165,7 @@
     <!-- Pay Offline Section -->
     <div
     id="payOffline"
-    class="fixed z-50 top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 overflow-auto flex items-center justify-center scrollbar-hide "
+    class="fixed z-50 hidden top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 overflow-auto flex items-center justify-center scrollbar-hide "
   >
     <div class="bg-gray-800 w-full max-w-4xl h-full shadow-lg relative">
       <h2 class="text-3xl text-white font-semibold text-center mb-6 mt-4">
@@ -291,6 +312,10 @@
           console.error('Failed to copy: ', err);
         });
       }
+
+      function closeModal() {
+    document.getElementById("payOffline").classList.add("hidden");
+  }
     </script>
     <script src="navbar.js"></script>
     <script type="module">
@@ -405,32 +430,25 @@ bookid: bookid
      
           },
           onclose: function () {
-            console.log("Payment cancelled!");
+            window.location.href=`cart.html?${params}` ;
           },
         });
       }
 
-      // Show pay offline section
-      function showPayOffline() {
-        document.getElementById("payOffline").classList.remove("hidden");
-      }
-
-      document.getElementById("showit").addEventListener("click", () => {
-        document.getElementById("payOffline").classList.remove("hidden");
-    });
-
-      // Close pay offline section
-      function togglePayOffline() {
+    // Close pay offline section
+    function togglePayOffline() {
         document.getElementById("payOffline").classList.add("hidden");
       }
 
-      // Send "I have paid" message via WhatsApp
-      document.querySelectorAll('[data-payment-method]').forEach((button) => {
-  button.addEventListener('click', () => {
-    const paymentMethod = button.getAttribute('data-payment-method');
-    sendPaymentDetails(paymentMethod);
-  });
-});
+
+     // Send "I have paid" message via WhatsApp
+     document.querySelectorAll("[data-payment-method]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const paymentMethod = button.getAttribute("data-payment-method");
+          sendPaymentDetails(paymentMethod);
+        });
+      });
+
 
 function sendPaymentDetails(paymentMethod) {
         const customerName = document.getElementById("name").value;

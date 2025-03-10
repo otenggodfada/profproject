@@ -277,8 +277,9 @@ function renderCourses(courses) {
             <summary class="font-semibold cursor-pointer list-none">
               <i class="fas fa-book-open"></i> <span>Continue Learning</span>
             </summary>
-            <div id="modal-container" class="fixed top-0 bottom-0 z-50 inset-0 flex items-center justify-center bg-black">
-              <div class="bg-gray-900 rounded-lg shadow-2xl w-full max-w-4xl relative max-h-[90vh] overflow-y-auto scrollbar-hide">
+            <div id="modal-container" class="fixed z-50 top-0 bottom-0 right-0 left-0 w-full h-full bg-black bg-opacity-80 flex items-center justify-center ">
+              <div class="bg-gray-900  w-full  h-full overflow-auto scrollbar-hide 
+">
                 <button onclick="closeModal();" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>

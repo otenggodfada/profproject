@@ -68,7 +68,7 @@
         </div>
 
         <!-- Book Container -->
-        <div id="books-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+   <div id="books-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
             <!-- Book cards will be appended here dynamically -->
         </div>
 
@@ -155,12 +155,12 @@ if (courseTitle) {
           paginatedBooks.forEach((book) => {
             const bookCard = document.createElement("div");
             bookCard.className =
-              "max-w-sm mx-auto bg-gray-800 shadow-lg rounded-lg overflow-hidden transition-transform transform  flex flex-col h-full";
+              " mx-auto bg-gray-800 shadow-md rounded-lg overflow-hidden flex flex-col";
             bookCard.innerHTML = /*html*/ `
             <div class="relative flex-shrink-0">
               <a href="#" class="block">
                 <div class="aspect-w-16 aspect-h-9 ">
-                  <img src="${book.image_url}" alt="${book.title}" class="w-full h-full object-cover">
+                  <img src="${book.image_url}" alt="${book.title}" class="w-full h-56 hover:h-full object-cover">
                 </div>
               </a>
             </div>

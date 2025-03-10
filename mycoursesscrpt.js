@@ -273,11 +273,11 @@ function renderCourses(courses) {
         ${
           hasLessons
             ? `
-          <details class=" mb-4 flex items-center justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
+          <details class=" mb-4 flex items-center justify-center  border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
             <summary class="font-semibold cursor-pointer list-none">
               <i class="fas fa-book-open"></i> <span>Continue Learning</span>
             </summary>
-            <div id="modal-container" class="fixed z-50 top-0 bottom-0 right-0 left-0 w-full h-full bg-black bg-opacity-80 flex items-center justify-center ">
+            <div id="modal-container" class="fixed z-50 top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 flex items-center justify-center ">
               <div class="bg-gray-900  w-full  h-full overflow-auto scrollbar-hide 
 ">
                 <button onclick="closeModal();" class="absolute top-4 right-4 text-gray-400 hover:text-white">

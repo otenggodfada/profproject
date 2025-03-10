@@ -38,23 +38,37 @@
         </div>
 
         <!-- Filters -->
-        <div class="flex items-center space-x-6 mb-6">
-            <div class="flex items-center space-x-2">
-                <input type="radio" id="free-filter" name="price-filter" value="free" class="w-4 h-4 text-blue-500">
-                <label for="free-filter" class="text-white">Free</label>
-            </div>
-            <div class="flex items-center space-x-2">
-                <input type="radio" id="paid-filter" name="price-filter" value="paid" class="w-4 h-4 text-blue-500">
-                <label for="paid-filter" class="text-white">Paid</label>
-            </div>
-            <button
-                id="clear-filters"
-                class="px-4 py-2 flex items-center space-x-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition"
-            >
-                <i class="fas fa-times-circle"></i>
-                <span>Clear Filters</span>
-            </button>
-        </div>
+        <div class="flex items-center mb-4 space-x-6 bg-gray-800 bg-opacity-60 p-4 rounded-lg shadow-md">
+          <!-- All Checkbox -->
+          <label for="all-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition">
+              <input type="checkbox" id="all-filter" class="hidden peer">
+              <div class="w-5 h-5 flex items-center justify-center border border-gray-500 rounded-md peer-checked:bg-blue-500 peer-checked:border-blue-500">
+                  <i class="fas fa-check text-white text-sm hidden peer-checked:block"></i>
+              </div>
+              <span class="text-white font-medium">All</span>
+          </label>
+      
+          <!-- Free Checkbox -->
+          <label for="free-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition">
+              <input type="checkbox" id="free-filter" value="free" class="hidden peer">
+              <div class="w-5 h-5 flex items-center justify-center border border-gray-500 rounded-md peer-checked:bg-blue-500 peer-checked:border-blue-500">
+                  <i class="fas fa-check text-white text-sm hidden peer-checked:block"></i>
+              </div>
+              <span class="text-white font-medium">Free</span>
+          </label>
+      
+          <!-- Paid Checkbox -->
+          <label for="paid-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition">
+              <input type="checkbox" id="paid-filter" value="paid" class="hidden peer">
+              <div class="w-5 h-5 flex items-center justify-center border border-gray-500 rounded-md peer-checked:bg-blue-500 peer-checked:border-blue-500">
+                  <i class="fas fa-check text-white text-sm hidden peer-checked:block"></i>
+              </div>
+              <span class="text-white font-medium">Paid</span>
+          </label>
+      </div>
+      
+      
+      
 
         <!-- Book Container -->
    <div id="books-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
@@ -130,12 +144,17 @@ if (courseTitle) {
             );
 
           // Apply filter if specified
-          let filteredBooks = books;
-          if (filter === "free") {
-            filteredBooks = books.filter((book) => book.amount === "0");
-          } else if (filter === "paid") {
-            filteredBooks = books.filter((book) => book.amount !== "0");
-          }
+          const selectedFilters = getSelectedFilters();
+let filteredBooks = books; // Start with all books
+
+if (selectedFilters.length > 0) {
+    filteredBooks = books.filter((book) => {
+        return (selectedFilters.includes("free") && book.amount === "0") || 
+               (selectedFilters.includes("paid") && book.amount !== "0");
+    });
+}
+
+
 
           const startIndex = (currentPage - 1) * booksPerPage;
           const endIndex = startIndex + booksPerPage;
@@ -325,17 +344,27 @@ if (courseTitle) {
         // Optionally add more logic here for modal interaction
       }
 
-      // Function to get selected filter value
-      function getSelectedFilter() {
-        const freeFilter = document.getElementById("free-filter");
-        const paidFilter = document.getElementById("paid-filter");
-        if (freeFilter.checked) {
-          return "free";
-        } else if (paidFilter.checked) {
-          return "paid";
-        }
-        return ""; // No filter selected
-      }
+    
+// Function to get selected filters as an array
+// Function to get selected filters
+function getSelectedFilters() {
+    const allFilter = document.getElementById("all-filter");
+    const freeFilter = document.getElementById("free-filter");
+    const paidFilter = document.getElementById("paid-filter");
+
+    if (allFilter.checked) {
+        return ["free", "paid"]; // If "All" is checked, show both Free and Paid books
+    }
+
+    const selectedFilters = [];
+    if (freeFilter.checked) selectedFilters.push("free");
+    if (paidFilter.checked) selectedFilters.push("paid");
+    
+    return selectedFilters;
+}
+
+
+
 
       // Fetch books on page load
       document.addEventListener("DOMContentLoaded", () => {
@@ -343,15 +372,27 @@ if (courseTitle) {
         const filterRadios = document.querySelectorAll(
           'input[name="price-filter"]'
         );
-        filterRadios.forEach((radio) => {
-          radio.addEventListener("change", () => {
-            currentPage = 1; // Reset to first page when changing filters
-            fetchBooks(
-              document.getElementById("search-input").value,
-              getSelectedFilter()
-            );
-          });
-        });
+        document.querySelectorAll("#all-filter, #free-filter, #paid-filter").forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+        const allFilter = document.getElementById("all-filter");
+        const freeFilter = document.getElementById("free-filter");
+        const paidFilter = document.getElementById("paid-filter");
+
+        if (checkbox.id === "all-filter") {
+            // If "All" is checked, check both "Free" and "Paid"
+            freeFilter.checked = allFilter.checked;
+            paidFilter.checked = allFilter.checked;
+        } else {
+            // If either "Free" or "Paid" is unchecked, uncheck "All"
+            allFilter.checked = freeFilter.checked && paidFilter.checked;
+        }
+
+        // Fetch books based on the new filter selection
+        fetchBooks(document.getElementById("search-input").value, getSelectedFilters());
+    });
+});
+
+
 
         // Clear filters button event listener
         document

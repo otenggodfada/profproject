@@ -23,6 +23,26 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
     <script src="bottomnv.js"></script>
     <script src="kaka.js"></script>
+    <script>
+      tailwind.config = {
+          theme: {
+              extend: {}
+          },
+          plugins: [
+              function ({ addUtilities }) {
+                  addUtilities({
+                      '.scrollbar-hide': {
+                          '-ms-overflow-style': 'none', /* Hide scrollbar for IE and Edge */
+                          'scrollbar-width': 'none', /* Hide scrollbar for Firefox */
+                      },
+                      '.scrollbar-hide::-webkit-scrollbar': {
+                          display: 'none' /* Hide scrollbar for Chrome, Safari */
+                      }
+                  })
+              }
+          ]
+      };
+  </script>
   </head>
   <body class="bg-gray-900">
     <div class="fixed bg-[#172554] top-0 z-20 w-full">
@@ -148,7 +168,7 @@
     <!-- Pay Offline Section -->
     <div
     id="payOffline"
-    class="fixed z-50 top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 flex items-center justify-center "
+    class="fixed z-50 top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 overflow-auto flex items-center justify-center scrollbar-hide "
   >
     <div class="bg-gray-800 w-full max-w-4xl h-full shadow-lg relative">
       <h2 class="text-3xl text-white font-semibold text-center mb-6 mt-4">

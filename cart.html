@@ -47,7 +47,7 @@
     </div>
     <div id="cartb" class="max-w-screen-md mx-auto p-4 mt-32 mb-32">
       <h1 class="text-3xl text-white font-semibold text-center mb-6 mt-2">
-     Book Cart
+     Checkout
       </h1>
     <!-- Cart Items Section -->
 <div class="bg-white shadow-md rounded-lg overflow-hidden">
@@ -501,6 +501,20 @@ ${customerName}
         );
       }
 
+    </script>
+        <script>
+          // Show pay offline section
+          function showPayOffline() { 
+        const customerName = document.getElementById("name").value;
+        const customerEmail = document.getElementById("email").value;
+        const customerPhone = document.getElementById("phone").value;
+    
+        
+        if (!customerName || !customerEmail || !customerPhone) {
+          alert("Please fill in all customer information fields.");
+          return;
+        }    document.getElementById("payOffline").classList.remove("hidden");
+      }
     </script>
     <script src="https://checkout.flutterwave.com/v3.js"></script>
   </body>

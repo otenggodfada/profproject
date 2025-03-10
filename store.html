@@ -115,7 +115,7 @@
       import {
         getFirestore,
         collection,
-        getDocs, doc, getDoc
+        getDocs, doc, getDoc,arrayUnion, updateDoc,setDoc
       } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
       import {
         getAuth,
@@ -242,53 +242,59 @@ if (selectedFilters.length > 0) {
     }
 
     try {
-      console.log("Fetching user data for UID:", user.uid); // Debugging step
-
-      // ✅ Fetch the logged-in user's document directly
+      // Fetch user data
       const userDocRef = doc(db, "users", user.uid);
       const userDocSnap = await getDoc(userDocRef);
 
       let refcode = ""; // Default value
-
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
-        console.log("Fetched user data:", userData); // Debugging step
-
         if (userData.underef) {
           refcode = userData.underef;
-          console.log("Referral code found:", refcode); // Debugging step
-        } else {
-          console.warn("Referral code field 'underef' is missing or empty.");
         }
-      } else {
-        console.warn("User document not found in Firestore.");
       }
 
-      // ✅ Fetch book based on index
+      // Fetch book details
       const querySnapshot = await getDocs(collection(db, "books"));
       if (index >= querySnapshot.docs.length) {
         console.error("Invalid index: No book found");
         return;
       }
-      const bookDoc = querySnapshot.docs[index].data();
-      const { title, amount, description, image_url } = bookDoc;
 
-      // ✅ Navigate to cart page with query params
-      const queryParams = new URLSearchParams({
-        userid: user.uid,
-        id: querySnapshot.docs[index].id,
-        title,
-        amount,
-        description,
-        image_url,
-        referalcode: refcode,
-      }).toString();
+      const bookDoc = querySnapshot.docs[index];
+      const bookData = bookDoc.data();
+      const { title, amount, description, image_url } = bookData;
+      const bookId = bookDoc.id;
 
-      console.log("Final query params:", queryParams); // Debugging step
+      if (amount === "0" || amount === 0) {
+        // If the book is free, add it to the user's collection
+        if (userDocSnap.exists()) {
+          await updateDoc(userDocRef, {
+            books: arrayUnion(bookId),
+          });
+        } else {
+          await setDoc(userDocRef, {
+            books: [bookId],
+          });
+        }
 
-      window.location.href = `cart.html?${queryParams}`;
+        alert("Book added to your collection!");
+      } else {
+        // Proceed with checkout for paid books
+        const queryParams = new URLSearchParams({
+          userid: user.uid,
+          id: bookId,
+          title,
+          amount,
+          description,
+          image_url,
+          referalcode: refcode,
+        }).toString();
+
+        window.location.href = `cart.html?${queryParams}`;
+      }
     } catch (error) {
-      console.error("Error getting document:", error);
+      console.error("Error processing book:", error);
     }
   });
 });

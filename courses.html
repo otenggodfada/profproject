@@ -866,7 +866,7 @@ const renderCourses = async (tagId = null) => {
       </svg>
     </p>
     <!-- Course Title -->
-    <h3 class="text-lg font-semibold text-white flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
+    <h3  onclick="showCourseDetails('${course.id}')" class="text-lg font-semibold text-white flex items-center hover:text-blue-500 gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
       </svg>
@@ -935,7 +935,7 @@ const renderCourses = async (tagId = null) => {
 
       // Show Course Details in Modal
       const showCourseDetails = async (courseId) => {
-      showErrorToast()
+       // Opens the course modal
       const coursesRef = db.collection("courses");
       const courseDoc = await coursesRef.doc(courseId).get();
       const course = courseDoc.data();
@@ -1049,8 +1049,10 @@ function showSuccessToast1() {
       stopOnFocus: true, // Stop dismissing on hover
   }).showToast();
 }
+
 // Show Modal
 document.getElementById("course-modal").style.display = "block";
+
 
     };
 
@@ -1325,6 +1327,23 @@ document.addEventListener("click", (event) => {
   document.getElementById("modal-video").src = videoLink.replace("watch?v=", "embed/");
 </script>
 
+<script>
+// Wait for the page to load
+document.addEventListener("DOMContentLoaded", function () {
+    // Check Firebase authentication
+    firebase.auth().onAuthStateChanged((user) => {
+        document.addEventListener("click", (event) => {
+            // Check if the clicked element is "Add to Cart" or "Enroll"
+            if (event.target.closest(".add-to-cart-btn") || event.target.closest("#modal-enroll-button")) {
+                if (!user) {
+                    event.preventDefault(); // Stop default action
+                    window.location.href = "account.html"; // Redirect to login
+                }
+            }
+        });
+    });
+});
 
+  </script>
 </body>
 </html>

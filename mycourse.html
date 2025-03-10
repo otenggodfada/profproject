@@ -26,12 +26,13 @@
           
              <div id="navbar-container"></div></div>
    <div class="mt-36 mb-28">
-    <div id="course-container" class=" space-y-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 flex">
+    <div id="course-container" class=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
         <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
       </div>
      </div>
-     
+    
+
    </div>
      </div>
   </div>
@@ -81,6 +82,19 @@ function closeModal() {
 function showMessage() {
   document.getElementById("kapo").style.display = "block";
 }
+    </script>
+    <script>
+       function toggleFullScreen(elementId) {
+      const elem = document.getElementById(elementId);
+      
+      if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => {
+          console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
     </script>
 </body>
 </html>

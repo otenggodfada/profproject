@@ -321,10 +321,11 @@ function renderCourses(courses) {
     rows="3" placeholder="Write your review..." data-course-id="${course.id}"></textarea>
 
   <!-- Submit Button -->
-  <button class="submit-review bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded mt-3 transition 
-    hover:scale-105 hover:shadow-lg" data-course-id="${course.id}">
-    Submit Review
-  </button>
+  <!-- ✅ Submit Button with FA Icon -->
+<button class="submit-review mt-4 flex items-center justify-between space-x-4 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition" data-course-id="${course.id}">
+  <i class="fas fa-paper-plane mr-2"></i> Submit Review
+</button>
+
 </div>
 
     
@@ -340,19 +341,20 @@ function renderCourses(courses) {
       button.addEventListener("click", async function () {
         const courseId = this.getAttribute("data-course-id");
         const userId = auth.currentUser?.uid;
-        const rating = document.querySelector(`.rating-select[data-course-id="${courseId}"]`).value;
+        const rating = document.querySelector(`.rating-value[data-course-id="${courseId}"]`).value;
         const reviewText = document.querySelector(`.review-text[data-course-id="${courseId}"]`).value;
-  
+    
         if (!userId) {
           alert("Please log in to submit a review.");
           return;
         }
-  
+    
         await submitReview(courseId, userId, rating, reviewText);
         alert("Review submitted successfully!");
         fetchReviews(courseId);
       });
     });
+    
 
 
 // ⭐ Handle Star Rating Selection

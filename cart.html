@@ -21,211 +21,261 @@
     <script src="bottomnv.js"></script>
   </head>
   <body class="bg-gray-900">
-    <div id="navbar-container"></div>
-    <div id="cartb" class="max-w-screen-md mx-auto p-4 mb-32">
+    <div class="fixed bg-[#172554] top-0 z-20 w-full">
+      <div id="navbar-container"></div>
+    </div>
+    <div id="cartb" class="max-w-screen-md mx-auto p-4 mt-32 mb-32">
       <h1 class="text-3xl text-white font-semibold text-center mb-6 mt-2">
-        Books Cart
+     Book Cart
       </h1>
-      <!-- Cart items section -->
-      <div class="bg-white shadow-md rounded-lg overflow-hidden">
-        <div class="divide-y divide-gray-200">
-          <!-- Sample cart item -->
-          <div class="flex items-center p-4">
-            <img
-              id="image_url"
-              src="https://via.placeholder.com/80"
-              alt="Product Image"
-              class="flex-none w-20 h-20 rounded-lg object-cover mr-4"
-            />
-            <div class="flex-1">
-              <h2 id="title" class="text-lg font-semibold">Another Product</h2>
-              <p id="amount" class="text-gray-600">Price: $29.99</p>
-              <!-- Quantity -->
-       
-            </div>
-            <button
-              id="clearb"
-              class="text-red-500 hover:text-red-600 ml-4"
-              aria-label="Remove item"
-            >
-              <!-- Icon for removing item -->
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                ></path>
-              </svg>
-            </button>
-          </div>
-        </div>
+    <!-- Cart Items Section -->
+<div class="bg-white shadow-md rounded-lg overflow-hidden">
+  <div class="divide-y divide-gray-200">
+    <!-- Sample cart item -->
+    <div class="flex items-center p-4">
+      <!-- Product Image -->
+      <img
+        id="image_url"
+        src="https://via.placeholder.com/80"
+        alt="Product Image"
+        class="flex-none w-20 h-20 rounded-lg object-cover mr-4"
+      />
+      
+      <!-- Product Details -->
+      <div class="flex-1">
+        <h2 id="title" class="text-lg font-semibold">Another Product</h2>
+        <p id="amount" class="text-gray-600">Price: $29.99</p>
       </div>
+
+      <!-- Remove Item Button -->
+      <button
+        id="clearb"
+        class="text-red-500 hover:text-red-600 ml-4 transition duration-200 ease-in-out transform hover:scale-110"
+        aria-label="Remove item"
+      >
+        <i class="fas fa-trash-alt text-xl"></i>
+      </button>
+    </div>
+  </div>
+</div>
       <!-- User info section -->
       <div class="mt-4">
-        <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
-          <h2 class="text-xl font-semibold mb-2">Customer Information</h2>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
+          <h2 class="text-xl font-semibold mb-4 flex items-center">
+            <i class="fas fa-user-circle text-blue-500 mr-2"></i> Customer Information
+          </h2>
+      
+          <!-- Name Field -->
           <div class="mb-4">
-            <label for="name" class="block text-sm font-medium text-gray-700"
-              >Name</label
-            >
-            <input
-              type="text"
-              id="name"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-[#dfe4eb]"
-              required
-            />
+            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <div class="relative mt-1">
+              <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <input
+                type="text"
+                id="name"
+                class="pl-10 pr-4 py-2 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-100"
+                placeholder="Enter your name"
+                required
+              />
+            </div>
           </div>
+      
+          <!-- Email Field -->
           <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-gray-700"
-              >Email</label
-            >
-            <input
-              type="email"
-              id="email"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-[#dfe4eb]"
-              required
-            />
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <div class="relative mt-1">
+              <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <input
+                type="email"
+                id="email"
+                class="pl-10 pr-4 py-2 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-100"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
           </div>
+      
+          <!-- Phone Field -->
           <div class="mb-4">
-            <label for="phone" class="block text-sm font-medium text-gray-700"
-              >Phone Number</label
-            >
-            <input
-              type="tel"
-              id="phone"
-              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-[#dfe4eb]"
-              required
-            />
+            <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+            <div class="relative mt-1">
+              <i class="fas fa-phone absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <input
+                type="tel"
+                id="phone"
+                class="pl-10 pr-4 py-2 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-100"
+                placeholder="Enter your phone number"
+                required
+              />
+            </div>
           </div>
         </div>
       </div>
       <!-- Total section -->
       <div class="mt-4">
-        <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
-          <h2 class="text-xl font-semibold mb-2">Total</h2>
-          <div class="flex justify-between">
-            <span class="text-lg">Subtotal:</span>
-            <span id="subt" class="text-lg">$99.96</span>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
+          <h2 class="text-xl font-semibold mb-4 flex items-center">
+            <i class="fas fa-receipt text-blue-500 mr-2"></i> Total
+          </h2>
+      
+          <div class="flex justify-between text-lg font-medium">
+            <span>Subtotal:</span>
+            <span id="subt" class="text-blue-600 font-semibold">$99.96</span>
           </div>
+      
+          <!-- Pay Online Button -->
           <button
-            class="mt-4 w-full bg-gray-900 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+            class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition duration-200"
             aria-label="Proceed to Checkout"
           >
-          Pay Online
+            <i class="fas fa-credit-card mr-2"></i> Pay Online
           </button>
-          <button  
-          class="mt-4 w-full bg-gray-900 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          id="showit"
-        >
-        Pay Offline
-        </button>
+      
+          <!-- Pay Offline Button -->
+          <button
+            id="showit" onclick="showPayOffline()"
+            class="mt-3 w-full bg-gray-700 hover:bg-gray-800 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition duration-200"
+          >
+            <i class="fas fa-wallet mr-2"></i> Pay Offline
+          </button>
         </div>
       </div>
     </div>
     <!-- Pay Offline Section -->
-    <div id="payOffline" class="w-screen bg-black bg-opacity-50 p-4 hidden fixed z-50 top-0 right-0 left-0 bottom-0 flex items-center justify-center">
-      <div class="bg-gray-800 w-[90%] max-w-[600px] rounded-lg shadow-lg">
-        <h2 class="text-3xl text-white font-semibold text-center mb-6 mt-4">Pay Offline</h2>
-        <div class="space-y-4 p-4">
-          
+    <div
+    id="payOffline"
+    class="fixed z-50 top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 overflow-auto flex items-center justify-center scrollbar-hide "
+  >
+    <div class="bg-gray-800 w-full max-w-4xl h-full shadow-lg relative">
+      <h2 class="text-3xl text-white font-semibold text-center mb-6 mt-4">
+        <i class="fas fa-wallet mr-2"></i> Pay Offline
+      </h2>
+  
+      <div class="space-y-4 p-4">
+        <!-- Payment Cards -->
+        <div class="space-y-6">
           <!-- MTN Payment -->
-          <div class="bg-white shadow-md rounded-lg overflow-hidden">
-            <div class="p-4">
-              <div class="flex items-center mb-2">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/2048px-MTN_Logo.svg.png" alt="MTN Logo" class="w-8 h-8 mr-2">
-                <h3 class="text-xl font-semibold">MTN Payment</h3>
-              </div>
-              <p class="text-gray-600">
-                <i class="fas fa-university text-gray-700 mr-2"></i>
-                <strong>Bank Name:</strong> MTN
-              </p>
-              <p class="text-gray-600">
-                <i class="fas fa-hashtag text-gray-700 mr-2"></i>
-                <strong>Account Number:</strong> 
-                <span id="mtnAccount">0242723139</span>
-                <button onclick="copyToClipboard('mtnAccount')" class="ml-2 text-blue-500 underline">
-                  <i class="fas fa-copy"></i> Copy
-                </button>
-              </p>
-              <p class="text-gray-600">
-                <i class="fas fa-user text-gray-700 mr-2"></i>
-                <strong>Account Name:</strong> Oteng Emmanuel
-              </p>
-              <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded" data-payment-method="MTN">
-                Send Receipt
-              </button>
+          <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
+            <div class="flex items-center mb-2">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/2048px-MTN_Logo.svg.png"
+                alt="MTN Logo"
+                class="w-10 h-10 object-contain mr-2"
+              />
+              <h3 class="text-xl font-semibold">MTN Payment</h3>
             </div>
+            <p class="text-gray-600">
+              <i class="fas fa-university text-gray-700 mr-2"></i>
+              <strong>Bank Name:</strong> MTN
+            </p>
+            <p class="text-gray-600">
+              <i class="fas fa-hashtag text-gray-700 mr-2"></i>
+              <strong>Account Number:</strong>
+              <span id="mtnAccount">0242723139</span>
+              <button
+                onclick="copyToClipboard('mtnAccount')"
+                class="ml-2 text-blue-500 hover:text-blue-600"
+              >
+                <i class="fas fa-copy"></i> Copy
+              </button>
+            </p>
+            <p class="text-gray-600">
+              <i class="fas fa-user text-gray-700 mr-2"></i>
+              <strong>Account Name:</strong> Oteng Emmanuel
+            </p>
+            <button
+              class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded-lg transition duration-200"
+              data-payment-method="MTN"
+            >
+              <i class="fas fa-paper-plane mr-2"></i> Send Receipt
+            </button>
           </div>
-    
+  
           <!-- Telecel Payment -->
-          <div class="bg-white shadow-md rounded-lg overflow-hidden">
-            <div class="p-4">
-              <div class="flex items-center mb-2">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4R7lA1tlSlrBzf9OrDXIswYytfI7TfvC0w&s" alt="Telecel Logo" class="w-8 h-8 mr-2">
-                <h3 class="text-xl font-semibold">Telecel Payment</h3>
-              </div>
-              <p class="text-gray-600">
-                <i class="fas fa-university text-gray-700 mr-2"></i>
-                <strong>Bank Name:</strong> Telecel
-              </p>
-              <p class="text-gray-600">
-                <i class="fas fa-hashtag text-gray-700 mr-2"></i>
-                <strong>Account Number:</strong> 
-                <span id="telecelAccount">0242723139</span>
-                <button onclick="copyToClipboard('telecelAccount')" class="ml-2 text-blue-500 underline">
-                  <i class="fas fa-copy"></i> Copy
-                </button>
-              </p>
-              <p class="text-gray-600">
-                <i class="fas fa-user text-gray-700 mr-2"></i>
-                <strong>Account Name:</strong> Oteng Emmanuel
-              </p>
-              <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded" data-payment-method="Telecel">
-                Send Receipt
-              </button>
+          <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
+            <div class="flex items-center mb-2">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4R7lA1tlSlrBzf9OrDXIswYytfI7TfvC0w&s"
+                alt="Telecel Logo"
+                class="w-10 h-10 object-contain mr-2"
+              />
+              <h3 class="text-xl font-semibold">Telecel Payment</h3>
             </div>
+            <p class="text-gray-600">
+              <i class="fas fa-university text-gray-700 mr-2"></i>
+              <strong>Bank Name:</strong> Telecel
+            </p>
+            <p class="text-gray-600">
+              <i class="fas fa-hashtag text-gray-700 mr-2"></i>
+              <strong>Account Number:</strong>
+              <span id="telecelAccount">0242723139</span>
+              <button
+                onclick="copyToClipboard('telecelAccount')"
+                class="ml-2 text-blue-500 hover:text-blue-600"
+              >
+                <i class="fas fa-copy"></i> Copy
+              </button>
+            </p>
+            <p class="text-gray-600">
+              <i class="fas fa-user text-gray-700 mr-2"></i>
+              <strong>Account Name:</strong> Oteng Emmanuel
+            </p>
+            <button
+              class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded-lg transition duration-200"
+              data-payment-method="Telecel"
+            >
+              <i class="fas fa-paper-plane mr-2"></i> Send Receipt
+            </button>
           </div>
-    
+  
           <!-- Bank Payment -->
-          <div class="bg-white shadow-md rounded-lg overflow-hidden">
-            <div class="p-4">
-              <div class="flex items-center mb-2">
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/021/616/845/small_2x/banking-3d-render-icon-illustration-png.png" alt="Bank Logo" class="w-8 h-8 mr-2">
-                <h3 class="text-xl font-semibold">Bank Payment</h3>
-              </div>
-              <p class="text-gray-600">
-                <i class="fas fa-university text-gray-700 mr-2"></i>
-                <strong>Bank Name:</strong> Access Bank
-              </p>
-              <p class="text-gray-600">
-                <i class="fas fa-hashtag text-gray-700 mr-2"></i>
-                <strong>Account Number:</strong> 
-                <span id="bankAccount">0242723139</span>
-                <button onclick="copyToClipboard('bankAccount')" class="ml-2 text-blue-500 underline">
-                  <i class="fas fa-copy"></i> Copy
-                </button>
-              </p>
-              <p class="text-gray-600">
-                <i class="fas fa-user text-gray-700 mr-2"></i>
-                <strong>Account Name:</strong> Oteng Emmanuel
-              </p>
-              <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded" data-payment-method="Bank">
-                Send Receipt
-              </button>
+          <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
+            <div class="flex items-center mb-2">
+              <img
+                src="https://static.vecteezy.com/system/resources/thumbnails/021/616/845/small_2x/banking-3d-render-icon-illustration-png.png"
+                alt="Bank Logo"
+                class="w-10 h-10 object-contain mr-2"
+              />
+              <h3 class="text-xl font-semibold">Bank Payment</h3>
             </div>
+            <p class="text-gray-600">
+              <i class="fas fa-university text-gray-700 mr-2"></i>
+              <strong>Bank Name:</strong> Access Bank
+            </p>
+            <p class="text-gray-600">
+              <i class="fas fa-hashtag text-gray-700 mr-2"></i>
+              <strong>Account Number:</strong>
+              <span id="bankAccount">0242723139</span>
+              <button
+                onclick="copyToClipboard('bankAccount')"
+                class="ml-2 text-blue-500 hover:text-blue-600"
+              >
+                <i class="fas fa-copy"></i> Copy
+              </button>
+            </p>
+            <p class="text-gray-600">
+              <i class="fas fa-user text-gray-700 mr-2"></i>
+              <strong>Account Name:</strong> Oteng Emmanuel
+            </p>
+            <button
+              class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded-lg transition duration-200"
+              data-payment-method="Bank"
+            >
+              <i class="fas fa-paper-plane mr-2"></i> Send Receipt
+            </button>
           </div>
-          
         </div>
+  
+        <!-- Close Button -->
+        <button
+          onclick="closeModal()"
+          class="absolute top-4 right-4 text-white text-2xl hover:text-red-500 transition"
+        >
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-
     </div>
+  </div>
     <footer>
       <div
         class="fixed z-50 bottom-0 right-0 left-0"
@@ -286,17 +336,7 @@ const refcode = params.get("referalcode");
         document.getElementById("image_url").alt = title;
       }
 
-      // // Increase quantity
-      // let count = 1;
-      // const btn = document.getElementById("qwntb");
-      // btn.addEventListener("click", () => {
-      //   count += 1;
-      //   document.getElementById("qwnt").textContent = count;
-      //   const price = parseFloat(amount);
-      //   document.getElementById("subt").textContent = `GHS${(
-      //     price * count
-      //   ).toFixed(2)}`;
-      // });
+
 
       // Clear cart
       const clearcartb = document.getElementById("clearb");
@@ -393,14 +433,39 @@ bookid: bookid
 });
 
 function sendPaymentDetails(paymentMethod) {
-  const customerName = document.getElementById("name").value;
-  const customerEmail = document.getElementById("email").value;
-  const customerPhone = document.getElementById("phone").value;
-  const message = `I have paid for my order. \n\nName: ${customerName} \nEmail: ${customerEmail} \nPhone: ${customerPhone} \nPayment Method: ${paymentMethod} \nBook Title: ${title} \nAmount: GHS${amount} \nUserId: ${userid} \nBookId: ${bookid}`;
-  window.open(
-    `https://wa.me/+233266306442?text=${encodeURIComponent(message)}`
-  );
-}
+        const customerName = document.getElementById("name").value;
+        const customerEmail = document.getElementById("email").value;
+        const customerPhone = document.getElementById("phone").value;
+        
+        if (!customerName || !customerEmail || !customerPhone) {
+          alert("Please fill in all customer information fields.");
+          return;
+        }
+        const message = `📢 *Payment Confirmation*  
+
+Dear Team,  
+
+I have successfully completed my payment. Below are the details:  
+
+👤 *Name:* ${customerName}  
+📧 *Email:* ${customerEmail}  
+📞 *Phone:* ${customerPhone}  
+💳 *Payment Method:* ${paymentMethod}  
+📖 *Book Title:* ${title}  
+💰 *Amount Paid:* GHS${amount}  
+🆔 *User ID:* ${userid}  
+📚 *Book ID:* ${bookid}  
+🔗 *Referee Code:* ${refcode}  
+
+Kindly process my order at your earliest convenience. Thank you!  
+
+*Best regards,*  
+${customerName}  
+`;
+        window.open(
+          `https://wa.me/+233266306442?text=${encodeURIComponent(message)}`
+        );
+      }
 
     </script>
     <script src="https://checkout.flutterwave.com/v3.js"></script>

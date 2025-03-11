@@ -67,6 +67,7 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script type="text/javascript">
       (function () {
         emailjs.init("0s5aKc23u4R444FF0"); // Replace with your EmailJS user ID
@@ -141,19 +142,27 @@
     </style>
      
 
-<script>
-  const sections = document.querySelectorAll('section');
+     <script>
+      const sections = document.querySelectorAll('section');
 
-  const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-          if (entry.isIntersecting) {
-              entry.target.classList.add('show');
-          }
-      });
-  }, { threshold: 0.2 });
+      function animateOnScroll() {
+          sections.forEach(section => {
+              let rect = section.getBoundingClientRect();
+              if (rect.top < window.innerHeight * 0.8) {
+                  anime({
+                      targets: section,
+                      opacity: 1,
+                      translateY: 0,
+                      duration: 1000,
+                      easing: 'easeOutQuad'
+                  });
+              }
+          });
+      }
 
-  sections.forEach(section => observer.observe(section));
-</script>
+      document.addEventListener('scroll', animateOnScroll);
+      animateOnScroll();
+  </script>
   </head>
   <body class="bg-gray-900 text-white">
     <div id="__next">

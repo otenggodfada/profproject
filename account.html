@@ -13,94 +13,16 @@
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <script src="kaka.js"></script>
-    <style>
-      body {
-        background-color: #0f1731;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      }
-      .modal-dialog {
-        max-width: 400px;
-        margin: 10vh auto;
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        animation: fadeInDown 0.5s ease;
-      }
-      @keyframes fadeInDown {
-        0% {
-          opacity: 0;
-          transform: translateY(-20px);
-        }
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .modal-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-align: center;
-        color: #333;
-        margin-bottom: 1rem;
-      }
-      .form-group {
-        margin-bottom: 1rem;
-      }
-      .form-label {
-        font-size: 0.875rem;
-        font-weight: bold;
-        color: #555;
-        display: block;
-        margin-bottom: 0.5rem;
-      }
-      .form-input {
-        padding: 0.75rem;
-        width: 100%;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 0.875rem;
-        transition: border-color 0.3s ease;
-      }
-      .form-input:focus {
-        border-color: #1e90ff;
-        outline: none;
-      }
-      .form-button {
-        background-color: #172554;
-        color: white;
-        border: none;
-        padding: 0.75rem 1rem;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        display: block;
-        width: 100%;
-        font-size: 0.875rem;
-        margin-top: 1rem;
-      }
-      .form-button:hover {
-        background-color: #007bff;
-      }
-      .form-footer {
-        text-align: center;
-        margin-top: 1rem;
-      }
-      .form-footer a {
-        color: #1e90ff;
-        text-decoration: none;
-      }
-      .form-footer a:hover {
-        text-decoration: underline;
-      }
-    </style>
+   
   </head>
-  <body>
+  <body class="bg-gray-900 text-white">
     <div id="navbar-container"></div>
-    <div id="account-modal" class="modal">
-      <div class="modal-dialog">
+    <div id="account-modal" class=" fixed inset-0 flex justify-center items-center p-0 bg-black/50">
+      <div class="relative max-w-lg rounded-2xl bg-[#242525] px-8  pb-8 sm:w-full border border-gray-500 ">
+        <button  id="close-modal" class="flex w-full form-button flex-row justify-between mb-4 text-gray-300 text-4xl"><div></div> &times;</button>
         <div id="create-account-section">
-          <h2 class="modal-title text-2xl mb-4">Create an Account</h2>
+         
+          <h2 class="modal-title text-white text-2xl mb-4">Create an Account</h2>
           <!-- User Type Selection -->
           <div class="form-group">
             <label for="user-type" class="form-label"
@@ -168,7 +90,7 @@
                 id="referral"
                 name="Referral"
              
-           
+           required
                 class="form-input"
               />
             </div>
@@ -194,8 +116,8 @@
           </form>
 
           <div class="form-footer">
-            <p class="text-gray-600">
-              Already have an account? <a href="#" id="toggle-login">Login</a>
+            <p class="text-gray-300 ">
+              Already have an account? <a class="text-blue-500" href="#" id="toggle-login">Login</a>
             </p>
           </div>
         </div>
@@ -229,21 +151,22 @@
             </div>
           </form>
           <div class="form-footer">
-            <p class="text-gray-600">
+            <p class="text-gray-300">
               Don't have an account yet?
-              <a href="#" id="toggle-create">Create Account</a>
+              <a class="text-blue-500" href="#" id="toggle-create">Register Now</a>
             </p>
           </div>
 
         
         </div>
-        <button  id="close-modal" class="form-button mt-4">Close</button>
+   
       </div>
 
-      <div id="loading-screen" class="fixed hidden bg-black opacity-60 top-0 right-0 bottom-0 left-0 text-white text-center flex items-center justify-center "><svg class="w-6 h-6 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.93 4.93a10.5 10.5 0 0114.14 0m-14.14 14.14a10.5 10.5 0 0114.14 0M9.17 9.17a5.25 5.25 0 017.66 0m-7.66 7.66a5.25 5.25 0 017.66 0" />
-      </svg></div>
+     
     </div>
+    <div id="loading-screen" class="fixed hidden bg-black opacity-60 top-0 right-0 bottom-0 left-0 text-white text-center flex items-center justify-center "><svg class="w-6 h-6 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.93 4.93a10.5 10.5 0 0114.14 0m-14.14 14.14a10.5 10.5 0 0114.14 0M9.17 9.17a5.25 5.25 0 017.66 0m-7.66 7.66a5.25 5.25 0 017.66 0" />
+    </svg></div>
     <script src="navbar.js"></script>
     <script type="module" src="./dynamiccon.js"></script>
 

@@ -443,12 +443,17 @@ async function loadMoreBlogs(excludePostId) {
             >
           </div>
         </motion.div>
-        <input
-        type="text" 
-        id="searchInput"
-        placeholder="Search blog posts..."
-        class="w-full p-3  text-lg rounded-lg bg-gray-800 text-white border border-gray-600 focus:ring focus:ring-blue-500"
-      />
+        <div class="items-center border border-gray-700 p-3 w-full rounded-lg  flex">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 2a6 6 0 104.472 10.472l3.9 3.9a1 1 0 001.415-1.415l-3.9-3.9A6 6 0 008 2zM3 8a5 5 0 1110 0A5 5 0 013 8z" clip-rule="evenodd"/>
+          </svg>
+          <input
+          type="text" 
+          id="searchInput"
+          placeholder="Search"
+          class="outline-none bg-transparent ml-2 w-full "
+          />
+        </div>
       </div>
       
       <div

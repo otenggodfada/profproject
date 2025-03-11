@@ -132,12 +132,12 @@ option {
 <!-- Search and Filter -->
 <div class="flex flex-row  justify-between">
   <!-- Search Input with Icon -->
-  <div class=" items-center border border-gray-700 p-3 rounded-lg hidden lg:flex">
+  <!-- <div class=" items-center border border-gray-700 p-3 rounded-lg hidden lg:flex">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
       <path fill-rule="evenodd" d="M8 2a6 6 0 104.472 10.472l3.9 3.9a1 1 0 001.415-1.415l-3.9-3.9A6 6 0 008 2zM3 8a5 5 0 1110 0A5 5 0 013 8z" clip-rule="evenodd"/>
     </svg>
     <input type="text" placeholder="Search" class="ml-2 outline-none bg-transparent">
-  </div>
+  </div> -->
 
   <!-- Dropdown for Sorting -->
  <div>
@@ -171,12 +171,17 @@ option {
 </button>
  </div>
 </div>
-<input
-type="text" 
-id="searchInput"
-placeholder="Search courses..."
-class="w-full p-3  text-lg rounded-lg bg-gray-900 text-white border mt-3 border-gray-600 focus:ring focus:ring-blue-500"
-/>
+<div class="items-center border border-gray-700 p-3 rounded-lg mt-4 flex">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+    <path fill-rule="evenodd" d="M8 2a6 6 0 104.472 10.472l3.9 3.9a1 1 0 001.415-1.415l-3.9-3.9A6 6 0 008 2zM3 8a5 5 0 1110 0A5 5 0 013 8z" clip-rule="evenodd"/>
+  </svg>
+  <input
+  type="text" 
+  id="searchInput"
+  placeholder="Search"
+  class="outline-none bg-transparent ml-2  "
+  />
+</div>
 
   <div class="flex">
     <!-- Tags Section for Larger Screens -->
@@ -866,7 +871,7 @@ const renderCourses = async (tagId = null) => {
       </svg>
     </p>
     <!-- Course Title -->
-    <h3  onclick="showCourseDetails('${course.id}')" class="text-lg font-semibold text-white flex items-center hover:text-blue-500 gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
+    <h3    class="text-lg font-semibold text-white flex items-center hover:text-blue-500 gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
       </svg>
@@ -934,8 +939,10 @@ const renderCourses = async (tagId = null) => {
 
 
       // Show Course Details in Modal
-      const showCourseDetails = async (courseId) => {
+      const showCourseDetails = async ( courseId) => {
        // Opens the course modal
+     
+    
       const coursesRef = db.collection("courses");
       const courseDoc = await coursesRef.doc(courseId).get();
       const course = courseDoc.data();
@@ -1329,14 +1336,13 @@ document.addEventListener("click", (event) => {
 
 <script>
 // Wait for the page to load
+// Ensure "Add to Cart" and "Enroll" buttons redirect only if the user is not logged in
 document.addEventListener("DOMContentLoaded", function () {
-    // Check Firebase authentication
     firebase.auth().onAuthStateChanged((user) => {
         document.addEventListener("click", (event) => {
-            // Check if the clicked element is "Add to Cart" or "Enroll"
             if (event.target.closest(".add-to-cart-btn") || event.target.closest("#modal-enroll-button")) {
                 if (!user) {
-                    event.preventDefault(); // Stop default action
+                    event.preventDefault();
                     window.location.href = "account.html"; // Redirect to login
                 }
             }
@@ -1344,6 +1350,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
+
   </script>
+
 </body>
 </html>

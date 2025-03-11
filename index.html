@@ -198,17 +198,21 @@
           <p class="text-lg sm:text-xl text-white max-w-4xl mx-auto">
             Learning should be Easier. Use Profs Study Hub to facilitate your CITG $ ICAG learning experience to pass your first attempt.
           </p>
-          <div id="course-list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-6">
+          <div id="course-list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-14">
             <!-- Courses will be dynamically injected here -->
-             
+           
           </div>
-          <div class=" lg:px-48">
-            <div onclick="window.location.href='courses.html';" class="p-4 bg-[#172554] border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md w-40 cursor-pointer">
-              Explore Courses
+          <section >
+            <div class=" ">
+              <div onclick="window.location.href='courses.html';" class="p-4 bg-[#172554] border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md w-40 cursor-pointer">
+                Explore Courses
+              </div>
             </div>
-          </div>
+          </section>
           
         </section>
+        
+       
           <!-- Modal -->
 <div hidden id="course-modal" class="modal">
   <div class="modal-content bg-white shadow-lg rounded-lg p-8 max-w-lg mx-auto">
@@ -908,20 +912,24 @@
   
       // Fetch Courses from Firestore
       const fetchCourses = async (tagId = null) => {
-        try {
-          const coursesRef = db.collection("courses");
-          let query = coursesRef;
-          if (tagId) {
-            query = coursesRef.where('tag_ids', 'array-contains', tagId);
-          }
-          const courseSnapshot = await query.get();
-          const courses = courseSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-          return courses;
-        } catch (error) {
-          console.error("Error fetching courses:", error);
-          return [];
-        }
-      };
+  try {
+    const coursesRef = db.collection("courses");
+    let query = coursesRef.where('featured', '==', true); // Only fetch featured courses
+
+    if (tagId) {
+      query = query.where('tag_ids', 'array-contains', tagId);
+    }
+
+    const courseSnapshot = await query.get();
+    const courses = courseSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    
+    return courses;
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    return [];
+  }
+};
+
   
       // Fetch Tags by IDs
       const fetchTags = async (tagIds) => {
@@ -1132,8 +1140,11 @@
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
     </svg>
   </div>
-
+<div class="absolute top-2 left-2 bg-white/30 backdrop-blur-md text-lg font-semibold text-white px-3 py-1 rounded-full shadow-md">
+          🎖️ Featured
+        </div>
   </div>
+  
 </div>
 
               

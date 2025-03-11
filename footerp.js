@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
                 <!-- Brand Info -->
                 <div class="space-y-3">
+                  <a href="./index.html" class="flex items-center">
+            <img src="assets/logo (5).png" alt="Logo" class="h-10 mr-2" />
+          </a>
                     <h2 class="text-3xl font-bold text-white">ProfstudyHub</h2>
                     <p class="text-gray-300">Your Pass Mark is Guaranteed with Us.</p>
                     <p class="text-gray-400">📞 +233 243 44 39 34</p>

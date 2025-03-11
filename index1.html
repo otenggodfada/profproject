@@ -1,0 +1,223 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Education App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      defer
+      src="https://unpkg.com/framer-motion@4.1.17/dist/framer-motion.umd.js"
+    ></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script type="module" src="./dynamiccon.js"></script>
+    <script type="module" src="./navbar.js"></script>
+    <script src="bottomnv.js"></script>
+    <script src="kaka.js"></script>
+    <style>
+      @keyframes spin-slow {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .animate-spin-slow {
+        animation: spin-slow 3s linear infinite;
+      }
+    </style>
+
+<script type="module">
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+        authDomain: "profstudymate-6d0fc.firebaseapp.com",
+        projectId: "profstudymate",
+        storageBucket: "profstudymate.appspot.com",
+        messagingSenderId: "141453158869",
+        appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  // Function to update username
+  const updateUsername = async (userId) => {
+    const userRef = doc(db, "users", userId);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      let fullName = userSnap.data().name;
+      let displayName = fullName.length > 8 ? fullName.substring(0, 8) + "..." : fullName;
+      document.getElementById("username").textContent = `Hello, ${displayName}`;
+    }
+  };
+
+  // Check if user is logged in
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      updateUsername(user.uid);
+    }
+  });
+</script>
+
+  </head>
+  <body class="bg-gray-900 text-white">
+    <div class="fixed top-0 bg-[#172554] z-20 w-full">
+      <div id="navbar-container"></div>
+      <div class="flex justify-between items-center py-6  px-6 bg-gray-900 ">
+        <div>
+          <h1 id="username" class="text-3xl mb-2 font-extrabold text-white">
+            Hello, Studymate
+          </h1>
+          <p class="text-white text-sm">What do you want to learn today?</p>
+        </div>
+        <div onclick="window.location.href='mprofilepage.html'" 
+        class="relative w-16 h-16 flex justify-center items-center cursor-pointer group">
+        
+        <!-- Rotating Outer Gear -->
+        <i class=" border w-16 h-16 rounded-full border-b-2 border-white absolute  bg-white/10 animate-spin-slow"></i>
+    
+        <!-- User Profile with Gear (Middle Icon) -->
+        <div class="relative flex items-center">
+            <i class="ph ph-user text-2xl text-white/80"></i>
+            <i class="ph ph-gear text-xl text-white/80 absolute -bottom-2 -right-3 
+                      transition-transform group-hover:rotate-180 duration-500"></i>
+        </div>
+    </div>
+      </div>
+    </div>
+    <div class="max-w-md mx-auto mt-36 py-14 mb-36">
+    
+
+      <!-- Cards Section -->
+      <div class="space-y-6" id="card-container">
+        <script>
+          const options = [
+            {
+              title1: "CITG",
+              description: "Certified IT Governance program for professionals.",
+              link: "courses.html",
+            },
+            {
+              title1: "ICAGH",
+              description: "Institute of Chartered Accountants Ghana program.",
+              link: "courses.html",
+            },
+            {
+              title1: "BOOKSHOP",
+              description:
+                "Access a wide range of educational books and resources.",
+              link: "store.html",
+            },
+            {
+              title1: "ALUMNI TRAINING PROGRAMS",
+              description: "Exclusive training for our alumni members.",
+              link: "courses.html",
+            },
+            {
+              title1: "Grow your business (Digital marketing)",
+              description:
+                "Master digital marketing strategies to grow your business.",
+              link: "blog.html",
+            },
+            {
+              title1: "MAKE MONEY WITH PROFS (BECOME an affiliate)",
+              description: "Join our affiliate program and earn commissions.",
+              link: "job.html",
+            },
+            {
+              title1: "ADIT",
+              description:
+                "Advanced Diploma in International Taxation program.",
+              link: "courses.html",
+            },
+            {
+              title1: "PMP PROFESSIONAL",
+              description:
+                "Project Management Professional certification training.",
+              link: "courses.html",
+            },
+          ];
+
+          document.write(
+            options
+              .map(
+                (option) => `
+                        <div onclick="window.location.href='${
+                          option.link
+                        }?title1=${encodeURIComponent(option.title1)}'"
+ class="card flex items-stretch justify-between  rounded-xl    border border-gray-500">
+                            <div class="m-6">
+                                            <!-- Rating -->
+    <p class="text-gray-300 text-sm flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg>
+    </p>
+                         <div class="flex flex-row">   
+      <div class="mr-2">                       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
+      </svg>
+             </div>               
+                            <h2 class="text-lg font-semibold text-white">${
+                              option.title1
+                            }</h2></div>
+                    
+                                <p class="text-sm text-gray-500">${
+                                  option.description
+                                }</p>
+                            </div>
+                            <div  class="bg-[#172554] text-white px-5 flex flex-col items-center justify-center rounded-r-xl transform transition hover:scale-105 ">
+                                <i class="ph ph-arrow-right text-xl"></i>
+                            </div>
+                        </div>
+                    `
+              )
+              .join("")
+          );
+        </script>
+      </div>
+
+      <footer>
+        <div
+          class="fixed z-50 bottom-0 right-0 left-0"
+          id="navbar-container1"
+        ></div>
+      </footer>
+    </div>
+
+    <!-- Framer Motion Animation -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const { motion } = window.framerMotion;
+        const cards = document.querySelectorAll(".card");
+        cards.forEach((card, index) => {
+          motion(card, {
+            initial: { opacity: 0, y: 30 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: index * 0.15, duration: 0.6, ease: "easeOut" },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

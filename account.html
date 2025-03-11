@@ -22,7 +22,7 @@
   </div>
     <div
       id="account-modal"
-      class="fixed inset-0 flex justify-center items-center overflow-auto  bg-black/50 p-4"
+      class="fixed inset-0 flex z-50 justify-center items-center overflow-auto top-0 bottom-0 bg-black/50 p-4"
     >
       <div
         class="relative max-w-lg w-full bg-[#242525] p-8 rounded-2xl border border-gray-600 shadow-xl"
@@ -37,7 +37,7 @@
           <h2 class="text-2xl font-semibold text-center mb-6">
             Create an Account
           </h2>
-          <form id="account-form" class="space-y-4">
+          <form  id="account-form" class="space-y-4">
             <div>
             
               <select
@@ -74,10 +74,11 @@ placeholder="Full name"
             <div>
            
               <input
+              
               placeholder="tel"
                 type="tel"
                 id="telephone"
-                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
+                class=" w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500 "
                 required
               />
             </div>
@@ -102,13 +103,12 @@ placeholder="Full name"
               />
             </div>
             <div id="author-fields" class="hidden">
-              <label for="zoom-id" class="block text-sm font-medium"
-                >Zoom Invitation Link</label
-              >
+             
               <input
+              placeholder="Zoom Invitation link"
                 type="text"
                 id="zoom-id"
-                class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500 "
               />
             </div>
             <button

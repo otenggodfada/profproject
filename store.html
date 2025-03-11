@@ -408,7 +408,15 @@ function getSelectedFilters() {
 
       // Fetch books on page load
       document.addEventListener("DOMContentLoaded", () => {
+
+
         fetchBooks(); // Initial fetch
+
+            // Search functionality: triggers as user types
+    document.getElementById("search-input").addEventListener("input", (e) => {
+        currentPage = 1; // Reset to first page when searching
+        fetchBooks(e.target.value);
+    });
         const filterRadios = document.querySelectorAll(
           'input[name="price-filter"]'
         );
@@ -550,7 +558,11 @@ function getSelectedFilters() {
         modal.style.display = "none";
       }
 
-      
+      document.getElementById("search-input").addEventListener("input", (e) => {
+    currentPage = 1; // Reset to first page when searching
+    fetchBooks(e.target.value);
+});
+
     </script>
     <script>
             function openFullscreen(imageUrl) {

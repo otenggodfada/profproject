@@ -92,7 +92,9 @@ option {
     <div class=" bg-[#172554] fixed top-0 z-20 w-screen ">
        
         <div id="navbar-container"></div></div>
-       
+        <div id="loadingScreen" class="fixed inset-0  flex items-center justify-center z-50">
+          <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
+        </div>
         <footer>
           <div
             class="fixed z-50 bottom-0 right-0 left-0"
@@ -178,7 +180,7 @@ option {
   type="text" 
   id="searchInput"
   placeholder="Search"
-  class="outline-none bg-transparent w-full ml-2  "
+  class="outline-none bg-transparent ml-2 w-full "
   />
 </div>
     <!-- Filters -->
@@ -842,7 +844,8 @@ document.head.appendChild(style);
 const renderCourses = async (tagId = null) => {
     const courseList = document.getElementById("course-list");
     courseList.innerHTML = `  <div class="fixed top-0 right-0 left-0 bottom-0"><div class="text-center flex flex-col items-center justify-center w-screen h-screen">
-  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
+    
+    <p class="text-[#dbdbdb] text-lg font-semibold"></p>
   </div></div> `; // Loading state
 
     let courses = await fetchCourses(); // Fetch all courses

@@ -107,7 +107,7 @@ option {
   
   <div class="container mx-auto mt-36 px-4 lg:px-16 flex flex-col lg:flex-row gap-6">
     <!-- Mobile Drawer for Tags -->
-    <h1 id="lolo" class="text-3xl font-bold text-white">All Courses</h1>
+    
     <div class="lg:hidden z-10">
       
       <div class="flex items-center space-x-24">
@@ -212,6 +212,7 @@ option {
           <span class="text-white font-medium">Paid</span>
       </label>
   </div>
+  <h1 id="lolo" class="text-3xl font-bold text-white">All Courses</h1>
   <div class="flex">
     <!-- Tags Section for Larger Screens -->
     <div id="tags-container" class="hidden lg:block w-full lg:w-1/4  shadow-md rounded-lg p-4">
@@ -419,6 +420,14 @@ option {
 
     const urlParams = new URLSearchParams(window.location.search);
 const courseTitle = urlParams.get("title1");
+const course_id = urlParams.get('courseid');
+
+document.addEventListener("DOMContentLoaded", function () {
+ if(course_id){
+  showCourseDetails(course_id)
+ }
+});
+
 
 if (courseTitle) {
     document.getElementById("lolo").textContent = courseTitle;
@@ -428,6 +437,9 @@ if (courseTitle) {
     searchInput.value = ""; // Clear input before typing
 
     let index = 0;
+
+
+
 
     function typeCharacter() {
         if (index < courseTitle.length) {

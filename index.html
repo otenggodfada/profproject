@@ -1065,7 +1065,7 @@
               return `
           <div
   class="relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-pink-500 bg-gray-900 transition-all duration-500 ease-out hover:scale-[1.05] hover:shadow-pink-500/50 hover:border-pink-500/70"
-  onclick="showCourseDetails('${course.id}')"
+ onclick="window.location.href='courses.html?courseid=${encodeURIComponent(course.id)}'"
 > 
   <!-- Image Wrapper -->
   <div class="relative overflow-hidden">

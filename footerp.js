@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
             
             <!-- Social Media Links -->
-            <div class="flex justify-center space-x-4 mt-6">
+            <div class=" flex-wrap flex justify-center  space-x-4 mt-6">
                  <div>
               <a
               href="http://instagram.com/profs_training_solutions/"

@@ -165,7 +165,7 @@ option {
   </div>
 </div>
   <!-- Cart Icon -->
-<button id="open-cart" class="fixed bottom-5 z-50 mb-20 right-5 bg-blue-500/20 border border-blue-500 w-14 h-14 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition">
+<button id="open-cart" class="fixed bottom-5 z-50 mb-20 right-5 bg-gray-900 border border-blue-500 w-14 h-14 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition">
   <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full ">0</span>
   🛒
 </button>
@@ -182,7 +182,35 @@ option {
   class="outline-none bg-transparent ml-2  "
   />
 </div>
-
+    <!-- Filters -->
+    <div class="flex items-center mb-4 mt-4 space-x-6 bg-gray-800 bg-opacity-60 p-4 rounded-lg shadow-md overflow-auto scrollbar-hide ">
+      <!-- All Checkbox -->
+      <label for="all-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition">
+          <input type="checkbox" id="all-filter" class="hidden peer">
+          <div class="w-5 h-5 flex items-center justify-center border border-gray-500 rounded-md peer-checked:bg-blue-500 peer-checked:border-blue-500">
+              <i class="fas fa-check text-white text-sm hidden peer-checked:block"></i>
+          </div>
+          <span class="text-white font-medium">All</span>
+      </label>
+  
+      <!-- Free Checkbox -->
+      <label for="free-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition">
+          <input type="checkbox" id="free-filter" value="free" class="hidden peer">
+          <div class="w-5 h-5 flex items-center justify-center border border-gray-500 rounded-md peer-checked:bg-blue-500 peer-checked:border-blue-500">
+              <i class="fas fa-check text-white text-sm hidden peer-checked:block"></i>
+          </div>
+          <span class="text-white font-medium">Free</span>
+      </label>
+  
+      <!-- Paid Checkbox -->
+      <label for="paid-filter" class="flex items-center space-x-2 cursor-pointer px-3 py-2 bg-gray-900 rounded-lg hover:bg-blue-600 transition">
+          <input type="checkbox" id="paid-filter" value="paid" class="hidden peer">
+          <div class="w-5 h-5 flex items-center justify-center border border-gray-500 rounded-md peer-checked:bg-blue-500 peer-checked:border-blue-500">
+              <i class="fas fa-check text-white text-sm hidden peer-checked:block"></i>
+          </div>
+          <span class="text-white font-medium">Paid</span>
+      </label>
+  </div>
   <div class="flex">
     <!-- Tags Section for Larger Screens -->
     <div id="tags-container" class="hidden lg:block w-full lg:w-1/4  shadow-md rounded-lg p-4">

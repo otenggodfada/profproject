@@ -15,14 +15,14 @@
 <script src="kaka.js"></script>
   </head>
   <body
-    class="bg-gray-900 text-white "
+    class="bg-gray-900 text-white  min-h-screen "
   >
-  <div class=" bg-[#172554] sticky top-0 z-20 w-full">
+  <div class=" bg-[#172554] fixed  top-0 z-20 w-full">
     <div id="navbar-container"></div>
   </div>
     <div
       id="account-modal"
-      class="fixed inset-0 flex justify-center items-center bg-black/50 p-4"
+      class="fixed inset-0 flex justify-center items-center overflow-auto  bg-black/50 p-4"
     >
       <div
         class="relative max-w-lg w-full bg-[#242525] p-8 rounded-2xl border border-gray-600 shadow-xl"
@@ -39,13 +39,12 @@
           </h2>
           <form id="account-form" class="space-y-4">
             <div>
-              <label for="user-type" class="block text-sm font-medium"
-                >Select Your Role</label
-              >
+            
               <select
+              required
                 id="user-type"
                 name="user-type"
-                class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
               >
                 <option value="" disabled selected>Select your role</option>
                 <option value="student">Student</option>
@@ -53,57 +52,53 @@
               </select>
             </div>
             <div>
-              <label for="full-name" class="block text-sm font-medium"
-                >Full Name</label
-              >
+             
               <input
+placeholder="Full name"
                 type="text"
                 id="full-name"
-                class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
             <div>
-              <label for="email" class="block text-sm font-medium"
-                >Email Address</label
-              >
+             
               <input
+              placeholder="Email address"
                 type="email"
                 id="email"
-                class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
             <div>
-              <label for="telephone" class="block text-sm font-medium"
-                >Telephone Number</label
-              >
+           
               <input
+              placeholder="tel"
                 type="tel"
                 id="telephone"
-                class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
             <div>
-              <label for="password" class="block text-sm font-medium"
-                >Password</label
-              >
+            
               <input
+              placeholder="Password"
                 type="password"
                 id="password"
-                class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
             <div>
-              <label for="referral" class="block text-sm font-medium"
-                >Referral Code</label
-              >
+            
               <input
+              placeholder="Referral code"
                 type="text"
                 id="referral"
-                class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+             
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div id="author-fields" class="hidden">
@@ -134,24 +129,23 @@
           </h2>
           <form id="login-form" class="space-y-4">
             <div>
-              <label for="login-email" class="block text-sm font-medium"
-                >Email Address</label
-              >
+             
               <input
+              placeholder="Email address"
                 type="email"
                 id="login-email"
-                class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
             <div>
-              <label for="login-password" class="block text-sm font-medium"
-                >Password</label
-              >
+            
               <input
+              
+              placeholder="Password"
                 type="password"
                 id="login-password"
-                class="w-full mt-1 p-3 rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>

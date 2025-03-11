@@ -15,21 +15,21 @@
 <script src="kaka.js"></script>
   </head>
   <body
-    class="bg-gray-900 text-white  min-h-screen "
+    class="bg-gray-900 text-white min-h-screen  "
   >
   <div class=" bg-[#172554] fixed  top-0 z-20 w-full">
     <div id="navbar-container"></div>
   </div>
     <div
       id="account-modal"
-      class="fixed inset-0 flex z-50 justify-center items-center overflow-auto top-0 bottom-0 bg-black/50 p-4"
+      class="fixed inset-0 flex z-50 justify-center items-center overflow-auto   bg-black/50 p-4"
     >
       <div
-        class="relative max-w-lg w-full bg-[#242525] p-8 rounded-2xl border border-gray-600 shadow-xl"
+        class="relative max-w-lg w-full bg-[#242525] p-8 rounded-2xl border border-gray-600 mt-48 mb-32 shadow-xl"
       >
         <button
           id="close-modal"
-          class="absolute top-4 right-4 text-gray-300 text-2xl"
+          class="absolute top-4 right-4 text-gray-300 text-3xl"
         >
           &times;
         </button>
@@ -74,8 +74,8 @@ placeholder="Full name"
             <div>
            
               <input
-              
-              placeholder="tel"
+               
+              placeholder="Tel"
                 type="tel"
                 id="telephone"
                 class=" w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500 "
@@ -121,6 +121,10 @@ placeholder="Full name"
           <p class="text-center mt-4">
             Already have an account?
             <a href="#" id="toggle-login" class="text-blue-400">Login</a>
+          </p>
+          <p class="text-center mt-4">
+            By signing up, I agree with the website's
+            <a href="#" id="toggle-login" class="text-blue-400 underline"> Terms and Conditions</a>
           </p>
         </div>
         <div id="login-section" class="hidden">

@@ -21,7 +21,7 @@
 </head>
 <body class="bg-transparent ">
 
-        <div id="card1" class="max-w-md mx-auto bg-[#272727] shadow-lg z-20 overflow-hidden md:max-w-2xl transition-transform transform hover:scale-105 duration-300 m-3 absolute right-10">
+        <div id="card1" class="max-w-md  mx-auto bg-[#272727] shadow-lg z-20 overflow-hidden md:max-w-2xl transition-transform transform hover:scale-105 duration-300 m-3 absolute right-10">
           <div class="md:flex ">
             <div class="bg-gradient-to-t from-[#70b0e4] to-[#081550] flex flex-col justify-between p-6 text-white ">
               <!-- Text Section -->
@@ -130,9 +130,12 @@
     });
   </script>
 <script>
-  document.getElementById("closeit").ontouchend = function() {
-    alert("Button clicked!");
-  };
+     window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("closeit").addEventListener("click", () => {
+        alert('dddddddddd')
+    
+      });
+    });
 </script>
 
 </body>

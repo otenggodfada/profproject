@@ -1422,50 +1422,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-const videoIframe = document.getElementById("modal-video");
-const videoElement = document.getElementById("modal-video-player");
-function loadVideo(videoUrl) {
-    if (!videoUrl) {
-        videoIframe.style.display = "none";
-        videoElement.style.display = "none";
-        return;
-    }
 
-    // Check if the video is a YouTube link
-    if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
-        // Convert YouTube watch link to embed link if needed
-        if (videoUrl.includes("watch?v=")) {
-            videoUrl = videoUrl.replace("watch?v=", "embed/");
-        }
-
-        // Show iframe for YouTube
-        videoIframe.src = videoUrl;
-        videoIframe.style.display = "block";
-        videoElement.style.display = "none";
-    } else {
-        // Assume it's a Firebase Storage video (MP4, WebM, etc.)
-        videoElement.src = videoUrl;
-        videoElement.style.display = "block";
-        videoIframe.style.display = "none";
-    }
-}
-
-// Example usage: Fetch video URL from Firebase and load it
-fetchVideoFromFirebase();
-
-async function fetchVideoFromFirebase() {
-    // Simulating Firebase Firestore fetch
-    const course = await getCourseFromFirebase(); // Assume this function fetches the video URL
-    loadVideo(course.video_url);
-}
-
-// Dummy function simulating Firebase data retrieval
-async function getCourseFromFirebase() {
-    return {
-        video_url: "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT.appspot.com/o/sample.mp4?alt=media"
-        // or "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    };
-}
 
   </script>
 

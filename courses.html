@@ -200,6 +200,20 @@ Your browser does not support the video tag.
     </div>
   </div>
 
+  <!-- Category Section -->
+  <div class="mb-6">
+    <p class="font-semibold text-gray-600 flex items-center gap-2">
+      <i class="fas fa-tags text-gray-500"></i> Category:
+    </p>
+    <div
+      id="modal-category"
+      class="flex flex-wrap gap-2 mt-2 p-3 bg-gray-100 rounded-lg "
+      
+    >
+      <!-- Tags will be dynamically inserted here -->
+    </div>
+  </div>
+
   <!-- Tags Section -->
   <div class="mb-6">
     <p class="font-semibold text-gray-600 flex items-center gap-2">
@@ -212,6 +226,9 @@ Your browser does not support the video tag.
       <!-- Tags will be dynamically inserted here -->
     </div>
   </div>
+
+
+
 
   <!-- Summary -->
   <div class="mb-6 p-5 border border-gray-300 rounded-xl shadow-md bg-white">
@@ -1008,15 +1025,20 @@ const renderCourses = async (tagId = null) => {
 };
 
 
-      // Show Course Details in Modal
-      const showCourseDetails = async ( courseId) => {
-       // Opens the course modal
 
-    
+      // Show Course Details in Modal
+      const showCourseDetails = async ( courseId,) => {
+       // Opens the course modal
+ 
       const coursesRef = db.collection("courses");
       const courseDoc = await coursesRef.doc(courseId).get();
       const course = courseDoc.data();
 
+
+      const catid = course.cat_id
+const cateRef = db.collection("categories");
+  const cateDoc = await cateRef.doc(catid).get();
+  const category  = cateDoc.data();
       // Fetch Tags
 
 // Populate Modal
@@ -1031,11 +1053,16 @@ document.getElementById("modal-summary").innerText = course.meta?.summary || "No
 document.getElementById("modal-id").innerText = course.author?.id || "Unknown";
 document.getElementById("modal-duration").innerText = course.meta?.duration || "Unknown";
 document.getElementById("modal-created").innerText = formatTimestamp(course.created_at);
+
 ;
 // Render lists
 renderArrayAsList(course.meta?.requirements || [], "modal-requirements");
 renderArrayAsList(course.meta?.learnings || [], "modal-learnings");
 renderArrayAsList(course.meta?.language || [], "modal-language");
+const modalCategory = document.getElementById("modal-category");
+modalCategory.innerText = category.name || "Unknown";
+
+modalCategory.className = "px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-full";
 
 // Render capsule-styled tags
 const tagContainer = document.getElementById("modal-tags");

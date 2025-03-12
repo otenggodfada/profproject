@@ -129,7 +129,15 @@ option {
     <p class="font-semibold text-gray-600 flex items-center gap-2">
       <i class="fas fa-video text-gray-500"></i> Video Preview:
     </p>
-    <iframe id="modal-video" class="w-full h-64 rounded-lg  border border-gray-500 mt-2" src="#" allowfullscreen></iframe>
+    <!-- YouTube Video -->
+<iframe class="w-full h-64 rounded-lg  border border-gray-500 mt-2" id="modal-video"   
+allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen style="display: none;">
+</iframe>
+
+<!-- Firebase Storage Direct Video -->
+<video id="modal-video-player" class="w-full h-64 rounded-lg  border border-gray-500 mt-2" controls style="display: none;">
+Your browser does not support the video tag.
+</video>
     </div>
     
     
@@ -1026,7 +1034,7 @@ document.getElementById("modal-description").innerHTML = course.meta?.descriptio
 document.getElementById("modal-author").innerText = course.author?.name || "Unknown";
 document.getElementById("modal-updated").innerText = formatTimestamp(course.updated_at);
 document.getElementById("modal-video").innerText = course.video_url || "No video available";
-const videoIframe = document.getElementById("modal-video");
+
 document.getElementById("modal-summary").innerText = course.meta?.summary || "No summary available";
 document.getElementById("modal-id").innerText = course.author?.id || "Unknown";
 document.getElementById("modal-duration").innerText = course.meta?.duration || "Unknown";
@@ -1041,14 +1049,10 @@ renderArrayAsList(course.language || [], "modal-language");
 const tagContainer = document.getElementById("modal-tags");
 tagContainer.innerHTML = ""; // Clear previous tags
 
-
+ loadVideo(course.video_url);
 
 // Ensure the video URL is valid
-if (course.video_url && course.video_url.includes("youtube.com")) {
-  videoIframe.src = convertToEmbed(course.video_url);
-} else {
-    videoIframe.src = "about:blank"; // A safer fallback instead of "#"
-}
+
 
 if (tags.length > 0) {
   tags.forEach((tag, index) => {
@@ -1418,9 +1422,49 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+const videoIframe = document.getElementById("modal-video");
+const videoElement = document.getElementById("modal-video-player");
+function loadVideo(videoUrl) {
+    if (!videoUrl) {
+        videoIframe.style.display = "none";
+        videoElement.style.display = "none";
+        return;
+    }
 
-function convertToEmbed(url) {
-    return url.replace("watch?v=", "embed/");
+    // Check if the video is a YouTube link
+    if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
+        // Convert YouTube watch link to embed link if needed
+        if (videoUrl.includes("watch?v=")) {
+            videoUrl = videoUrl.replace("watch?v=", "embed/");
+        }
+
+        // Show iframe for YouTube
+        videoIframe.src = videoUrl;
+        videoIframe.style.display = "block";
+        videoElement.style.display = "none";
+    } else {
+        // Assume it's a Firebase Storage video (MP4, WebM, etc.)
+        videoElement.src = videoUrl;
+        videoElement.style.display = "block";
+        videoIframe.style.display = "none";
+    }
+}
+
+// Example usage: Fetch video URL from Firebase and load it
+fetchVideoFromFirebase();
+
+async function fetchVideoFromFirebase() {
+    // Simulating Firebase Firestore fetch
+    const course = await getCourseFromFirebase(); // Assume this function fetches the video URL
+    loadVideo(course.video_url);
+}
+
+// Dummy function simulating Firebase data retrieval
+async function getCourseFromFirebase() {
+    return {
+        video_url: "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT.appspot.com/o/sample.mp4?alt=media"
+        // or "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    };
 }
 
   </script>

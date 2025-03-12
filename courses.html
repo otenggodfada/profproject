@@ -129,7 +129,7 @@ option {
     <p class="font-semibold text-gray-600 flex items-center gap-2">
       <i class="fas fa-video text-gray-500"></i> Video Preview:
     </p>
-    <iframe id="modal-video" class="w-full h-64 rounded-lg shadow-md border border-gray-300 mt-2" src="#" allowfullscreen></iframe>
+    <iframe id="modal-video" class="w-full h-64 rounded-lg  border border-gray-500 mt-2" src="#" allowfullscreen></iframe>
     </div>
     
     
@@ -248,7 +248,7 @@ option {
   <!-- Created At -->
   <div>
     <p class="font-semibold text-gray-600 flex items-center gap-2">
-      <i class="fas fa-calendar-alt text-gray-500"></i> Created at:
+      <i class="fas fa-calendar-alt text-gray-500"></i> Updated at:
     </p>
 
     <p id="modal-updated" class="text-gray-700"></p>
@@ -1026,7 +1026,7 @@ document.getElementById("modal-description").innerHTML = course.meta?.descriptio
 document.getElementById("modal-author").innerText = course.author?.name || "Unknown";
 document.getElementById("modal-updated").innerText = formatTimestamp(course.updated_at);
 document.getElementById("modal-video").innerText = course.video_url || "No video available";
-document.getElementById("modal-video").href = course.video_url || "#";
+const videoIframe = document.getElementById("modal-video");
 document.getElementById("modal-summary").innerText = course.meta?.summary || "No summary available";
 document.getElementById("modal-id").innerText = course.author?.id || "Unknown";
 document.getElementById("modal-duration").innerText = course.meta?.duration || "Unknown";
@@ -1040,6 +1040,15 @@ renderArrayAsList(course.language || [], "modal-language");
 // Render capsule-styled tags
 const tagContainer = document.getElementById("modal-tags");
 tagContainer.innerHTML = ""; // Clear previous tags
+
+
+
+// Ensure the video URL is valid
+if (course.video_url && course.video_url.includes("youtube.com")) {
+  videoIframe.src = convertToEmbed(course.video_url);
+} else {
+    videoIframe.src = "about:blank"; // A safer fallback instead of "#"
+}
 
 if (tags.length > 0) {
   tags.forEach((tag, index) => {
@@ -1391,10 +1400,7 @@ document.addEventListener("click", (event) => {
       document.getElementById("drawer").classList.add("-translate-x-full");
   });
 </script>
-<script>
-  const videoLink = "https://www.youtube.com/watch?v=xyz123"; // Example link
-  document.getElementById("modal-video").src = videoLink.replace("watch?v=", "embed/");
-</script>
+
 
 <script>
 // Wait for the page to load
@@ -1413,6 +1419,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+function convertToEmbed(url) {
+    return url.replace("watch?v=", "embed/");
+}
 
   </script>
 

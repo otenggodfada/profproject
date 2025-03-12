@@ -363,12 +363,9 @@ function renderCourses(courses) {
                               ${
                                 lesson.video_url
                                   ? `
-                                <div class="relative mt-4 rounded-lg overflow-hidden border border-gray-700 shadow-md">
-                                  <iframe class="w-full h-64 rounded-lg" src="${lesson.video_url.replace(
-                                    "watch?v=",
-                                    "embed/"
-                                  )}" frameborder="0" allowfullscreen></iframe>
-                                </div>
+                                <div class="relative mt-4 rounded-lg overflow-hidden border border-gray-500 shadow-md">
+    ${getVideoEmbedCode(lesson.video_url)}
+  </div>
                               `
                                   : '<p class="italic text-gray-500">No video available</p>'
                               }
@@ -522,52 +519,32 @@ document.querySelectorAll(".toggle-lessons").forEach((button) => {
 });
 
 
+function getVideoEmbedCode(url) {
+  if (!url) return '<p class="italic text-gray-500">No video available</p>';
 
+  const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/;
+  const vimeoRegex = /vimeo\.com\/(\d+)/;
+  const dailymotionRegex = /dailymotion\.com\/video\/([\w]+)/;
+  const mp4Regex = /\.(mp4|webm|ogg)$/i;
 
-const videoIframe = document.getElementById("modal-video");
-const videoElement = document.getElementById("modal-video-player");
-function loadVideo(videoUrl) {
-    if (!videoUrl) {
-        videoIframe.style.display = "none";
-        videoElement.style.display = "none";
-        return;
-    }
-
-    // Check if the video is a YouTube link
-    if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
-        // Convert YouTube watch link to embed link if needed
-        if (videoUrl.includes("watch?v=")) {
-            videoUrl = videoUrl.replace("watch?v=", "embed/");
-        }
-
-        // Show iframe for YouTube
-        videoIframe.src = videoUrl;
-        videoIframe.style.display = "block";
-        videoElement.style.display = "none";
-    } else {
-        // Assume it's a Firebase Storage video (MP4, WebM, etc.)
-        videoElement.src = videoUrl;
-        videoElement.style.display = "block";
-        videoIframe.style.display = "none";
-    }
+  if (youtubeRegex.test(url)) {
+    const videoId = url.match(youtubeRegex)[1];
+    return `<iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+  } else if (vimeoRegex.test(url)) {
+    const videoId = url.match(vimeoRegex)[1];
+    return `<iframe class="w-full h-64 rounded-lg" src="https://player.vimeo.com/video/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+  } else if (dailymotionRegex.test(url)) {
+    const videoId = url.match(dailymotionRegex)[1];
+    return `<iframe class="w-full h-64 rounded-lg" src="https://www.dailymotion.com/embed/video/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+  } else if (mp4Regex.test(url)) {
+    return `<video class="w-full h-64 rounded-lg" controls><source src="${url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+  } else {
+    return `<p class="italic text-gray-500">Unsupported video format</p>`;
+  }
 }
 
-// Example usage: Fetch video URL from Firebase and load it
-fetchVideoFromFirebase();
 
-async function fetchVideoFromFirebase() {
-    // Simulating Firebase Firestore fetch
-    const course = await getCourseFromFirebase(); // Assume this function fetches the video URL
-    loadVideo(course.video_url);
-}
 
-// Dummy function simulating Firebase data retrieval
-async function getCourseFromFirebase() {
-    return {
-        video_url: "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT.appspot.com/o/sample.mp4?alt=media"
-        // or "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    };
-}
 
 // Main function to load user purchased courses
 async function loadPurchasedCourses(userId) {

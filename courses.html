@@ -1011,24 +1011,14 @@ const renderCourses = async (tagId = null) => {
       // Show Course Details in Modal
       const showCourseDetails = async ( courseId) => {
        // Opens the course modal
-     // Show Modal
-document.getElementById("course-modal").style.display = "block";
-document.getElementById("course-modal").scrollIntoView({ behavior: "smooth" });
+
     
       const coursesRef = db.collection("courses");
       const courseDoc = await coursesRef.doc(courseId).get();
       const course = courseDoc.data();
 
       // Fetch Tags
-// Fetch Tags
-const tags = course.tag_ids ? await fetchTags(course.tag_ids) : [];
-const learning = course.learnings || [];
-// Define an array of colors for tags
-const tagColors = [
-  "bg-blue-500", "bg-green-500", "bg-red-500", 
-  "bg-yellow-500", "bg-purple-500", "bg-pink-500", 
-  "bg-indigo-500", "bg-teal-500", "bg-orange-500"
-];
+
 // Populate Modal
 document.getElementById("modal-image").src = course.image_url;
 document.getElementById("modal-title").innerText = course.name;
@@ -1055,6 +1045,15 @@ tagContainer.innerHTML = ""; // Clear previous tags
 
 // Ensure the video URL is valid
 
+// Fetch Tags
+const tags = course.tag_ids ? await fetchTags(course.tag_ids) : [];
+const learning = course.learnings || [];
+// Define an array of colors for tags
+const tagColors = [
+  "bg-blue-500", "bg-green-500", "bg-red-500", 
+  "bg-yellow-500", "bg-purple-500", "bg-pink-500", 
+  "bg-indigo-500", "bg-teal-500", "bg-orange-500"
+];
 
 if (tags.length > 0) {
   tags.forEach((tag, index) => {
@@ -1066,7 +1065,12 @@ if (tags.length > 0) {
 
     tagElement.className = `px-3 py-1 text-sm font-medium text-white ${colorClass} rounded-full`;
     tagContainer.appendChild(tagElement);
-  });
+  }
+
+);
+     // Show Modal
+     document.getElementById("course-modal").style.display = "block";
+document.getElementById("course-modal").scrollIntoView({ behavior: "smooth" });
 } else {
   tagContainer.innerText = "None";
 }
@@ -1423,6 +1427,51 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+const videoIframe = document.getElementById("modal-video");
+const videoElement = document.getElementById("modal-video-player");
+
+function loadVideo(videoUrl) {
+    if (!videoUrl) {
+        videoIframe.style.display = "none";
+        videoElement.style.display = "none";
+        return;
+    }
+
+    // Check if the video is a YouTube link
+    if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
+        // Convert YouTube watch link to embed link if needed
+        if (videoUrl.includes("watch?v=")) {
+            videoUrl = videoUrl.replace("watch?v=", "embed/");
+        }
+
+        // Show iframe for YouTube
+        videoIframe.src = videoUrl;
+        videoIframe.style.display = "block";
+        videoElement.style.display = "none";
+    } else {
+        // Assume it's a Firebase Storage video (MP4, WebM, etc.)
+        videoElement.src = videoUrl;
+        videoElement.style.display = "block";
+        videoIframe.style.display = "none";
+    }
+}
+
+// Example usage: Fetch video URL from Firebase and load it
+fetchVideoFromFirebase();
+
+async function fetchVideoFromFirebase() {
+    // Simulating Firebase Firestore fetch
+    const course = await getCourseFromFirebase(); // Assume this function fetches the video URL
+    loadVideo(course.video_url);
+}
+
+// Dummy function simulating Firebase data retrieval
+async function getCourseFromFirebase() {
+    return {
+        video_url: "https://firebasestorage.googleapis.com/v0/b/YOUR_PROJECT.appspot.com/o/sample.mp4?alt=media"
+        // or "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    };
+}
 
 
   </script>

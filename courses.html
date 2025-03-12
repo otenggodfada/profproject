@@ -571,20 +571,37 @@ if (courseTitle) {
 
     // Fetch Courses from Firestore
     const fetchCourses = async (tagId = null) => {
-      try {
+    try {
         const coursesRef = db.collection("courses");
         let query = coursesRef;
+
         if (tagId) {
-          query = coursesRef.where('tag_ids', 'array-contains', tagId);
+            query = coursesRef.where('tag_ids', 'array-contains', tagId);
         }
+
         const courseSnapshot = await query.get();
-        const courses = courseSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const courses = await Promise.all(courseSnapshot.docs.map(async (doc) => {
+            let courseData = { id: doc.id, ...doc.data() };
+
+            // Fetch category details
+            if (courseData.cat_id) {
+                const cateRef = db.collection("categories").doc(courseData.cat_id);
+                const cateDoc = await cateRef.get();
+                if (cateDoc.exists) {
+                    courseData.categoryName = cateDoc.data().name || "Unknown";
+                }
+            }
+
+            return courseData;
+        }));
+
         return courses;
-      } catch (error) {
+    } catch (error) {
         console.error("Error fetching courses:", error);
         return [];
-      }
-    };
+    }
+};
+
     // Fetch Tags by IDs
     const fetchTags = async (tagIds) => {
       try {
@@ -943,7 +960,7 @@ const renderCourses = async (tagId = null) => {
             return `
                 <div
   class="relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-gray-500 bg-gray-900 transition-all duration-500 ease-out hover:scale-[1.05] hover:shadow-pink-500/50 hover:border-pink-500/70"
-         onclick="showCourseDetails('${course.id}')"
+       
 > 
 
   <div class="relative overflow-hidden">
@@ -973,13 +990,14 @@ const renderCourses = async (tagId = null) => {
       </svg>
     </p>
     <!-- Course Title -->
-    <h3    class="text-lg font-semibold text-white flex items-center hover:text-blue-500 gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
+    <h3   onclick="showCourseDetails('${course.id}')"   class="text-lg font-semibold text-white flex items-center hover:text-blue-500 gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
       </svg>
       ${course.name}
     </h3>
-
+<!-- category -->
+ <p class="text-gray-400 text-sm flex items-center gap-2 mb-2 transition-all duration-500 ease-out hover:translate-x-1 course-category">${course.categoryName || ""}</p>
     <!-- Students Count -->
     <p class="text-gray-400 text-sm flex items-center gap-2 mb-2 transition-all duration-500 ease-out hover:translate-x-1">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -996,6 +1014,9 @@ const renderCourses = async (tagId = null) => {
       </svg>
     <span class="text-sm">by-${course.author.name}</span>
     </p>
+    
+
+
     <!-- Price -->
    <div class="flex py-5 flex-row justify-between border-t border-gray-700">
       <p class="text-lg font-semibold flex items-center gap-2 transition-all duration-500 ease-out hover:translate-x-1 ${course.price_status === 'free' ? 'text-green-400' : 'text-white'}">
@@ -1206,7 +1227,6 @@ function showSuccessToast1() {
       document.getElementById("course-modal").style.display = "none";
     });
 
-
     document.getElementById("searchInput").addEventListener("input", function () {
     let query = this.value.toLowerCase().trim();
     let courses = document.querySelectorAll("#course-list > div");
@@ -1216,21 +1236,24 @@ function showSuccessToast1() {
         return;
     }
 
-    let queryWords = query.split(/\s+/); // Split input into words
+    let queryWords = query.split(/\s+/);
 
     courses.forEach(course => {
         let courseTitle = course.querySelector("h3").textContent.toLowerCase();
-        let titleWords = courseTitle.split(/\s+/); // Split course title into words
+        let categoryElement = course.querySelector(".course-category");
+        let categoryName = categoryElement ? categoryElement.textContent.toLowerCase() : "";
 
-        let matchCount = queryWords.filter(word => titleWords.includes(word)).length; // Count matching words
+        let titleMatch = queryWords.some(word => courseTitle.includes(word));
+        let categoryMatch = queryWords.some(word => categoryName.includes(word));
 
-        if (matchCount >= 2) { // Change to 3 for stricter matching
+        if (titleMatch || categoryMatch) {
             course.style.display = "block";
         } else {
             course.style.display = "none";
         }
     });
 });
+
 
 
     // Initialize

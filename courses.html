@@ -1033,9 +1033,9 @@ document.getElementById("modal-duration").innerText = course.meta?.duration || "
 document.getElementById("modal-created").innerText = formatTimestamp(course.created_at);
 ;
 // Render lists
-renderArrayAsList(course.requirements || [], "modal-requirements");
-renderArrayAsList(course.learnings || [], "modal-learnings");
-renderArrayAsList(course.language || [], "modal-language");
+renderArrayAsList(course.meta?.requirements || [], "modal-requirements");
+renderArrayAsList(course.meta?.learnings || [], "modal-learnings");
+renderArrayAsList(course.meta?.language || [], "modal-language");
 
 // Render capsule-styled tags
 const tagContainer = document.getElementById("modal-tags");

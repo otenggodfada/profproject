@@ -1011,7 +1011,9 @@ const renderCourses = async (tagId = null) => {
       // Show Course Details in Modal
       const showCourseDetails = async ( courseId) => {
        // Opens the course modal
-     
+     // Show Modal
+document.getElementById("course-modal").style.display = "block";
+document.getElementById("course-modal").scrollIntoView({ behavior: "smooth" });
     
       const coursesRef = db.collection("courses");
       const courseDoc = await coursesRef.doc(courseId).get();
@@ -1120,6 +1122,7 @@ document.getElementById("modal-enroll-button").addEventListener("click", async f
     window.location.href = `coursecart.html?${queryParams}`;
   }
 });
+
 function showSuccessToast1() {
   Toastify({
       text: "🎉 Enrolled Successfully",
@@ -1132,9 +1135,7 @@ function showSuccessToast1() {
   }).showToast();
 }
 
-// Show Modal
-document.getElementById("course-modal").style.display = "block";
-document.getElementById("course-modal").scrollIntoView({ behavior: "smooth" });
+
 
     };
 

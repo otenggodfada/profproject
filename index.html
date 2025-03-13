@@ -75,6 +75,7 @@
     </script>
 
     <style>
+  
       .program {
         height: 500px;
         width: 400px;
@@ -802,7 +803,7 @@
                 categoriesHtml += `
                     <div class="relative bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg rounded-lg overflow-hidden p-4 flex items-center space-x-4 cursor-pointer transition transform hover:scale-105 hover:shadow-2xl"
                        onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'" >
-                        <img src="${image_url}" alt="${name}" class="w-50 h-20 object-cover rounded-lg border-2 border-white">
+                  <div class="relative overflow-hidden">      <img src="${image_url}" alt="${name}" class="w-50 h-20 object-cover rounded-lg border-2 border-white "></div>
                         <h3 class="text-lg font-semibold text-white">${name}</h3>
                     </div>
                 `;

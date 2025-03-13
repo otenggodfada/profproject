@@ -432,7 +432,13 @@ Your browser does not support the video tag.
   </div>
  
 
-  <div class="flex flex-row max-w-7xl overflow-x-auto space-x-4 p-4 " id="categories"></div> 
+  <div class="w-full flex flex-row justify-center rounded-lg relative">
+    <div class="absolute top-0 left-0 w-10 h-full bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
+    <div class="absolute top-0 right-0 w-10 h-full bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
+  
+    <div class="flex flex-row max-w-7xl overflow-x-auto space-x-4 py-2 scrollbar-hide" id="categories"></div> 
+  </div>
+  
   <div class="flex">
     <!-- Tags Section for Larger Screens -->
     <div id="tags-container" class="hidden lg:block w-full lg:w-1/4  shadow-md rounded-lg p-4">

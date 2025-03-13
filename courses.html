@@ -524,46 +524,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-if (courseTitle) {
-    document.getElementById("lolo").textContent = courseTitle;
-    const searchInput = document.getElementById("searchInput");
 
-    searchInput.focus();
-    searchInput.value = ""; // Clear input before typing
-
-    let index = 0;
-
-
-
-
-    function typeCharacter() {
-        if (index < courseTitle.length) {
-            searchInput.value += courseTitle[index];
-
-            // Dispatch an actual "input" event to mimic real typing
-            searchInput.dispatchEvent(new InputEvent("input", { bubbles: true }));
-
-            index++;
-            setTimeout(typeCharacter, 1000); // Adjust typing speed (100ms per character)
-        } else {
-      
-        }
-    }
-
-    function simulateBackspace() {
-        if (searchInput.value.length > 0) {
-            searchInput.value = searchInput.value.slice(0, -1);
-
-            // Dispatch InputEvent again to simulate real input change
-            searchInput.dispatchEvent(new InputEvent("input", { bubbles: true }));
-
-            setTimeout(simulateBackspace, 50); // Adjust backspace speed
-        }
-    }
-
-    // Start typing first
-    typeCharacter();
-}
 
 
 
@@ -630,9 +591,51 @@ if (courseTitle) {
         }));
 
         return courses;
+        
     } catch (error) {
         console.error("Error fetching courses:", error);
         return [];
+    } finally{
+      if (courseTitle) {
+    document.getElementById("lolo").textContent = courseTitle;
+    const searchInput = document.getElementById("searchInput");
+
+    searchInput.focus();
+    searchInput.value = ""; // Clear input before typing
+
+    let index = 0;
+
+
+
+
+    function typeCharacter() {
+        if (index < courseTitle.length) {
+            searchInput.value += courseTitle[index];
+
+            // Dispatch an actual "input" event to mimic real typing
+            searchInput.dispatchEvent(new InputEvent("input", { bubbles: true }));
+
+            index++;
+            setTimeout(typeCharacter, 100); // Adjust typing speed (100ms per character)
+        } else {
+      
+        }
+    }
+
+    function simulateBackspace() {
+        if (searchInput.value.length > 0) {
+            searchInput.value = searchInput.value.slice(0, -1);
+
+            // Dispatch InputEvent again to simulate real input change
+            searchInput.dispatchEvent(new InputEvent("input", { bubbles: true }));
+
+            setTimeout(simulateBackspace, 50); // Adjust backspace speed
+        }
+    }
+
+    // Start typing first
+    typeCharacter();
+}
     }
 };
 
@@ -1262,7 +1265,7 @@ function showSuccessToast1() {
     });
 
     document.getElementById("searchInput").addEventListener("input", function () {
-    let query = this.value.toLowerCase().trim();
+    let query = this.value.trim(); // Keep case sensitivity if needed
     let courses = document.querySelectorAll("#course-list > div");
 
     if (!query) {
@@ -1270,23 +1273,37 @@ function showSuccessToast1() {
         return;
     }
 
-    let queryWords = query.split(/\s+/);
+    let isCategoryOnly = false; // Flag to determine if input matches only a category
+
+    // Check if the input is exactly a category name
+    courses.forEach(course => {
+        let categoryElement = course.querySelector(".course-category");
+        let categoryName = categoryElement ? categoryElement.textContent.trim() : "";
+
+        if (categoryName === query) {
+            isCategoryOnly = true;
+        }
+    });
 
     courses.forEach(course => {
-        let courseTitle = course.querySelector("h3").textContent.toLowerCase();
+        let courseTitle = course.querySelector("h3").textContent.trim();
         let categoryElement = course.querySelector(".course-category");
-        let categoryName = categoryElement ? categoryElement.textContent.toLowerCase() : "";
+        let categoryName = categoryElement ? categoryElement.textContent.trim() : "";
 
-        let titleMatch = queryWords.some(word => courseTitle.includes(word));
-        let categoryMatch = queryWords.some(word => categoryName.includes(word));
+        let titleMatch = courseTitle.includes(query);
+        let categoryMatch = categoryName === query; // Exact match
 
-        if (titleMatch || categoryMatch) {
-            course.style.display = "block";
+        if (isCategoryOnly) {
+            // If input is exactly a category name, ignore title match
+            course.style.display = categoryMatch ? "block" : "none";
         } else {
-            course.style.display = "none";
+            // Otherwise, allow both title and category matching
+            course.style.display = titleMatch || categoryMatch ? "block" : "none";
         }
     });
 });
+
+
 
 
 

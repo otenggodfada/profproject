@@ -99,28 +99,40 @@
       });
 
       return `
-        <div class="relative rounded-lg  overflow-hidden shadow-lg cursor-pointer "
-            onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
-            
-            <!-- Image Container -->
-            <div class="relative">
-                <img src="${image_url}" alt="${name}" class="w-50 h-26 object-cover rounded-lg">
-                
-                <!-- Overlay with Info -->
-                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 rounded-b-lg">
-                    <h2 class="text-lg font-bold">${name}</h2>
-                    <p class="text-sm flex items-center gap-2">
-                        <i class="fas fa-book text-yellow-400"></i> ${courseCount} courses
-                    </p>
-                    <p class="text-sm flex items-center gap-2">
-                        <i class="fas fa-users text-blue-400"></i> ${totalStudents} students
-                    </p>
-                    <p class="text-sm flex items-center gap-2">
-                        <i class="fas fa-star text-red-400"></i> ${totalRatings} total ratings
-                    </p>
-                </div>
-            </div>
+ <div class="relative rounded-lg overflow-hidden shadow-lg cursor-pointer hover:shadow-2xl hover:scale-105 transition-transform duration-300"
+     onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
+    
+    <!-- Add to Favorite Icon -->
+    <div class="absolute z-10 top-3 right-3 bg-white p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
+        </svg>
+    </div>
+
+    <!-- Image Container -->
+    <div class="relative">
+        <img src="${image_url}" alt="${name}" class="w-50 h-26 object-cover rounded-lg">
+
+        <!-- Overlay with Info -->
+        <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 rounded-b-lg">
+            <h2 class="text-lg font-bold hover:underline">${name}</h2>
+            <p class="text-sm flex items-center gap-2">
+                <i class="fas fa-book text-yellow-400"></i> ${courseCount} courses
+            </p>
+            <p class="text-sm flex items-center gap-2">
+                <i class="fas fa-users text-blue-400"></i> ${totalStudents} students
+            </p>
+            <p class="text-sm flex items-center gap-2">
+                <i class="fas fa-star text-red-400"></i> ${totalRatings} total ratings
+            </p>
+            <!-- Click to Explore -->
+            <p class="text-sm flex items-center gap-2 mt-2 text-blue-300">
+                <i class="fas fa-arrow-right"></i> view course
+            </p>
         </div>
+    </div>
+</div>
+
       `;
     })();
 

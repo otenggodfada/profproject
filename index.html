@@ -18,7 +18,14 @@
     <script src="kaka.js"></script>
  
     <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
- 
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(() => console.log("Service Worker Registered"))
+          .catch((error) => console.log("Service Worker Registration Failed:", error));
+      }
+    </script>
+    
     <style>
 
       @keyframes spin-slow {
@@ -38,118 +45,131 @@
   // Import Firebase modules
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getFirestore, doc, getDoc, collection, getDocs, orderBy, query, where  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { initializeFirestore, persistentLocalCache } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  // Your Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
-        authDomain: "profstudymate-6d0fc.firebaseapp.com",
-        projectId: "profstudymate",
-        storageBucket: "profstudymate.appspot.com",
-        messagingSenderId: "141453158869",
-        appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
-  };
+ // Your Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+  authDomain: "profstudymate-6d0fc.firebaseapp.com",
+  projectId: "profstudymate",
+  storageBucket: "profstudymate.appspot.com",
+  messagingSenderId: "141453158869",
+  appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+};
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
-  // Function to update username
-  const updateUsername = async (userId) => {
-    const userRef = doc(db, "users", userId);
-    const userSnap = await getDoc(userRef);
-    if (userSnap.exists()) {
-      let fullName = userSnap.data().name;
-      let displayName = fullName.length > 8 ? fullName.substring(0, 8) + "..." : fullName;
-      document.getElementById("username").textContent = `Hello, ${displayName}`;
-    }
-  };
+// ✅ Enable Firestore Offline Caching
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache(), // Enables offline caching
+});
 
-  // Check if user is logged in
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      updateUsername(user.uid);
-    }
-  });
+// Initialize Authentication
+const auth = getAuth(app);
 
-  async function fetchCategories() {
+// Function to update username
+const updateUsername = async (userId) => {
+  const userRef = doc(db, "users", userId);
+  const userSnap = await getDoc(userRef);
+  if (userSnap.exists()) {
+    let fullName = userSnap.data().name;
+    let displayName = fullName.length > 8 ? fullName.substring(0, 8) + "..." : fullName;
+    document.getElementById("username").textContent = `Hello, ${displayName}`;
+  }
+};
+
+// Check if user is logged in
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    updateUsername(user.uid);
+  }
+});
+async function fetchCategories() {
+  // Check for cached data in LocalStorage
+  const cachedData = localStorage.getItem("categories");
+  if (cachedData) {
+    document.getElementById("categories").innerHTML = cachedData;
+    document.getElementById("loadingScreen").style.display = "none";
+    return;
+  }
+
   const categoriesRef = collection(db, "categories");
   const categoriesQuery = query(categoriesRef, orderBy("index"));
   const categoriesSnapshot = await getDocs(categoriesQuery);
 
-  let categoriesHtml = "";
+  let categoryHtmlList = [];
   let categoryPromises = [];
 
-  // Fetch all course data in parallel
   categoriesSnapshot.forEach((categoryDoc) => {
     const { name, image_url } = categoryDoc.data();
     const categoryId = categoryDoc.id;
 
-    // Prepare a promise for fetching course data
     const coursePromise = (async () => {
       const coursesRef = collection(db, "courses");
       const coursesQuery = query(coursesRef, where("cat_id", "==", categoryId));
       const coursesSnapshot = await getDocs(coursesQuery);
-      
+
       const courseCount = coursesSnapshot.size;
       let totalStudents = 0;
       let totalRatings = 0;
-      
+
       coursesSnapshot.forEach((doc) => {
         const courseData = doc.data();
         totalStudents += courseData.students || 0;
         totalRatings += courseData.rating || 0;
       });
-      document.getElementById('loadingScreen').style.display = 'none';
+
       return `
- <div class="relative rounded-lg overflow-hidden  cursor-pointer "
-     onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
-    
-    <!-- Add to Favorite Icon -->
-    <div class="absolute z-10 top-3 right-3 bg-white p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
-        </svg>
-    </div>
+        <div class="relative rounded-lg overflow-hidden cursor-pointer"
+             onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
+        
+          <!-- Favorite Icon -->
+          <div class="absolute z-10 top-3 right-3 bg-white p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
+              </svg>
+          </div>
 
-    <!-- Image Container -->
-    <div class="relative">
-        <img src="${image_url}" alt="${name}" class="w-50 h-26 object-cover ">
-
-        <!-- Overlay with Info -->
-        <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 rounded-b-lg">
-            <h2 class="text-lg font-bold hover:text-blue-500">${name}</h2>
-            <p class="text-sm flex items-center gap-2">
-                <i class="fas fa-book text-yellow-400"></i> ${courseCount} courses
-            </p>
-            <p class="text-sm flex items-center gap-2">
-                <i class="fas fa-users text-blue-400"></i> ${totalStudents} students
-            </p>
-            <p class="text-sm flex items-center gap-2">
-                <i class="fas fa-star text-red-400"></i> ${totalRatings} total ratings
-            </p>
-            <!-- Click to Explore -->
-            <p class="text-sm flex items-center gap-2 mt-2 text-blue-300 hover:text-blue-500">
-                <i class="fas fa-arrow-right"></i> view course
-            </p>
+          <!-- Image Container -->
+          <div class="relative">
+              <img src="${image_url}" alt="${name}" class="w-50 h-26 object-cover">
+              <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 rounded-b-lg">
+                  <h2 class="text-lg font-bold hover:text-blue-500">${name}</h2>
+                  <p class="text-sm flex items-center gap-2">
+                      <i class="fas fa-book text-yellow-400"></i> ${courseCount} courses
+                  </p>
+                  <p class="text-sm flex items-center gap-2">
+                      <i class="fas fa-users text-blue-400"></i> ${totalStudents} students
+                  </p>
+                  <p class="text-sm flex items-center gap-2">
+                      <i class="fas fa-star text-red-400"></i> ${totalRatings} total ratings
+                  </p>
+                  <p class="text-sm flex items-center gap-2 mt-2 text-blue-300 hover:text-blue-500">
+                      <i class="fas fa-arrow-right"></i> View Course
+                  </p>
+              </div>
+          </div>
         </div>
-    </div>
-</div>
-
       `;
     })();
 
     categoryPromises.push(coursePromise);
   });
 
-  // Wait for all category course data to be fetched
-  const categoryHtmlList = await Promise.all(categoryPromises);
-  
-  // Insert all categories into the DOM at once (reduces reflow)
-  document.getElementById("categories").innerHTML = categoryHtmlList.join("");
+  // Wait for all category data to be fetched
+  const categoryHtmlListResolved = await Promise.all(categoryPromises);
+
+  // Hide loading screen and update UI
+  document.getElementById("loadingScreen").style.display = "none";
+  document.getElementById("categories").innerHTML = categoryHtmlListResolved.join("");
+
+  // Store the data in LocalStorage for future fast access
+  localStorage.setItem("categories", categoryHtmlListResolved.join(""));
 }
 
+// Run fetchCategories() when the page loads
 document.addEventListener("DOMContentLoaded", fetchCategories);
 </script>
 

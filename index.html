@@ -33,7 +33,7 @@
 <script type="module">
   // Import Firebase modules
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, doc, getDoc, collection, getDocs, orderBy, query  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getFirestore, doc, getDoc, collection, getDocs, orderBy, query, where  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
   // Your Firebase config
@@ -69,31 +69,72 @@
     }
   });
 
+  async function fetchCategories() {
+  const categoriesRef = collection(db, "categories");
+  const categoriesQuery = query(categoriesRef, orderBy("index"));
+  const categoriesSnapshot = await getDocs(categoriesQuery);
 
-       // Convert Firestore Timestamp to Human-Readable Date
-       async function fetchCategories() {
-    const categoriesRef = collection(db, "categories");
-    const q = query(categoriesRef, orderBy("index"));
-    const querySnapshot = await getDocs(q);
+  let categoriesHtml = "";
+  let categoryPromises = [];
 
-    let categoriesHtml = "";
-    querySnapshot.forEach((doc) => {
-        const { name, image_url } = doc.data();
-        categoriesHtml += `
-            <div class="relative  border border-gray-500 rounded-lg overflow-hidden  flex flex-col items-center space-y-5 cursor-pointer "
-                onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
-                <div class="relative overflow-hidden">
-                    <img src="${image_url}" alt="${name}" class="w-50 h-26 object-cover ">
+  // Fetch all course data in parallel
+  categoriesSnapshot.forEach((categoryDoc) => {
+    const { name, image_url } = categoryDoc.data();
+    const categoryId = categoryDoc.id;
+
+    // Prepare a promise for fetching course data
+    const coursePromise = (async () => {
+      const coursesRef = collection(db, "courses");
+      const coursesQuery = query(coursesRef, where("cat_id", "==", categoryId));
+      const coursesSnapshot = await getDocs(coursesQuery);
+      
+      const courseCount = coursesSnapshot.size;
+      let totalStudents = 0;
+      let totalRatings = 0;
+      
+      coursesSnapshot.forEach((doc) => {
+        const courseData = doc.data();
+        totalStudents += courseData.students || 0;
+        totalRatings += courseData.rating || 0;
+      });
+
+      return `
+        <div class="relative rounded-lg  overflow-hidden shadow-lg cursor-pointer "
+            onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
+            
+            <!-- Image Container -->
+            <div class="relative">
+                <img src="${image_url}" alt="${name}" class="w-50 h-26 object-cover rounded-lg">
+                
+                <!-- Overlay with Info -->
+                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 rounded-b-lg">
+                    <h2 class="text-lg font-bold">${name}</h2>
+                    <p class="text-sm flex items-center gap-2">
+                        <i class="fas fa-book text-yellow-400"></i> ${courseCount} courses
+                    </p>
+                    <p class="text-sm flex items-center gap-2">
+                        <i class="fas fa-users text-blue-400"></i> ${totalStudents} students
+                    </p>
+                    <p class="text-sm flex items-center gap-2">
+                        <i class="fas fa-star text-red-400"></i> ${totalRatings} total ratings
+                    </p>
                 </div>
-         
             </div>
-        `;
-    });
+        </div>
+      `;
+    })();
 
-    document.getElementById("categories").innerHTML = categoriesHtml;
+    categoryPromises.push(coursePromise);
+  });
+
+  // Wait for all category course data to be fetched
+  const categoryHtmlList = await Promise.all(categoryPromises);
+  
+  // Insert all categories into the DOM at once (reduces reflow)
+  document.getElementById("categories").innerHTML = categoryHtmlList.join("");
 }
 
-        document.addEventListener("DOMContentLoaded", fetchCategories);
+document.addEventListener("DOMContentLoaded", fetchCategories);
 </script>
 
   </head>
@@ -130,7 +171,7 @@
     
         
     <!-- Cards Section -->
-    <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2  mb-10 " id="categories">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full h-full p-4 " id="categories">
 
       
     </div>

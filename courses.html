@@ -67,7 +67,7 @@ option {
   
   </style>
 </head>
-<body class=" flex flex-col justify-center items-center  bg-gray-900 text-white">
+<body class=" flex flex-col justify-center items-center   bg-gray-900 text-white">
 
     <div class=" bg-[#172554] sticky top-0 z-20 w-full ">
        
@@ -318,53 +318,50 @@ Your browser does not support the video tag.
           ></div>
         </footer>
         
-        
+    
   <!-- Page Container -->
   
   <div class="container mx-auto mt-3 px-4 lg:px-16 flex flex-col lg:flex-row gap-6">
     <!-- Mobile Drawer for Tags -->
     
-    <div class="lg:hidden z-10">
-      
-      <div class="flex items-center space-x-24">
-        <button id="open-drawer" class="px-4 py-2 bg-transparent border border-gray-500 text-white rounded-lg flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M3 12h12m-12 6h18" />
-          </svg>
-          Filter
-      </button>
-    
-      </div>
-        <div id="drawer" class="fixed mt-24  top-0 left-0 w-64 h-full bg-gray-900 shadow-lg p-4 transform -translate-x-full transition-transform overflow-scroll ">
-            <button   id="close-drawer" class="mb-4 w-14 h-14 bg-gray-500/10 p-3 rounded-full hover:bg-red-600 transition-all">X</button>
-          
-            <!-- Tags Section for Mobile -->
-            <div id="tags-container1" class="w-full mb-64">
-                <!-- Tags will be dynamically injected here -->
-            </div>
-        </div>
-    </div>
-    
-<div>
-<!-- Search and Filter -->
-<div class="flex flex-row  justify-between">
-  <!-- Search Input with Icon -->
-  <!-- <div class=" items-center border border-gray-700 p-3 rounded-lg hidden lg:flex">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M8 2a6 6 0 104.472 10.472l3.9 3.9a1 1 0 001.415-1.415l-3.9-3.9A6 6 0 008 2zM3 8a5 5 0 1110 0A5 5 0 013 8z" clip-rule="evenodd"/>
-    </svg>
-    <input type="text" placeholder="Search" class="ml-2 outline-none bg-transparent">
-  </div> -->
 
-  <!-- Dropdown for Sorting -->
- <div>
+ 
+<div>
+  
+<!-- Search and Filter -->
+<h1 id="lolo" class="text-3xl font-bold text-white">All Courses</h1>
+<div class="flex flex-row  justify-between">
+ 
+
+   
+ <div class="flex flex-row justify-between mt-4 ">
+  <div class="lg:hidden z-10">
+      
+    <div class="flex items-center space-x-24">
+      <button id="open-drawer" class="px-4 py-2 bg-transparent border border-gray-500 text-white rounded-lg flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M3 12h12m-12 6h18" />
+        </svg>
+        Filter
+    </button>
+  
+    </div>
+      <div id="drawer" class="fixed mt-24  top-0 left-0 w-64 h-full bg-gray-900 shadow-lg p-4 transform -translate-x-full transition-transform overflow-scroll ">
+          <button   id="close-drawer" class="mb-4 w-14 h-14 bg-gray-500/10 p-3 rounded-full hover:bg-red-600 transition-all">X</button>
+        
+          <!-- Tags Section for Mobile -->
+          <div id="tags-container1" class="w-full mb-64">
+              <!-- Tags will be dynamically injected here -->
+          </div>
+      </div>
+  </div>
   <select class="border border-gray-700 p-3 rounded-lg bg-transparent">
     <option   >Release Date (newest first)</option>
     <option >Release Date (oldest first)</option>
     <option>Course Title (A-Z)</option>
     <option>Course Title (Z-A)</option>
   </select>
-
+ 
   <!-- Shopping Cart -->
 <div id="cart-container" class="fixed z-50 bottom-20 right-5 bg-gray-900 shadow-lg border border-gray-700 rounded-lg w-80 p-4 hidden">
   <div class="flex justify-between items-center border-b pb-3">
@@ -399,6 +396,7 @@ Your browser does not support the video tag.
   class="outline-none bg-transparent ml-2 w-full "
   />
 </div>
+
     <!-- Filters -->
     <div class="flex items-center mb-4 mt-4 space-x-6 bg-gray-800 bg-opacity-60 p-4 rounded-lg shadow-md overflow-auto scrollbar-hide ">
       <!-- All Checkbox -->
@@ -428,7 +426,9 @@ Your browser does not support the video tag.
           <span class="text-white font-medium">Paid</span>
       </label>
   </div>
-  <h1 id="lolo" class="text-3xl font-bold text-white">All Courses</h1>
+ 
+
+  <div class="flex flex-row max-w-7xl overflow-x-auto space-x-4 p-4 " id="categories"></div> 
   <div class="flex">
     <!-- Tags Section for Larger Screens -->
     <div id="tags-container" class="hidden lg:block w-full lg:w-1/4  shadow-md rounded-lg p-4">
@@ -484,7 +484,27 @@ const courseTitle = urlParams.get("title1");
 const course_id = urlParams.get('courseid');
 
 
+    // Convert Firestore Timestamp to Human-Readable Date
+    async function fetchCategories() {
+            const querySnapshot = await db.collection("categories").orderBy("index").get();
+            let categoriesHtml = "";
+            querySnapshot.forEach((doc) => {
+                const { name, image_url } = doc.data();
+                categoriesHtml += `
+      
+  
+    <div class="relative min-w-max bg-white/20 backdrop-blur-lg border border-white/30  rounded-lg p-4 flex flex-row  items-center cursor-pointer transition transform hover:scale-105 "
+        onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
+        <img src="${image_url}" alt="${name}" class="w-32 h-20 object-cover rounded-lg border-2 border-white">
+        <h3 class="  text-lg font-semibold text-white mt-2">${name}</h3>
+    </div>
 
+                `;
+            });
+            document.getElementById("categories").innerHTML = categoriesHtml;
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchCategories);
 
 document.addEventListener("DOMContentLoaded", function () {
  if(course_id){

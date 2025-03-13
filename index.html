@@ -16,13 +16,11 @@
     <script type="module" src="./navbar.js"></script>
     <script src="bottomnv.js"></script>
     <script src="kaka.js"></script>
-    <script src="dark-mode.js"></script>
-
+ 
+    <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+ 
     <style>
-      .dark body {
-    background-color: #111827; /* Dark background */
-    color: #ffffff; /* Light text */
-}
+
       @keyframes spin-slow {
         0% {
           transform: rotate(0deg);
@@ -161,6 +159,7 @@ document.addEventListener("DOMContentLoaded", fetchCategories);
   <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
 </div>
   <body class="bg-gray-900 text-white">
+    <script src="dark-mode.js"></script>
     <div class="sticky top-0 bg-[#172554] z-20 w-full">
       <div id="navbar-container"></div>
       <div class="flex justify-between items-center pt-3 pb-3 px-6 bg-gray-900 ">

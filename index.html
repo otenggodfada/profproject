@@ -426,7 +426,19 @@
               </p>
             </div>
           </section>
+        <!-- Courses Categories Section -->
+        <section class="  text-white lg:px-40 p-4 flex flex-col justify-center items-center py-10 ">
+        
+          <h2 class="text-3xl font-bold mb-8 text-center text-white">
+            Our Courses Categories
+          </h2>
+        
+    <!-- Cards Section -->
+    <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-6" id="categories">
 
+      
+    </div>
+        </section>
           <!-- Testimonials Section -->
           <section class=" text-center bg-gradient-to-r from-blue-500 to-purple-500 lg:px-40 text-white py-10 p-6">
             <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-white">
@@ -537,110 +549,7 @@
             </div>
           </section>
 
-          <!-- Courses Categories Section -->
-          <section class="  text-white lg:px-40 p-4 flex flex-col justify-center items-center py-10 ">
-        
-            <h2 class="text-3xl font-bold mb-8 text-center text-white">
-              Our Courses Categories
-            </h2>
-          
-      <!-- Cards Section -->
-      <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-6" id="card-container">
-
-        <script>
-          const options = [
-            {
-              title1: "CITG",
-              description: "Certified IT Governance program for professionals.",
-              link: "courses.html",
-            },
-            {
-              title1: "ICAGH",
-              description: "Institute of Chartered Accountants Ghana program.",
-              link: "courses.html",
-            },
-            {
-              title1: "BOOKSHOP",
-              description:
-                "Access a wide range of educational books and resources.",
-              link: "store.html",
-            },
-            {
-              title1: "ALUMNI TRAINING PROGRAMS",
-              description: "Exclusive training for our alumni members.",
-              link: "courses.html",
-            },
-            {
-              title1: "Grow your business (Digital marketing)",
-              description:
-                "Master digital marketing strategies to grow your business.",
-              link: "blog.html",
-            },
-            {
-              title1: "MAKE MONEY WITH PROFS (BECOME an affiliate)",
-              description: "Join our affiliate program and earn commissions.",
-              link: "job.html",
-            },
-            {
-              title1: "ADIT",
-              description:
-                "Advanced Diploma in International Taxation program.",
-              link: "courses.html",
-            },
-            {
-              title1: "PMP PROFESSIONAL",
-              description:
-                "Project Management Professional certification training.",
-              link: "courses.html",
-            },
-          ];
-
-          document.write(
-            options
-              .map(
-                (option) => `
-                        <div onclick="window.location.href='${
-                          option.link
-                        }?title1=${encodeURIComponent(option.title1)}'"
- class="card flex items-stretch justify-between  rounded-xl    border border-gray-500">
-                            <div class="m-6">
-                                            <!-- Rating -->
-    <p class="text-gray-300 text-sm flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg>
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg>
-    </p>
-                         <div class="flex flex-row">   
-      <div class="mr-2">                       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
-      </svg>
-             </div>               
-                            <h2 class="text-lg font-semibold text-white">${
-                              option.title1
-                            }</h2></div>
-                    
-                                <p class="text-sm text-gray-500">${
-                                  option.description
-                                }</p>
-                            </div>
-                           
-                        </div>
-                    `
-              )
-              .join("")
-          );
-        </script>
-      </div>
-          </section>
+  
 
           <section class=" text-center bg-gradient-to-r from-blue-500 to-purple-500  py-10 px-4 lg:px-40 ">
             <h2 class="text-3xl font-bold mb-8 text-white">
@@ -885,7 +794,23 @@
       const auth = firebase.auth(app);
   
       // Convert Firestore Timestamp to Human-Readable Date
-  
+      async function fetchCategories() {
+            const querySnapshot = await db.collection("categories").orderBy("index").get();
+            let categoriesHtml = "";
+            querySnapshot.forEach((doc) => {
+                const { name, image_url } = doc.data();
+                categoriesHtml += `
+                    <div class="relative bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg rounded-lg overflow-hidden p-4 flex items-center space-x-4 cursor-pointer transition transform hover:scale-105 hover:shadow-2xl"
+                       onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'" >
+                        <img src="${image_url}" alt="${name}" class="w-50 h-20 object-cover rounded-lg border-2 border-white">
+                        <h3 class="text-lg font-semibold text-white">${name}</h3>
+                    </div>
+                `;
+            });
+            document.getElementById("categories").innerHTML = categoriesHtml;
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchCategories);
       
       const formatTimestamp = (timestamp) => {
         if (!timestamp) return "Unknown";

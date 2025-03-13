@@ -483,6 +483,9 @@ Your browser does not support the video tag.
 const courseTitle = urlParams.get("title1");
 const course_id = urlParams.get('courseid');
 
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
  if(course_id){
   showCourseDetails(course_id)
@@ -623,7 +626,7 @@ if (courseTitle) {
 
         // Create category title
         const categoryTitle = document.createElement("h2");
-        categoryTitle.textContent = "Category";
+        categoryTitle.textContent = "Tags";
         categoryTitle.className = "text-xl font-bold text-gray-100 mb-4 uppercase tracking-wide border-b border-gray-700 pb-2";
         tagsContainer.appendChild(categoryTitle);
 
@@ -774,7 +777,7 @@ const fetchAllTags1 = async () => {
 
         // Create category title
         const categoryTitle = document.createElement("h2");
-        categoryTitle.textContent = "Category";
+        categoryTitle.textContent = "Tags";
         categoryTitle.className = "text-xl font-bold text-gray-100 mb-4 uppercase tracking-wide border-b border-gray-700 pb-2";
         tagsContainer.appendChild(categoryTitle);
 

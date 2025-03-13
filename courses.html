@@ -329,12 +329,23 @@ Your browser does not support the video tag.
 <div>
   
 <!-- Search and Filter -->
-<h1 id="lolo" class="text-3xl font-bold text-white">All Courses</h1>
+<div class="w-full flex justify-center mt-5">
+  <h1 id="lolo" class="text-3xl font-bold text-white">All Courses</h1>
+</div>
 <div class="flex flex-row  justify-between">
  
 
    
- <div class="flex flex-row justify-between mt-4 ">
+ <div class="flex flex-row justify-between mt-4 w-full ">
+
+  <div>
+    <select class="border border-gray-700 p-3 rounded-lg bg-transparent">
+      <option   >Release Date (newest first)</option>
+      <option >Release Date (oldest first)</option>
+      <option>Course Title (A-Z)</option>
+      <option>Course Title (Z-A)</option>
+    </select>
+  </div>
   <div class="lg:hidden z-10">
       
     <div class="flex items-center space-x-24">
@@ -355,13 +366,6 @@ Your browser does not support the video tag.
           </div>
       </div>
   </div>
-  <select class="border border-gray-700 p-3 rounded-lg bg-transparent">
-    <option   >Release Date (newest first)</option>
-    <option >Release Date (oldest first)</option>
-    <option>Course Title (A-Z)</option>
-    <option>Course Title (Z-A)</option>
-  </select>
- 
   <!-- Shopping Cart -->
 <div id="cart-container" class="fixed z-50 bottom-20 right-5 bg-gray-900 shadow-lg border border-gray-700 rounded-lg w-80 p-4 hidden">
   <div class="flex justify-between items-center border-b pb-3">

@@ -1,1249 +1,163 @@
 <!-- @format -->
 
 <!DOCTYPE html>
-<html>
-  <!-- Mirrored from www.aspireexecutiveinstitute.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Jun 2024 04:07:02 GMT -->
-  <!-- Added by HTTrack --><meta
-    http-equiv="content-type"
-    content="text/html;charset=utf-8"
-  /><!-- /Added by HTTrack -->
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Education App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script
-    defer
-    src="https://unpkg.com/framer-motion@4.1.17/dist/framer-motion.umd.js"
-  ></script>
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.3.4/lib/darkmode-js.min.js"></script>
-    <!-- <script
-      src="https://static.elfsight.com/platform/platform.js"
-      data-use-service-core
       defer
-    ></script> -->
-    <div
-      class="elfsight-app-5837f75c-ade7-4dd8-a1cb-bd1cc2ed68a4"
-      data-elfsight-app-lazy
-    ></div>
-    <script type="module" src="./indexnav.js"></script>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Profstudymate</title>
-    <meta
-      name="description"
-      content="Profstudymate is a registered Partner in Learning of the ICAG and CTIG, providing world class tuition to prepare students for their professional exams"
-    />
-    <meta name="next-head-count" content="4" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    
-    <link
-      rel="preload"
-      href="_next/static/css/096eeec99e574319.css"
-      as="style"
-    />
+      src="https://unpkg.com/framer-motion@4.1.17/dist/framer-motion.umd.js"
+    ></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script type="module" src="./dynamiccon.js"></script>
     <script type="module" src="./navbar.js"></script>
     <script src="bottomnv.js"></script>
     <script src="kaka.js"></script>
-    <script type="module" src="nava-links.js"></script>
-
-    <link
-      rel="stylesheet"
-      href="_next/static/css/096eeec99e574319.css"
-      data-n-g=""
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script
-      type="text/javascript"
-      src="https://cdn.emailjs.com/dist/email.min.js"
-    ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script type="text/javascript">
-      (function () {
-        emailjs.init("0s5aKc23u4R444FF0"); // Replace with your EmailJS user ID
-      })();
-    </script>
-
     <style>
-  
-      .program {
-        height: 500px;
-        width: 400px;
-        /* bg-white/30 backdrop-blur-lg p-6 rounded-lg shadow-md, */
-        background-color: rgba(255, 255, 255, 0.363);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(10px);
-        border-top-left-radius: 50px;
-        border-bottom-right-radius: 10px;
-      }
-      .program:hover {
-        transform: translateX(-10px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-      }
-      .star-icon {
-        color: #fcd34d; /* Yellow color for stars */
-      }
-      .scroll-reveal {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-      }
-      .scroll-reveal.show {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .neon-text {
-        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00aaff,
-          0 0 20px #00aaff, 0 0 30px #00aaff, 0 0 40px #00aaff, 0 0 55px #00aaff,
-          0 0 75px #00aaff;
-      }
-
-      .rounded-lg {
-        border-radius: 1rem;
-      }
-
-      .overflow-hidden {
-        overflow: hidden;
-      }
-
-      .introduction-section .neon-text {
-        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00aaff,
-          0 0 20px #00aaff, 0 0 30px #00aaff, 0 0 40px #00aaff, 0 0 55px #00aaff,
-          0 0 75px #00aaff;
-      }
-
-      .introduction-section .rounded-lg {
-        border-radius: 1rem;
-      }
-
-      .introduction-section .overflow-hidden {
-        overflow: hidden;
-      }
-
-      @media (max-width: 640px) {
-        .introduction-section .max-w-4xl {
-          padding-top: 8rem; /* Adjust padding for small screens */
+      @keyframes spin-slow {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
         }
       }
-      /* Adjust the gradient overlay opacity and color */
-
-
-
-      
-    </style>
-     
-
-     <script>
-      const sections = document.querySelectorAll('section');
-
-      function animateOnScroll() {
-          sections.forEach(section => {
-              let rect = section.getBoundingClientRect();
-              if (rect.top < window.innerHeight * 0.8) {
-                  anime({
-                      targets: section,
-                      opacity: 1,
-                      translateY: 0,
-                      duration: 1000,
-                      easing: 'easeOutQuad'
-                  });
-              }
-          });
+      .animate-spin-slow {
+        animation: spin-slow 3s linear infinite;
       }
+    </style>
 
-      document.addEventListener('scroll', animateOnScroll);
-      animateOnScroll();
-  </script>
-  </head>
-  <body class="bg-gray-900 text-white">
-    <div id="__next">
-      <div class="">
-        <div class=" bg-[#172554] sticky top-0 z-20 w-full">
-          <div id="navbar-container"></div>
-        </div>
-        <main class="  ">
-          <!-- Introduction Section -->
-          <div class="flex items-center bg-gray-900 bg-cover justify-center py-4 px-10"style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://profstudyhub.com/wp-content/uploads/2024/06/Untitled-design.png);" >
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center max-w-6xl">
-                <!-- Left Content -->
-                <div class="text-white">
-                    <h1 class="text-6xl font-bold text-blue-300">The Best CITG and</h1>
-                    <h1 class="text-6xl font-bold text-blue-400">ICAG Courses</h1>
-                    <p class="text-gray-300 mt-4">Choose from a wide range of CITG & ICAG Courses to pass your exam first attempt</p>
-                    <div class="mt-6 flex gap-4">
-                        <button onclick="window.location.href='courses.html'" class="px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-full shadow-md">Explore Courses</button>
-                        <button onclick="window.location.href='courses.html'" class="px-6 py-3 border border-yellow-500 text-yellow-400 hover:bg-yellow-500 hover:text-white font-semibold rounded-full shadow-md">Start Learning →</button>
-                    </div>
-                </div>
-                
-                <!-- Right Content -->
-                <div class="relative">
-                    <div class="absolute inset-0  bg-black/50 opacity-80 "></div>
-                    <img src="https://profstudyhub.com/wp-content/uploads/2024/06/medium-shot-student-working-with-laptop-1-min.png" alt="Student Learning" class="relative rounded-lg w-full h-auto">
-                </div>
-            </div>
-        </div>
-          <!-- Features Course Sections -->
-        <section class="bg-gradient-to-r from-blue-500 to-purple-500 py-10  px-4  lg:px-40">
-          <h2 class="text-3xl font-bold mb-6 text-center">Featured Courses</h2>
-          <p class="text-lg sm:text-xl text-white max-w-4xl mx-auto">
-            Learning should be Easier. Use Profs Study Hub to facilitate your CITG $ ICAG learning experience to pass your first attempt.
-          </p>
-          <div id="course-list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-14">
-            <!-- Courses will be dynamically injected here -->
-           
-          </div>
-          <section >
-            <div class=" ">
-              <div onclick="window.location.href='courses.html';" class="p-4 bg-[#172554] border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md w-40 cursor-pointer">
-                Explore Courses
-              </div>
-            </div>
-          </section>
-          
-        </section>
-        
-       
-          <!-- Modal -->
-<div hidden id="course-modal" class="modal">
-  <div class="modal-content bg-white shadow-lg rounded-lg p-8 max-w-lg mx-auto">
-    <!-- Close Button -->
-    <span id="close-modal" class="text-gray-600 cursor-pointer text-3xl absolute top-4 right-4 font-bold">&times;</span>
-<!-- Course Image -->
-<div class="mb-6">
+<script type="module">
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, doc, getDoc, collection, getDocs, orderBy, query  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  <img id="modal-image" src="" alt="Course Image" class="w-full h-64 object-cover rounded-lg" />
-</div>
-    <!-- Modal Title -->
-    <h2 id="modal-title" class="text-3xl font-semibold mb-6 text-gray-800"></h2>
-    <div class="flex flex-row"> <div></div> <p id="model-students"></p></div>
-    <p id="model-ratings"></p>
-<div class="flex flex-row justify-start items-center space-x-2 bg-slate-200 p-2">
-    <!-- Price Section -->
-<div class="">
-
-  <span id="modal-price" class="text-[#172554] font-bold p-2 rounded-3xl border border-gray-700 text-lg"></span>
-</div>
-
-<!-- Enroll Button -->
-<div class="w-full bg-[#172554] text-white font-bold py-2 rounded-3xl text-lg hover:bg-indigo-700 transition duration-300 flex justify-center items-center">
-  <a id="modal-enroll-button" href="#" class="    ">Enroll Now</a>
-</div>
-</div>
-    <!-- Modal Description -->
-    <div id="modal-description" class="mb-6 text-gray-700 text-lg"></div>
-
-    <!-- Course Information -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-      <!-- Created By -->
-      <div>
-        <p class="font-semibold text-gray-600">Created by:</p>
-        <p id="modal-id" style="display: none;"></p>
-        <p id="modal-author" class="text-blue-500"></p>
-      </div>
-      
-      <!-- Updated At -->
-      <div>
-        <p class="font-semibold text-gray-600">Updated at:</p>
-        <p id="modal-updated" class="text-gray-700"></p>
-      </div>
-    </div>
-
-    <!-- Video URL -->
-    <div class="mb-6">
-      <p class="font-semibold text-gray-600">Video URL:</p>
-      <a id="modal-video" href="#" target="_blank" class="text-blue-500 underline text-lg"></a>
-    </div>
-
-    <!-- Tags -->
-    <div class="mb-6">
-      <p class="font-semibold text-gray-600">Tags:</p>
-      <span id="modal-tags" class="text-gray-700"></span>
-    </div>
-
-    <!-- Summary -->
-    <div class="mb-6">
-      <p class="font-semibold text-gray-600">Summary:</p>
-      <span id="modal-summary" class="text-gray-700"></span>
-    </div>
-
-    <!-- Requirements -->
-    <div class="mb-6">
-      <p class="font-semibold text-gray-600">Requirements:</p>
-      <ul id="modal-requirements" class="list-disc pl-5 text-gray-600"></ul>
-    </div>
-
-    <!-- Learnings -->
-    <div class="mb-6">
-      <p class="font-semibold text-gray-600">What you'll learn:</p>
-      <ul id="modal-learnings" class="list-disc pl-5 text-gray-600"></ul>
-    </div>
-
-    <!-- Languages -->
-    <div class="mb-6">
-      <p class="font-semibold text-gray-600">Language(s):</p>
-      <ul id="modal-language" class="list-disc pl-5 text-gray-600"></ul>
-    </div>
-
-    <!-- Duration -->
-    <div class="mb-6">
-      <p class="font-semibold text-gray-600">Duration:</p>
-      <span id="modal-duration" class="text-gray-700"></span>
-    </div>
-
-    <!-- Created At -->
-    <div>
-      <p class="font-semibold text-gray-600">Created at:</p>
-      <span id="modal-created" class="text-gray-700"></span>
-    </div>
-  </div>
-  
-</div>
-          <!-- Features Section -->
-          
-          <section class=" py-10 px-4 lg:px-40  bg-gray-300 text-gray-900 p-4">
-            
-            <h2 class="text-3xl font-bold mb-6 text-center">Features</h2>
-            <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-6">
-              <!-- Feature 1 -->
-              <div
-                class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <div class="flex items-center mb-4  ">
-                  <svg
-                    class="w-10 h-10 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M12 2L2 6l10 4 10-4-10-4zm0 6.472l-8-3.2V14l8 4 8-4V5.272l-8 3.2z"
-                    />
-                  </svg>
-                </div>
-                <h3 class="text-xl font-semibold mb-2">
-                  Comprehensive Accounting Courses
-                </h3>
-                <p>In-depth courses covering all aspects of accounting.</p>
-              </div>
-
-              <!-- Feature 2 -->
-              <div
-                class="bg-gradient-to-r from-green-500 to-green-700 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <div class="flex items-center mb-4">
-                  <svg
-                    class="w-10 h-10 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M12 2L2 6l10 4 10-4-10-4zm0 6.472l-8-3.2V14l8 4 8-4V5.272l-8 3.2z"
-                    />
-                  </svg>
-                </div>
-                <h3 class="text-xl font-semibold mb-2">
-                  Interactive Learning Modules
-                </h3>
-                <p>
-                  Engaging modules that enhance learning through interaction.
-                </p>
-              </div>
-
-              <!-- Feature 3 -->
-              <div
-                class="bg-gradient-to-r from-yellow-500 to-yellow-700 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <div class="flex items-center mb-4">
-                  <svg
-                    class="w-10 h-10 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M12 2L2 6l10 4 10-4-10-4zm0 6.472l-8-3.2V14l8 4 8-4V5.272l-8 3.2z"
-                    />
-                  </svg>
-                </div>
-                <h3 class="text-xl font-semibold mb-2">Expert Instructors</h3>
-                <p>
-                  Learn from industry professionals and experienced educators.
-                </p>
-              </div>
-
-              <!-- Feature 4 -->
-              <div
-                class="bg-gradient-to-r from-red-500 to-red-700 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <div class="flex items-center mb-4">
-                  <svg
-                    class="w-10 h-10 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M12 2L2 6l10 4 10-4-10-4zm0 6.472l-8-3.2V14l8 4 8-4V5.272l-8 3.2z"
-                    />
-                  </svg>
-                </div>
-                <h3 class="text-xl font-semibold mb-2">
-                  Certification Upon Completion
-                </h3>
-                <p>
-                  Receive a recognized certification after completing your
-                  course.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <!-- Why Choose Us Section -->
-          <section
-            class=" text-center animate__animated animate__fadeInUp relative bg-blue-950 text-white p-4 lg:px-96 py-12"
-          >
-            <!-- Overlay -->
-            <div
-              class="absolute inset-0 bg-black opacity-30 pointer-events-none"
-            ></div>
-            <!-- Content -->
-            <div class="relative z-10 max-w-4xl mx-auto px-4">
-              <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-white">
-                Why Choose Us?
-              </h2>
-              <p class="text-lg sm:text-xl text-white max-w-2xl mx-auto">
-                ProfStudyMate is dedicated to providing top-notch accounting
-                education. Our platform is designed to be interactive and
-                engaging, ensuring that you get the best learning experience
-                possible.
-              </p>
-            </div>
-          </section>
-        <!-- Courses Categories Section -->
-        <section class="  text-white lg:px-40 p-4 flex flex-col justify-center items-center py-10 ">
-        
-          <h2 class="text-3xl font-bold mb-8 text-center text-white">
-            Our Courses Categories
-          </h2>
-        
-    <!-- Cards Section -->
-    <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-6" id="categories">
-
-      
-    </div>
-        </section>
-          <!-- Testimonials Section -->
-          <section class=" text-center bg-gradient-to-r from-blue-500 to-purple-500 lg:px-40 text-white py-10 p-6">
-            <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-white">
-              Testimonials
-            </h2>
-            <div
-              class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-6"
-            >
-              <!-- Testimonial 1 -->
-              <div
-                class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg shadow-lg overflow-hidden transition duration-300 transform hover:scale-105"
-              >
-                <div class="p-6">
-                  <p class="text-lg italic mb-4">
-                    "ProfStudyMate has transformed the way I approach
-                    accounting. The courses are well-structured and the
-                    instructors are incredibly knowledgeable." - Jane Doe
-                  </p>
-                  <div class="flex items-center justify-center mb-4">
-                    <img
-                      src="https://randomuser.me/api/portraits/women/2.jpg"
-                      alt="Jane Doe"
-                      class="rounded-full w-16 h-16 mr-3 border-4 border-white"
-                    />
-                    <div>
-                      <p class="text-lg font-semibold">Jane Doe</p>
-                      <p class="text-base">Accounting Enthusiast</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Testimonial 2 -->
-              <div
-                class="bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-lg shadow-lg overflow-hidden transition duration-300 transform hover:scale-105"
-              >
-                <div class="p-6">
-                  <p class="text-lg italic mb-4">
-                    "I found ProfStudyMate to be an invaluable resource for my
-                    accounting studies. The content is comprehensive and
-                    up-to-date." - John Smith
-                  </p>
-                  <div class="flex items-center justify-center mb-4">
-                    <img
-                      src="https://randomuser.me/api/portraits/men/1.jpg"
-                      alt="John Smith"
-                      class="rounded-full w-16 h-16 mr-3 border-4 border-white"
-                    />
-                    <div>
-                      <p class="text-lg font-semibold">John Smith</p>
-                      <p class="text-base">Finance Analyst</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Testimonial 3 -->
-              <div
-                class="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg overflow-hidden transition duration-300 transform hover:scale-105"
-              >
-                <div class="p-6">
-                  <p class="text-lg italic mb-4">
-                    "ProfStudyMate offers a structured learning path that helped
-                    me excel in my accounting career. Highly recommended!" -
-                    Emily Brown
-                  </p>
-                  <div class="flex items-center justify-center mb-4">
-                    <img
-                      src="https://randomuser.me/api/portraits/men/3.jpg"
-                      alt="Emily Brown"
-                      class="rounded-full w-16 h-16 mr-3 border-4 border-white"
-                    />
-                    <div>
-                      <p class="text-lg font-semibold">Emily Brown</p>
-                      <p class="text-base">Senior Accountant</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Contact Us Section -->
-          <section
-            class=" text-center animate__animated animate__fadeInUp relative bg-gray-300 text-gray-900 lg:px-96 p-4 py-12"
-          >
-            <!-- Overlay -->
-         
-            <!-- Content -->
-            <div class="relative z-10 max-w-4xl mx-auto px-4">
-              <h2 class="text-3xl sm:text-4xl font-bold mb-4 ">
-                Contact Us
-              </h2>
-              <p class="text-lg  mb-6">
-                Have any questions? Feel free to reach out to us at
-                <a href="mailto:support@profstudymate.com" class="underline"
-                  >support@profstudymate.com</a
-                >.
-              </p>
-              <!-- Contact Form or CTA Button -->
-              <div class="flex justify-center">
-                <a
-                  href="mailto:support@profstudymate.com"
-                  class="bg-white text-blue-500 hover:bg-blue-500 hover:text-white py-2 px-6 rounded-full font-semibold transition duration-300"
-                  >Email Us</a
-                >
-              </div>
-            </div>
-          </section>
-
-  
-
-          <section class=" text-center bg-gradient-to-r from-blue-500 to-purple-500  py-10 px-4 lg:px-40 ">
-            <h2 class="text-3xl font-bold mb-8 text-white">
-              Quantitative Insights of Our Institute
-            </h2>
-            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 grid-cols-2  mb-10 mt-6">
-              <!-- Students Helped -->
-              <div
-                class="bg-gradient-to-t from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <i class="fas fa-user-graduate text-4xl mb-4"></i>
-                <h3 class="text-3xl font-bold mb-2" data-count="2000">0+</h3>
-                <p class="text-lg">STUDENTS HELPED</p>
-              </div>
-              <!-- Subjects Available -->
-              <div
-                class="bg-gradient-to-t from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <i class="fas fa-book-open text-4xl mb-4"></i>
-                <h3 class="text-3xl font-bold mb-2" data-count="60">0+</h3>
-                <p class="text-lg">SUBJECTS AVAILABLE</p>
-              </div>
-              <!-- Exams Conducted -->
-              <div
-                class="bg-gradient-to-t from-purple-500 to-purple-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <i class="fas fa-clipboard-check text-4xl mb-4"></i>
-                <h3 class="text-3xl font-bold mb-2" data-count="10">0+</h3>
-                <p class="text-lg">EXAMS CONDUCTED</p>
-              </div>
-              <!-- Certified Tutors -->
-              <div
-                class="bg-gradient-to-t from-red-500 to-red-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <i class="fas fa-chalkboard-teacher text-4xl mb-4"></i>
-                <h3 class="text-3xl font-bold mb-2" data-count="500">0+</h3>
-                <p class="text-lg">CERTIFIED TUTORS</p>
-              </div>
-              <!-- Courses Offered -->
-              <div
-                class="bg-gradient-to-t from-yellow-500 to-yellow-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <i class="fas fa-book text-4xl mb-4"></i>
-                <h3 class="text-3xl font-bold mb-2" data-count="1000">0+</h3>
-                <p class="text-lg">COURSES OFFERED</p>
-              </div>
-              <!-- Support -->
-              <div
-                class="bg-gradient-to-t from-indigo-500 to-indigo-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <i class="fas fa-headset text-4xl mb-4"></i>
-                <h3 class="text-3xl font-bold mb-2" data-count="24">0/7</h3>
-                <p class="text-lg">SUPPORT</p>
-              </div>
-            </div>
-          </section>
-      
-   
-
-          <!-- Reviews Section -->
-          <section class="lg:px-40 text-center bg-blue-950 text-white p-4 py-10">
-            <h2 class="text-3xl font-bold mb-8 ">
-              What Our Students Say
-            </h2>
-            <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-6">
-              <!-- Review 1 -->
-              <div
-                class="bg-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <div class="flex items-center mb-4">
-                  <img
-                    src="https://randomuser.me/api/portraits/men/1.jpg"
-                    alt="John Doe"
-                    class="w-12 h-12 rounded-full mr-4"
-                  />
-                  <div>
-                    <h3 class="font-semibold text-lg">John Doe</h3>
-                    <div class="flex text-yellow-500">
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <p class="text-gray-700 leading-relaxed">
-                  “Profstudymate's training program made a remarkable difference
-                  in my career. Their comprehensive curriculum and experienced
-                  instructors prepared me for the competitive job market. Highly
-                  recommended.”
-                </p>
-              </div>
-
-              <!-- Review 2 -->
-              <div
-                class="bg-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <div class="flex items-center mb-4">
-                  <img
-                    src="https://randomuser.me/api/portraits/women/2.jpg"
-                    alt="Michael Stanley"
-                    class="w-12 h-12 rounded-full mr-4"
-                  />
-                  <div>
-                    <h3 class="font-semibold text-lg">Michael Stanley</h3>
-                    <div class="flex text-yellow-500">
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <p class="text-gray-700 leading-relaxed">
-                  “Profstudymate's training program made a remarkable difference
-                  in my career. Their comprehensive curriculum and experienced
-                  instructors prepared me for the competitive job market. Highly
-                  recommended.”
-                </p>
-              </div>
-
-              <!-- Review 3 -->
-              <div
-                class="bg-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
-              >
-                <div class="flex items-center mb-4">
-                  <img
-                    src="https://randomuser.me/api/portraits/men/3.jpg"
-                    alt="Samuel Agyemang"
-                    class="w-12 h-12 rounded-full mr-4"
-                  />
-                  <div>
-                    <h3 class="font-semibold text-lg">Samuel Agyemang</h3>
-                    <div class="flex text-yellow-500">
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path
-                          d="M10 15l-5.5 3 1.5-6.5-5-4.5 6.6-.5L10 0l2.4 6.5 6.6.5-5 4.5L15.5 18z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <p class="text-gray-700 leading-relaxed">
-                  “Profstudymate's training program made a remarkable difference
-                  in my career. Their comprehensive curriculum and experienced
-                  instructors prepared me for the competitive job market. Highly
-                  recommended.”
-                </p>
-              </div>
-            </div>
-          </section>
-        </main>
-
-        <div class="Toastify"></div>
-        <!-- <div id="footer"></div> -->
-        <footer>
-          <div
-            class="fixed z-50 bottom-0 right-0 left-0"
-            id="navbar-container1"
-          ></div>
-        </footer>
-      </div>
-    </div>
-    <script>
-      // Firebase configuration
-      const firebaseConfig = {
-          apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
         authDomain: "profstudymate-6d0fc.firebaseapp.com",
         projectId: "profstudymate",
         storageBucket: "profstudymate.appspot.com",
         messagingSenderId: "141453158869",
         appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
-      };
-  
-      // Initialize Firebase
-      const app = firebase.initializeApp(firebaseConfig);
-  
-      // Get Firestore and Authentication instances
-      const db = firebase.firestore(app);
-      const auth = firebase.auth(app);
-  
-      // Convert Firestore Timestamp to Human-Readable Date
-      async function fetchCategories() {
-            const querySnapshot = await db.collection("categories").orderBy("index").get();
-            let categoriesHtml = "";
-            querySnapshot.forEach((doc) => {
-                const { name, image_url } = doc.data();
-                categoriesHtml += `
-                    <div class="relative bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg rounded-lg overflow-hidden p-4 flex items-center space-x-4 cursor-pointer transition transform hover:scale-105 hover:shadow-2xl"
-                       onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'" >
-                  <div class="relative overflow-hidden">      <img src="${image_url}" alt="${name}" class="w-50 h-20 object-cover rounded-lg border-2 border-white "></div>
-                        <h3 class="text-lg font-semibold text-white">${name}</h3>
-                    </div>
-                `;
-            });
-            document.getElementById("categories").innerHTML = categoriesHtml;
-        }
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  // Function to update username
+  const updateUsername = async (userId) => {
+    const userRef = doc(db, "users", userId);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      let fullName = userSnap.data().name;
+      let displayName = fullName.length > 8 ? fullName.substring(0, 8) + "..." : fullName;
+      document.getElementById("username").textContent = `Hello, ${displayName}`;
+    }
+  };
+
+  // Check if user is logged in
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      updateUsername(user.uid);
+    }
+  });
+
+
+       // Convert Firestore Timestamp to Human-Readable Date
+       async function fetchCategories() {
+    const categoriesRef = collection(db, "categories");
+    const q = query(categoriesRef, orderBy("index"));
+    const querySnapshot = await getDocs(q);
+
+    let categoriesHtml = "";
+    querySnapshot.forEach((doc) => {
+        const { name, image_url } = doc.data();
+        categoriesHtml += `
+            <div class="relative  border border-gray-500 rounded-lg overflow-hidden  flex flex-col items-center space-y-5 cursor-pointer "
+                onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
+                <div class="relative overflow-hidden">
+                    <img src="${image_url}" alt="${name}" class="w-50 h-26 object-cover ">
+                </div>
+         
+            </div>
+        `;
+    });
+
+    document.getElementById("categories").innerHTML = categoriesHtml;
+}
 
         document.addEventListener("DOMContentLoaded", fetchCategories);
-      
-      const formatTimestamp = (timestamp) => {
-        if (!timestamp) return "Unknown";
-        const date = new Date(timestamp.seconds * 1000);
-        return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
-      };
-  
-      // Render Array Data as List
-      const renderArrayAsList = (array, containerId) => {
-        const container = document.getElementById(containerId);
-        container.innerHTML = ""; // Clear previous content
-        if (Array.isArray(array) && array.length > 0) {
-          array.forEach((item) => {
-            const li = document.createElement("li");
-            li.textContent = item;
-            container.appendChild(li);
-          });
-        } else {
-          const li = document.createElement("li");
-          li.textContent = "None";
-          container.appendChild(li);
-        }
-      };
-  
-      // Fetch Courses from Firestore
-      const fetchCourses = async (tagId = null) => {
-  try {
-    const coursesRef = db.collection("courses");
-    let query = coursesRef.where('featured', '==', true); // Only fetch featured courses
+</script>
 
-    if (tagId) {
-      query = query.where('tag_ids', 'array-contains', tagId);
-    }
-
-    const courseSnapshot = await query.get();
-    const courses = courseSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  </head>
+  <body class="bg-gray-900 text-white">
+    <div class="sticky top-0 bg-[#172554] z-20 w-full">
+      <div id="navbar-container"></div>
+      <div class="flex justify-between items-center pt-3  px-6 bg-gray-900 ">
+        <div>
+          <h1 id="username" class="text-3xl mb-2 font-extrabold text-white">
+            Hello, Studymate
+          </h1>
+          <p class="text-white text-sm">What do you want to learn today?</p>
+        </div>
+        <div onclick="window.location.href='mprofilepage.html'" 
+        class="relative w-16 h-16 flex justify-center items-center cursor-pointer group">
+        
+        <!-- Rotating Outer Gear -->
+        <i class=" border w-16 h-16 rounded-full border-b-2 border-white absolute  bg-white/10 animate-spin-slow"></i>
     
-    return courses;
-  } catch (error) {
-    console.error("Error fetching courses:", error);
-    return [];
-  }
-};
+        <!-- User Profile with Gear (Middle Icon) -->
+        <div class="relative flex items-center">
+            <i class="ph ph-user text-2xl text-white/80"></i>
+            <i class="ph ph-gear text-xl text-white/80 absolute -bottom-2 -right-3 
+                      transition-transform group-hover:rotate-180 duration-500"></i>
+        </div>
+    </div>
+      </div>
+    </div>
+    <div class=" mx-auto  mb-36">
+    
+        <!-- Courses Categories Section -->
+        <section class="  text-white lg:px-40 p-4 flex flex-col justify-center items-center  ">
+        
+    
+        
+    <!-- Cards Section -->
+    <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2  mb-10 " id="categories">
 
-  
-      // Fetch Tags by IDs
-      const fetchTags = async (tagIds) => {
-        try {
-          const tagsRef = db.collection("tags");
-          const tagPromises = tagIds.map((tagId) => tagsRef.doc(tagId).get());
-          const tagSnapshots = await Promise.all(tagPromises);
-          return tagSnapshots.map((tagSnap) => tagSnap.data()?.name || "Unknown");
-        } catch (error) {
-          console.error("Error fetching tags:", error);
-          return [];
-        }
-      };
-  
-  
-      // Fetch All Tags
-      const fetchAllTags = async () => {
-      try {
-          const tagsSnapshot = await db.collection("tags").get();
-          const tagsContainer = document.getElementById("tags-container");
-          tagsContainer.innerHTML = ""; // Clear any existing content
-  
-          // Create "All" button
-          const allButton = document.createElement("div");
-          allButton.className = "tag"; // Apply styling class
-          allButton.textContent = "All";
-  
-          // Add click event listener for "All" button
-          allButton.addEventListener("click", () => {
-              // Remove highlight from all tags
-              const allTags = document.querySelectorAll(".tag");
-              allTags.forEach((t) => t.classList.remove("highlight"));
-  
-              // Highlight the "All" button
-              allButton.classList.add("highlight");
-  
-              // Show all courses
-              renderCourses(null); // Passing `null` for no filter
-          });
-  
-          // Append "All" button to the tags container
-          tagsContainer.appendChild(allButton);
-  
-          // Render other tags
-          tagsSnapshot.forEach((doc) => {
-              const tagId = doc.id; // Tag document ID
-              const tagName = doc.data().name; // Assuming each tag has a field 'name'
-  
-              const tagElement = document.createElement("div");
-              tagElement.className = "tag"; // Apply styling class
-              tagElement.textContent = tagName;
-  
-              // Add click event listener
-              tagElement.addEventListener("click", () => {
-                  // Remove highlight from all tags
-                  const allTags = document.querySelectorAll(".tag");
-                  allTags.forEach((t) => t.classList.remove("highlight"));
-  
-                  // Highlight the clicked tag
-                  tagElement.classList.add("highlight");
-  
-                  // Filter courses by the selected tag
-                  renderCourses(tagId);
-              });
-  
-              tagsContainer.appendChild(tagElement);
-          });
-  
-          // By default, highlight the "All" button
-          allButton.classList.add("highlight");
-      } catch (error) {
-          console.error("Error fetching tags:", error);
-      }
-  };
-  
-  
-  
-  const style = document.createElement('style');
-  style.innerHTML = `
-      .tag {
-          display: inline-block;
-          background-color: #e0e0e0;
-          color: #333;
-          padding: 10px 15px;
-          margin: 5px;
-          border-radius: 20px;
-          font-size: 16px;
-          font-weight: bold;
-          text-align: center;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          transition: background-color 0.3s, color 0.3s;
-      }
-      .tag:hover {
-          background-color: #d0d0d0;
-          cursor: pointer;
-      }
-      .tag.highlight {
-          background-color:#172554; /* Blue background */
-          color: #fff; /* White text */
-      }
-      .expandable-content {
-          display: none;
-      }
-      .expandable-content.expanded {
-          display: block;
-      }
-  `;
-  
-  document.head.appendChild(style);
-  const renderCourses = async (tagId = null) => {
-      const courseList = document.getElementById("course-list");
-      courseList.innerHTML = `<div class="text-center flex flex-col items-center justify-center ">
-          <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>
-          <p class="text-white text-lg font-semibold">Loading...</p>
-          
-      </div>`; // Loading state
-  
-      let courses = await fetchCourses(); // Fetch all courses
-      if (tagId) {
-          // Filter courses by tagId
-          courses = courses.filter(course => course.tag_ids.includes(tagId));
-      }
-  
-      if (courses.length === 0) {
-          courseList.innerHTML = "<p class='text-center text-gray-500'>No courses available.</p>";
-          return;
-      }
-  
-      // Render courses
-      courseList.innerHTML = courses
-          .map((course) => {
-              const imageUrl = course.image_url || 'https://via.placeholder.com/400x200?text=No+Image';
-              return `
-          <div
-  class="relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-pink-500 bg-gray-900 transition-all duration-500 ease-out hover:scale-[1.05] hover:shadow-pink-500/50 hover:border-pink-500/70"
- onclick="window.location.href='courses.html?courseid=${encodeURIComponent(course.id)}'"
-> 
-  <!-- Image Wrapper -->
-  <div class="relative overflow-hidden">
-    <img 
-      src="${imageUrl}" 
-      alt="${course.name}" 
-      class="w-full object-cover transition-transform duration-500 ease-out hover:scale-110"
-    />
-    <div class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-500 ease-out hover:opacity-100"></div>
-  </div>
+      
+    </div>
+        </section>
+    
 
-  <!-- Course Info -->
-  <div class="p-5 rounded-b-lg">
-            <!-- Rating -->
-    <p class="text-gray-300 text-sm flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg>
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg>
-    </p>
-    <!-- Course Title -->
-    <h3 class="text-lg font-semibold text-white flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
-      </svg>
-      ${course.name}
-    </h3>
-
-    <!-- Students Count -->
-    <p class="text-gray-400 text-sm flex items-center gap-2 mb-2 transition-all duration-500 ease-out hover:translate-x-1">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M7 10l5-5m0 0l5 5m-5-5v12" />
-      </svg>
-      ${course.students || 0} students
-    </p>
-
-   
-    <!-- Author -->
-    <p class="text-white font-semibold text-lg flex items-center gap-3 transition-all duration-500 ease-out hover:translate-x-1 mb-10">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 1118.88 17.8M15 19c0-2-3-3-3-3s-3 1-3 3m3-14a4 4 0 110 8 4 4 0 010-8z" />
-      </svg>
-    <span class="text-sm">by-${course.author.name}</span>
-    </p>
-    <!-- Price -->
-  
-  <div class="flex py-5 flex-row justify-between border-t border-gray-700">
-      <p class="text-lg font-semibold flex items-center gap-2 transition-all duration-500 ease-out hover:translate-x-1 ${course.price_status === 'free' ? 'text-green-400' : 'text-white'}">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ${course.price_status === 'free' ? 'text-green-500' : 'text-green-400'} transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.5 0-4 1.5-4 3s1.5 3 4 3 4-1.5 4-3-1.5-3-4-3zm0 10v2m-4-2a4 4 0 018 0" />
-      </svg>
-      ${course.price_status === "free" ? "Free" : `₵${course.pricee}`} 
-    </p>
-     <button  class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Add to cart</span>
-                  </button>
+      <footer>
+        <div
+          class="fixed z-50 bottom-0 right-0 left-0"
+          id="navbar-container1"
+        ></div>
+      </footer>
     </div>
 
-
- <!-- Add to Favorite Icon -->
-    <div class="absolute top-3 right-3 bg-white p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300" onclick="addToFavorites(event, '${course.id}')">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
-    </svg>
-  </div>
-<div class="absolute top-2 left-2 bg-white/30 backdrop-blur-md text-lg font-semibold text-white px-3 py-1 rounded-full shadow-md">
-          🎖️ Featured
-        </div>
-  </div>
-  
-</div>
-
-              
-            `;
-           
-          })
-          .join("");
-          fetchAllTags()
-  };
-  
-  
-      // Show Course Details in Modal
-      const showCourseDetails = async (courseId) => {
-        showErrorToast()
-        const coursesRef = db.collection("courses");
-        const courseDoc = await coursesRef.doc(courseId).get();
-        const course = courseDoc.data();
-  
-        // Fetch Tags
-        const tags = course.tag_ids ? await fetchTags(course.tag_ids) : [];
-  
-        // Populate Modal
-        document.getElementById("modal-image").src = course.image_url;
-        document.getElementById("modal-title").innerText = course.name;
-        document.getElementById("modal-description").innerHTML = course.meta?.description || "<p>No description available.</p>";
-        document.getElementById("modal-author").innerText = course.author?.name || "Unknown";
-        document.getElementById("modal-updated").innerText = formatTimestamp(course.updated_at);
-        document.getElementById("modal-video").innerText = course.video_url || "No video available";
-        document.getElementById("modal-video").href = course.video_url || "#";
-        document.getElementById("modal-tags").innerText = tags.join(", ") || "None";
-        document.getElementById("modal-summary").innerText = course.meta?.summary || "No summary available";
-        document.getElementById("modal-id").innerText = course.author?.id || "Unknown";
-        renderArrayAsList(course.requirements || [], "modal-requirements");
-        renderArrayAsList(course.learns || [], "modal-learnings");
-        renderArrayAsList(course.language || [], "modal-language");
-        document.getElementById("modal-duration").innerText = course.meta?.duration || "Unknown";
-        document.getElementById("modal-created").innerText = formatTimestamp(course.created_at);
-  
-        // Add Price to Modal
-        document.getElementById("modal-price").innerText = course.price_status === "free" ? "Free" : `₵${course.pricee}`;
-        const userid = auth.currentUser.uid;
-        const user = auth.currentUser;
-        // Add Enroll Button Link
-        document.getElementById("modal-enroll-button").addEventListener("click", async function () {
-  
-  
-  
-  if(course.price_status === "free"){
-   
-    try {
-        // Add a new document to the "users" collection with the user's ID as the document ID
-        await db.collection("users").doc(userid).update({
-          course_id: firebase.firestore.FieldValue.arrayUnion(courseId),
-        });
-  
-        console.log("Course data successfully written!");
-        // Redirect or show a success message
-      } catch (error) {
-        console.error("Error writing document: ", error);
-      }
-    
-            
-  } else{
-    const coursesRef1 = db.collection("users");
-        const courseDoc1 = await coursesRef1.doc(userid).get();
-        const course1 = courseDoc1.data();
-        const refcode = course1.underef|| '';
-    const queryParams = new URLSearchParams({
-                          userid: userid,
-                          id: courseId,
-                          title: course.name,
-                          amount: course.pricee,
-                          description: course.meta?.description,
-                          image_url: course.image_url,
-                          referalcode: refcode,
-                        }).toString();
-          window.location.href = `coursecart.html?${queryParams}`;
-  }
-  
-         
-         
-      });
-  
-   
-  
-  
-  
-        // Show Modal
-        document.getElementById("course-modal").style.display = "block";
-      };
-  
-      document.addEventListener("DOMContentLoaded", () => {
-        // Example: Set the author's name dynamically
-        const authorElement = document.getElementById("modal-id");
-        const clickElement = document.getElementById("modal-author");
-        const authorName = authorElement.textContent.trim(); // Replace this with dynamic data if needed
-        authorElement.textContent = authorName;
-  
-        // Add a click event listener
-        clickElement.addEventListener("click", (event) => {
-          event.preventDefault(); // Prevent default link behavior
-  
-          // Navigate to the author page
-          window.location.href = `authorpages.html?name=${authorElement.textContent.trim()}`;
-        });
-      });
-  
-      // Close Modal
-      document.getElementById("close-modal").addEventListener("click", () => {
-        document.getElementById("course-modal").style.display = "none";
-      });
-  
-      // Initialize
-      renderCourses();
-  </script>
-   
-    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+    <!-- Framer Motion Animation -->
     <script>
-      // Scroll Reveal Function
-      document.addEventListener("scroll", function () {
-        const reveals = document.querySelectorAll(".scroll-reveal");
-        const windowHeight = window.innerHeight;
-        const revealPoint = 150;
-
-        reveals.forEach((reveal) => {
-          const revealTop = reveal.getBoundingClientRect().top;
-
-          if (revealTop < windowHeight - revealPoint) {
-            reveal.classList.add("show");
-          } else {
-            reveal.classList.remove("show");
-          }
-        });
-      });
-
       document.addEventListener("DOMContentLoaded", () => {
-        const counters = document.querySelectorAll("[data-count]");
-        const speed = 200; // The lower the slower
-
-        const countUp = () => {
-          counters.forEach((counter) => {
-            const target = +counter.getAttribute("data-count");
-            let count = 0;
-            const increment = target / speed;
-
-            const updateCount = () => {
-              count += increment;
-              if (count < target) {
-                counter.innerText = Math.ceil(count) + "+";
-                requestAnimationFrame(updateCount);
-              } else {
-                counter.innerText = target + "+";
-                setTimeout(resetCount, 2000); // Delay before resetting the count
-              }
-            };
-
-            updateCount();
+        const { motion } = window.framerMotion;
+        const cards = document.querySelectorAll(".card");
+        cards.forEach((card, index) => {
+          motion(card, {
+            initial: { opacity: 0, y: 30 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: index * 0.15, duration: 0.6, ease: "easeOut" },
           });
-        };
-
-        const resetCount = () => {
-          counters.forEach((counter) => {
-            counter.innerText = "0+";
-          });
-          setTimeout(countUp, 500); // Delay before starting the count again
-        };
-
-        countUp(); // Initial call to start the counting
+        });
       });
     </script>
-     <script src="footerp.js"></script>
-     <div id="footer-container"></div>
   </body>
-  <!-- Mirrored from www.aspireexecutiveinstitute.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Jun 2024 04:07:17 GMT -->
 </html>

@@ -54,7 +54,7 @@
         if (userData.role && !userData.role.includes("student")) {
           adminPanelLink.style.display = "flex";
         }
-      }
+      }document.getElementById('loadingScreen').style.display = 'none';
     });
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -122,15 +122,6 @@
   <footer>
     <div class="fixed z-50 bottom-0 right-0 left-0" id="navbar-container1"></div>
   </footer>
-  <script>
-    window.addEventListener("load", () => {
-      const loadingScreen = document.getElementById("loadingScreen");
-      loadingScreen.classList.add("opacity-0");
-      setTimeout(() => {
-        loadingScreen.style.display = "none";
-      }, 500); // Wait for fade-out transition
-    });
-  </script>
-  
+
 </body>
 </html>

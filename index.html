@@ -97,9 +97,9 @@
         totalStudents += courseData.students || 0;
         totalRatings += courseData.rating || 0;
       });
-
+      document.getElementById('loadingScreen').style.display = 'none';
       return `
- <div class="relative rounded-lg overflow-hidden shadow-lg cursor-pointer hover:shadow-2xl hover:scale-105 transition-transform duration-300"
+ <div class="relative rounded-lg overflow-hidden  cursor-pointer "
      onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
     
     <!-- Add to Favorite Icon -->
@@ -111,7 +111,7 @@
 
     <!-- Image Container -->
     <div class="relative">
-        <img src="${image_url}" alt="${name}" class="w-50 h-26 object-cover rounded-lg">
+        <img src="${image_url}" alt="${name}" class="w-50 h-26 object-cover ">
 
         <!-- Overlay with Info -->
         <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 rounded-b-lg">
@@ -150,15 +150,19 @@ document.addEventListener("DOMContentLoaded", fetchCategories);
 </script>
 
   </head>
+    <!-- Loading Screen -->
+<div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
+  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
+</div>
   <body class="bg-gray-900 text-white">
     <div class="sticky top-0 bg-[#172554] z-20 w-full">
       <div id="navbar-container"></div>
-      <div class="flex justify-between items-center pt-3  px-6 bg-gray-900 ">
+      <div class="flex justify-between items-center pt-3 pb-3 px-6 bg-gray-900 ">
         <div>
           <h1 id="username" class="text-3xl mb-2 font-extrabold text-white">
             Hello, Studymate
           </h1>
-          <p class="text-white text-sm">What do you want to learn today?</p>
+          <p class="text-white/30 text-sm">What do you want to learn today?</p>
         </div>
         <div onclick="window.location.href='mprofilepage.html'" 
         class="relative w-16 h-16 flex justify-center items-center cursor-pointer group">
@@ -178,7 +182,7 @@ document.addEventListener("DOMContentLoaded", fetchCategories);
     <div class=" mx-auto  mb-36">
     
         <!-- Courses Categories Section -->
-        <section class="  text-white lg:px-40 p-4 flex flex-col justify-center items-center  ">
+        <section class="  text-white lg:px-40  flex flex-col justify-center items-center  ">
         
     
         

@@ -54,6 +54,25 @@ async function fetchPurchasedCourses(userId) {
       return [];
     }
 
+    // ✅ Get the current date (without time)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Remove time part
+
+    // ✅ Filter out expired courses
+    const activeCourses = purchasedCourses.filter((course) => {
+      if (course.expire_date instanceof Timestamp) {
+        const expireDate = course.expire_date.toDate();
+        expireDate.setHours(0, 0, 0, 0); // Remove time part
+        return expireDate >= today; // Only keep active courses
+      }
+      return false;
+    });
+
+    if (activeCourses.length === 0) {
+      console.error("No active courses found");
+      return [];
+    }
+
     // ✅ Fetch completed lessons in one query
     const completedLessonsSnapshot = await getDocs(
       collection(db, "users", userId, "completedLessons")
@@ -63,7 +82,7 @@ async function fetchPurchasedCourses(userId) {
     );
 
     // ✅ Fetch course details
-    const coursePromises = purchasedCourses.map((course) =>
+    const coursePromises = activeCourses.map((course) =>
       getDoc(doc(db, "courses", course.course_id))
     );
     const courseDocs = await Promise.allSettled(coursePromises);
@@ -74,7 +93,9 @@ async function fetchPurchasedCourses(userId) {
           return {
             id: result.value.id,
             ...result.value.data(),
-            expire_date: purchasedCourses[index].expire_date, // ✅ Add expiry date
+            expire_date: activeCourses[index].expire_date.toDate()
+              .toISOString()
+              .split("T")[0], // ✅ Readable date format (YYYY-MM-DD)
           };
         }
         return null;
@@ -157,11 +178,6 @@ async function fetchPurchasedCourses(userId) {
           reviews.length > 0
             ? (totalRatings / reviews.length).toFixed(1)
             : "No ratings yet";
-      }
-
-      // ✅ Convert expire_date to readable format
-      if (validCourses[i].expire_date instanceof Timestamp) {
-        validCourses[i].expire_date = validCourses[i].expire_date.toDate();
       }
     }
 
@@ -256,6 +272,11 @@ function renderCourses(courses) {
             <span class="material-icons text-[#172554]">group</span>
             ${course.students || 0} students
           </p>
+       <p class="text-gray-200 text-sm flex items-center gap-2 mb-2">
+  <span class="material-icons text-[#172554]">event</span>
+  ${course.expire_date ? course.expire_date : "N/A"} expire date
+</p>
+
           <!-- ⭐ Course Rating -->
           <p class="text-yellow-400 font-semibold mt-2">⭐ ${
             course.averageRating || "No ratings yet"

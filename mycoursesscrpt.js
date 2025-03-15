@@ -3,6 +3,8 @@
 // Import the required Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import {
+  query,
+  where,
   getFirestore,
   doc,
   addDoc,
@@ -10,6 +12,7 @@ import {
   collection,
   getDocs,
   setDoc,
+  Timestamp,
 } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import {
   getAuth,
@@ -33,20 +36,25 @@ const auth = getAuth(app);
 // Fetch user purchased courses along with sections and lessons
 async function fetchPurchasedCourses(userId) {
   try {
-    const userDocRef = doc(db, "users", userId);
-    const userDoc = await getDoc(userDocRef);
+    // ✅ Fetch user's purchased courses along with expiry dates
+    const userCoursesRef = collection(db, "users", userId, "Courses");
+    const userCoursesSnapshot = await getDocs(userCoursesRef);
 
-    if (!userDoc.exists()) {
-      console.error("User not found");
+    if (userCoursesSnapshot.empty) {
+      console.error("No purchased courses found");
       return [];
     }
 
-    const { course_id: purchasedCourseIds } = userDoc.data();
-    if (!Array.isArray(purchasedCourseIds) || purchasedCourseIds.length === 0) {
+    const purchasedCourses = userCoursesSnapshot.docs.map((doc) => ({
+      course_id: doc.data().course_id,
+      expire_date: doc.data().expire_date,
+    }));
+
+    if (purchasedCourses.length === 0) {
       return [];
     }
 
-    // ✅ Fetch all completed lessons in one query
+    // ✅ Fetch completed lessons in one query
     const completedLessonsSnapshot = await getDocs(
       collection(db, "users", userId, "completedLessons")
     );
@@ -54,36 +62,40 @@ async function fetchPurchasedCourses(userId) {
       completedLessonsSnapshot.docs.map((doc) => doc.id)
     );
 
-    // Fetch courses
-    const coursePromises = purchasedCourseIds.map((courseId) =>
-      getDoc(doc(db, "courses", courseId))
+    // ✅ Fetch course details
+    const coursePromises = purchasedCourses.map((course) =>
+      getDoc(doc(db, "courses", course.course_id))
     );
     const courseDocs = await Promise.allSettled(coursePromises);
 
     const validCourses = courseDocs
-      .filter(
-        (result) => result.status === "fulfilled" && result.value.exists()
-      )
-      .map((result) => ({
-        id: result.value.id,
-        ...result.value.data(),
-      }));
+      .map((result, index) => {
+        if (result.status === "fulfilled" && result.value.exists()) {
+          return {
+            id: result.value.id,
+            ...result.value.data(),
+            expire_date: purchasedCourses[index].expire_date, // ✅ Add expiry date
+          };
+        }
+        return null;
+      })
+      .filter((course) => course !== null);
 
-    // Fetch sections for each course
+    // ✅ Fetch sections and reviews in parallel
     const sectionPromises = validCourses.map((course) =>
       getDocs(collection(db, "courses", course.id, "sections"))
     );
-
-    const sectionResults = await Promise.allSettled(sectionPromises);
-
-    // ✅ Fetch reviews for each course
     const reviewPromises = validCourses.map((course) =>
       getDocs(collection(db, "courses", course.id, "reviews"))
     );
 
-    const reviewResults = await Promise.allSettled(reviewPromises);
+    const [sectionResults, reviewResults] = await Promise.all([
+      Promise.allSettled(sectionPromises),
+      Promise.allSettled(reviewPromises),
+    ]);
 
     for (let i = 0; i < validCourses.length; i++) {
+      // ✅ Process Sections & Lessons
       if (sectionResults[i].status === "fulfilled") {
         const sections = sectionResults[i].value.docs.map((sectionDoc) => ({
           id: sectionDoc.id,
@@ -91,7 +103,6 @@ async function fetchPurchasedCourses(userId) {
           lessons: [],
         }));
 
-        // Fetch lessons for each section
         const lessonPromises = sections.map((section) =>
           getDocs(
             collection(
@@ -131,22 +142,26 @@ async function fetchPurchasedCourses(userId) {
         validCourses[i].completedLessons = completedCount;
       }
 
-      // ✅ Process reviews and calculate average rating
+      // ✅ Process Reviews & Calculate Average Rating
       if (reviewResults[i].status === "fulfilled") {
         const reviews = reviewResults[i].value.docs.map((reviewDoc) =>
           reviewDoc.data()
         );
         validCourses[i].reviews = reviews;
 
-        // Calculate the average rating
         const totalRatings = reviews.reduce(
-          (sum, review) => sum + review.rating,
+          (sum, review) => sum + (review.rating || 0),
           0
         );
         validCourses[i].averageRating =
           reviews.length > 0
             ? (totalRatings / reviews.length).toFixed(1)
             : "No ratings yet";
+      }
+
+      // ✅ Convert expire_date to readable format
+      if (validCourses[i].expire_date instanceof Timestamp) {
+        validCourses[i].expire_date = validCourses[i].expire_date.toDate();
       }
     }
 

@@ -1188,10 +1188,17 @@ document.getElementById("modal-enroll-button").addEventListener("click", async f
   if (course.price_status === "free") {
     document.getElementById("loadingScreen").classList.remove("hidden");
     try {
-  // Update user's enrolled courses
-  await db.collection("users").doc(userid).update({
-    course_id: firebase.firestore.FieldValue.arrayUnion(courseId),
-  });
+// Update user's enrolled courses
+await db.collection("users").doc(userid).update({
+  course_id: firebase.firestore.FieldValue.arrayUnion(courseId),
+});
+
+// Add course to the Courses subcollection with expire_date
+await db.collection("users").doc(userid).collection("Purchased").doc(courseId).set({
+  course_id: courseId,
+  expire_date: firebase.firestore.Timestamp.fromDate(new Date(expireDate)), // Ensure expireDate is a valid Date object
+});
+
 
   console.log("Course data successfully written!");
   showSuccessToast1();
@@ -1414,7 +1421,9 @@ function showSuccessToast1() {
     alert("Your cart is empty!");
     return;
   }
-
+// Get current date and add three months
+const expireDate = new Date();
+expireDate.setMonth(expireDate.getMonth() + 3);
   // Get the current user
   const user = firebase.auth().currentUser;
   if (!user) {
@@ -1444,9 +1453,13 @@ function showSuccessToast1() {
       document.getElementById("loadingScreen").classList.remove("hidden");
 
       for (const course of freeCourses) {
-        await db.collection("users").doc(userid).update({
-          course_id: firebase.firestore.FieldValue.arrayUnion(course.id)
-        });
+     // Update user's enrolled courses
+// Add course to the Courses subcollection with expire_date
+await db.collection("users").doc(userid).collection("Courses").doc(course.id).set({
+  course_id: course.id,
+  expire_date: firebase.firestore.Timestamp.fromDate(new Date(expireDate)), // Ensure expireDate is a valid Date object
+});
+
       }
 
       console.log("Free courses enrolled successfully!");

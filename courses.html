@@ -1179,7 +1179,9 @@ document.getElementById("course-modal").scrollIntoView({ behavior: "smooth" });
 
 // Add Price to Modal
 document.getElementById("modal-price").innerText = course.price_status === "free" ? "Free" : `₵${course.pricee}`;
-
+// Get current date and add three months
+const expireDate = new Date();
+expireDate.setMonth(expireDate.getMonth() + 3);
 const userid = auth.currentUser.uid;
 const user = auth.currentUser;
 
@@ -1188,13 +1190,9 @@ document.getElementById("modal-enroll-button").addEventListener("click", async f
   if (course.price_status === "free") {
     document.getElementById("loadingScreen").classList.remove("hidden");
     try {
-// Update user's enrolled courses
-await db.collection("users").doc(userid).update({
-  course_id: firebase.firestore.FieldValue.arrayUnion(courseId),
-});
-
+     // Update user's enrolled courses
 // Add course to the Courses subcollection with expire_date
-await db.collection("users").doc(userid).collection("Purchased").doc(courseId).set({
+await db.collection("users").doc(userid).collection("Courses").doc(courseId).set({
   course_id: courseId,
   expire_date: firebase.firestore.Timestamp.fromDate(new Date(expireDate)), // Ensure expireDate is a valid Date object
 });

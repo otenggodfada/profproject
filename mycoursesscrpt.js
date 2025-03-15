@@ -544,7 +544,7 @@ function renderCourses(courses) {
                 </div>
               </div>
             </div>
-          </details>   <button class=" w-full mb-4 flex items-center justify-center  border border-green-500 text-green-500 px-4 py-2 rounded-md hover:bg-green-500 hover:text-white transition">
+          </details>   <button  onclick="window.location.href='courses.html?courseid=${encodeURIComponent(course.id)}'" class=" w-full mb-4 flex items-center justify-center  border border-green-500 text-green-500 px-4 py-2 rounded-md hover:bg-green-500 hover:text-white transition">
         <i class="fas fa-sync-alt"></i>
         Renew
     </button> 

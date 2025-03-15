@@ -66,53 +66,71 @@
     });
   </script>
 </head>
-<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-2">
+<body class="bg-gray-900  ">
   <script src="dark-mode.js"></script>
   <!-- Navbar -->
-  <div class="bg-[#172554]  fixed top-0 w-screen z-20">
+  <div class="bg-[#172554]  sticky top-0 w-screen z-20">
     <div id="navbar-container"></div>
   </div>
 
-  <!-- Profile Card -->
-  <div class="mt-10 w-full  max-w-3xl bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-6 text-center border text-white border-white/20">
+<div class="p-4 flex justify-center items-center overflow-auto">
+    <!-- Profile Card -->
+    <div class=" w-full  max-w-2xl bg-white/10 backdrop-blur-md rounded-2xl    border text-white border-white/20">
    
-    <div class="text-center">
-      <h2 class="text-3xl font-bold text-white" id="userName">Welcome, User!</h2>
-      <p class="text-gray-300 mt-2 animate-pulse">Explore available tools and manage your profile easily.</p>
+      <div class="bg-gradient-to-t from-[#70b0e4] to-[#081550] flex flex-col justify-between p-6 text-white rounded-t-2xl ">
+        <!-- Text Section -->
+     
+        <div class="mb-10 mt-10">
+            <div>
+              <h2 class="text-3xl font-bold text-white" id="userName">Welcome, User!</h2>
+                <h2 class="text-2xl font-extrabold">Let's Start <br> Learning</h2>
+                <p class="mt-3 text-lg">Explore courses that will <br>unlock your potential</p>
+            </div>
+        </div>
+        
+        <!-- Circle with Arrow Icon -->
+        <div class="mt-6">
+            <a href="./courses.html" class="w-12 h-12 bg-black/50 rounded-full flex items-center justify-center text-white/70 transition-transform transform hover:scale-110">
+                <i class="fas fa-arrow-right text-lg"></i>
+            </a>
+        </div>
     </div>
-    
-    <!-- Menu Options -->
-    <div class="mt-6 space-y-4">
-      <a href="./mycourse.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
-        <i class="fas fa-book-open text-xl"></i>
-        <span>My Courses</span>
-      </a>
-      <a href="https://profstudymateadmin.com/" id="adminPanelLink" class="hidden flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
-        <i class="fas fa-database text-xl"></i>
-        <span>Admin Panel</span>
-      </a>
-      <a href="./mybooks.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
-        <i class="fas fa-book text-xl"></i>
-        <span>My Books</span>
-      </a>
-      <a href="./myprofile.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
-        <i class="fas fa-user-edit text-xl"></i>
-        <span>My Profile</span>
-      </a>
-      <a href="./job.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
-        <i class="fas fa-money-bill text-xl"></i>
-        <span>Affiliate</span>
-      </a>
-    </div>
-    
-    <!-- Logout Button -->
-    <div class="mt-6 text-center border-t border-gray-700 pt-4">
-      <button id="signOut" class="mt-5 w-full px-5 py-3 bg-[#172554] border rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center gap-2">
-        <i class="fas fa-sign-out-alt text-xl"></i> Sign Out
-      </button>
-    </div>
+      <!-- Menu Options -->
+      <div class="mt-6 space-y-4 p-8 flex flex-col justify-between ">
+        <a href="./mycourse.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
+          <i class="fas fa-book-open text-xl"></i>
+          <span>My Courses</span>
+        </a>
+        <a href="https://profstudymateadmin.com/" id="adminPanelLink" class="hidden flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
+          <i class="fas fa-database text-xl"></i>
+          <span>Admin Panel</span>
+        </a>
+        <a href="./mybooks.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
+          <i class="fas fa-book text-xl"></i>
+          <span>My Books</span>
+        </a>
+        <a href="./myprofile.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
+          <i class="fas fa-user-edit text-xl"></i>
+          <span>My Profile</span>
+        </a>
+        <a href="./job.html?title=account" class="flex items-center gap-4 text-lg text-gray-300 hover:text-blue-400 transition-transform hover:translate-x-2">
+          <i class="fas fa-money-bill text-xl"></i>
+          <span>Affiliate</span>
+        </a>
+        <!-- Logout Button -->
+        <div class="mt-6 text-center border-t border-gray-700 pt-4">
+          <button id="signOut" class="mt-5 w-full px-5 py-3 bg-[#172554] border rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center gap-2">
+            <i class="fas fa-sign-out-alt text-xl"></i> Sign Out
+          </button>
+        </div>
+      </div>
+      
   
-  </div>
+      
+      
+    
+    </div>
+</div>
   
   <!-- Loading Screen -->
 <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">

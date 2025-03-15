@@ -36,16 +36,10 @@
             
             <!-- Referral Copy -->
             <div class="mt-5 flex items-center gap-4">
-              <!-- Improved Button -->
-              <button id="copy-referral" class="relative px-6 py-3 text-white font-semibold rounded-lg bg-gradient-to-r from-blue-500 to-blue-700 shadow-lg hover:scale-105 transition-all hover:shadow-blue-500/50 active:scale-95 overflow-hidden">
-                <span class="relative z-10">✨ Copy Referral Code</span>
-                <span class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-10 transition"></span>
+              <button id="copy-referral" class="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:scale-105 transition-all hover:shadow-lg">
+                Copy Referral Code
               </button>
-      
-              <!-- Clickable Referral Link -->
-              <button id="copy-link" class="text-blue-400 text-lg font-semibold bg-gray-900/30 px-4 py-2 rounded-lg hover:bg-gray-800 transition-all hover:scale-105 active:scale-95">
-                🔗 Copy Link
-              </button>
+              <a id="referral-link" href="#" class="text-blue-400 underline text-lg">Generating link...</a>
             </div>
           </div>
       
@@ -55,7 +49,6 @@
           </div>
         </div>
       </div>
-      
       
       <!-- User Info Section -->
       <div id="referral-details" class="mb-12">
@@ -222,7 +215,18 @@
     window.onload = () => {
     // Total Withdrawals count animation (0 to $5,000 over 2 seconds)
     };
+          // Copy to clipboard functionality
+          document.getElementById("copy-referral").addEventListener("click", () => {
+    navigator.clipboard.writeText(document.getElementById("referral-link").textContent)
+      .then(() => alert("✅ Referral link copied!"))
+      .catch(() => alert("❌ Failed to copy"));
+  });
 
+  document.getElementById("copy-referral1").addEventListener("click", () => {
+    navigator.clipboard.writeText(document.getElementById("referral-link").textContent)
+      .then(() => alert("✅ Referral link copied!"))
+      .catch(() => alert("❌ Failed to copy"));
+  });
         } else {
           console.error("No user data found!");
         }
@@ -331,29 +335,6 @@
     button.addEventListener('mouseleave', () => {
       button.classList.remove('scale-105');
     });
-  });
-</script>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const copyReferralBtn = document.getElementById("copy-referral");
-    const copyLinkBtn = document.getElementById("copy-link");
-    const referralLink = document.getElementById("referral-link");
-
-    if (copyReferralBtn && referralLink) {
-      copyReferralBtn.addEventListener("click", () => {
-        navigator.clipboard.writeText(referralLink.textContent.trim())
-          .then(() => alert("✅ Referral code copied!"))
-          .catch(() => alert("❌ Failed to copy"));
-      });
-    }
-
-    if (copyLinkBtn && referralLink) {
-      copyLinkBtn.addEventListener("click", () => {
-        navigator.clipboard.writeText(referralLink.textContent.trim())
-          .then(() => alert("✅ Referral link copied!"))
-          .catch(() => alert("❌ Failed to copy"));
-      });
-    }
   });
 </script>
 

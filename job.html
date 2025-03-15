@@ -16,7 +16,7 @@
   <script type="module" src="./dynamiccon.js"></script>
   <script src="bottomnv.js"></script>
   <script src="kaka.js"></script>
-  
+
 </head>
 <body class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white ">
   <div class="sticky bg-[#172554] top-0 z-20 w-full">
@@ -178,91 +178,152 @@
   }
 });
 
+async function fetchReferralData(userId) {
+  try {
+    const cacheKey = `referralData_${userId}`;
+    const cacheExpiry = 5 * 60 * 1000; // 5 minutes
 
-    async function fetchReferralData(userId) {
-      try {
-        const userDoc = doc(db, "users", userId);
-        const docSnapshot = await getDoc(userDoc);
+    // Check if cached data exists and is still valid
+    const cachedData = localStorage.getItem(cacheKey);
+    if (cachedData) {
+      const { timestamp, data } = JSON.parse(cachedData);
+      if (Date.now() - timestamp < cacheExpiry) {
+        console.log("Using cached data");
+        updateUI(data);
+        return;
+      }
+    }
 
-        if (docSnapshot.exists()) {
-          const userData = docSnapshot.data();
+    // Fetch from Firestore if cache is expired or missing
+    console.log("Fetching new data");
+    const userDoc = doc(db, "users", userId);
+    const docSnapshot = await getDoc(userDoc);
 
-         
-    
-          animateCount('total-referrals', 0, userData.totalrefs, 2000); // Total Referrals count animation (0 to 150 over 2 seconds)
-      animateCount('total-earnings', 0, userData.earnings , 2500); // Total Earnings count animation (0 to $10,000 over 2.5 seconds)
-      animateCount('total-withdrawals', 0, 0, 2000);
-          const referralLinkElement = document.getElementById("referral-link");
-          referralLinkElement.textContent = userData.affiliatelink || "N/A";
-          
-  // Count animation function
-  function animateCount(elementId, start, end, duration) {
-      let startTime = null;
-      const element = document.getElementById(elementId);
-      const step = (timestamp) => {
-        if (!startTime) startTime = timestamp;
-        const progress = Math.min((timestamp - startTime) / duration, 1);
-        const currentValue = Math.floor(progress * (end - start) + start);
-        element.innerText = currentValue.toLocaleString();
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        }
-      };
+    if (docSnapshot.exists()) {
+      const userData = docSnapshot.data();
+
+      // Cache the new data
+      localStorage.setItem(
+        cacheKey,
+        JSON.stringify({ timestamp: Date.now(), data: userData })
+      );
+
+      updateUI(userData);
+    } else {
+      console.error("No user data found!");
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
+}
+
+// Update UI with data
+function updateUI(userData) {
+  animateCount("total-referrals", 0, userData.totalrefs, 2000);
+  animateCount("total-earnings", 0, userData.earnings, 2500);
+  animateCount("total-withdrawals", 0, 0, 2000);
+
+  const referralLinkElement = document.getElementById("referral-link");
+  referralLinkElement.textContent = userData.affiliatelink || "N/A";
+
+  // Copy to clipboard functionality
+  document.getElementById("copy-referral").addEventListener("click", copyReferralLink);
+  document.getElementById("copy-referral1").addEventListener("click", copyReferralLink);
+}
+
+// Copy function
+function copyReferralLink() {
+  navigator.clipboard
+    .writeText(document.getElementById("referral-link").textContent)
+    .then(() => alert("✅ Referral link copied!"))
+    .catch(() => alert("❌ Failed to copy"));
+}
+
+// Count animation function
+function animateCount(elementId, start, end, duration) {
+  let startTime = null;
+  const element = document.getElementById(elementId);
+  const step = (timestamp) => {
+    if (!startTime) startTime = timestamp;
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const currentValue = Math.floor(progress * (end - start) + start);
+    element.innerText = currentValue.toLocaleString();
+    if (progress < 1) {
       window.requestAnimationFrame(step);
     }
-  
-    // Trigger the animations when the page loads
-    window.onload = () => {
-    // Total Withdrawals count animation (0 to $5,000 over 2 seconds)
-    };
-          // Copy to clipboard functionality
-          document.getElementById("copy-referral").addEventListener("click", () => {
-    navigator.clipboard.writeText(document.getElementById("referral-link").textContent)
-      .then(() => alert("✅ Referral link copied!"))
-      .catch(() => alert("❌ Failed to copy"));
-  });
+  };
+  window.requestAnimationFrame(step);
+}
 
-  document.getElementById("copy-referral1").addEventListener("click", () => {
-    navigator.clipboard.writeText(document.getElementById("referral-link").textContent)
-      .then(() => alert("✅ Referral link copied!"))
-      .catch(() => alert("❌ Failed to copy"));
-  });
-        } else {
-          console.error("No user data found!");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+
+async function fetchPendingWithdrawals(userId) {
+  try {
+    const cacheKey = `pendingWithdrawals_${userId}`;
+    const cacheExpiry = 5 * 60 * 1000; // 5 minutes
+
+    // Check if cached data exists and is still valid
+    const cachedData = localStorage.getItem(cacheKey);
+    if (cachedData) {
+      const { timestamp, data } = JSON.parse(cachedData);
+      if (Date.now() - timestamp < cacheExpiry) {
+        console.log("Using cached withdrawal data");
+        updateWithdrawalsUI(data);
+        return;
       }
     }
 
-    async function fetchPendingWithdrawals(userId) {
-      try {
-        const withdrawalsQuery = query(
-          collection(db, "withdrawals"),
-          where("userId", "==", userId),
-        );
-        const querySnapshot = await getDocs(withdrawalsQuery);
+    // Fetch from Firestore if cache is expired or missing
+    console.log("Fetching new withdrawal data");
+    const withdrawalsQuery = query(
+      collection(db, "withdrawals"),
+      where("userId", "==", userId)
+    );
+    const querySnapshot = await getDocs(withdrawalsQuery);
 
-        const pendingList = document.getElementById("pending-withdrawals");
-        pendingList.innerHTML = "";
+    let withdrawals = [];
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc) => {
+        withdrawals.push(doc.data());
+      });
 
-        if (!querySnapshot.empty) {
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const listItem = document.createElement("li");
-            listItem.className = "bg-gray-700 p-6 rounded-lg shadow-lg";
-            listItem.innerHTML = `<strong>Amount:</strong> Ghc${data.amount} | <strong>Method:</strong> ${data.method} | <strong>Address:</strong> ${data.paymentaddress} | <strong>Date:</strong> ${new Date(
-              data.timestamp.seconds * 1000
-            ).toLocaleString()} | <span class="inline-block py-1 px-4 rounded text-white ${data.status === 'pending' ? 'bg-red-500' : 'bg-green-500'}">${data.status}</span>`;
-            pendingList.appendChild(listItem);
-          });
-        } else {
-          pendingList.innerHTML = `<li class="text-gray-500">No pending withdrawals.</li>`;
-        }
-      } catch (error) {
-        console.error("Error fetching pending withdrawals:", error);
-      }
+      // Cache the new data
+      localStorage.setItem(
+        cacheKey,
+        JSON.stringify({ timestamp: Date.now(), data: withdrawals })
+      );
     }
+
+    updateWithdrawalsUI(withdrawals);
+  } catch (error) {
+    console.error("Error fetching pending withdrawals:", error);
+  }
+}
+
+// Update UI with withdrawals data
+function updateWithdrawalsUI(withdrawals) {
+  const pendingList = document.getElementById("pending-withdrawals");
+  pendingList.innerHTML = "";
+
+  if (withdrawals.length > 0) {
+    withdrawals.forEach((data) => {
+      const listItem = document.createElement("li");
+      listItem.className = "bg-gray-700 p-6 rounded-lg shadow-lg";
+      listItem.innerHTML = `
+        <strong>Amount:</strong> Ghc${data.amount} |
+        <strong>Method:</strong> ${data.method} |
+        <strong>Address:</strong> ${data.paymentaddress} |
+        <strong>Date:</strong> ${new Date(data.timestamp.seconds * 1000).toLocaleString()} |
+        <span class="inline-block py-1 px-4 rounded text-white ${
+          data.status === "pending" ? "bg-red-500" : "bg-green-500"
+        }">${data.status}</span>
+      `;
+      pendingList.appendChild(listItem);
+    });
+  } else {
+    pendingList.innerHTML = `<li class="text-gray-500">No pending withdrawals.</li>`;
+  }
+}
+
 
     document.getElementById("withdraw-button").addEventListener("click", async () => {
       const withdrawAmount = parseFloat(document.getElementById("withdraw-amount").value);
@@ -337,6 +398,13 @@
     });
   });
 </script>
+<script>
+  if ("serviceWorker" in navigator) {
+navigator.serviceWorker.register("sw.js").then(() => {
+  console.log("Service Worker Registered");
+});
+}
 
+</script>
 </body>
 </html>

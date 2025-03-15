@@ -419,7 +419,9 @@ function renderCourses(courses) {
             </div>
           </details>
         `
-            : ` <details  class=" mb-4 flex items-center justify-center  border border-red-500 text-red-500 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white transition">
+            : ` <div class ="flex flex-row space-x-2">
+            
+            <details  class="w-full mb-4 flex items-center justify-center  border border-red-500 text-red-500 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white transition">
             <summary  style="pointer-events: none; user-select: none;" class="font-semibold cursor-pointer list-none">
               <i class="fas fa-lock"></i> <span>Expired Course</span>
             </summary>
@@ -542,7 +544,11 @@ function renderCourses(courses) {
                 </div>
               </div>
             </div>
-          </details>`
+          </details>   <button class=" w-full mb-4 flex items-center justify-center  border border-green-500 text-green-500 px-4 py-2 rounded-md hover:bg-green-500 hover:text-white transition">
+        <i class="fas fa-sync-alt"></i>
+        Renew
+    </button> 
+            </div> `
         }
 <!-- ✅ Review Form - Modern UI -->
 <div class="mt-6 border-t border-gray-600 pt-4">

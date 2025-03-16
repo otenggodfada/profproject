@@ -302,7 +302,7 @@ function renderCourses(courses) {
             <div id="modal-container" class="fixed z-50 top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 flex items-center justify-center ">
               <div class="bg-gray-900  w-full  h-full overflow-auto scrollbar-hide 
 ">
-                <button onclick="closeModal();" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <button onclick="window.location.href='mycourse.html'" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                   </svg>

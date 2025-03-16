@@ -292,17 +292,16 @@ function renderCourses(courses) {
         </div>
   
         ${
-          course.expire_date &&
-          new Date(course.expire_date) >= new Date().setHours(0, 0, 0, 0)
+           course.expire_date && new Date(course.expire_date) >= new Date().setHours(0,0,0,0) 
             ? `
-          <details class=" mb-4 flex items-center justify-center  border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
+          <details id="myDetails" class=" mb-4 flex items-center justify-center  border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
             <summary class="font-semibold cursor-pointer list-none">
               <i class="fas fa-book-open"></i> <span>Continue Learning</span>
             </summary>
             <div id="modal-container" class="fixed z-50 top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 flex items-center justify-center ">
               <div class="bg-gray-900  w-full  h-full overflow-auto scrollbar-hide 
 ">
-                <button onclick="window.location.href='mycourse.html'" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <button onclick="toggleDetails()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                   </svg>
@@ -422,14 +421,14 @@ function renderCourses(courses) {
         `
             : ` <div class ="flex flex-row space-x-2">
             
-            <details  class="w-full mb-4 flex items-center justify-center  border border-red-500 text-red-500 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white transition">
+            <details open id="myDetails" class="w-full mb-4 flex items-center justify-center  border border-red-500 text-red-500 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white transition">
             <summary  style="pointer-events: none; user-select: none;" class="font-semibold cursor-pointer list-none">
               <i class="fas fa-lock"></i> <span>Expired Course</span>
             </summary>
             <div id="modal-container" class="fixed z-50 top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 flex items-center justify-center ">
               <div class="bg-gray-900  w-full  h-full overflow-auto scrollbar-hide 
 ">
-                <button onclick="window.location.href='mycourse.html'" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <button onclick="toggleDetails()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
                   </svg>
@@ -545,9 +544,7 @@ function renderCourses(courses) {
                 </div>
               </div>
             </div>
-          </details>   <button  onclick="window.location.href='courses.html?courseid=${encodeURIComponent(
-            course.id
-          )}'" class=" w-full mb-4 flex items-center justify-center  border border-green-500 text-green-500 px-4 py-2 rounded-md hover:bg-green-500 hover:text-white transition">
+          </details>   <button  onclick="window.location.href='courses.html?courseid=${encodeURIComponent(course.id)}'" class=" w-full mb-4 flex items-center justify-center  border border-green-500 text-green-500 px-4 py-2 rounded-md hover:bg-green-500 hover:text-white transition">
         <i class="fas fa-sync-alt"></i>
         Renew
     </button> 
@@ -671,6 +668,7 @@ document.querySelectorAll(".toggle-lessons").forEach((button) => {
   });
 });
 
+
 function getVideoEmbedCode(url) {
   if (!url) return '<p class="italic text-gray-500">No video available</p>';
 
@@ -694,6 +692,9 @@ function getVideoEmbedCode(url) {
     return `<p class="italic text-gray-500">Unsupported video format</p>`;
   }
 }
+
+
+
 
 // Main function to load user purchased courses
 async function loadPurchasedCourses(userId) {

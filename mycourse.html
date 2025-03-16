@@ -65,18 +65,11 @@
       };
   </script>
 
-  <script>
+<script>
+  function toggleDetails() {
 
-function closeModal() {
-  const modal = document.getElementById("modal-container");
-  if (modal) {
-    const detailsElement = modal.closest("details");
-    if (detailsElement) {
-      detailsElement.removeAttribute("open"); // Close the specific details element
-    }
+    document.getElementById("myDetails").removeAttribute("open");
   }
-}
-
   </script>
   <script>
 function showMessage() {

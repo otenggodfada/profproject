@@ -13,8 +13,8 @@ app.use(express.json());
 
 
 // Twilio Credentials
-const twilioClient = new twilio("AC3caa036b039dee4bcffbf8c1f8e06ec8", "d23101a1387f013cb2510c26f8153e05");
-const twilioNumber = "+13414443374";
+const twilioClient = new twilio("", "");
+const twilioNumber = "";
 
 
 // Nodemailer Setup (Use App Passwords for Gmail)

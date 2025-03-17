@@ -2,8 +2,9 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const express = require("express");
 const cors = require("cors");
+require('dotenv').config();
 const nodemailer = require("nodemailer");
-const twilio = require("twilio");
+
 admin.initializeApp();
 const db = admin.firestore();
 
@@ -12,17 +13,15 @@ app.use(cors());
 app.use(express.json());
 
 
-// Twilio Credentials
-const twilioClient = new twilio("", "");
-const twilioNumber = "";
+
 
 
 // Nodemailer Setup (Use App Passwords for Gmail)
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-      user: "otenggodfada@gmail.com",
-      pass: "fish wivm hyva xqir"
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   }
 });
 
@@ -55,22 +54,7 @@ app.post("/send-email", async (req, res) => {
   }
 });
 
-// Endpoint to send SMS
-app.post("/send-sms", async (req, res) => {
-  const { telephone, message } = req.body;
 
-  try {
-      await twilioClient.messages.create({
-          body: message,
-          from: twilioNumber,
-          to: telephone
-      });
-      res.json({ success: true, message: `SMS sent to ${telephone}` });
-  } catch (error) {
-      console.error("Error sending SMS:", error);
-      res.status(500).json({ success: false, message: error.message });
-  }
-});
 
 // Update user book
 app.put("/update-user-book/:userId/:bookId/:amount/:refcode", async (req, res) => {

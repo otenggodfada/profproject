@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Email to All Users</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        async function sendEmailToAll() {
+            const subject = document.getElementById("subject").value;
+            const message = document.getElementById("message").value;
+
+            if (!subject || !message) {
+                alert("Please enter a subject and message.");
+                return;
+            }
+
+            const response = await fetch("https://api11-ew5jz6h7wq-uc.a.run.app/send-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ subject, message })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg">
+        <h2 class="text-3xl font-bold text-gray-800 text-center mb-6">📩 Send Email</h2>
+        
+        <label class="block text-gray-700 font-medium mb-1">Subject</label>
+        <input id="subject" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" placeholder="Enter subject">
+
+        <label class="block text-gray-700 font-medium mt-4 mb-1">Message</label>
+        <textarea id="message" class="w-full p-3 border border-gray-300 rounded-lg h-32 focus:ring-2 focus:ring-blue-400 focus:outline-none" placeholder="Enter your message"></textarea>
+
+        <button onclick="sendEmailToAll()" class="mt-6 w-full bg-blue-500 text-white p-3 rounded-lg font-semibold text-lg shadow-md transition-transform transform hover:scale-105 hover:bg-blue-600">Send Email 🚀</button>
+    </div>
+</body>
+</html>

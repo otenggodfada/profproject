@@ -2,12 +2,75 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const express = require("express");
 const cors = require("cors");
+const nodemailer = require("nodemailer");
+const twilio = require("twilio");
 admin.initializeApp();
 const db = admin.firestore();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+
+// Twilio Credentials
+const twilioClient = new twilio("AC3caa036b039dee4bcffbf8c1f8e06ec8", "d23101a1387f013cb2510c26f8153e05");
+const twilioNumber = "+13414443374";
+
+
+// Nodemailer Setup (Use App Passwords for Gmail)
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+      user: "otenggodfada@gmail.com",
+      pass: "fish wivm hyva xqir"
+  }
+});
+
+
+// Endpoint to Send Emails to All Users
+app.post("/send-email", async (req, res) => {
+  const { subject, message } = req.body;
+
+  try {
+      const usersSnapshot = await db.collection("users").get();
+      const emails = usersSnapshot.docs.map(doc => doc.data().email).filter(email => email);
+
+      if (emails.length === 0) {
+          return res.status(400).json({ success: false, message: "No users found with email addresses." });
+      }
+
+      // Send email to all users
+      const mailOptions = {
+          from: "otenggodfada@gmail.com",
+          to: emails.join(","), // Send to all users at once
+          subject,
+          text: message
+      };
+
+      await transporter.sendMail(mailOptions);
+      res.json({ success: true, message: `Emails sent to ${emails.length} users!` });
+  } catch (error) {
+      console.error("Error sending email:", error);
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Endpoint to send SMS
+app.post("/send-sms", async (req, res) => {
+  const { telephone, message } = req.body;
+
+  try {
+      await twilioClient.messages.create({
+          body: message,
+          from: twilioNumber,
+          to: telephone
+      });
+      res.json({ success: true, message: `SMS sent to ${telephone}` });
+  } catch (error) {
+      console.error("Error sending SMS:", error);
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 // Update user book
 app.put("/update-user-book/:userId/:bookId/:amount/:refcode", async (req, res) => {

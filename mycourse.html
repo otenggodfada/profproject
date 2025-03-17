@@ -67,10 +67,21 @@
 
 <script>
   function toggleDetails() {
-
-    document.getElementById("myDetails").open = false;
+    const modal = document.getElementById('modal-container');
+    if (modal) {
+      modal.style.display = 'none'; // Hide instead of remove
+    }
   }
-  </script>
+
+  function turnonfixed() {
+    const modal = document.getElementById('modal-container');
+    if (modal) {
+      modal.classList.add('fixed');
+      modal.style.display = 'block'; // Show the modal if hidden
+    }
+  }
+</script>
+
   <script>
 function showMessage() {
   document.getElementById("kapo").style.display = "block";

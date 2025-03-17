@@ -292,14 +292,14 @@ function renderCourses(courses) {
         </div>
   
         ${
-           course.expire_date && new Date(course.expire_date) >= new Date().setHours(0,0,0,0) 
+           course.expire_date && new Date(course.expire_date) >= new Date().setHours(0,0,0,0)  ? course.sections && course.sections.length > 0 && course.sections.some(section => section.lessons && section.lessons.length > 0)
             ? `
-          <details id="myDetails" class=" mb-4 flex items-center justify-center  border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-            <summary class="font-semibold cursor-pointer list-none">
+          <details   class=" mb-4 flex items-center justify-center  border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
+            <summary onclick="turnonfixed()" class="font-semibold w-full h-full text-center cursor-pointer list-none">
               <i class="fas fa-book-open"></i> <span>Continue Learning</span>
             </summary>
-            <div id="modal-container" class="fixed z-50 top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 flex items-center justify-center ">
-              <div class="bg-gray-900  w-full  h-full overflow-auto scrollbar-hide 
+            <div id="modal-container" style="display:block;" class="z-50 top-0 bottom-0 right-0  w-screen h-full bg-black bg-opacity-80 flex items-center justify-center ">
+              <div class="bg-gray-900   h-full overflow-auto scrollbar-hide 
 ">
                 <button onclick="toggleDetails()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -417,138 +417,30 @@ function renderCourses(courses) {
                 </div>
               </div>
             </div>
-          </details>
+          </details> 
         `
-            : ` <div class ="flex flex-row space-x-2">
+        : `
+        <div class="flex flex-row space-x-2">
+          <details class="w-full mb-4 flex items-center justify-center border border-gray-500 text-gray-500 px-4 py-2 rounded-md hover:bg-gray-500 hover:text-white transition">
+            <summary style="pointer-events: none; user-select: none;" class="font-semibold cursor-pointer list-none">
+              <i class="fas fa-exclamation-circle"></i> <span>No Lessons Available</span>
+            </summary>
+          </details>
+        </div>
+        ` 
+  
+        : ` <div class ="flex flex-row space-x-2">
             
-            <details open id="myDetails" class="w-full mb-4 flex items-center justify-center  border border-red-500 text-red-500 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white transition">
+            <details  class="w-full mb-4 flex items-center justify-center  border border-red-500 text-red-500 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white transition">
             <summary  style="pointer-events: none; user-select: none;" class="font-semibold cursor-pointer list-none">
               <i class="fas fa-lock"></i> <span>Expired Course</span>
             </summary>
-            <div id="modal-container" class="fixed z-50 top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 flex items-center justify-center ">
-              <div class="bg-gray-900  w-full  h-full overflow-auto scrollbar-hide 
-">
-                <button onclick="toggleDetails()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                </button>
-                <h2 class="text-2xl font-bold text-gray-200 flex items-center gap-2 border-b border-gray-700 p-4">
-                 <div> <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h11M9 21V3m7 0l4 4m0 0l-4 4m4-4H13"></path>
-                  </svg></div>   ${course.name}
-                </h2>
-
-                        <!-- ✅ Progress Bar -->
-          <div class="mt-2 mx-6">
-            <p class="text-gray-300 text-sm mb-1">Progress: ${progress}%</p>
-            <div class="w-full bg-gray-700 rounded-full h-2">
-              <div class="bg-green-500 h-2 rounded-full" style="width: ${progress}%"></div>
-            </div>
-          </div>
-                <div class="space-y-6 p-2 max-w-4xl mx-auto">
-                  ${course.sections
-                    .map(
-                      (section, sectionIndex) => `
-                    <div class="bg-gray-900 p-2 rounded-lg shadow-xl border border-gray-800">
-                      <button onclick="
-                        const container = document.getElementById('lessons-container-${sectionIndex}');
-                        container.classList.toggle('hidden');
-                        this.querySelector('.arrow-icon').classList.toggle('rotate-180');
-                      " 
-                      class="w-full flex justify-between items-center bg-purple-600 text-white px-5 py-4 rounded-lg hover:bg-purple-700 transition-all duration-300">
-                        <span class="text-xl font-semibold flex items-center gap-3">
-                          <div><svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
-                          </svg></div> ${section.name}
-                        </span>
-    
-                        <svg class="w-5 h-5 text-white transition-transform arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                      </button>
-                      <div id="lessons-container-${sectionIndex}" class="mt-4 hidden space-y-3 relative">
-
-
-                        ${section.lessons
-                          .map(
-                            (lesson, lessonIndex) => `
-                          <div class="bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-700 relative">
-                            <button onclick="
-                              const lessonDetails = document.getElementById('lesson-details-${sectionIndex}-${lessonIndex}');
-                              lessonDetails.classList.toggle('hidden');
-                              this.querySelector('.lesson-arrow').classList.toggle('rotate-180');
-                            " 
-                            class="w-full flex justify-between items-center text-gray-300 text-lg font-semibold hover:text-white transition">
-                              <span class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.58M6.16 10.42L12 14v7"></path>
-                                </svg> ${lesson.name}
-                              </span>
-                              <svg class="w-4 h-4 text-gray-400 transition-transform lesson-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                              </svg>
-                              
-                            </button>
-                                                   <button onclick="toggleFullScreen('lessons-container-${sectionIndex}')" 
-    class="absolute top-2 right-2 bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-600 transition">
-    <i class="fas fa-expand"></i> <!-- FontAwesome Icon -->
-  </button>
-                            <div id="lesson-details-${sectionIndex}-${lessonIndex}" class="hidden mt-3 text-gray-400 text-sm space-y-2">
-                              <p><span class="font-medium text-gray-300">Type:</span> ${
-                                lesson.content_type
-                              }</p>
-                              <p>${
-                                lesson.description ||
-                                '<span class="italic text-gray-500">No description available</span>'
-                              }</p>
-                              ${
-                                lesson.quiz
-                                  ? `<p class="text-green-400 font-medium">✅ Quiz Available</p>`
-                                  : ""
-                              }
-                              ${
-                                lesson.video_url
-                                  ? `
-                                <div class="relative mt-4 rounded-lg overflow-hidden border border-gray-500 shadow-md">
-    ${getVideoEmbedCode(lesson.video_url)}
-  </div>
-                              `
-                                  : '<p class="italic text-gray-500">No video available</p>'
-                              }
-                            </div>
-                               <button class="lesson-complete-btn mt-3 text-sm px-3 py-1 rounded-lg ${
-                                 lesson.completed
-                                   ? "bg-green-500 text-white"
-                                   : "bg-gray-600 text-gray-300"
-                               }" 
-                                data-lesson-id="${lesson.id}" 
-                                data-course-id="${course.id}">
-                          ${
-                            lesson.completed
-                              ? "✔ Completed"
-                              : "Mark as Complete"
-                          }
-                        </button>
-                          </div>
-                          
-                        `
-                          )
-                          .join("")}
-                      </div>
-                    </div>
-                  `
-                    )
-                    .join("")}
-                </div>
-              </div>
-            </div>
+       
           </details>   <button  onclick="window.location.href='courses.html?courseid=${encodeURIComponent(course.id)}'" class=" w-full mb-4 flex items-center justify-center  border border-green-500 text-green-500 px-4 py-2 rounded-md hover:bg-green-500 hover:text-white transition">
         <i class="fas fa-sync-alt"></i>
         Renew
     </button> 
-            </div> `
+            </div> ` 
         }
 <!-- ✅ Review Form - Modern UI -->
 <div class="mt-6 border-t border-gray-600 pt-4">

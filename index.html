@@ -107,7 +107,7 @@ async function fetchCategories() {
     const categoryId = categoryDoc.id;
 
     const coursePromise = (async () => {
-      const coursesRef = collection(db, "courses");
+      const coursesRef = collection(db, "courses", orderBy('index'));
       const coursesQuery = query(coursesRef, where("cat_id", "==", categoryId));
       const coursesSnapshot = await getDocs(coursesQuery);
 

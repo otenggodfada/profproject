@@ -27,11 +27,11 @@ async function loadNavbar() {
     menu.classList.toggle("hidden");
   });
   // on mouse over
-  drp.addEventListener("mouseover", () => {
-    document.getElementById("textDiv").classList.remove("hidden");
+  drp.addEventListener("click", () => {
+    window.location.href = "mprofilepage.html"
   });
 
-  drp1.addEventListener("mouseover", () => {
+  drp1.addEventListener("click", () => {
     document.getElementById("textDiv1").classList.remove("hidden");
     document.getElementById("textDiv1").classList.add("absolute");
   });

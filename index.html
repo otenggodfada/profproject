@@ -122,7 +122,7 @@ async function fetchCategories() {
       });
 
       return `
-        <div class="relative rounded-lg overflow-hidden cursor-pointer"
+        <div class="relative border border-gray-500 rounded-lg overflow-hidden cursor-pointer"
              onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
         
           <!-- Favorite Icon -->
@@ -135,7 +135,7 @@ async function fetchCategories() {
           <!-- Image Container -->
           <div class="relative">
               <img src="${image_url}" alt="${name}" class="w-50 h-26 object-cover">
-              <div class="bg-black/70 text-white p-3 rounded-b-lg">
+              <div class=" text-white p-3 rounded-b-lg">
                   <h2 class="text-lg font-bold hover:text-blue-500">${name}</h2>
                   <p class="text-sm flex items-center gap-2">
                       <i class="fas fa-book text-yellow-400"></i> ${courseCount} courses

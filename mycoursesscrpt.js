@@ -292,7 +292,7 @@ function renderCourses(courses) {
             <summary onclick="turnonfixed()" class="font-semibold w-full h-full text-center cursor-pointer list-none">
               <i class="fas fa-book-open"></i> <span>Continue Learning</span>
             </summary>
-            <div id="modal-container" style="display:block;" class="z-50 top-0 bottom-0 right-0 left-0  w-screen h-full bg-black bg-opacity-80 flex items-center justify-center  ">
+            <div id="modal-container" style="display:block;" class="z-50 inset-0 w-screen h-full bg-black bg-opacity-80 flex items-center justify-center  ">
               <div class="bg-gray-900 mb-28  h-full overflow-auto scrollbar-hide max-w-2xl sm:w-screen
 ">
                 <button onclick="toggleDetails()" class="absolute top-4 right-4 text-gray-400 hover:text-white">

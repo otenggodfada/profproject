@@ -87,6 +87,7 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 async function fetchCategories() {
+  localStorage.removeItem("categories");
   // Check for cached data in LocalStorage
   const cachedData = localStorage.getItem("categories");
   if (cachedData) {
@@ -147,7 +148,7 @@ async function fetchCategories() {
                       <i class="fas fa-star text-red-400"></i> ${totalRatings} total ratings
                   </p>
                   <p class="text-sm flex items-center gap-2 mt-2 text-blue-300 hover:text-blue-500">
-                      <i class="fas fa-arrow-right"></i> View Course
+                      <i class="fas fa-arrow-right"></i> View Courses
                   </p>
               </div>
           </div>

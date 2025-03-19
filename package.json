@@ -9,7 +9,7 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.3",
     "tailwind-scrollbar-hide": "^2.0.0",
-    "tailwindcss": "^4.0.11"
+    "tailwindcss": "^4.0.14"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

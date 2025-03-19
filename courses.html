@@ -41,7 +41,22 @@
         ]
     };
 </script>
+<style>
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
 
+  .animate-scroll {
+    display: flex;
+    width: max-content;
+    animation: scroll 10s linear infinite;
+  }
+</style>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -439,7 +454,14 @@ Your browser does not support the video tag.
     <div class="absolute top-0 left-0 w-10 h-full bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
     <div class="absolute top-0 right-0 w-10 h-full bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
   
-    <div class="flex flex-row max-w-7xl overflow-x-auto space-x-4 py-2 scrollbar-hide" id="categories"></div> 
+    <div class="relative max-w-7xl overflow-hidden py-2">
+      <div
+        class="flex flex-row space-x-4 animate-scroll whitespace-nowrap"
+        id="categories"
+      >
+        <!-- Add category items dynamically here -->
+      </div>
+    </div>
   </div>
   
   <div class="flex">
@@ -472,7 +494,10 @@ Your browser does not support the video tag.
   </div>
 
   <script>
-
+  document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("categories");
+    container.innerHTML += container.innerHTML; // Duplicate items for a smooth loop
+  });
     // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
@@ -509,7 +534,7 @@ const course_id = urlParams.get('courseid');
     <div class="relative min-w-max bg-white/20 backdrop-blur-lg border border-white/30  rounded-lg p-4 flex flex-row  items-center cursor-pointer transition transform hover:scale-105 "
         onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
         <img src="${image_url}" alt="${name}" class="w-32 h-20 object-cover rounded-lg border-2 border-white">
-        <h3 class="  text-lg font-semibold text-white mt-2">${name}</h3>
+        <h3 class="  text-lg font-semibold text-white mt-2 ml-2">${name}</h3>
     </div>
 
                 `;

@@ -50,10 +50,8 @@
       transform: translateX(-50%);
     }
   }
-
-  .animate-scroll {
-    display: flex;
-    width: max-content;
+  
+  .scrolling {
     animation: scroll 10s linear infinite;
   }
 </style>
@@ -454,7 +452,7 @@ Your browser does not support the video tag.
     <div class="absolute top-0 left-0 w-10 h-full bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
     <div class="absolute top-0 right-0 w-10 h-full bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
   
-    <div class="relative max-w-7xl overflow-hidden py-2">
+    <div class="relative max-w-7xl overflow-x-auto py-2 scrollbar-hide" id="scrollContainer">
       <div
         class="flex flex-row space-x-4 animate-scroll whitespace-nowrap"
         id="categories"
@@ -495,8 +493,27 @@ Your browser does not support the video tag.
 
   <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const container = document.getElementById("categories");
-    container.innerHTML += container.innerHTML; // Duplicate items for a smooth loop
+    const container = document.getElementById("scrollContainer");
+    const categories = document.getElementById("categories");
+
+    // Duplicate items for seamless scroll
+    categories.innerHTML += categories.innerHTML;
+
+    // Auto-scroll behavior
+    function startAutoScroll() {
+      categories.classList.add("scrolling");
+    }
+
+    function stopAutoScroll() {
+      categories.classList.remove("scrolling");
+    }
+
+    // Start auto-scroll
+    startAutoScroll();
+
+    // Pause auto-scroll when manually scrolling
+    container.addEventListener("mouseenter", stopAutoScroll);
+    container.addEventListener("mouseleave", startAutoScroll);
   });
     // Firebase configuration
     const firebaseConfig = {

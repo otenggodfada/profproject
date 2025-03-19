@@ -268,6 +268,7 @@ function renderCourses(courses) {
               <div class="bg-green-500 h-2 rounded-full" style="width: ${progress}%"></div>
             </div>
           </div>
+        
         </div>
       </div>
         </div>

@@ -18,7 +18,8 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
       }
     </style>
-   
+    <link rel="stylesheet" href="animatecss.css">
+    <script src="animatescript.js" defer></script>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
       import {
@@ -304,7 +305,7 @@ async function loadMoreBlogs(excludePostId) {
     <div class="top-0 fixed bg-[#172554]   z-20 w-screen">
       <div id="navbar-container"></div>
     </div>
-    <div class="max-w-6xl mx-auto px-6 py-10 mt-28">
+    <div class="max-w-6xl mx-auto px-6 py-10 mt-28 fade-in">
       <div
         class="flex flex-col items-center justify-center mb-5 bg-gray-900 text-white"
       >
@@ -313,7 +314,7 @@ async function loadMoreBlogs(excludePostId) {
           <h1 class="text-4xl text-center font-bold">PROFSTUDYMATE BLOG</h1>
           <p class="text-gray-400 text-center mt-2">Welcome to Profstudymate, your ultimate companion for ICAG and <br> CITG studies in Ghana! Developed by Profs Training Solutions, our blog provides valuable insights, <br> study tips, and resources to help you succeed in your professional journey. Stay informed, stay ahead! 🚀</p>
       
-           <div class="flex flex-row justify-center space-x-4 mt-4 mb-4 overflow-auto  sm: mx-12 sm: pl-20  w-full scrollbar-hide ">
+           <div class="flex flex-row justify-center space-x-4 mt-4 mb-4 overflow-auto  sm: mx-12 sm: pl-20  w-full scrollbar-hide fade-in">
             <div>
               <a
               href="http://instagram.com/profs_training_solutions/"

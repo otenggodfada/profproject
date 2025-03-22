@@ -41,6 +41,7 @@
         ]
     };
 </script>
+
 <style>
   @keyframes scroll {
     from {
@@ -90,6 +91,7 @@ option {
 
 <!-- Modal -->
 <div id="course-modal" class=" hidden max-w-6xl  ">
+  <p id="modal-id" style="display: none;"></p>
   <div class="relative modal-content bg-white p-0    rounded-lg  cursor-pointer  bg-gray-900 scrollbar-hide  ">
     <!-- Close Button -->
    
@@ -159,6 +161,21 @@ Your browser does not support the video tag.
     
     <!-- Modal Description -->
     <div id="modal-description" class="mb-6 text-gray-500 text-lg leading-relaxed space-y-3"></div>
+    <!-- Social Share Buttons -->
+<div class="flex space-x-4 mt-4">
+  <a id="share-facebook" class="text-blue-600 hover:text-blue-800" target="_blank">
+    <i class="fab fa-facebook-f text-xl"></i>
+  </a>
+  <a id="share-twitter" class="text-blue-400 hover:text-blue-600" target="_blank">
+    <i class="fab fa-twitter text-xl"></i>
+  </a>
+  <a id="share-linkedin" class="text-blue-700 hover:text-blue-900" target="_blank">
+    <i class="fab fa-linkedin-in text-xl"></i>
+  </a>
+  <a id="share-whatsapp" class="text-green-600 hover:text-green-800" target="_blank">
+    <i class="fab fa-whatsapp text-xl"></i>
+  </a>
+</div>
   </div>
 
 <!-- Course Data -->
@@ -1151,7 +1168,7 @@ const renderCourses = async (tagId = null) => {
       const courseDoc = await coursesRef.doc(courseId).get();
       const course = courseDoc.data();
 
-
+      
       const catid = course.cat_id
 const cateRef = db.collection("categories");
   const cateDoc = await cateRef.doc(catid).get();
@@ -1159,6 +1176,7 @@ const cateRef = db.collection("categories");
       // Fetch Tags
 
 // Populate Modal
+document.getElementById("modal-id").innerText= course.id;
 document.getElementById("modal-image").src = course.image_url;
 document.getElementById("modal-title").innerText = course.name;
 document.getElementById("modal-description").innerHTML = course.meta?.description || "<p>No description available.</p>";
@@ -1171,7 +1189,7 @@ document.getElementById("modal-id").innerText = course.author?.id || "Unknown";
 document.getElementById("modal-duration").innerText = course.meta?.duration || "Unknown";
 document.getElementById("modal-created").innerText = formatTimestamp(course.created_at);
 
-;
+updateShareLinks();
 // Render lists
 renderArrayAsList(course.meta?.requirements || [], "modal-requirements");
 renderArrayAsList(course.meta?.learnings || [], "modal-learnings");
@@ -1567,6 +1585,25 @@ document.addEventListener("click", (event) => {
 
 
 
+
+
+</script>
+
+
+
+
+<script>
+  function updateShareLinks() {
+    const title = document.getElementById("modal-title").innerText;
+    const courseId = document.getElementById("modal-id").innerText;
+    const siteUrl = window.location.origin; // Get the base site URL
+    const url = `${siteUrl}/courses.html?courseid=${encodeURIComponent(courseId)}`;
+    
+    document.getElementById("share-facebook").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    document.getElementById("share-twitter").href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+    document.getElementById("share-linkedin").href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+    document.getElementById("share-whatsapp").href = `https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`;
+  }
 
 
 </script>

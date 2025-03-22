@@ -178,43 +178,34 @@ document.addEventListener("DOMContentLoaded", fetchCategories);
 
   </head>
     <!-- Loading Screen -->
-<!-- <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
+<div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
   <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
-</div> -->
+</div>
   <body class="bg-gray-900 text-white">
     <script src="dark-mode.js"></script>
     <div class="sticky top-0  z-20 w-full  border-b">
       <div id="navbar-container"></div>
-      <div class="flex justify-between items-center py-5 px-8 bg-[#1a1a1a] border border-white/10">
-  
-        <!-- Left Section: Greeting -->
+      <div class="flex justify-between items-center items-start pb-3 px-6 bg-[#242525]  ">
         <div>
-          <h1 id="username" class="text-3xl font-bold text-white drop-shadow-md">
-            Hey, Studymate 👋
+          <h1 id="username" class="text-2xl mb-2 font-extrabold text-white">
+            Hello, Studymate
           </h1>
-          <p class="text-white/60 text-sm">Ready to explore something new today?</p>
+          <p class="text-white/30 text-sm">What do you want to learn today?</p>
         </div>
-      
-        <!-- Right Section: Profile Button -->
-        <div onclick="window.location.href='mprofilepage.html'"
-             class="relative w-20 h-20 flex justify-center items-center cursor-pointer group 
-                    bg-white/10 backdrop-blur-xl rounded-full border border-white/10 shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-white/20">
-          
-          <!-- Glowing Border Animation -->
-          <div class="absolute w-20 h-20 rounded-full border border-transparent 
-                      animate-pulse bg-gradient-to-r from-white/10 to-transparent"></div>
-      
-          <!-- New Gear Animation with FAS -->
-          <div class="relative flex items-center">
-            <i class="fas fa-user text-4xl text-white/90 transition-transform duration-300 group-hover:scale-110"></i>
-            <i class="fas fa-cog text-2xl text-white/80 absolute -bottom-1.5 -right-2 
-                      transition-transform group-hover:rotate-[220deg] group-hover:scale-125 duration-500"></i>
-          </div>
+        <div onclick="window.location.href='mprofilepage.html'" 
+        class="relative w-16 h-16 flex justify-center items-center cursor-pointer group">
+        
+        <!-- Rotating Outer Gear -->
+        <i class=" border w-16 h-16 rounded-full border-b-2 border-white absolute  bg-white/10 animate-spin-slow"></i>
+    
+        <!-- User Profile with Gear (Middle Icon) -->
+        <div class="relative flex items-center">
+            <i class="ph ph-user text-2xl text-white/80"></i>
+            <i class="ph ph-gear text-xl text-white/80 absolute -bottom-2 -right-3 
+                      transition-transform group-hover:rotate-180 duration-500"></i>
         </div>
-      
-      
-      
-      
+    </div>
+      </div>
     </div>
     <div class=" mx-auto  mb-36">
     
@@ -228,38 +219,6 @@ document.addEventListener("DOMContentLoaded", fetchCategories);
 
       
     </div>
-     <!-- New Affiliate Program Card -->
-     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full h-full p-4">
-      <div class="relative border border-gray-500 rounded-lg overflow-hidden cursor-pointer" onclick="window.location.href='job.html'">
-        <div class="relative">
-          <img loading='lazy' src="https://cdn.amasty.com/media/amasty/blog/cache/a/f/915/433/affiliate_program_1_.png" alt="Affiliate Program" class="w-50 h-26 object-cover">
-          <div class="text-white p-3 rounded-b-lg space-x-2 space-y-2">
-            <h2 class="text-lg font-bold hover:text-blue-500">MAKE MONEY WITH PROFS (BECOME an affiliate)</h2>
-            <p class="text-sm">Join our affiliate program and earn commissions.</p>
-            <div class="border-t border-gray-700 mt-5 mb-5"></div>
-            <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-              <i class="fas fa-arrow-right mr-2"></i> Join Now
-            </p>
-          </div>
-        </div>
-      </div>
-           <!-- New Bookshop Card -->
-           <div class="relative border border-gray-500 rounded-lg overflow-hidden cursor-pointer" onclick="window.location.href='store.html'">
-            <div class="relative">
-              <img loading='lazy' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw-8jdfIxzKOFkPDe6xeC8KNT3s-MsjmRXkKyIjy2NziMvl2svnoYuE5uLLIvfd-HYMq4&usqp=CAU" alt="Bookshop" class="w-full h-26 object-cover">
-              <div class="text-white p-3 rounded-b-lg space-x-2 space-y-2">
-                <h2 class="text-lg font-bold hover:text-blue-500">BOOKSHOP</h2>
-                <p class="text-sm">Access a wide range of educational books and resources.</p>
-                <div class="border-t border-gray-700 mt-5 mb-5"></div>
-                <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-                  <i class="fas fa-arrow-right mr-2"></i> Visit Store
-                </p>
-              </div>
-            </div>
-          </div>
-    </div>
-
-    
         </section>
     
 

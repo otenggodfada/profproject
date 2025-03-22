@@ -2,7 +2,9 @@
 
 async function loadNavbar() {
 
-  
+
+
+
   
   const response = await fetch("navbar.html");
   const navbar = await response.text();

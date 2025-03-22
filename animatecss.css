@@ -1,10 +1,40 @@
-.fade-in {
+/* Base class (hidden initially) */
+.fade-in{
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transition: all 0.8s ease-out;
 }
 
-.fade-in.visible {
+/* Random animation effects */
+.fade-in1 {
+    transform: translateY(30px);
+}
+
+.slide-in-left {
+    transform: translateX(-50px);
+}
+
+.slide-in-right {
+    transform: translateX(50px);
+}
+
+.zoom-in {
+    transform: scale(0.7);
+}
+
+.rotate-in {
+    transform: rotate(-15deg);
+}
+
+.flip-in {
+    transform: rotateY(90deg);
+}
+
+.bounce-in {
+    transform: translateY(-20px) scale(0.8);
+}
+
+/* When element becomes visible */
+.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateX(0) scale(1) rotate(0) rotateY(0);
 }

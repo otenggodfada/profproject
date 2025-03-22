@@ -91,7 +91,8 @@ option {
 
 <!-- Modal -->
 <div id="course-modal" class=" hidden max-w-6xl  ">
-  <p id="modal-id" style="display: none;"></p>
+  <p id="modal1-id" style="display: none;" ></p>
+  <!-- <p id="modal-id" style="display: none;"></p> -->
   <div class="relative modal-content bg-white p-0    rounded-lg  cursor-pointer  bg-gray-900 scrollbar-hide  ">
     <!-- Close Button -->
    
@@ -1176,7 +1177,7 @@ const cateRef = db.collection("categories");
       // Fetch Tags
 
 // Populate Modal
-document.getElementById("modal-id").innerText= course.id;
+document.getElementById("modal1-id").innerText= courseId;
 document.getElementById("modal-image").src = course.image_url;
 document.getElementById("modal-title").innerText = course.name;
 document.getElementById("modal-description").innerHTML = course.meta?.description || "<p>No description available.</p>";
@@ -1595,9 +1596,9 @@ document.addEventListener("click", (event) => {
 <script>
   function updateShareLinks() {
     const title = document.getElementById("modal-title").innerText;
-    const courseId = document.getElementById("modal-id").innerText;
+    const courseId = document.getElementById("modal1-id").innerText;
     const siteUrl = window.location.origin; // Get the base site URL
-    const url = `${siteUrl}/courses.html?courseid=${encodeURIComponent(courseId)}`;
+    const url = `${siteUrl}/courses.html?courseid=${courseId}`;
     
     document.getElementById("share-facebook").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
     document.getElementById("share-twitter").href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;

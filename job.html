@@ -40,9 +40,9 @@
       
           <!-- Referral Copy -->
           <div class="mt-6 flex flex-col sm:flex-row items-center gap-3">
-            <a id="referral-link" href="#" class="text-blue-400 text-lg bg-gray-800 px-5 py-2 rounded-lg transition hover:bg-gray-700">
+            <p id="referral-link"  class="text-blue-400 text-lg bg-gray-800 px-5 py-2 rounded-lg transition hover:bg-gray-700">
               Generating link...
-            </a>
+            </p>
             <button id="copy-referral" class="flex items-center gap-2 px-5 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition">
               <i class="fas fa-copy"></i> Copy Link
             </button>
@@ -185,7 +185,7 @@
 
 async function fetchReferralData(userId) {
   try {
-    const siteUrl = window.location.origin; // Gets the base URL
+    const siteUrl = 'https://profstudymate.com'; // Gets the base URL
     const referralLink = `${siteUrl}/account.html?referral=${userId}`;
     document.getElementById("referral-link").href = referralLink;
     document.getElementById("referral-link").textContent = referralLink;

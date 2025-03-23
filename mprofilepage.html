@@ -38,9 +38,12 @@
     const db = getFirestore(app);
 
     onAuthStateChanged(auth, async (user) => {
-      if (!user) {
+      if (user) {
+        document.getElementById('loadingScreen').classList.add('hidden')
+      
+      
+      }else{
         window.location.href = "./account.html";
-        return;
       }
 
       const userNameElement = document.getElementById("userName");
@@ -67,6 +70,10 @@
   </script>
 </head>
 <body class="bg-gray-900  ">
+    <!-- Loading Screen -->
+<div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
+  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
+</div>
   <script src="dark-mode.js"></script>
   <!-- Navbar -->
   <div class="bg-[#172554]  sticky top-0 w-screen z-20">
@@ -134,10 +141,7 @@
     </div>
 </div>
   
-  <!-- Loading Screen -->
-<!-- <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
-  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
-</div> -->
+
 
   <!-- Bottom Navigation -->
   <footer>

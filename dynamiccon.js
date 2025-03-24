@@ -118,10 +118,11 @@ document
     e.preventDefault();
 
     const name = document.getElementById("full-name").value;
+    const registn = document.getElementById("reg-number").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const telephone = document.getElementById("telephone").value;
-    const referralcode = document.getElementById("referral").value;
+    const referralcode = document.getElementById("referral").value||'YM9J45qmiggNlMC4HpJZbXtn1CM2';
     const userType = document.getElementById("user-type").value; // Get the selected user type (student or author)
 
     // Author-specific fields (if user is an author)
@@ -143,9 +144,13 @@ document
           name,
           email,
           telephone,
+          underef: referralcode,
+          affiliatelink: user.uid,
+          earnings: 0,
+          totalrefs: 0,
           zoomId,
       status: "Offline",
-          role: ['author'],
+          role: ['pending'],
         });
       } else {
         // Save student-specific data if needed
@@ -153,6 +158,7 @@ document
           name,
           email,
           telephone,
+          registern: registn,
           role: ['student'],
           underef: referralcode,
           affiliatelink: user.uid,

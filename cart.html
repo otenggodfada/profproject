@@ -8,7 +8,10 @@
     <meta name="description" content="Books Shopping Cart" />
     <title>Shopping Cart</title>
     <!-- Include Tailwind CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -22,75 +25,81 @@
     <script src="kaka.js"></script>
     <script>
       tailwind.config = {
-          theme: {
-              extend: {}
+        theme: {
+          extend: {},
+        },
+        plugins: [
+          function ({ addUtilities }) {
+            addUtilities({
+              ".scrollbar-hide": {
+                "-ms-overflow-style":
+                  "none" /* Hide scrollbar for IE and Edge */,
+                "scrollbar-width": "none" /* Hide scrollbar for Firefox */,
+              },
+              ".scrollbar-hide::-webkit-scrollbar": {
+                display: "none" /* Hide scrollbar for Chrome, Safari */,
+              },
+            });
           },
-          plugins: [
-              function ({ addUtilities }) {
-                  addUtilities({
-                      '.scrollbar-hide': {
-                          '-ms-overflow-style': 'none', /* Hide scrollbar for IE and Edge */
-                          'scrollbar-width': 'none', /* Hide scrollbar for Firefox */
-                      },
-                      '.scrollbar-hide::-webkit-scrollbar': {
-                          display: 'none' /* Hide scrollbar for Chrome, Safari */
-                      }
-                  })
-              }
-          ]
+        ],
       };
-  </script>
+    </script>
   </head>
   <body class="bg-gray-900">
-    <div class="fixed bg-[#172554] top-0 z-20 w-full  border-b">
+    <div class="fixed bg-[#172554] top-0 z-20 w-full border-b">
       <div id="navbar-container"></div>
     </div>
     <div id="cartb" class="max-w-screen-md mx-auto p-4 mt-32 mb-32">
       <h1 class="text-3xl text-white font-semibold text-center mb-6 mt-2">
-     Checkout
+        Checkout
       </h1>
-    <!-- Cart Items Section -->
-<div class="bg-white shadow-md rounded-lg overflow-hidden">
-  <div class="divide-y divide-gray-200">
-    <!-- Sample cart item -->
-    <div class="flex items-center p-4">
-      <!-- Product Image -->
-      <img
-        id="image_url"
-        src="https://via.placeholder.com/80"
-        alt="Product Image"
-        class="flex-none w-20 h-20 rounded-lg object-cover mr-4"
-      />
-      
-      <!-- Product Details -->
-      <div class="flex-1">
-        <h2 id="title" class="text-lg font-semibold">Another Product</h2>
-        <p id="amount" class="text-gray-600">Price: $29.99</p>
-      </div>
+      <!-- Cart Items Section -->
+      <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="divide-y divide-gray-200">
+          <!-- Sample cart item -->
+          <div class="flex items-center p-4">
+            <!-- Product Image -->
+            <img
+              id="image_url"
+              src="https://via.placeholder.com/80"
+              alt="Product Image"
+              class="flex-none w-20 h-20 rounded-lg object-cover mr-4"
+            />
 
-      <!-- Remove Item Button -->
-      <button
-        id="clearb"
-        class="text-red-500 hover:text-red-600 ml-4 transition duration-200 ease-in-out transform hover:scale-110"
-        aria-label="Remove item"
-      >
-        <i class="fas fa-trash-alt text-xl"></i>
-      </button>
-    </div>
-  </div>
-</div>
+            <!-- Product Details -->
+            <div class="flex-1">
+              <h2 id="title" class="text-lg font-semibold">Another Product</h2>
+              <p id="amount" class="text-gray-600">Price: $29.99</p>
+            </div>
+
+            <!-- Remove Item Button -->
+            <button
+              id="clearb"
+              class="text-red-500 hover:text-red-600 ml-4 transition duration-200 ease-in-out transform hover:scale-110"
+              aria-label="Remove item"
+            >
+              <i class="fas fa-trash-alt text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
       <!-- User info section -->
       <div class="mt-4">
         <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
           <h2 class="text-xl font-semibold mb-4 flex items-center">
-            <i class="fas fa-user-circle text-blue-500 mr-2"></i> Customer Information
+            <i class="fas fa-user-circle text-blue-500 mr-2"></i> Customer
+            Information
           </h2>
-      
+
           <!-- Name Field -->
           <div class="mb-4">
-            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <label for="name" class="block text-sm font-medium text-gray-700"
+              >Name</label
+            >
             <div class="relative mt-1">
-              <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <i
+                class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              ></i>
               <input
                 type="text"
                 id="name"
@@ -100,12 +109,16 @@
               />
             </div>
           </div>
-      
+
           <!-- Email Field -->
           <div class="mb-4">
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email</label
+            >
             <div class="relative mt-1">
-              <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <i
+                class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              ></i>
               <input
                 type="email"
                 id="email"
@@ -115,12 +128,16 @@
               />
             </div>
           </div>
-      
+
           <!-- Phone Field -->
           <div class="mb-4">
-            <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+            <label for="phone" class="block text-sm font-medium text-gray-700"
+              >Phone Number</label
+            >
             <div class="relative mt-1">
-              <i class="fas fa-phone absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              <i
+                class="fas fa-phone absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              ></i>
               <input
                 type="tel"
                 id="phone"
@@ -138,12 +155,12 @@
           <h2 class="text-xl font-semibold mb-4 flex items-center">
             <i class="fas fa-receipt text-blue-500 mr-2"></i> Total
           </h2>
-      
+
           <div class="flex justify-between text-lg font-medium">
             <span>Subtotal:</span>
             <span id="subt" class="text-blue-600 font-semibold">$99.96</span>
           </div>
-      
+
           <!-- Pay Online Button -->
           <button
             class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition duration-200"
@@ -151,10 +168,11 @@
           >
             <i class="fas fa-credit-card mr-2"></i> Pay Online
           </button>
-      
+
           <!-- Pay Offline Button -->
           <button
-            id="showit" onclick="showPayOffline()"
+            id="showit"
+            onclick="showPayOffline()"
             class="mt-3 w-full bg-gray-700 hover:bg-gray-800 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center transition duration-200"
           >
             <i class="fas fa-wallet mr-2"></i> Pay Offline
@@ -163,60 +181,60 @@
       </div>
     </div>
     <!-- Big Screen Footer -->
-<div id="footer-container"></div>
-<script src="footerp.js"></script>
+    <div id="footer-container"></div>
+    <script src="footerp.js"></script>
     <!-- Pay Offline Section -->
     <div
-    id="payOffline"
-    class="fixed z-50 hidden top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 overflow-auto flex items-center justify-center scrollbar-hide "
-  >
-    <div class="bg-gray-800 w-full max-w-4xl h-full shadow-lg relative">
-      <h2 class="text-3xl text-white font-semibold text-center mb-6 mt-4">
-        <i class="fas fa-wallet mr-2"></i> Pay Offline
-      </h2>
-  
-      <div class="space-y-4 p-4">
-        <!-- Payment Cards -->
-        <div class="space-y-6">
-          <!-- MTN Payment -->
-          <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
-            <div class="flex items-center mb-2">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/2048px-MTN_Logo.svg.png"
-                alt="MTN Logo"
-                class="w-10 h-10 object-contain mr-2"
-              />
-              <h3 class="text-xl font-semibold">MTN Payment</h3>
-            </div>
-            <p class="text-gray-600">
-              <i class="fas fa-university text-gray-700 mr-2"></i>
-              <strong>Bank Name:</strong> MTN
-            </p>
-            <p class="text-gray-600">
-              <i class="fas fa-hashtag text-gray-700 mr-2"></i>
-              <strong>Account Number:</strong>
-              <span id="mtnAccount">0242723139</span>
+      id="payOffline"
+      class="fixed z-50 hidden top-0 bottom-0 right-0 left-0 w-screen h-full bg-black bg-opacity-80 overflow-auto flex items-center justify-center scrollbar-hide"
+    >
+      <div class="bg-gray-800 w-full max-w-4xl h-full shadow-lg relative">
+        <h2 class="text-3xl text-white font-semibold text-center mb-6 mt-4">
+          <i class="fas fa-wallet mr-2"></i> Pay Offline
+        </h2>
+
+        <div class="space-y-4 p-4">
+          <!-- Payment Cards -->
+          <div class="space-y-6">
+            <!-- MTN Payment -->
+            <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
+              <div class="flex items-center mb-2">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/MTN_Logo.svg/2048px-MTN_Logo.svg.png"
+                  alt="MTN Logo"
+                  class="w-10 h-10 object-contain mr-2"
+                />
+                <h3 class="text-xl font-semibold">MTN Payment</h3>
+              </div>
+              <p class="text-gray-600">
+                <i class="fas fa-university text-gray-700 mr-2"></i>
+                <strong>Bank Name:</strong> MTN
+              </p>
+              <p class="text-gray-600">
+                <i class="fas fa-hashtag text-gray-700 mr-2"></i>
+                <strong>Account Number:</strong>
+                <span id="mtnAccount">0243443934</span>
+                <button
+                  onclick="copyToClipboard('mtnAccount')"
+                  class="ml-2 text-blue-500 hover:text-blue-600"
+                >
+                  <i class="fas fa-copy"></i> Copy
+                </button>
+              </p>
+              <p class="text-gray-600">
+                <i class="fas fa-user text-gray-700 mr-2"></i>
+                <strong>Account Name:</strong> Oteng Emmanuel
+              </p>
               <button
-                onclick="copyToClipboard('mtnAccount')"
-                class="ml-2 text-blue-500 hover:text-blue-600"
+                class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded-lg transition duration-200"
+                data-payment-method="MTN"
               >
-                <i class="fas fa-copy"></i> Copy
+                <i class="fas fa-paper-plane mr-2"></i> Send Receipt
               </button>
-            </p>
-            <p class="text-gray-600">
-              <i class="fas fa-user text-gray-700 mr-2"></i>
-              <strong>Account Name:</strong> Oteng Emmanuel
-            </p>
-            <button
-              class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded-lg transition duration-200"
-              data-payment-method="MTN"
-            >
-              <i class="fas fa-paper-plane mr-2"></i> Send Receipt
-            </button>
-          </div>
-  
-          <!-- Telecel Payment -->
-          <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
+            </div>
+
+            <!-- Telecel Payment -->
+            <!-- <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
             <div class="flex items-center mb-2">
               <img
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4R7lA1tlSlrBzf9OrDXIswYytfI7TfvC0w&s"
@@ -250,56 +268,56 @@
             >
               <i class="fas fa-paper-plane mr-2"></i> Send Receipt
             </button>
-          </div>
-  
-          <!-- Bank Payment -->
-          <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
-            <div class="flex items-center mb-2">
-              <img
-                src="https://static.vecteezy.com/system/resources/thumbnails/021/616/845/small_2x/banking-3d-render-icon-illustration-png.png"
-                alt="Bank Logo"
-                class="w-10 h-10 object-contain mr-2"
-              />
-              <h3 class="text-xl font-semibold">Bank Payment</h3>
-            </div>
-            <p class="text-gray-600">
-              <i class="fas fa-university text-gray-700 mr-2"></i>
-              <strong>Bank Name:</strong> Access Bank
-            </p>
-            <p class="text-gray-600">
-              <i class="fas fa-hashtag text-gray-700 mr-2"></i>
-              <strong>Account Number:</strong>
-              <span id="bankAccount">0242723139</span>
+          </div> -->
+
+            <!-- Bank Payment -->
+            <div class="bg-white shadow-md rounded-lg overflow-hidden p-4">
+              <div class="flex items-center mb-2">
+                <img
+                  src="https://static.vecteezy.com/system/resources/thumbnails/021/616/845/small_2x/banking-3d-render-icon-illustration-png.png"
+                  alt="Bank Logo"
+                  class="w-10 h-10 object-contain mr-2"
+                />
+                <h3 class="text-xl font-semibold">Bank Payment</h3>
+              </div>
+              <p class="text-gray-600">
+                <i class="fas fa-university text-gray-700 mr-2"></i>
+                <strong>Bank Name:</strong> Absa Bank
+              </p>
+              <p class="text-gray-600">
+                <i class="fas fa-hashtag text-gray-700 mr-2"></i>
+                <strong>Account Number:</strong>
+                <span id="bankAccount">0601251779</span>
+                <button
+                  onclick="copyToClipboard('bankAccount')"
+                  class="ml-2 text-blue-500 hover:text-blue-600"
+                >
+                  <i class="fas fa-copy"></i> Copy
+                </button>
+              </p>
+              <p class="text-gray-600">
+                <i class="fas fa-user text-gray-700 mr-2"></i>
+                <strong>Account Name:</strong> Oteng Emmanuel
+              </p>
               <button
-                onclick="copyToClipboard('bankAccount')"
-                class="ml-2 text-blue-500 hover:text-blue-600"
+                class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded-lg transition duration-200"
+                data-payment-method="Bank"
               >
-                <i class="fas fa-copy"></i> Copy
+                <i class="fas fa-paper-plane mr-2"></i> Send Receipt
               </button>
-            </p>
-            <p class="text-gray-600">
-              <i class="fas fa-user text-gray-700 mr-2"></i>
-              <strong>Account Name:</strong> Oteng Emmanuel
-            </p>
-            <button
-              class="w-full bg-green-500 hover:bg-green-600 text-white py-2 mt-4 rounded-lg transition duration-200"
-              data-payment-method="Bank"
-            >
-              <i class="fas fa-paper-plane mr-2"></i> Send Receipt
-            </button>
+            </div>
           </div>
+
+          <!-- Close Button -->
+          <button
+            onclick="closeModal()"
+            class="absolute top-4 right-4 text-white text-2xl hover:text-red-500 transition"
+          >
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-  
-        <!-- Close Button -->
-        <button
-          onclick="closeModal()"
-          class="absolute top-4 right-4 text-white text-2xl hover:text-red-500 transition"
-        >
-          <i class="fas fa-times"></i>
-        </button>
       </div>
     </div>
-  </div>
     <footer>
       <div
         class="fixed z-50 bottom-0 right-0 left-0"
@@ -309,16 +327,19 @@
     <script>
       function copyToClipboard(elementId) {
         const text = document.getElementById(elementId).textContent;
-        navigator.clipboard.writeText(text).then(() => {
-          alert('Copied to clipboard!');
-        }).catch(err => {
-          console.error('Failed to copy: ', err);
-        });
+        navigator.clipboard
+          .writeText(text)
+          .then(() => {
+            alert("Copied to clipboard!");
+          })
+          .catch((err) => {
+            console.error("Failed to copy: ", err);
+          });
       }
 
       function closeModal() {
-    document.getElementById("payOffline").classList.add("hidden");
-  }
+        document.getElementById("payOffline").classList.add("hidden");
+      }
     </script>
     <script src="navbar.js"></script>
     <script type="module">
@@ -354,7 +375,7 @@
       const title = params.get("title");
       const amount = params.get("amount");
       const image_url = params.get("image_url");
-const refcode = params.get("referalcode");
+      const refcode = params.get("referalcode");
 
       if (bookid && title && amount && image_url) {
         document.getElementById("title").textContent = title;
@@ -364,13 +385,12 @@ const refcode = params.get("referalcode");
         document.getElementById("image_url").alt = title;
       }
 
-
-
       // Clear cart
       const clearcartb = document.getElementById("clearb");
       clearcartb.addEventListener("click", () => {
-        document.getElementById("cartb").innerHTML =
-          `<div class="text-white flex justify-center items-center mt-20 font-semibold text-center text-3xl">    <div class="flex flex-col items-center justify-center h-[60vh] text-white">
+        document.getElementById(
+          "cartb"
+        ).innerHTML = `<div class="text-white flex justify-center items-center mt-20 font-semibold text-center text-3xl">    <div class="flex flex-col items-center justify-center h-[60vh] text-white">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-32 h-32 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422M12 14l-6.16-3.422M12 14v7M12 14l6.16-3.422" />
@@ -425,52 +445,50 @@ const refcode = params.get("referalcode");
             logo: "https://i.ibb.co/GdthH0Y/icon.png",
           },
           callback: function (data) {
-            fetch(`https://api11-ew5jz6h7wq-uc.a.run.app/update-user-book/${userid}/${bookid}/${amount}/${refcode}`, {
-  method: "PUT",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-bookid: bookid
-  }),
-})
-  .then((response) => response.json())
-  .then((data) => {
-    callback(data); // Handle the response in the callback
-  })
-  .catch((error) => {
-    console.error("Error updating/creating book:", error);
-  });
-
-            
-     
+            fetch(
+              `https://api11-ew5jz6h7wq-uc.a.run.app/update-user-book/${userid}/${bookid}/${amount}/${refcode}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  bookid: bookid,
+                }),
+              }
+            )
+              .then((response) => response.json())
+              .then((data) => {
+                callback(data); // Handle the response in the callback
+              })
+              .catch((error) => {
+                console.error("Error updating/creating book:", error);
+              });
           },
           onclose: function () {
-            window.location.href=`cart.html?${params}` ;
+            window.location.href = `cart.html?${params}`;
           },
         });
       }
 
-    // Close pay offline section
-    function togglePayOffline() {
+      // Close pay offline section
+      function togglePayOffline() {
         document.getElementById("payOffline").classList.add("hidden");
       }
 
-
-     // Send "I have paid" message via WhatsApp
-     document.querySelectorAll("[data-payment-method]").forEach((button) => {
+      // Send "I have paid" message via WhatsApp
+      document.querySelectorAll("[data-payment-method]").forEach((button) => {
         button.addEventListener("click", () => {
           const paymentMethod = button.getAttribute("data-payment-method");
           sendPaymentDetails(paymentMethod);
         });
       });
 
-
-function sendPaymentDetails(paymentMethod) {
+      function sendPaymentDetails(paymentMethod) {
         const customerName = document.getElementById("name").value;
         const customerEmail = document.getElementById("email").value;
         const customerPhone = document.getElementById("phone").value;
-        
+
         if (!customerName || !customerEmail || !customerPhone) {
           alert("Please fill in all customer information fields.");
           return;
@@ -497,23 +515,22 @@ Kindly process my order at your earliest convenience. Thank you!
 ${customerName}  
 `;
         window.open(
-          `https://wa.me/+233266306442?text=${encodeURIComponent(message)}`
+          `https://wa.me/+233243443934?text=${encodeURIComponent(message)}`
         );
       }
-
     </script>
-        <script>
-          // Show pay offline section
-          function showPayOffline() { 
+    <script>
+      // Show pay offline section
+      function showPayOffline() {
         const customerName = document.getElementById("name").value;
         const customerEmail = document.getElementById("email").value;
         const customerPhone = document.getElementById("phone").value;
-    
-        
+
         if (!customerName || !customerEmail || !customerPhone) {
           alert("Please fill in all customer information fields.");
           return;
-        }    document.getElementById("payOffline").classList.remove("hidden");
+        }
+        document.getElementById("payOffline").classList.remove("hidden");
       }
     </script>
     <script src="https://checkout.flutterwave.com/v3.js"></script>

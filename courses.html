@@ -1601,7 +1601,7 @@ document.addEventListener("click", (event) => {
   function updateShareLinks() {
     const title = document.getElementById("modal-title").innerText;
     const courseId = document.getElementById("modal1-id").innerText;
-    const siteUrl = window.location.origin; // Get the base site URL
+    const siteUrl = 'https://profstudymate.com/' // Get the base site URL
     const url = `${siteUrl}/courses.html?courseid=${courseId}`;
     
     document.getElementById("share-facebook").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
@@ -1650,23 +1650,39 @@ function loadVideo(videoUrl) {
         return;
     }
 
-    // Check if the video is a YouTube link
-    if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
-        // Convert YouTube watch link to embed link if needed
-        if (videoUrl.includes("watch?v=")) {
-            videoUrl = videoUrl.replace("watch?v=", "embed/");
-        }
+  // Check if the video is a YouTube or Google Drive link
+if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
+    // Convert YouTube watch link to embed link if needed
+    if (videoUrl.includes("watch?v=")) {
+        videoUrl = videoUrl.replace("watch?v=", "embed/");
+    }
 
-        // Show iframe for YouTube
+    // Show iframe for YouTube
+    videoIframe.src = videoUrl;
+    videoIframe.style.display = "block";
+    videoElement.style.display = "none";
+
+} else if (videoUrl.includes("drive.google.com")) {
+    // Extract Google Drive File ID
+    const driveRegex = /\/file\/d\/(.*?)\/view/;
+    const match = videoUrl.match(driveRegex);
+
+    if (match) {
+        const fileId = match[1];
+        videoUrl = `https://drive.google.com/uc?export=preview&id=${fileId}`;
+
+        // Show iframe for Google Drive video
         videoIframe.src = videoUrl;
         videoIframe.style.display = "block";
         videoElement.style.display = "none";
-    } else {
-        // Assume it's a Firebase Storage video (MP4, WebM, etc.)
-        videoElement.src = videoUrl;
-        videoElement.style.display = "block";
-        videoIframe.style.display = "none";
     }
+} else {
+    // Assume it's a Firebase Storage video (MP4, WebM, etc.)
+    videoElement.src = videoUrl;
+    videoElement.style.display = "block";
+    videoIframe.style.display = "none";
+}
+
 }
 
 // Example usage: Fetch video URL from Firebase and load it

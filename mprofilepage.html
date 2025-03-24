@@ -54,7 +54,7 @@
       if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
         userNameElement.textContent = `Welcome, ${userData.name || "User"}!`;
-        if (userData.role && !userData.role.includes("student")) {
+        if (userData.role && !userData.role.includes("student") && !userData.role.includes("pending")) {
           adminPanelLink.style.display = "flex";
         }
       }document.getElementById('loadingScreen').style.display = 'none';

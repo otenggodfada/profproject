@@ -1669,7 +1669,7 @@ if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
 
     if (match) {
         const fileId = match[1];
-        videoUrl = `https://drive.google.com/file/d/${fileId}/view`;
+        videoUrl = `https://drive.google.com/file/d/${fileId}/preview`;
 
         // Show iframe for Google Drive video
         videoIframe.src = videoUrl;

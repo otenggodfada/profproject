@@ -562,23 +562,33 @@ function getVideoEmbedCode(url) {
   const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/;
   const vimeoRegex = /vimeo\.com\/(\d+)/;
   const dailymotionRegex = /dailymotion\.com\/video\/([\w]+)/;
+  const googleDriveRegex = /drive\.google\.com\/file\/d\/(.*?)\/view/;
   const mp4Regex = /\.(mp4|webm|ogg)$/i;
 
   if (youtubeRegex.test(url)) {
     const videoId = url.match(youtubeRegex)[1];
     return `<iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+
   } else if (vimeoRegex.test(url)) {
     const videoId = url.match(vimeoRegex)[1];
     return `<iframe class="w-full h-64 rounded-lg" src="https://player.vimeo.com/video/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+
   } else if (dailymotionRegex.test(url)) {
     const videoId = url.match(dailymotionRegex)[1];
     return `<iframe class="w-full h-64 rounded-lg" src="https://www.dailymotion.com/embed/video/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+
+  } else if (googleDriveRegex.test(url)) {
+    const fileId = url.match(googleDriveRegex)[1];
+    return `<iframe class="w-full h-64 rounded-lg" src="https://drive.google.com/file/d/${fileId}/preview" frameborder="0" allowfullscreen></iframe>`;
+
   } else if (mp4Regex.test(url)) {
     return `<video class="w-full h-64 rounded-lg" controls><source src="${url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+
   } else {
     return `<p class="italic text-gray-500">Unsupported video format</p>`;
   }
 }
+
 
 
 

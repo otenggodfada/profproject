@@ -40,7 +40,7 @@ app.post("/send-email", async (req, res) => {
 
       // Send email to all users
       const mailOptions = {
-          from: "otenggodfada@gmail.com",
+          from: "Profstraining52@gmail.com",
           to: emails.join(","), // Send to all users at once
           subject,
           text: message

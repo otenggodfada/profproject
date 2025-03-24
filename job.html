@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Referral Dashboard</title>
+  <title>Affiliate Dashboard</title>
   <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js"></script>
@@ -36,7 +36,7 @@
         <!-- Left Section -->
         <div class="flex-1 text-center md:text-left">
           <h1 class="text-4xl font-extrabold text-white leading-tight">
-            🚀 Refer & Earn <span class="text-blue-400">20% Commission</span>
+            🚀 Refer & Earn <span class="text-blue-400">10% Commission</span>
           </h1>
           <p class="text-gray-300 mt-3 text-lg">
             Introduce students & earn rewards on all their purchases. Your success starts here! 🎯
@@ -190,33 +190,24 @@
 
 async function fetchReferralData(userId) {
   try {
-    const siteUrl = 'https://profstudymate.com'; // Gets the base URL
+    const siteUrl = 'https://profstudymate.com';
     const referralLink = `${siteUrl}/account.html?referral=${userId}`;
     document.getElementById("referral-link").href = referralLink;
     document.getElementById("referral-link").textContent = referralLink;
 
-
-       // Copy to clipboard functionality
-       document.getElementById("copy-referral").addEventListener("click", () => {
+    document.getElementById("copy-referral").addEventListener("click", () => {
       navigator.clipboard
         .writeText(referralLink)
         .then(() => alert("✅ Referral link copied!"))
         .catch(() => alert("❌ Failed to copy"));
     });
-    // Fetch from Firestore if cache is expired or missing
-    console.log("Fetching new data");
+
+    console.log("Fetching fresh user data...");
     const userDoc = doc(db, "users", userId);
     const docSnapshot = await getDoc(userDoc);
 
     if (docSnapshot.exists()) {
       const userData = docSnapshot.data();
-
-      // Cache the new data
-      localStorage.setItem(
-        cacheKey,
-        JSON.stringify({ timestamp: Date.now(), data: userData })
-      );
-
       updateUI(userData);
     } else {
       console.error("No user data found!");
@@ -258,25 +249,9 @@ function animateCount(elementId, start, end, duration) {
   window.requestAnimationFrame(step);
 }
 
-
 async function fetchPendingWithdrawals(userId) {
   try {
-    const cacheKey = `pendingWithdrawals_${userId}`;
-    const cacheExpiry = 5 * 60 * 1000; // 5 minutes
-
-    // Check if cached data exists and is still valid
-    const cachedData = localStorage.getItem(cacheKey);
-    if (cachedData) {
-      const { timestamp, data } = JSON.parse(cachedData);
-      if (Date.now() - timestamp < cacheExpiry) {
-        console.log("Using cached withdrawal data");
-        updateWithdrawalsUI(data);
-        return;
-      }
-    }
-
-    // Fetch from Firestore if cache is expired or missing
-    console.log("Fetching new withdrawal data");
+    console.log("Fetching fresh withdrawal data...");
     const withdrawalsQuery = query(
       collection(db, "withdrawals"),
       where("userId", "==", userId)
@@ -288,12 +263,6 @@ async function fetchPendingWithdrawals(userId) {
       querySnapshot.forEach((doc) => {
         withdrawals.push(doc.data());
       });
-
-      // Cache the new data
-      localStorage.setItem(
-        cacheKey,
-        JSON.stringify({ timestamp: Date.now(), data: withdrawals })
-      );
     }
 
     updateWithdrawalsUI(withdrawals);

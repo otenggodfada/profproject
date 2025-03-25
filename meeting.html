@@ -9,20 +9,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="module" src="nava-links.js"></script>
   <script type="module">
-
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import {   query,
-  where,
-  orderBy,
-  getFirestore,
-  doc,
-  addDoc,
-  getDoc,
-  collection,
-  getDocs,
-  setDoc,
-  Timestamp, } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+  
     const firebaseConfig = {
       apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2wzM",
       authDomain: "profstudymate-6d0fc.firebaseapp.com",
@@ -31,10 +20,10 @@
       messagingSenderId: "141453158869",
       appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
     };
-
+  
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
+  
     const extractZoomLink = (zoomInvitation) => {
       let zoomID = "";
       let passcode = "";
@@ -44,69 +33,67 @@
       if (passMatch) passcode = passMatch[1];
       return zoomID && passcode ? `https://app.zoom.us/wc/join/${zoomID}?pwd=${passcode}` : zoomID ? `https://app.zoom.us/wc/join/${zoomID}` : "No valid Zoom link found";
     };
-
-
-
-
- 
-
-
-
-
-
-
-    let users = [];
+  
+    let courses = [];
     let currentPage = 1;
-    const usersPerPage = 5;
+    const coursesPerPage = 5;
+  
+    const renderCourses = () => {
+      const courseList = document.getElementById("userList");
+      courseList.innerHTML = "";
+      const start = (currentPage - 1) * coursesPerPage;
+      const paginatedCourses = courses.slice(start, start + coursesPerPage);
+      paginatedCourses.forEach((course) => {
+        if (course.author && course.author.zoomId &&course.status=='live') {
+          const zoomLink = extractZoomLink(course.author.zoomId);
+          const statusColor = course.author.status === "Online" ? "bg-green-800" : "bg-red-800";
+          const statusColor1 = course.author.status === "Online" ? "text-green-800" : "text-red-800";
+          courseList.innerHTML += `
+          <li class="p-4 rounded-2xl shadow-lg flex flex-col sm:flex-row items-center justify-between border border-gray-300 transition-transform transform hover:scale-105 w-full bg-white overflow-hidden relative">
+  <div class="flex items-center gap-4 w-full sm:w-auto">
+    <img src="${course.image_url}" alt="Course Image" class="w-16 h-16 rounded-lg object-cover border border-gray-300" />
+    
+    <div class="flex flex-col">
+      <span class="${statusColor} flex items-center justify-center  px-3 py-1 rounded-full w-20  text-xs font-semibold bg-gray-100">
+        ${course.author.status}
+      </span>
+      <p class="font-semibold text-lg text-gray-800 mt-1">${course.name}</p>
+      <p class="text-sm text-gray-500">Author <span class="text-gray-700 font-medium">${course.author.name}</span> is <span class="${statusColor1}">${course.author.status}</span></p>
+    </div>
+  </div>
 
-    const renderUsers = () => {
-      const userList = document.getElementById("userList");
-      const searchQuery = document.getElementById("searchInput").value.toLowerCase();
-      userList.innerHTML = "";
-      const filteredUsers = users.filter(user => user.name.toLowerCase().includes(searchQuery));
-      const start = (currentPage - 1) * usersPerPage;
-      const paginatedUsers = filteredUsers.slice(start, start + usersPerPage);
-      paginatedUsers.forEach(user => {
-        const zoomLink = extractZoomLink(user.zoomId);
-        const statusColor = user.status === "Online" ? "bg-green-800" : "bg-red-800";
-        userList.innerHTML += `
-          <li class="p-4 rounded-lg shadow-md flex flex-col sm:flex-row items-center justify-between border border-gray-500 transition-transform transform hover:scale-105 w-full overflow-hidden">
-            <div class="flex items-center gap-4 w-full sm:w-auto">
-              <span class="${statusColor} flex items-center space-x-2 px-2 py-1 rounded-md text-[12px]">${user.status}</span>
-              <div class="text-center sm:text-left">
-                <p class="font-semibold text-lg">Prof. ${user.name}</p>
-                <p class="text-sm text-gray-500 break-all">${user.email}</p>
-              </div>
-            </div>
-            <div class="flex flex-row sm:flex-row items-center gap-4 mt-2 sm:mt-0 w-full sm:w-auto">
-              <a target="_blank" href="${zoomLink}" class="flex items-center w-full justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-                <i class="fas fa-video mr-2"></i> Join Meeting
-              </a>
-            </div>
-          </li>`;
+  <div class="flex flex-row sm:flex-row items-center gap-4 mt-4 sm:mt-0 w-full sm:w-auto">
+    <a target="_blank" href="${zoomLink}" class="flex items-center w-full justify-center space-x-2 border border-blue-500 text-blue-500 px-5 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition-all duration-300">
+      <i class="fas fa-video mr-2"></i> Join Meeting
+    </a>
+  </div>
+</li>
+`;
+        }
       });
-      document.getElementById("pagination").innerText = `Page ${currentPage} of ${Math.ceil(filteredUsers.length / usersPerPage)}`;
+      document.getElementById("pagination").innerText = `Page ${currentPage} of ${Math.ceil(courses.length / coursesPerPage)}`;
     };
-
-    const loadUsers = async () => {
+  
+    const loadCourses = async () => {
       document.getElementById("loadingScreen").classList.remove("hidden");
-      const usersRef = collection(db, "users");
-      const querySnapshot = await getDocs(usersRef);
-      users = [];
+      const coursesRef = collection(db, "courses");
+      const querySnapshot = await getDocs(coursesRef);
+      courses = [];
+  
       querySnapshot.forEach((doc) => {
-        const user = doc.data();
-        if (Array.isArray(user.role) && user.role.includes("author") && user.zoomId) users.push(user);
+        const course = doc.data();
+        if (course.author) courses.push(course);
       });
+  
       document.getElementById("loadingScreen").classList.add("hidden");
-      renderUsers();
+      renderCourses();
     };
-
-    document.addEventListener("DOMContentLoaded", loadUsers);
-    document.getElementById("searchInput").addEventListener("input", renderUsers);
-    document.getElementById("prevPage").addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderUsers(); }});
-    document.getElementById("nextPage").addEventListener("click", () => { if (currentPage * usersPerPage < users.length) { currentPage++; renderUsers(); }});
-
+  
+    document.addEventListener("DOMContentLoaded", loadCourses);
+    document.getElementById("prevPage").addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderCourses(); }});
+    document.getElementById("nextPage").addEventListener("click", () => { if (currentPage * coursesPerPage < courses.length) { currentPage++; renderCourses(); }});
   </script>
+  
   <script type="module" src="./dynamiccon.js"></script>
   <script type="module" src="./navbar.js"></script>
   <script src="bottomnv.js"></script>

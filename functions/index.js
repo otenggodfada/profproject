@@ -111,58 +111,88 @@ app.put("/update-user-book/:userId/:bookId/:amount/:refcode", async (req, res) =
     const twentyFivePercent = amountNumber * 0.25;
 
     try {
-        // Get the current date and add three months for expiration
-        const expireDate = new Date();
-        expireDate.setMonth(expireDate.getMonth() + 3);
+      // Set expiration date (3 months from now)
+      const expireDate = new Date();
+      expireDate.setMonth(expireDate.getMonth() + 3);
 
-        const userRef = db.collection("users").doc(userId);
-        const referrerRef = db.collection("users").doc(refcode);
+      // Firestore references
+      const userRef = db.collection("users").doc(userId);
+      const referrerRef = db.collection("users").doc(refcode);
+      const courseRef = db.collection("courses").doc(bookId);
 
-        const userDoc = await userRef.get();
-        const referrerDoc = await referrerRef.get();
+      // Fetch user, course, and referrer data concurrently
+      const [userDoc, referrerDoc, courseDoc] = await Promise.all([
+          userRef.get(),
+          referrerRef.get(),
+          courseRef.get()
+      ]);
 
-        if (!userDoc.exists) {
-         
+      // Validate course existence
+      if (!courseDoc.exists) {
+          return res.status(404).json({ success: false, message: "Course not found" });
+      }
 
-            // Add course to the Courses subcollection with expiration date
-            await userRef.collection("Courses").doc(bookId).set({
-                course_id: bookId,
-                expire_date: admin.firestore.Timestamp.fromDate(expireDate),
-            });
+      const courseData = courseDoc.data();
+      const authorId = courseData.author.id;
 
-            return res.json({ success: true, message: "Course created successfully" });
-        }
+      // Fetch author details
+      const authorRef = db.collection("users").doc(authorId);
+      const authorDoc = await authorRef.get();
 
-        // If user exists, update their course_id array
-        const existingCourses = userDoc.data().course_id || [];
-        if (!existingCourses.includes(bookId)) {
-            await userRef.update({
-                course_id: admin.firestore.FieldValue.arrayUnion(bookId)
-            });
+      if (!authorDoc.exists) {
+          return res.status(404).json({ success: false, message: "Author not found" });
+      }
 
-            // Add course to the Courses subcollection with expiration date
-            await userRef.collection("Courses").doc(bookId).set({
-                course_id: bookId,
-                expire_date: admin.firestore.Timestamp.fromDate(expireDate),
-            });
-        }
+      const { zoomID, status } = authorDoc.data();
 
-        // Handle referral earnings
-        if (referrerDoc.exists) {
-            const totalrefs = referrerDoc.data().totalrefs || 0;
-            const updatedTotalRefs = totalrefs + 1;
-            const currentEarnings = referrerDoc.data().earnings || 0;
-            const updatedEarnings = currentEarnings + twentyFivePercent;
+      const courseDetails = {
+          course_id: bookId,
+          expire_date: admin.firestore.Timestamp.fromDate(expireDate),
+          name: courseData.name,
+          author: {
+              id: authorId,
+              name: courseData.author.name,
+              image_url: courseData.author.image_url
+          },
+          zoomID,
+          status
+      };
 
-            await referrerRef.update({ earnings: updatedEarnings, totalrefs: updatedTotalRefs });
-        } else {
-            await referrerRef.set({ earnings: twentyFivePercent, totalrefs: 1 });
-        }
+      // If user does not exist, create user record and add course
+      if (!userDoc.exists) {
+          await userRef.set({ course_id: [bookId] });
+          await userRef.collection("Courses").doc(bookId).set(courseDetails);
+          return res.json({ success: true, message: "User created and course added successfully" });
+      }
 
-        res.json({ success: true, message: "Course updated successfully" });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+      // If user exists, update their course_id array and add course
+      const existingCourses = userDoc.data().course_id || [];
+      if (!existingCourses.includes(bookId)) {
+          await Promise.all([
+              userRef.update({
+                  course_id: admin.firestore.FieldValue.arrayUnion(bookId)
+              }),
+              userRef.collection("Courses").doc(bookId).set(courseDetails)
+          ]);
+      }
+
+      // Handle referral earnings
+      if (referrerDoc.exists) {
+          const totalRefs = referrerDoc.data().totalrefs || 0;
+          const updatedTotalRefs = totalRefs + 1;
+          const currentEarnings = referrerDoc.data().earnings || 0;
+          const updatedEarnings = currentEarnings + twentyFivePercent;
+
+          await referrerRef.update({ earnings: updatedEarnings, totalrefs: updatedTotalRefs });
+      } else {
+          await referrerRef.set({ earnings: twentyFivePercent, totalrefs: 1 });
+      }
+
+      res.json({ success: true, message: "Course updated successfully" });
+  } catch (error) {
+      console.error("Error updating course:", error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+  }
 });
 
 

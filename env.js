@@ -1,0 +1,5 @@
+
+
+const ENV_VARS = {
+    API_KEY: "FLWPUBK_TEST-02b9b5fc6406bd4a41c3ff141cc45e93-X"
+};

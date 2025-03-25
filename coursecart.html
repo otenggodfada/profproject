@@ -23,6 +23,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
     <script src="bottomnv.js"></script>
     <script src="kaka.js"></script>
+    <script src="env.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -429,7 +430,7 @@
         }
 
         FlutterwaveCheckout({
-          public_key: "FLWPUBK_TEST-02b9b5fc6406bd4a41c3ff141cc45e93-X",
+          public_key: ENV_VARS.API_KEY,
           tx_ref: "txref-DI0NzMx13",
           amount: amount,
           currency: "GHS",
@@ -540,5 +541,8 @@ ${customerName}
       }
     </script>
     <script src="https://checkout.flutterwave.com/v3.js"></script>
+
+ 
+
   </body>
 </html>

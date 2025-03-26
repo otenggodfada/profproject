@@ -37,28 +37,42 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        document.getElementById('loadingScreen').classList.add('hidden')
-      
-      
-      }else{
-        window.location.href = "./account.html";
-      }
 
-      const userNameElement = document.getElementById("userName");
-      const adminPanelLink = document.getElementById("adminPanelLink");
-      const userDocRef = doc(db, "users", user.uid);
-      const userDocSnap = await getDoc(userDocRef);
 
-      if (userDocSnap.exists()) {
-        const userData = userDocSnap.data();
-        userNameElement.textContent = `Welcome, ${userData.name || "User"}!`;
-        if (userData.role && !userData.role.includes("student") && !userData.role.includes("pending")) {
-          adminPanelLink.style.display = "flex";
+
+    document.addEventListener("DOMContentLoaded", async function () {
+    const storedUserId = localStorage.getItem("userId");
+
+    if (!storedUserId) {
+        window.location.href = "account.html"; // Redirect if userId is not set
+        return;
+    }
+
+    document.getElementById('loadingScreen').classList.add('hidden'); // Hide loading screen
+
+    try {
+        const userNameElement = document.getElementById("userName");
+        const adminPanelLink = document.getElementById("adminPanelLink");
+        const userDocRef = doc(db, "users", storedUserId);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            userNameElement.textContent = `Welcome, ${userData.name || "User"}!`;
+            if (userData.role && !userData.role.includes("student") && !userData.role.includes("pending")) {
+                adminPanelLink.style.display = "flex";
+            }
         }
-      }document.getElementById('loadingScreen').style.display = 'none';
-    });
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+    } finally {
+        document.getElementById('loadingScreen').classList.add('hidden'); // Ensure loading screen is hidden
+    }
+});
+
+
+
+
 
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("signOut").addEventListener("click", () => {

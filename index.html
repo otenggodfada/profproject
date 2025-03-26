@@ -73,102 +73,16 @@ const updateUsername = async (userId) => {
     document.getElementById("username").textContent = `Hello, ${displayName}`;
   }
 };
+document.addEventListener("DOMContentLoaded", function () {
+    const storedUserId = localStorage.getItem("userId");
 
-// Check if user is logged in
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // document.getElementById('loadingScreen').classList.add('hidden')
-    updateUsername(user.uid);
-  }
+    if (!storedUserId) {
+   
+    } else {
+      updateUsername(storedUserId);
+    }
 });
-// async function fetchCategories() {
-//   localStorage.removeItem("categories");
-//   // Check for cached data in LocalStorage
-//   const cachedData = localStorage.getItem("categories");
-//   if (cachedData) {
-//     document.getElementById("categories").innerHTML = cachedData;
-//     document.getElementById("loadingScreen").style.display = "none";
-//     return;
-//   }
 
-//   const categoriesRef = collection(db, "categories");
-//   const categoriesQuery = query(categoriesRef, orderBy("index"));
-//   const categoriesSnapshot = await getDocs(categoriesQuery);
-
-//   let categoryHtmlList = [];
-//   let categoryPromises = [];
-
-//   categoriesSnapshot.forEach((categoryDoc) => {
-//     const { name, image_url } = categoryDoc.data();
-//     const categoryId = categoryDoc.id;
-
-//     const coursePromise = (async () => {
-//       const coursesRef = collection(db, "courses",);
-//       const coursesQuery = query(coursesRef, where("cat_id", "==", categoryId));
-//       const coursesSnapshot = await getDocs(coursesQuery);
-
-//       const courseCount = coursesSnapshot.size;
-//       let totalStudents = 0;
-//       let totalRatings = 0;
-
-//       coursesSnapshot.forEach((doc) => {
-//         const courseData = doc.data();
-//         totalStudents += courseData.students || 0;
-//         totalRatings += courseData.rating || 0;
-//       });
-
-//       return `
-//         <div class="relative border border-gray-500 rounded-lg overflow-hidden cursor-pointer"
-//              onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
-        
-//           <!-- Favorite Icon -->
-//           <div class="absolute z-10 top-3 right-3 bg-white p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300">
-//               <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-//                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
-//               </svg>
-//           </div>
-
-//           <!-- Image Container -->
-//           <div class="relative">
-//               <img loading='lazy' src="${image_url}" alt="${name}" class="w-50 h-26 object-cover">
-//               <div class=" text-white p-3 rounded-b-lg space-x-2 space-y-2">
-//                   <h2 class="text-lg font-bold hover:text-blue-500">${name}</h2>
-//                   <p class="text-sm flex items-center gap-2">
-//                       <i class="fas fa-book text-yellow-400"></i> ${courseCount} courses
-//                   </p>
-//                   <p class="text-sm flex items-center gap-2">
-//                       <i class="fas fa-users text-blue-400"></i> ${totalStudents} students
-//                   </p>
-//                   <p class="text-sm flex items-center gap-2">
-//                       <i class="fas fa-star text-red-400"></i> ${totalRatings} total ratings
-//                   </p>
-
-//                   <div class="border-t border-gray-700 mt-5 mb-5"></div>
-//                   <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-//                       <i class="fas fa-arrow-right mr-2"></i> View Courses
-//                   </p>
-//               </div>
-//           </div>
-//         </div>
-//       `;
-//     })();
-
-//     categoryPromises.push(coursePromise);
-//   });
-
-//   // Wait for all category data to be fetched
-//   const categoryHtmlListResolved = await Promise.all(categoryPromises);
-
-//   // Hide loading screen and update UI
-//   document.getElementById("loadingScreen").style.display = "none";
-//   document.getElementById("categories").innerHTML = categoryHtmlListResolved.join("");
-
-//   // Store the data in LocalStorage for future fast access
-//   localStorage.setItem("categories", categoryHtmlListResolved.join(""));
-// }
-
-// // Run fetchCategories() when the page loads
-// document.addEventListener("DOMContentLoaded", fetchCategories);
 </script>
 
   </head>

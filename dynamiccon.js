@@ -224,6 +224,8 @@ document.getElementById("login-form").addEventListener("submit", async (e) => { 
       email,
       password
     );
+    const user = userCredential.user;
+    localStorage.setItem("userId", user.uid);
     // Login successful
     console.log("User logged in:", userCredential.user.email);
 showSuccessToast1()

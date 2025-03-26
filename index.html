@@ -73,13 +73,18 @@ const updateUsername = async (userId) => {
     document.getElementById("username").textContent = `Hello, ${displayName}`;
   }
 };
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const storedUserId = localStorage.getItem("userId");
 
     if (!storedUserId) {
    
     } else {
-      updateUsername(storedUserId);
+try {
+  await   updateUsername(storedUserId);
+  document.getElementById("loadingScreen").classList.add("hidden");
+} catch (error) {
+  
+}
     }
 });
 
@@ -87,9 +92,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   </head>
     <!-- Loading Screen -->
-<!-- <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
+<div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
   <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
-</div> -->
+</div>
   <body class="bg-gray-900 text-white">
       <!-- Loading Screen -->
 <!-- <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">

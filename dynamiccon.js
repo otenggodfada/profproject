@@ -137,7 +137,7 @@ document
         password
       );
       const user = userCredential.user;
-
+      localStorage.setItem("userId", user.uid);
       // Save additional author-specific data to Firestore or Realtime Database
       if (userType === "author") {
         await setDoc(doc(db, "users", user.uid), {

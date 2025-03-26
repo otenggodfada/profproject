@@ -63,6 +63,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("signOut").addEventListener("click", () => {
         signOut(auth).then(() => {
+          localStorage.removeItem("userId");
           window.location.href = "./account.html";
         });
       });

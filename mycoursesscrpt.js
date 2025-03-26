@@ -37,6 +37,7 @@ const auth = getAuth(app);
 // Fetch user purchased courses along with sections and lessons
 async function fetchPurchasedCourses(userId) {
   try {
+    
     // ✅ Fetch user's purchased courses along with expiry dates
     const userCoursesRef = collection(db, "users", userId, "Courses");
     const userCoursesSnapshot = await getDocs(userCoursesRef);

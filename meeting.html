@@ -9,21 +9,39 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="module" src="nava-links.js"></script>
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-  
-    const firebaseConfig = {
-      apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2wzM",
-      authDomain: "profstudymate-6d0fc.firebaseapp.com",
-      projectId: "profstudymate",
-      storageBucket: "profstudymate.appspot.com",
-      messagingSenderId: "141453158869",
-      appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
-    };
-  
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-  
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+import {
+  query,
+  where,
+  orderBy,
+  getFirestore,
+  doc,
+  addDoc,
+  getDoc,
+  collection,
+  getDocs,
+  setDoc,
+  Timestamp,
+} from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+} from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
+
+// Initialize Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+  authDomain: "profstudymate-6d0fc.firebaseapp.com",
+  projectId: "profstudymate",
+  storageBucket: "profstudymate.appspot.com",
+  messagingSenderId: "141453158869",
+  appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+let userid;
     const extractZoomLink = (zoomInvitation) => {
       let zoomID = "";
       let passcode = "";
@@ -38,44 +56,63 @@
     let currentPage = 1;
     const coursesPerPage = 5;
   
-    const renderCourses = () => {
-      const courseList = document.getElementById("userList");
-      courseList.innerHTML = "";
-      const start = (currentPage - 1) * coursesPerPage;
-      const paginatedCourses = courses.slice(start, start + coursesPerPage);
-      paginatedCourses.forEach((course) => {
-        if (course.author && course.author.zoomId &&course.status=='live') {
-          const zoomLink = extractZoomLink(course.author.zoomId);
-          const statusColor = course.author.status === "Live" ? "bg-green-800" : "bg-red-800";
-          const statusColor1 = course.author.status === "Live" ? "text-green-800" : "text-red-800";
-          courseList.innerHTML += `
-          <li class="p-4 rounded-2xl shadow-lg flex flex-col sm:flex-row items-center justify-between border border-gray-300  w-full bg-white overflow-hidden relative">
-  <div class="flex items-center gap-4 w-full sm:w-auto">
-    <img src="${course.image_url}" alt="Course Image" class="w-16 h-16 rounded-lg object-cover border border-gray-300" />
-    
-    <div class="flex flex-col">
-      <span class="${statusColor} flex items-center justify-center  px-3 py-1 rounded-full w-20  text-xs font-semibold bg-gray-100">
-        ${course.author.status}
-      </span>
-      <p class="font-semibold text-lg text-gray-800 mt-1">${course.name}</p>
-      <p class="text-sm text-gray-500">Author <span class="text-gray-700 font-medium">${course.author.name}</span> is <span class="${statusColor1}">${course.author.status}</span></p>
-    </div>
-  </div>
+    const renderCourses = async () => {
+      
+  const courseList = document.getElementById("userList");
+  courseList.innerHTML = "";
 
-  <div class="flex flex-row sm:flex-row items-center gap-4 mt-4 sm:mt-0 w-full sm:w-auto">
-    <a target="_blank" href="${zoomLink}" class="flex items-center w-full justify-center space-x-2 border border-blue-500 text-blue-500 px-5 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition-all duration-300">
-      <i class="fas fa-video mr-2"></i> Join Meeting
-    </a>
-  </div>
-</li>
-`;
-        }
-      });
-      document.getElementById("pagination").innerText = `Page ${currentPage} of ${Math.ceil(courses.length / coursesPerPage)}`;
-    };
+  // ✅ Fetch user's purchased courses
+  const userCoursesRef = collection(db, "users",userid, "Courses");
+  const userCoursesSnapshot = await getDocs(userCoursesRef);
+
+
+
+  const purchasedCourses = userCoursesSnapshot.docs.map((doc) => doc.data().course_id);
+
+
+
+
+  // ✅ Pagination logic
+  const start = (currentPage - 1) * coursesPerPage;
+  const paginatedCourses = courses.slice(start, start + coursesPerPage);
+
+  paginatedCourses.forEach((course) => {
+    const getpurchased = purchasedCourses.includes(course.id);
+
+    if (getpurchased && course.author && course.author.zoomId && course.status === "live" ) {
+      const zoomLink = extractZoomLink(course.author.zoomId);
+      const statusColor = course.author.status === "Live" ? "bg-green-800" : "bg-red-800";
+      const statusColor1 = course.author.status === "Live" ? "text-green-800" : "text-red-800";
+
+      courseList.innerHTML += `
+      <li class="p-4 rounded-2xl shadow-lg flex flex-col sm:flex-row items-center justify-between border border-gray-300  w-full bg-white overflow-hidden relative">
+        <div class="flex items-center gap-4 w-full sm:w-auto">
+          <img src="${course.image_url}" alt="Course Image" class="w-16 h-16 rounded-lg object-cover border border-gray-300" />
+          <div class="flex flex-col">
+            <span class="${statusColor} flex items-center justify-center px-3 py-1 rounded-full w-20 text-xs font-semibold bg-gray-100">
+              ${course.author.status}
+            </span>
+            <p class="font-semibold text-lg text-gray-800 mt-1">${course.name}</p>
+            <p class="text-sm text-gray-500">Author <span class="text-gray-700 font-medium">${course.author.name}</span> is <span class="${statusColor1}">${course.author.status}</span></p>
+          </div>
+        </div>
+
+        <div class="flex flex-row sm:flex-row items-center gap-4 mt-4 sm:mt-0 w-full sm:w-auto">
+          <a target="_blank" href="${zoomLink}" class="flex items-center w-full justify-center space-x-2 border border-blue-500 text-blue-500 px-5 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition-all duration-300">
+            <i class="fas fa-video mr-2"></i> Join Meeting
+          </a>
+        </div>
+      </li>
+      `;
+    }
+  });
+
+  document.getElementById("pagination").innerText = `Page ${currentPage} of ${Math.ceil(courses.length / coursesPerPage)}`;
+};
+
   
     const loadCourses = async () => {
-      document.getElementById("loadingScreen").classList.remove("hidden");
+     
       const coursesRef = collection(db, "courses");
       const querySnapshot = await getDocs(coursesRef);
       courses = [];
@@ -92,6 +129,19 @@
     document.addEventListener("DOMContentLoaded", loadCourses);
     document.getElementById("prevPage").addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderCourses(); }});
     document.getElementById("nextPage").addEventListener("click", () => { if (currentPage * coursesPerPage < courses.length) { currentPage++; renderCourses(); }});
+
+    // Fetch and load courses for the authenticated user
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+   
+
+ userid = user.uid
+  document.getElementById("loadingScreen").classList.remove("hidden");
+  } else {
+ 
+  }
+});
+
   </script>
   
   <script type="module" src="./dynamiccon.js"></script>

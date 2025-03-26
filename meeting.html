@@ -51,7 +51,7 @@ let userid;
       if (passMatch) passcode = passMatch[1];
       return zoomID && passcode ? `https://app.zoom.us/wc/join/${zoomID}?pwd=${passcode}` : zoomID ? `https://app.zoom.us/wc/join/${zoomID}` : "No valid Zoom link found";
     };
-  
+  const storedUserId = localStorage.getItem("userId");
     let courses = [];
     let currentPage = 1;
     const coursesPerPage = 5;

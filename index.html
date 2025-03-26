@@ -73,18 +73,14 @@ const updateUsername = async (userId) => {
     document.getElementById("username").textContent = `Hello, ${displayName}`;
   }
 };
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", function () {
     const storedUserId = localStorage.getItem("userId");
 
     if (!storedUserId) {
    
     } else {
-try {
-  await   updateUsername(storedUserId);
-  document.getElementById("loadingScreen").classList.add("hidden");
-} catch (error) {
-  
-}
+      updateUsername(storedUserId);
+      document.getElementById("loadingScreen").classList.add("hidden");
     }
 });
 

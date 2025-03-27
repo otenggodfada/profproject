@@ -4,90 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Videos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
-<body>
-    <h1>Free Videos</h1>
-    <div id="videos"></div>
-    <button id="prevBtn" disabled>⬅ Previous</button>
-    <button id="nextBtn">Next ➡</button>
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6">
+    <h1 class="text-4xl font-bold text-center mb-8">🎥 Free Video Collection</h1>
+    
+    <div id="videos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    
+    <div class="flex justify-center mt-8 space-x-4">
+        <button id="prevBtn" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition disabled:opacity-50" disabled>⬅ Previous</button>
+        <button id="nextBtn" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition">Next ➡</button>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        // Firebase Config
         const firebaseConfig = {
-            apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
-            authDomain: "profstudymate-6d0fc.firebaseapp.com",
+            apiKey: "AIzaSyCtaft...",
+            authDomain: "profstudymate.firebaseapp.com",
             projectId: "profstudymate",
             storageBucket: "profstudymate.appspot.com",
             messagingSenderId: "141453158869",
             appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
         let lastVisible = null;
-        let firstVisible = null;
-        const pageSize = 5; // Number of videos per page
+        const pageSize = 6;
 
         async function loadVideos(direction = "next") {
             const videosContainer = document.getElementById("videos");
-            videosContainer.innerHTML = "Loading...";
-
-            let q;
-            if (direction === "next") {
-                q = lastVisible 
-                    ? query(collection(db, "FreeVideos"), orderBy("__name__"), startAfter(lastVisible), limit(pageSize)) 
-                    : query(collection(db, "FreeVideos"), orderBy("__name__"), limit(pageSize));
-            } else {
-                q = query(collection(db, "FreeVideos"), orderBy("__name__"), limit(pageSize));
-            }
-
-            const querySnapshot = await getDocs(q);
+            videosContainer.innerHTML = "<p class='text-center text-gray-400'>Loading...</p>";
             
+            let q = lastVisible ? query(collection(db, "FreeVideos"), orderBy("__name__"), startAfter(lastVisible), limit(pageSize)) 
+                              : query(collection(db, "FreeVideos"), orderBy("__name__"), limit(pageSize));
+            
+            const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) {
                 videosContainer.innerHTML = "";
-                firstVisible = querySnapshot.docs[0]; // First document in the page
-                lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1]; // Last document in the page
+                lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
                 
                 querySnapshot.forEach((doc) => {
                     const videoList = doc.data().videos || [];
                     videoList.forEach((video) => {
-                        const videoUrl = video.url?.trim() || video["url "]?.trim();
+                        const videoUrl = video.url?.trim();
                         if (!videoUrl) return;
-
+                        
                         let videoEmbed = getVideoEmbed(videoUrl);
                         const videoWrapper = document.createElement("div");
+                        videoWrapper.className = "glass p-4 rounded-lg shadow-lg transform hover:scale-105 transition duration-300";
                         videoWrapper.innerHTML = `
-                            <h2>${video.title || "Untitled Video"}</h2>
-                            <p>${video.description || "No description available."}</p>
-                            ${videoEmbed}
-                            <hr>
+                            <h2 class="text-xl font-semibold mb-2">${video.title || "Untitled Video"}</h2>
+                            <p class="text-sm text-gray-300 mb-3">${video.description || "No description available."}</p>
+                            <div class="relative">
+                                ${videoEmbed}
+                                <button class="absolute top-2 right-2 bg-gray-900 text-white p-2 rounded-full text-sm hover:bg-gray-700 transition" onclick="openFullscreen(this)">⛶</button>
+                            </div>
                         `;
                         videosContainer.appendChild(videoWrapper);
                     });
                 });
             } else {
-                videosContainer.innerHTML = "<p>No videos found!</p>";
+                videosContainer.innerHTML = "<p class='text-center text-gray-400'>No videos found!</p>";
             }
 
-            // Update button states
-            document.getElementById("prevBtn").disabled = !firstVisible;
+            document.getElementById("prevBtn").disabled = !lastVisible;
             document.getElementById("nextBtn").disabled = querySnapshot.size < pageSize;
         }
 
         function getVideoEmbed(url) {
             if (url.includes("youtube.com") || url.includes("youtu.be")) {
-                return `<iframe width="560" height="315" src="${convertYouTube(url)}" frameborder="0" allowfullscreen></iframe>`;
+                return `<iframe class='w-full h-64 rounded-lg' src='${convertYouTube(url)}' frameborder='0' allowfullscreen></iframe>`;
             } else if (url.includes("drive.google.com")) {
-                return `<iframe width="560" height="315" src="${convertGoogleDrive(url)}" frameborder="0" allowfullscreen></iframe>`;
+                return `<iframe class='w-full h-64 rounded-lg' src='${convertGoogleDrive(url)}' frameborder='0' allowfullscreen></iframe>`;
             } else if (url.match(/\.(mp4|webm|ogg)$/i)) {
-                return `<video width="560" controls><source src="${url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+                return `<video class='w-full h-64 rounded-lg' controls><source src='${url}' type='video/mp4'>Your browser does not support the video tag.</video>`;
             }
-            return `<p>⚠ Unsupported video type: <a href="${url}" target="_blank">Click here to watch</a></p>`;
+            return `<p>⚠ Unsupported video type: <a class='text-blue-400 underline' href='${url}' target='_blank'>Click here to watch</a></p>`;
         }
 
         function convertYouTube(url) {
@@ -98,6 +102,20 @@
         function convertGoogleDrive(url) {
             const match = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\//);
             return match ? `https://drive.google.com/file/d/${match[1]}/preview` : url;
+        }
+
+        function openFullscreen(button) {
+            const videoContainer = button.parentElement;
+            const video = videoContainer.querySelector("iframe, video");
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.mozRequestFullScreen) {
+                video.mozRequestFullScreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            }
         }
 
         document.getElementById("nextBtn").addEventListener("click", () => loadVideos("next"));

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Videos</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+      authDomain: "profstudymate-6d0fc.firebaseapp.com",
+      projectId: "profstudymate",
+      storageBucket: "profstudymate.appspot.com",
+      messagingSenderId: "141453158869",
+      appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Function to detect and load different video types
+        function loadVideo(videoUrl) {
+            const videoIframe = document.getElementById("modal-video");
+            const videoElement = document.getElementById("modal-video-player");
+
+            if (!videoUrl) {
+                videoIframe.style.display = "none";
+                videoElement.style.display = "none";
+                return;
+            }
+
+            if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
+                if (videoUrl.includes("watch?v=")) {
+                    videoUrl = videoUrl.replace("watch?v=", "embed/");
+                } else if (videoUrl.includes("youtu.be")) {
+                    const videoId = videoUrl.split("/").pop();
+                    videoUrl = `https://www.youtube.com/embed/${videoId}`;
+                }
+
+                videoIframe.src = videoUrl;
+                videoIframe.style.display = "block";
+                videoElement.style.display = "none";
+
+            } else if (videoUrl.includes("drive.google.com")) {
+                const driveRegex = /\/file\/d\/(.*?)\/view/;
+                const match = videoUrl.match(driveRegex);
+
+                if (match) {
+                    const fileId = match[1];
+                    videoUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+
+                    videoIframe.src = videoUrl;
+                    videoIframe.style.display = "block";
+                    videoElement.style.display = "none";
+                }
+
+            } else if (videoUrl.match(/\.(mp4|webm|ogg)$/)) {
+                videoElement.src = videoUrl;
+                videoElement.style.display = "block";
+                videoIframe.style.display = "none";
+            } else {
+                console.warn("Unsupported video format:", videoUrl);
+            }
+        }
+
+        // Fetch videos from Firestore and display them
+        async function loadVideos() {
+            const videosContainer = document.getElementById("videos");
+            const querySnapshot = await getDocs(collection(db, "FreeVideos"));
+
+            if (!querySnapshot.empty) {
+                const docSnap = querySnapshot.docs[0]; // Get first document
+                const videoList = docSnap.data().videos;
+
+                videoList.forEach((video, index) => {
+                    const videoWrapper = document.createElement("div");
+                    videoWrapper.classList.add("p-4", "border", "border-gray-300", "rounded-lg", "shadow-lg", "mb-4", "cursor-pointer");
+                    videoWrapper.onclick = () => loadVideo(video.url);
+
+                    videoWrapper.innerHTML = `
+                        <h2 class="text-lg font-semibold">${video.title}</h2>
+                        <p class="text-gray-600">${video.description}</p>
+                    `;
+
+                    videosContainer.appendChild(videoWrapper);
+                });
+            } else {
+                videosContainer.innerHTML = "<p class='text-gray-500 text-center'>No videos available.</p>";
+            }
+        }
+
+        window.onload = loadVideos;
+    </script>
+</head>
+<body class="bg-gray-100 p-6">
+    <h1 class="text-2xl font-bold text-center mb-6">Free Videos</h1>
+    <div id="videos" class="max-w-2xl mx-auto"></div>
+
+    <!-- Video Player -->
+    <div class="max-w-2xl mx-auto mt-4">
+        <!-- YouTube Video -->
+        <iframe class="w-full h-64 rounded-lg border border-gray-500 mt-2" id="modal-video"
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen style="display: none;">
+        </iframe>
+
+        <!-- Firebase Storage Direct Video -->
+        <video id="modal-video-player" class="w-full h-64 rounded-lg border border-gray-500 mt-2" controls style="display: none;">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</body>
+</html>

@@ -140,10 +140,10 @@ const auth = getAuth(app);
 });
 document.getElementById("refreshBtn").addEventListener("click", () => {
 
-    document.getElementById("loadingScreen").classList.remove("hidden"); // Show loading animation
-  // Fetch latest courses
+  
+ 
    window.location.reload;
-    document.getElementById("loadingScreen").classList.add("hidden"); // Hide loading animation
+
 });
 
     document.getElementById("prevPage").addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderCourses(); }});

@@ -10,110 +10,50 @@
 
         // Firebase Config
         const firebaseConfig = {
-            apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
-      authDomain: "profstudymate-6d0fc.firebaseapp.com",
-      projectId: "profstudymate",
-      storageBucket: "profstudymate.appspot.com",
-      messagingSenderId: "141453158869",
-      appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+            apiKey: "AIzaSyCtaftg...",
+            authDomain: "profstudymate-6d0fc.firebaseapp.com",
+            projectId: "profstudymate",
+            storageBucket: "profstudymate.appspot.com",
+            messagingSenderId: "141453158869",
+            appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
         };
-
+        
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            const videosContainer = document.getElementById("videos");
-
-            try {
-                const querySnapshot = await getDocs(collection(db, "FreeVideos"));
-                
-                if (!querySnapshot.empty) {
-                    const docSnap = querySnapshot.docs[0]; // Get first document
-                    const videoList = docSnap.data().videos;
-
-                    videoList.forEach((video) => {
-                        const videoWrapper = document.createElement("div");
-                        videoWrapper.classList.add("p-4", "border", "border-gray-300", "rounded-lg", "shadow-lg", "mb-4", "cursor-pointer");
-                        videoWrapper.onclick = () => loadVideo(video.url);
-
-                        videoWrapper.innerHTML = `
-                            <h2 class="text-lg font-semibold">${video.title}</h2>
-                            <p class="text-gray-600">${video.description}</p>
+        
+        document.addEventListener("DOMContentLoaded", async function () {
+            const videoContainer = document.getElementById("video-container");
+            const querySnapshot = await getDocs(collection(db, "FreeVideos"));
+            
+            querySnapshot.forEach((doc) => {
+                const videoData = doc.data();
+                if (videoData.videos && Array.isArray(videoData.videos)) {
+                    videoData.videos.forEach(video => {
+                        const videoCard = `
+                            <div class="p-4 bg-white shadow-lg rounded-lg w-full md:w-1/2 lg:w-1/3">
+                                <video controls class="w-full rounded-md">
+                                    <source src="${video.url}" type="video/mp4">
+                                    <source src="${video.url}" type="video/webm">
+                                    <source src="${video.url}" type="video/ogg">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <h2 class="mt-2 text-lg font-semibold">${video.title}</h2>
+                                <p class="text-gray-600">${video.description}</p>
+                            </div>
                         `;
-
-                        videosContainer.appendChild(videoWrapper);
+                        videoContainer.innerHTML += videoCard;
                     });
-                } else {
-                    videosContainer.innerHTML = "<p class='text-gray-500 text-center'>No videos available.</p>";
                 }
-            } catch (error) {
-                console.error("Error fetching videos:", error);
-                videosContainer.innerHTML = "<p class='text-red-500 text-center'>Failed to load videos.</p>";
-            }
+            });
         });
-
-        // Function to load different video types
-        function loadVideo(videoUrl) {
-            const videoIframe = document.getElementById("modal-video");
-            const videoElement = document.getElementById("modal-video-player");
-
-            if (!videoUrl) {
-                videoIframe.style.display = "none";
-                videoElement.style.display = "none";
-                return;
-            }
-
-            if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
-                if (videoUrl.includes("watch?v=")) {
-                    videoUrl = videoUrl.replace("watch?v=", "embed/");
-                } else if (videoUrl.includes("youtu.be")) {
-                    const videoId = videoUrl.split("/").pop();
-                    videoUrl = `https://www.youtube.com/embed/${videoId}`;
-                }
-
-                videoIframe.src = videoUrl;
-                videoIframe.style.display = "block";
-                videoElement.style.display = "none";
-
-            } else if (videoUrl.includes("drive.google.com")) {
-                const driveRegex = /\/file\/d\/(.*?)\/view/;
-                const match = videoUrl.match(driveRegex);
-
-                if (match) {
-                    const fileId = match[1];
-                    videoUrl = `https://drive.google.com/file/d/${fileId}/preview`;
-
-                    videoIframe.src = videoUrl;
-                    videoIframe.style.display = "block";
-                    videoElement.style.display = "none";
-                }
-
-            } else if (videoUrl.match(/\.(mp4|webm|ogg)$/)) {
-                videoElement.src = videoUrl;
-                videoElement.style.display = "block";
-                videoIframe.style.display = "none";
-            } else {
-                console.warn("Unsupported video format:", videoUrl);
-            }
-        }
     </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
-    <h1 class="text-2xl font-bold text-center mb-6">Free Videos</h1>
-    <div id="videos" class="max-w-2xl mx-auto"></div>
-
-    <!-- Video Player -->
-    <div class="max-w-2xl mx-auto mt-4">
-        <!-- YouTube Video -->
-        <iframe class="w-full h-64 rounded-lg border border-gray-500 mt-2" id="modal-video"
-            allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen style="display: none;">
-        </iframe>
-
-        <!-- Firebase Storage Direct Video -->
-        <video id="modal-video-player" class="w-full h-64 rounded-lg border border-gray-500 mt-2" controls style="display: none;">
-            Your browser does not support the video tag.
-        </video>
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-6">Free Videos</h1>
+        <div id="video-container" class="flex flex-wrap gap-4 justify-center"></div>
     </div>
 </body>
 </html>

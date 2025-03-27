@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Video URL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtaft...",
+            authDomain: "profstudymate.firebaseapp.com",
+            projectId: "profstudymate",
+            storageBucket: "profstudymate.appspot.com",
+            messagingSenderId: "141453158869",
+            appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const videoDocRef = doc(db, "FreeVideos", "lyjdMPq9pW4Q9ZhIKtT8"); // Change to your document ID
+
+        document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const url = document.getElementById("videoURL").value;
+            const title = document.getElementById("videoTitle").value;
+            const description = document.getElementById("videoDescription").value;
+            
+            if (!url) {
+                alert("❌ Please enter a valid video URL.");
+                return;
+            }
+
+            try {
+                await updateDoc(videoDocRef, {
+                    videos: arrayUnion({
+                        url: url,
+                        title: title,
+                        description: description
+                    })
+                });
+                alert("✅ Video URL uploaded successfully!");
+                document.getElementById("uploadForm").reset();
+            } catch (error) {
+                alert("❌ Error uploading video: " + error.message);
+            }
+        });
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center p-6">
+    <h1 class="text-2xl font-bold mb-4">Upload Video URL</h1>
+    <form id="uploadForm" class="glass p-6 rounded-lg shadow-lg space-y-4 w-96 border border-white/20 backdrop-blur-lg">
+        <div class="space-y-2">
+            <label class="block text-gray-300">Video Title</label>
+            <input type="text" id="videoTitle" placeholder="Enter title" class="w-full p-2 rounded-md text-black border border-gray-300" required>
+        </div>
+        <div class="space-y-2">
+            <label class="block text-gray-300">Video Description</label>
+            <textarea id="videoDescription" placeholder="Enter description" class="w-full p-2 rounded-md text-black border border-gray-300" required></textarea>
+        </div>
+        <div class="space-y-2">
+            <label class="block text-gray-300">Video URL</label>
+            <input type="url" id="videoURL" placeholder="Enter video URL" class="w-full p-2 rounded-md text-black border border-gray-300" required>
+        </div>
+        <button type="submit" class="w-full px-6 py-3 bg-blue-500 rounded-lg hover:bg-blue-600 transition-all shadow-lg flex items-center justify-center gap-2 text-white font-semibold">
+            <i class="fas fa-upload"></i> Upload
+        </button>
+    </form>
+</body>
+</html>

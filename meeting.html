@@ -138,11 +138,11 @@ const auth = getAuth(app);
         loadCourses(); // Proceed to load courses if userId is available
     }
 });
-document.getElementById("refreshBtn").addEventListener("click",async () => {
+document.getElementById("refreshBtn").addEventListener("click", () => {
 
     document.getElementById("loadingScreen").classList.remove("hidden"); // Show loading animation
   // Fetch latest courses
-  await window.location.reload;
+   window.location.reload;
     document.getElementById("loadingScreen").classList.add("hidden"); // Hide loading animation
 });
 
@@ -166,12 +166,13 @@ document.getElementById("refreshBtn").addEventListener("click",async () => {
     <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
   </div>
   <div class="flex items-center justify-center flex-col">
+    <button id="refreshBtn" 
+    class="fixed z-50 top-4  bg-blue-600 w-12 h-12 text-white rounded-full shadow-lg transition-all hover:bg-blue-700 hover:scale-110">
+    <i class="fas fa-sync-alt"></i>
+</button>
     <div class="max-w-4xl w-full mt-4 p-2 lg:p-8">
       <div class="flex justify-center mt-8 mb-6 space-x-6" >
-        <button id="refreshBtn" 
-        class="fixed z-50 top-4  bg-blue-600 w-12 h-12 text-white rounded-full shadow-lg transition-all hover:bg-blue-700 hover:scale-110">
-        <i class="fas fa-sync-alt"></i>
-    </button>
+  
         <button  
         
             class="px-6 py-3 bg-black backdrop-blur-lg border border-white/20 text-white rounded-lg transition-all shadow-lg hover:bg-white/20 hover:scale-105 flex items-center gap-2">

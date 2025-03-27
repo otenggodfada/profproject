@@ -24,27 +24,76 @@
         
         document.addEventListener("DOMContentLoaded", async function () {
             const videoContainer = document.getElementById("video-container");
+            const modal = document.getElementById("video-modal");
+            const modalVideo = document.getElementById("modal-video");
+            const modalPlayer = document.getElementById("modal-video-player");
+            const closeModal = document.getElementById("close-modal");
+
             const querySnapshot = await getDocs(collection(db, "FreeVideos"));
             
             querySnapshot.forEach((doc) => {
                 const videoData = doc.data();
+                console.log("Fetched Video Data:", videoData); // Debugging log
                 if (videoData.videos && Array.isArray(videoData.videos)) {
                     videoData.videos.forEach(video => {
+                        let videoElement = "";
+                        let videoType = "";
+
+                        if (video.url && typeof video.url === "string") {
+                            console.log("Processing Video URL:", video.url); // Debugging log
+                            if (video.url.includes("youtube.com") || video.url.includes("youtu.be")) {
+                                videoType = "youtube";
+                            } else if (video.url.includes("drive.google.com")) {
+                                videoType = "drive";
+                            } else {
+                                videoType = "file";
+                            }
+                        }
+
                         const videoCard = `
-                            <div class="p-4 bg-white shadow-lg rounded-lg w-full md:w-1/2 lg:w-1/3">
-                                <video controls class="w-full rounded-md">
-                                    <source src="${video.url}" type="video/mp4">
-                                    <source src="${video.url}" type="video/webm">
-                                    <source src="${video.url}" type="video/ogg">
-                                    Your browser does not support the video tag.
-                                </video>
-                                <h2 class="mt-2 text-lg font-semibold">${video.title}</h2>
-                                <p class="text-gray-600">${video.description}</p>
+                            <div class="p-4 bg-white shadow-lg rounded-lg w-full md:w-1/2 lg:w-1/3 cursor-pointer" data-url="${video.url}" data-type="${videoType}">
+                                <div class="w-full h-48 bg-gray-300 flex items-center justify-center rounded-md">
+                                    <span class="text-gray-700">${video.title || "Untitled Video"}</span>
+                                </div>
+                                <h2 class="mt-2 text-lg font-semibold">${video.title || "Untitled Video"}</h2>
+                                <p class="text-gray-600">${video.description || "No description available."}</p>
                             </div>
                         `;
                         videoContainer.innerHTML += videoCard;
                     });
+                } else {
+                    console.warn("No videos array found in document:", doc.id);
                 }
+            });
+
+            document.querySelectorAll("#video-container div").forEach(videoCard => {
+                videoCard.addEventListener("click", function () {
+                    const url = this.getAttribute("data-url");
+                    const type = this.getAttribute("data-type");
+
+                    if (type === "youtube") {
+                        const youtubeEmbed = url.replace("watch?v=", "embed/").split("&")[0];
+                        modalVideo.src = youtubeEmbed;
+                        modalVideo.style.display = "block";
+                        modalPlayer.style.display = "none";
+                    } else if (type === "drive") {
+                        const driveIdMatch = url.match(/[-\w]{25,}/);
+                        modalVideo.src = driveIdMatch ? `https://drive.google.com/file/d/${driveIdMatch[0]}/preview` : "";
+                        modalVideo.style.display = "block";
+                        modalPlayer.style.display = "none";
+                    } else {
+                        modalPlayer.src = url;
+                        modalVideo.style.display = "none";
+                        modalPlayer.style.display = "block";
+                    }
+                    modal.classList.remove("hidden");
+                });
+            });
+
+            closeModal.addEventListener("click", function () {
+                modal.classList.add("hidden");
+                modalVideo.src = "";
+                modalPlayer.src = "";
             });
         });
     </script>
@@ -54,6 +103,22 @@
     <div class="container mx-auto">
         <h1 class="text-3xl font-bold text-center mb-6">Free Videos</h1>
         <div id="video-container" class="flex flex-wrap gap-4 justify-center"></div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 relative">
+            <button id="close-modal" class="absolute top-2 right-2 bg-gray-500 text-white p-1 rounded">&times;</button>
+            
+            <!-- YouTube Video -->
+            <iframe class="w-full h-64 rounded-lg border border-gray-500 mt-2" id="modal-video"   
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen style="display: none;"></iframe>
+            
+            <!-- Firebase Storage Direct Video -->
+            <video id="modal-video-player" class="w-full h-64 rounded-lg border border-gray-500 mt-2" controls style="display: none;">
+                Your browser does not support the video tag.
+            </video>
+        </div>
     </div>
 </body>
 </html>

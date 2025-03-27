@@ -138,10 +138,11 @@ const auth = getAuth(app);
         loadCourses(); // Proceed to load courses if userId is available
     }
 });
-document.getElementById("refreshBtn").addEventListener("click",() => {
-  window.location.reload;
+document.getElementById("refreshBtn").addEventListener("click",async () => {
+
     document.getElementById("loadingScreen").classList.remove("hidden"); // Show loading animation
   // Fetch latest courses
+  await window.location.reload;
     document.getElementById("loadingScreen").classList.add("hidden"); // Hide loading animation
 });
 

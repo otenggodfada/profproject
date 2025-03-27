@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Videos</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         .glass {
             background: rgba(255, 255, 255, 0.2);
@@ -14,16 +15,27 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6">
+<body class="bg-gray-900  text-white p-6">
     <h1 class="text-4xl font-bold text-center mb-8">🎥 Free Video Collection</h1>
     
-    <div id="videos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-    
-    <div class="flex justify-center mt-8 space-x-4">
-        <button id="prevBtn" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition disabled:opacity-50" disabled>⬅ Previous</button>
-        <button id="nextBtn" class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition">Next ➡</button>
+    <div class="flex justify-center items-center">
+        <div id="videos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Video items will be dynamically inserted here -->
+        </div>
     </div>
-
+    
+    
+    <div class="flex justify-center mt-8 space-x-6">
+        <button id="prevBtn" 
+            class="px-6 py-3 bg-white/10 backdrop-blur-lg border border-white/20 text-white rounded-lg transition-all shadow-lg hover:bg-white/20 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2" 
+            disabled>
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <button id="nextBtn" 
+            class="px-6 py-3 bg-white/10 backdrop-blur-lg border border-white/20 text-white rounded-lg transition-all shadow-lg hover:bg-white/20 hover:scale-105 flex items-center gap-2">
+            Next <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
@@ -63,20 +75,36 @@
                         
                         let videoEmbed = getVideoEmbed(videoUrl);
                         const videoWrapper = document.createElement("div");
-                        videoWrapper.className = "glass p-4 rounded-lg shadow-lg transform hover:scale-105 transition duration-300";
+                        videoWrapper.className = "glass p-4 rounded-lg shadow-lg ";
                         videoWrapper.innerHTML = `
-                            <h2 class="text-xl font-semibold mb-2">${video.title || "Untitled Video"}</h2>
-                            <p class="text-sm text-gray-300 mb-3">${video.description || "No description available."}</p>
-                            <div class="relative">
-                                ${videoEmbed}
-                                <button class="absolute top-2 right-2 bg-gray-900 text-white p-2 rounded-full text-sm hover:bg-gray-700 transition" onclick="openFullscreen(this)">⛶</button>
-                            </div>
+                        <div class="bg-white/10 backdrop-blur-lg p-4 rounded-xl shadow-lg border border-white/20 text-white">
+    <h2 class="text-xl font-semibold mb-2 flex items-center gap-2">
+        <i class="fas fa-video text-blue-400"></i> 
+        ${video.title || "Untitled Video"}
+    </h2>
+    <p class="text-sm text-gray-300 line-clamp-2 mb-3">${video.description || "No description available."}</p>
+    
+    <button class="text-blue-400 underline text-sm flex items-center gap-1" onclick="toggleDescription(this)">
+        <i class="fas fa-angle-down"></i> Show More
+    </button>
+
+    <div class="relative mt-3 overflow-hidden rounded-lg border border-gray-800 shadow-md">
+        ${videoEmbed}
+        <button class="absolute top-2 right-2 bg-gray-900/80 text-white p-2 rounded-full text-sm hover:bg-gray-700 transition flex items-center gap-1" onclick="openFullscreen(this)">
+            <i class="fas fa-expand"></i>
+        </button>
+    </div>
+</div>
                         `;
                         videosContainer.appendChild(videoWrapper);
                     });
                 });
             } else {
-                videosContainer.innerHTML = "<p class='text-center text-gray-400'>No videos found!</p>";
+                videosContainer.innerHTML = `<p class="text-center text-gray-400 flex flex-col items-center justify-center gap-2 bg-white/10 backdrop-blur-lg p-4 rounded-lg shadow-md border border-white/20">
+    <i class="fas fa-video-slash text-2xl text-gray-500"></i>
+    No videos found!
+</p>
+`;
             }
 
             document.getElementById("prevBtn").disabled = !lastVisible;
@@ -118,10 +146,28 @@
             }
         }
 
+   
+
         document.getElementById("nextBtn").addEventListener("click", () => loadVideos("next"));
         document.getElementById("prevBtn").addEventListener("click", () => loadVideos("prev"));
 
         window.onload = () => loadVideos();
+
+
+    </script>
+    <script>
+        
+        function toggleDescription(button) {
+         
+            const description = button.previousElementSibling;
+            if (description.classList.contains("line-clamp-2")) {
+                description.classList.remove("line-clamp-2");
+                button.textContent = "Show Less";
+            } else {
+                description.classList.add("line-clamp-2");
+                button.textContent = "Show More";
+            }
+        }
     </script>
 </body>
 </html>

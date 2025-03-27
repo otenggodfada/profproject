@@ -95,21 +95,21 @@ ${trimmedName}
   }
 });
 
-document
-  .getElementById("toggle-login")
-  .addEventListener("click", function (event) {
-    event.preventDefault();
-    document.getElementById("create-account-section").style.display = "none";
-    document.getElementById("login-section").style.display = "block";
-  });
+document.addEventListener("DOMContentLoaded", function () {
+  const toggleLogin = document.getElementById("toggle-login");
+  if (toggleLogin) {
+    toggleLogin.addEventListener("click", function (event) {
+      event.preventDefault();
+      document.getElementById("create-account-section").style.display = "none";
+      document.getElementById("login-section").style.display = "block";
+    });
+  } else {
+    console.error("Element #toggle-login not found!");
+  }
+});
 
-document
-  .getElementById("toggle-create")
-  .addEventListener("click", function (event) {
-    event.preventDefault();
-    document.getElementById("login-section").style.display = "none";
-    document.getElementById("create-account-section").style.display = "block";
-  });
+
+
 // Function to handle account creation form submission
 document
   .getElementById("account-form")

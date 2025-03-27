@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const storedUserId = localStorage.getItem("userId");
 
     if (!storedUserId) {
-   
+      document.getElementById("loadingScreen").classList.add("hidden");
     } else {
       updateUsername(storedUserId);
       document.getElementById("loadingScreen").classList.add("hidden");

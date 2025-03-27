@@ -124,7 +124,7 @@ const auth = getAuth(app);
       });
   
       document.getElementById("loadingScreen").classList.add("hidden");
-      document.getElementById("loadingScreen").classList.add("loadb");
+      document.getElementById("refreshBtn").classList.add("hidden");
       renderCourses();
     
     };
@@ -165,7 +165,7 @@ document.getElementById("refreshBtn").addEventListener("click", async () => {
   </div>
   <div class="flex items-center justify-center flex-col">
     <div class="max-w-4xl w-full mt-4 p-2 lg:p-8">
-      <div class="flex justify-center mt-8 mb-6 space-x-6" id="loadb">
+      <div class="flex justify-center mt-8 mb-6 space-x-6" >
         <button id="refreshBtn" 
         class="fixed z-50 top-4  bg-blue-600 w-12 h-12 text-white rounded-full shadow-lg transition-all hover:bg-blue-700 hover:scale-110">
         <i class="fas fa-sync-alt"></i>

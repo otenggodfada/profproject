@@ -22,22 +22,44 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Fetch and display all videos
         async function loadVideos() {
             const videosContainer = document.getElementById("videos");
-            videosContainer.innerHTML = ""; // Clear previous content
+            videosContainer.innerHTML = "";
+
             const querySnapshot = await getDocs(collection(db, "FreeVideos"));
 
             if (!querySnapshot.empty) {
                 querySnapshot.forEach((doc) => {
-                    const videoList = doc.data().videos;
-                    
+                    const videoList = doc.data().videos || []; // Ensure it's an array
+
                     videoList.forEach((video) => {
+                        const videoUrl = video.url?.trim() || video["url "]?.trim(); // Handle incorrect key spacing
+
+                        if (!videoUrl) {
+                            console.warn("Skipping video with missing URL:", video);
+                            return; // Skip if no URL
+                        }
+
+                        console.log("Processing Video URL:", videoUrl); // Debugging
+
                         const videoWrapper = document.createElement("div");
+
+                        let videoEmbed = "";
+
+                        if (isYouTube(videoUrl)) {
+                            videoEmbed = `<iframe width="560" height="315" src="${convertYouTube(videoUrl)}" frameborder="0" allowfullscreen></iframe>`;
+                        } else if (isGoogleDrive(videoUrl)) {
+                            videoEmbed = `<iframe width="560" height="315" src="${convertGoogleDrive(videoUrl)}" frameborder="0" allowfullscreen></iframe>`;
+                        } else if (isDirectVideo(videoUrl)) {
+                            videoEmbed = `<video width="560" controls><source src="${videoUrl}" type="video/mp4">Your browser does not support the video tag.</video>`;
+                        } else {
+                            videoEmbed = `<p>⚠ Unsupported video type: <a href="${videoUrl}" target="_blank">Click here to watch</a></p>`;
+                        }
+
                         videoWrapper.innerHTML = `
-                            <h2>${video.title}</h2>
-                            <p>${video.description}</p>
-                            <video src="https://www.youtube.com/watch?v=nKhtTIV6vxU" controls width="320"></video>
+                            <h2>${video.title || "Untitled Video"}</h2>
+                            <p>${video.description || "No description available."}</p>
+                            ${videoEmbed}
                             <hr>
                         `;
                         videosContainer.appendChild(videoWrapper);
@@ -46,6 +68,28 @@
             } else {
                 videosContainer.innerHTML = "<p>No videos found!</p>";
             }
+        }
+
+        function isYouTube(url) {
+            return url.includes("youtube.com") || url.includes("youtu.be");
+        }
+
+        function isGoogleDrive(url) {
+            return url.includes("drive.google.com");
+        }
+
+        function isDirectVideo(url) {
+            return url.match(/\.(mp4|webm|ogg)$/i);
+        }
+
+        function convertYouTube(url) {
+            const match = url.match(/(?:youtube\.com\/(?:.*v=|.*\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            return match ? `https://www.youtube.com/embed/${match[1]}` : url;
+        }
+
+        function convertGoogleDrive(url) {
+            const match = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\//);
+            return match ? `https://drive.google.com/file/d/${match[1]}/preview` : url;
         }
 
         window.onload = loadVideos;

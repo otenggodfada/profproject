@@ -11,38 +11,40 @@
         // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
-      authDomain: "profstudymate-6d0fc.firebaseapp.com",
-      projectId: "profstudymate",
-      storageBucket: "profstudymate.appspot.com",
-      messagingSenderId: "141453158869",
-      appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+            authDomain: "profstudymate-6d0fc.firebaseapp.com",
+            projectId: "profstudymate",
+            storageBucket: "profstudymate.appspot.com",
+            messagingSenderId: "141453158869",
+            appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
         };
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Fetch and display videos
+        // Fetch and display all videos
         async function loadVideos() {
             const videosContainer = document.getElementById("videos");
+            videosContainer.innerHTML = ""; // Clear previous content
             const querySnapshot = await getDocs(collection(db, "FreeVideos"));
 
             if (!querySnapshot.empty) {
-                const docSnap = querySnapshot.docs[0]; // Get first document
-                const videoList = docSnap.data().videos;
-
-                videoList.forEach((video) => {
-                    const videoWrapper = document.createElement("div");
-                    videoWrapper.innerHTML = `
-                        <h2>${video.title}</h2>
-                        <p>${video.description}</p>
-                        <video src="${video.url}" controls width="320"></video>
-                        <hr>
-                    `;
-                    videosContainer.appendChild(videoWrapper);
+                querySnapshot.forEach((doc) => {
+                    const videoList = doc.data().videos;
+                    
+                    videoList.forEach((video) => {
+                        const videoWrapper = document.createElement("div");
+                        videoWrapper.innerHTML = `
+                            <h2>${video.title}</h2>
+                            <p>${video.description}</p>
+                            <video src="https://www.youtube.com/watch?v=nKhtTIV6vxU" controls width="320"></video>
+                            <hr>
+                        `;
+                        videosContainer.appendChild(videoWrapper);
+                    });
                 });
             } else {
-                console.log("No videos found!");
+                videosContainer.innerHTML = "<p>No videos found!</p>";
             }
         }
 

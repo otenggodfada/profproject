@@ -35,14 +35,12 @@
             background: rgba(0, 0, 0, 0.9);
         }
         .gallery {
-            column-count: 3;
-            column-gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
             padding: 20px;
         }
         .gallery-item {
-            display: inline-block;
-            width: 100%;
-            margin-bottom: 10px;
             position: relative;
             border-radius: 10px;
             overflow: hidden;
@@ -53,16 +51,6 @@
             object-fit: cover;
             border-radius: 10px;
         }
-        @media (max-width: 768px) {
-            .gallery {
-                column-count: 2;
-            }
-        }
-        @media (max-width: 480px) {
-            .gallery {
-                column-count: 1;
-            }
-        }
     </style>
 </head>
 <div class="sticky top-0 bg-[#172554] z-20 w-full border-b">
@@ -72,48 +60,63 @@
 
     <div class="text-center text-3xl font-bold my-6">Gallery</div>
     
-    <div class="flex justify-center px-2">
-        <div id="gallery" class="gallery max-w-7xl mx-auto">
+    <div class="flex justify-center px-2 mb-24">
+        <div id="gallery" class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2">
             <!-- Media items will be inserted here -->
         </div>
     </div>
+    
     <script>
         const mediaItems = [
-        { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4', title: 'Sample Video', size: 'large' },
-            { type: 'image', url: 'https://profstudyhub.com/wp-content/uploads/2024/12/SCS-March-25-768x432.jpg', title: 'Sample Image', size: 'small' },
-            { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4', title: 'Another Video', size: 'medium' },
-            { type: 'image', url: 'https://profstudyhub.com/wp-content/uploads/2024/12/PSA-updated-768x432.jpg', title: 'Another Image', size: 'large' },
-            { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4', title: 'Sample Video', size: 'large' },
-            { type: 'image', url: 'https://profstudyhub.com/wp-content/uploads/2024/12/SCS-March-25-768x432.jpg', title: 'Sample Image', size: 'small' },
-            { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4', title: 'Another Video', size: 'medium' },
-            { type: 'image', url: 'https://profstudyhub.com/wp-content/uploads/2024/12/PSA-updated-768x432.jpg', title: 'Another Image', size: 'large' },
-            { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4', title: 'Sample Video', size: 'large' },
-            { type: 'image', url: 'https://profstudyhub.com/wp-content/uploads/2024/12/SCS-March-25-768x432.jpg', title: 'Sample Image', size: 'small' },
-            { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4', title: 'Another Video', size: 'medium' },
-            { type: 'image', url: 'https://profstudyhub.com/wp-content/uploads/2024/12/PSA-updated-768x432.jpg', title: 'Another Image', size: 'large' }
+            { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4', title: 'Sample Video', description: 'This is a sample video.' },
+            { type: 'image', url: 'https://profstudyhub.com/wp-content/uploads/2024/12/SCS-March-25-768x432.jpg', title: 'Sample Image', description: 'This is a sample image.' },
+   
+       
+
+            { type: 'image', url: 'https://profstudyhub.com/wp-content/uploads/2024/12/SCS-March-25-768x432.jpg', title: 'Sample Image', description: 'This is a sample image.' },
+      
+            { type: 'image', url: 'https://profstudyhub.com/wp-content/uploads/2024/12/PSA-updated-768x432.jpg', title: 'Another Image', description: 'Another sample image.' },
+
+            { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4', title: 'Sample Video', description: 'This is a sample video.' },
+            { type: 'image', url: 'https://profstudyhub.com/wp-content/uploads/2024/12/SCS-March-25-768x432.jpg', title: 'Sample Image', description: 'This is a sample image.' },
+      
+            { type: 'image', url: 'https://profstudyhub.com/wp-content/uploads/2024/12/SCS-March-25-768x432.jpg', title: 'Another Image', description: 'Another sample image.' }
         ];
+
         function renderGallery() {
             const gallery = document.getElementById("gallery");
             gallery.innerHTML = "";
 
             mediaItems.forEach((item) => {
                 const mediaElement = document.createElement("div");
-                mediaElement.className = `gallery-item glass ${item.size}`;
+                mediaElement.className = "glass p-4 rounded-lg shadow-lg";
                 
                 if (item.type === "video") {
                     mediaElement.innerHTML = `
-                        <video class='w-full' controls>
-                            <source src='${item.url}' type='video/mp4'>
-                        </video>
-                        <button class="fullscreen-btn" onclick="openFullscreen(this)">
-                            <i class="fas fa-expand"></i>
-                        </button>`;
+                        <h2 class="text-xl font-semibold mb-2 flex items-center gap-2">
+                            <i class="fas fa-video text-blue-400"></i> ${item.title}
+                        </h2>
+                        <p class="text-sm text-gray-300 mb-3">${item.description}</p>
+                        <div class="relative">
+                            <video class='w-full h-64 rounded-lg' controls>
+                                <source src='${item.url}' type='video/mp4'>
+                            </video>
+                            <button class="fullscreen-btn" onclick="openFullscreen(this)">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>`;
                 } else {
                     mediaElement.innerHTML = `
-                        <img class='w-full' src='${item.url}' alt='${item.title}'>
-                        <button class="fullscreen-btn" onclick="openFullscreen(this)">
-                            <i class="fas fa-expand"></i>
-                        </button>`;
+                        <h2 class="text-xl font-semibold mb-2 flex items-center gap-2">
+                            <i class="fas fa-image text-green-400"></i> ${item.title}
+                        </h2>
+                        <p class="text-sm text-gray-300 mb-3">${item.description}</p>
+                        <div class="relative">
+                            <img class='w-full  object-cover rounded-lg' src='${item.url}' alt='${item.title}'>
+                            <button class="fullscreen-btn" onclick="openFullscreen(this)">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>`;
                 }
 
                 gallery.appendChild(mediaElement);
@@ -132,7 +135,6 @@
                 mediaContainer.msRequestFullscreen();
             }
         }
-
         document.addEventListener("DOMContentLoaded", renderGallery);
     </script>
       <div id="footer-container"></div>

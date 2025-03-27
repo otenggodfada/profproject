@@ -22,7 +22,38 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Function to detect and load different video types
+        document.addEventListener("DOMContentLoaded", async () => {
+            const videosContainer = document.getElementById("videos");
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "FreeVideos"));
+                
+                if (!querySnapshot.empty) {
+                    const docSnap = querySnapshot.docs[0]; // Get first document
+                    const videoList = docSnap.data().videos;
+
+                    videoList.forEach((video) => {
+                        const videoWrapper = document.createElement("div");
+                        videoWrapper.classList.add("p-4", "border", "border-gray-300", "rounded-lg", "shadow-lg", "mb-4", "cursor-pointer");
+                        videoWrapper.onclick = () => loadVideo(video.url);
+
+                        videoWrapper.innerHTML = `
+                            <h2 class="text-lg font-semibold">${video.title}</h2>
+                            <p class="text-gray-600">${video.description}</p>
+                        `;
+
+                        videosContainer.appendChild(videoWrapper);
+                    });
+                } else {
+                    videosContainer.innerHTML = "<p class='text-gray-500 text-center'>No videos available.</p>";
+                }
+            } catch (error) {
+                console.error("Error fetching videos:", error);
+                videosContainer.innerHTML = "<p class='text-red-500 text-center'>Failed to load videos.</p>";
+            }
+        });
+
+        // Function to load different video types
         function loadVideo(videoUrl) {
             const videoIframe = document.getElementById("modal-video");
             const videoElement = document.getElementById("modal-video-player");
@@ -66,34 +97,6 @@
                 console.warn("Unsupported video format:", videoUrl);
             }
         }
-
-        // Fetch videos from Firestore and display them
-        async function loadVideos() {
-            const videosContainer = document.getElementById("videos");
-            const querySnapshot = await getDocs(collection(db, "FreeVideos"));
-
-            if (!querySnapshot.empty) {
-                const docSnap = querySnapshot.docs[0]; // Get first document
-                const videoList = docSnap.data().videos;
-
-                videoList.forEach((video, index) => {
-                    const videoWrapper = document.createElement("div");
-                    videoWrapper.classList.add("p-4", "border", "border-gray-300", "rounded-lg", "shadow-lg", "mb-4", "cursor-pointer");
-                    videoWrapper.onclick = () => loadVideo(video.url);
-
-                    videoWrapper.innerHTML = `
-                        <h2 class="text-lg font-semibold">${video.title}</h2>
-                        <p class="text-gray-600">${video.description}</p>
-                    `;
-
-                    videosContainer.appendChild(videoWrapper);
-                });
-            } else {
-                videosContainer.innerHTML = "<p class='text-gray-500 text-center'>No videos available.</p>";
-            }
-        }
-
-        window.onload = loadVideos;
     </script>
 </head>
 <body class="bg-gray-100 p-6">

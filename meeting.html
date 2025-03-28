@@ -54,6 +54,7 @@ const auth = getAuth(app);
     };
  
     let courses = [];
+
     let currentPage = 1;
     const coursesPerPage = 5;
   
@@ -77,7 +78,7 @@ const auth = getAuth(app);
   const start = (currentPage - 1) * coursesPerPage;
   const paginatedCourses = courses.slice(start, start + coursesPerPage);
 
-  paginatedCourses.forEach((course) => {
+  paginatedCourses.forEach((course, index) => {
     const getpurchased = purchasedCourses.includes(course.id);
 
     if (getpurchased && course.author && course.author.zoomId && course.status === "live" ) {
@@ -120,7 +121,11 @@ const auth = getAuth(app);
   
       querySnapshot.forEach((doc) => {
         const course = doc.data();
-        if (course.author) courses.push(course);
+        // if (course.author) courses.push(course);
+        if(course.author){
+          courses.push(course)
+
+        }
       });
   
       document.getElementById("loadingScreen").classList.add("hidden");

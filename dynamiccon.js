@@ -109,7 +109,13 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
+document
+  .getElementById("toggle-create")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    document.getElementById("login-section").style.display = "none";
+    document.getElementById("create-account-section").style.display = "block";
+  });
 // Function to handle account creation form submission
 document
   .getElementById("account-form")

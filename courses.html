@@ -1449,11 +1449,12 @@ function showSuccessToast1() {
     cartCountElement.classList.remove("hidden");
   }
 
-  function addToCart(event, courseName, coursePrice, courseId, courseDescription, courseImageUrl) {
+  function addToCart(event, courseName, coursePrice, courseId, courseDescription, courseImageUrl, userid) {
   event.stopPropagation();
 
   const price = parseFloat(coursePrice) || 0;
   cart.push({
+userid: userid,
     id: courseId,
     name: courseName,
     price,
@@ -1578,13 +1579,14 @@ document.addEventListener("click", (event) => {
   const button = event.target.closest(".add-to-cart-btn");
 
   if (button) {
+    
     const courseId = button.dataset.id || "unknown";
     const courseName = button.dataset.title || "Unknown Course";
     const coursePrice = button.dataset.price || "0";
     const courseDescription = button.dataset.description || "No description";
     const courseImageUrl = button.dataset.image || "https://via.placeholder.com/150";
-
-    addToCart(event, courseName, coursePrice, courseId, courseDescription, courseImageUrl);
+    const userid1 = auth.currentUser.uid;
+    addToCart(event, courseName, coursePrice, courseId, courseDescription, courseImageUrl, userid1);
   }
 });
 

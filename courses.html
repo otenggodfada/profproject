@@ -1449,12 +1449,13 @@ function showSuccessToast1() {
     cartCountElement.classList.remove("hidden");
   }
 
-  function addToCart(event, courseName, coursePrice, courseId, courseDescription, courseImageUrl, userid) {
+  function addToCart(event, courseName, coursePrice, courseId, courseDescription, courseImageUrl) {
   event.stopPropagation();
 
   const price = parseFloat(coursePrice) || 0;
+  const userid = auth.currentUser.uid;
   cart.push({
-userid: userid,
+ userid,
     id: courseId,
     name: courseName,
     price,
@@ -1585,8 +1586,9 @@ document.addEventListener("click", (event) => {
     const coursePrice = button.dataset.price || "0";
     const courseDescription = button.dataset.description || "No description";
     const courseImageUrl = button.dataset.image || "https://via.placeholder.com/150";
-    const userid1 = auth.currentUser.uid;
-    addToCart(event, courseName, coursePrice, courseId, courseDescription, courseImageUrl, userid1);
+
+   
+    addToCart(event, courseName, coursePrice, courseId, courseDescription, courseImageUrl);
   }
 });
 

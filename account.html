@@ -214,9 +214,15 @@ placeholder="Registration number"
       function populateReferral() {
         const urlParams = new URLSearchParams(window.location.search);
         const referralCode = urlParams.get("referral");
+     const reff=   localStorage.getItem("referral")
         if (referralCode) {
           const referralInput = document.getElementById("referral");
           referralInput.value = referralCode;
+        } else if (reff){
+
+          const referralInput = document.getElementById("referral");
+          referralInput.value = reff;
+
         }
       }
 

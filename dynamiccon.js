@@ -32,6 +32,8 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+
+
 onAuthStateChanged(auth, (user) => {
   document.getElementById("signOut").addEventListener("click", () => {
     auth
@@ -122,7 +124,8 @@ document
   .addEventListener("submit", async (e) => {
     document.getElementById('loading-screen').classList.remove("hidden");
     e.preventDefault();
-
+   
+       
     const name = document.getElementById("full-name").value;
     const registn = document.getElementById("reg-number").value;
     const email = document.getElementById("email").value;

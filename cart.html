@@ -420,7 +420,7 @@
         const customerName = document.getElementById("name").value;
         const customerEmail = document.getElementById("email").value;
         const customerPhone = document.getElementById("phone").value;
-
+        const tx_ref = `txref-${Math.random().toString(36).substr(2, 10)}`;
         if (!customerName || !customerEmail || !customerPhone) {
           alert("Please fill in all customer information fields.");
           return;
@@ -428,7 +428,7 @@
 
         FlutterwaveCheckout({
           public_key: "FLWPUBK_TEST-02b9b5fc6406bd4a41c3ff141cc45e93-X",
-          tx_ref: "txref-DI0NzMx13",
+          tx_ref: tx_ref,
           amount: amount,
           currency: "GHS",
           payment_options: "card, banktransfer, ussd",

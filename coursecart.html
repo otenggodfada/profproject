@@ -382,6 +382,7 @@
       const image_url = params.get("image_url");
       const refcode = params.get("referalcode");
 
+      console.log(userid)
       if (bookid && title && amount && image_url) {
         document.getElementById("title").textContent = title;
         document.getElementById("amount").textContent = `Price: GHS${amount}`;
@@ -423,7 +424,7 @@
         const customerName = document.getElementById("name").value;
         const customerEmail = document.getElementById("email").value;
         const customerPhone = document.getElementById("phone").value;
-
+        const tx_ref = `txref-${Math.random().toString(36).substr(2, 10)}`;
         if (!customerName || !customerEmail || !customerPhone) {
           alert("Please fill in all customer information fields.");
           return;
@@ -431,7 +432,7 @@
 
         FlutterwaveCheckout({
           public_key: ENV_VARS.API_KEY,
-          tx_ref: "txref-DI0NzMx13",
+          tx_ref: tx_ref,
           amount: amount,
           currency: "GHS",
           payment_options: "card, banktransfer, ussd",

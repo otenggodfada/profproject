@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><a href="aboutus.html" class="flex items-center text-gray-400 hover:text-white"><span class="mr-2">ℹ️</span> About Us</a></li>
                         <li><a href="terms_conditions.html" class="flex items-center text-gray-400 hover:text-white"><span class="mr-2">❓</span> FAQs</a></li>
                         <li><a href="terms_conditions.html" class="flex items-center text-gray-400 hover:text-white"><span class="mr-2">📜</span> Terms</a></li>
-                        <li><a href="blog.html" class="flex items-center text-gray-400 hover:text-white"><span class="mr-2">✍️</span> Create Article</a></li>
+          
                     </ul>
                 </div>
             </div>

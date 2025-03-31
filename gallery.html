@@ -33,7 +33,7 @@
   
      
 
-    <div id="imageGallery" class=" grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+    <div id="imageGallery" class=" max-w-7xl grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-4 justify-center items-start mx-auto">
         <!-- Images will be inserted here dynamically -->
     </div>
 
@@ -63,10 +63,19 @@
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
 
+// Scroll Animation - Intersection Observer
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("opacity-100", "translate-y-0");
+        }
+    });
+}, { threshold: 0.2 });
+
 imageLinks.forEach((url, index) => {
     const container = document.createElement("div");
     container.className = "relative group"; // Group for hover effects
-
+    observer.observe(container); // Apply observer for scroll animation
     const imgElement = document.createElement("img");
 
     // Load first 3 images immediately, lazy load the rest

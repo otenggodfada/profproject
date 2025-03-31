@@ -136,9 +136,7 @@ app.put("/update-user-book/:userId/:bookId/:amount/:refcode", async (req, res) =
         // If user exists, update their course_id array
         const existingCourses = userDoc.data().course_id || [];
         if (!existingCourses.includes(bookId)) {
-            await userRef.update({
-                course_id: admin.firestore.FieldValue.arrayUnion(bookId)
-            });
+            
 
             // Add course to the Courses subcollection with expiration date
             await userRef.collection("Courses").doc(bookId).set({

@@ -113,13 +113,16 @@ placeholder="Registration number"
               />
             </div>
             <div id="author-fields" class="hidden">
-             
+            <div>
+             Create ZoomLInk <span id="unhide-zoom" class="text-blue-500" >Here</span> 
+            </div>
               <input
               placeholder="Zoom Invitation link"
                 type="text"
                 id="zoom-id"
                 class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500 "
               />
+           
             </div>
             <p class="text-center mt-4">
               By signing up, I agree with the website's
@@ -216,8 +219,40 @@ placeholder="Registration number"
        
         </div>
       </div>
+
+      
+
+      <div id="zoom-inv" class="fixed bg-black bg-opacity-80 top-0 left-0 bottom-0 w-screen h-screen flex justify-center items-center overflow-y-auto">
+        <div class="max-w-md mx-auto bg-gradient-to-r from-indigo-600 to-purple-700 p-8 rounded-3xl shadow-2xl text-white text-center space-y-6 relative overflow-y-auto max-h-[90vh]">
+          <div class="flex justify-center">
+              <img src="https://fv5-5.files.fm/thumb_show.php?i=4y2mjbe7hs&view&v=1&PHPSESSID=d1c81dd908e350a345f15abddaa35c3e6a73f36d" 
+                  alt="Profile Image" class="">
+          </div>
+          <div id="close-zoom" class="absolute top-4 right-4 text-white bg-black/50 hover:bg-red-700 rounded-full w-10 h-10 flex justify-center items-center shadow-lg cursor-pointer transition-all duration-300 ease-in-out">
+            X
+          </div>
+          
+          <h2 class="text-4xl font-extrabold tracking-wide">Zoom Invitation Link</h2>
+          <p class="text-lg leading-relaxed opacity-90">Get access to your Zoom invitation link! Click below to enter:</p>
+          <a href="https://app.zoom.us/wc/home" 
+              class="inline-block bg-white text-indigo-600 px-8 py-3 rounded-full font-bold text-lg transition-all hover:bg-gray-100 shadow-xl transform hover:scale-105">
+              🚀 Get Link
+          </a>
+        </div>
+      </div>
+      
+
     </div>
     <script>
+
+document.getElementById("unhide-zoom").addEventListener("click", function () {
+    document.getElementById("zoom-inv").classList.remove("hidden");
+});
+
+document.getElementById("close-zoom").addEventListener("click", function () {
+    document.getElementById("zoom-inv").classList.add("hidden");
+});
+
       document
         .getElementById("user-type")
         .addEventListener("change", function () {

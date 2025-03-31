@@ -1605,7 +1605,7 @@ document.addEventListener("click", (event) => {
   function updateShareLinks() {
     const title = document.getElementById("modal-title").innerText;
     const courseId = document.getElementById("modal1-id").innerText;
-    const siteUrl = 'http://127.0.0.1:5500' // Get the base site URL
+    const siteUrl = 'https://profstudymate.com' // Get the base site URL
     const storedUserId = localStorage.getItem("userId");
     const url = `${siteUrl}/courses.html?courseid=${courseId}&referral=${storedUserId}`;
 

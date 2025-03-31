@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <li><a href="courses.html" class="flex items-center text-gray-400 hover:text-white"><span class="mr-2">📚</span> Courses</a></li>
                         <li><a href="store.html" class="flex items-center text-gray-400 hover:text-white"><span class="mr-2">🛒</span> Shop</a></li>
                         <li><a href="gallery.html" class="flex items-center text-gray-400 hover:text-white"><span class="mr-2">📷</span> Gallery</a></li>
+                               <li><a href="testimonials.html" class="flex items-center text-gray-400 hover:text-white"><span class="mr-2">😊</span> Testimonials</a></li>
                         <li><a href="freevideos.html" class="flex items-center text-gray-400 hover:text-white"><span class="mr-2">🎥</span> Free Videos</a></li>
                     </ul>
                 </div>

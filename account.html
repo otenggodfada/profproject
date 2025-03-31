@@ -138,6 +138,7 @@ placeholder="Registration number"
           </p>
         
         </div>
+        <!-- Login Section -->
         <div id="login-section" class="hidden">
           <h2 class="text-2xl font-semibold text-center mb-6">
             Login to Your Account
@@ -164,6 +165,13 @@ placeholder="Registration number"
                 required
               />
             </div>
+
+            <p class="text-center mt-4">
+              Forgot Password?
+              <a href="#" id="toggle-reset" class="text-blue-400"
+                >Reset</a
+              >
+            </p>
             <button
               type="submit"
               class="w-full p-3 mt-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg"
@@ -177,6 +185,35 @@ placeholder="Registration number"
               >Register Now</a
             >
           </p>
+        </div>
+<!-- Reset Section -->
+        <div id="reset-section" class="hidden ">
+          <h2 class="text-2xl font-semibold text-center mb-6 mt-10">
+            Reset Your Account
+          </h2>
+          <form id="reset-form" class="space-y-4">
+            <div>
+             
+              <input
+              placeholder="Email address"
+                type="email"
+                id="reset-email"
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
+                required
+              />
+              <p id="message"></p>
+            </div>
+       
+
+      
+            <button
+              type="submit"
+              class="w-full p-3 mt-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg"
+            >
+              Reset
+            </button>
+          </form>
+       
         </div>
       </div>
     </div>
@@ -201,6 +238,16 @@ placeholder="Registration number"
             .classList.add("hidden");
           document.getElementById("login-section").classList.remove("hidden");
         });
+
+        document
+        .getElementById("toggle-reset")
+        .addEventListener("click", function () {
+          document
+            .getElementById("login-section")
+            .classList.add("hidden");
+          document.getElementById("reset-section").classList.remove("hidden");
+        });
+
       document
         .getElementById("toggle-create")
         .addEventListener("click", function () {

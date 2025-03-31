@@ -17,6 +17,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -95,6 +96,36 @@ ${trimmedName}
     </div>`;
   } else {
   }
+});
+
+
+ // Handle form submission
+ document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("reset-form").addEventListener("submit", (event) => {
+      event.preventDefault(); // Prevent page reload
+
+      const email = document.getElementById("reset-email").value;
+      const message = document.getElementById("message");
+
+      if (email.trim() === "") {
+          message.innerText = "Please enter your email.";
+          message.classList.remove("text-green-500");
+          message.classList.add("text-red-500");
+          return;
+      }
+
+      sendPasswordResetEmail(auth, email)
+          .then(() => {
+              message.innerText = "Password reset email sent!";
+              message.classList.remove("text-red-500");
+              message.classList.add("text-green-500");
+          })
+          .catch((error) => {
+              message.innerText = error.message;
+              message.classList.remove("text-green-500");
+              message.classList.add("text-red-500");
+          });
+  });
 });
 
 document.addEventListener("DOMContentLoaded", function () {

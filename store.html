@@ -56,7 +56,7 @@
           type="text" 
           id="search-input"
           placeholder="Search"
-          class="outline-none bg-transparent ml-2  "
+          class="outline-none bg-transparent ml-2  w-full "
           />
         </div>
 
@@ -141,8 +141,8 @@
       const db = getFirestore(app);
       const auth = getAuth(app);
       // Constants for pagination
-      const booksPerPage = 7; // Number of books per page
-      let currentPage = 1; // Current page
+      let currentPage = 1; 
+      const booksPerPage = 8;
       var booktitle = "sssss";
       const urlParams = new URLSearchParams(window.location.search);
 const courseTitle = urlParams.get("title");
@@ -152,7 +152,7 @@ if (courseTitle) {
 }
 
       // Function to fetch and display books
-      async function fetchBooks(query = "", filter = "") {
+      async function fetchBooks(query = "", filter, searchTerm) {
         const booksContainer = document.getElementById("books-container");
         booksContainer.innerHTML = ""; // Clear previous results
         try {
@@ -318,41 +318,43 @@ if (selectedFilters.length > 0) {
 
 
 
-      // Function to render pagination
-      function renderPagination(totalBooks) {
-        const paginationElement = document.getElementById("pagination");
-        paginationElement.innerHTML = "";
 
-        const totalPages = Math.ceil(totalBooks / booksPerPage);
-        if (totalPages === 0) {
-          // Display a message when there are no books
-          const noBooksMessage = document.createElement("p");
-          noBooksMessage.textContent = "No books available.";
-          noBooksMessage.className = "text-gray-500";
-          paginationElement.appendChild(noBooksMessage);
-        } else if (totalPages > 1) {
-          for (let i = 1; i <= totalPages; i++) {
-            const pageLink = document.createElement("a");
-            pageLink.href = "#";
-            pageLink.textContent = i;
-            pageLink.className =
-              "px-3 py-1 mx-1 rounded-md hover:bg-blue-500 hover:text-white transition";
-            if (i === currentPage) {
-              pageLink.classList.add("bg-blue-500", "text-white");
-            } else {
-              pageLink.classList.add("bg-gray-800", "text-white");
-            }
-            pageLink.addEventListener("click", () => {
-              currentPage = i;
-              fetchBooks(
-                document.getElementById("search-input").value,
-                getSelectedFilter()
-              );
-            });
-            paginationElement.appendChild(pageLink);
-          }
-        }
-      }
+
+      function renderPagination(totalBooks) {
+  const paginationElement = document.getElementById("pagination");
+  paginationElement.innerHTML = "";
+
+  const totalPages = Math.ceil(totalBooks / booksPerPage);
+  if (totalPages <= 1) return; // No pagination needed if one page
+
+  for (let i = 1; i <= totalPages; i++) {
+    const pageLink = document.createElement("a");
+    pageLink.href = "#";
+    pageLink.textContent = i;
+    pageLink.className =
+      "px-3 py-1 mx-1 rounded-md hover:bg-blue-500 hover:text-white transition";
+
+    if (i === currentPage) {
+      pageLink.classList.add("bg-blue-500", "text-white");
+    } else {
+      pageLink.classList.add("bg-gray-800", "text-white");
+    }
+
+    pageLink.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevents page refresh
+
+      currentPage = i;
+      fetchBooks(
+        document.getElementById("search-input").value,
+        getSelectedFilters()
+      );
+
+      renderPagination(totalBooks); // Ensure pagination updates
+    });
+
+    paginationElement.appendChild(pageLink);
+  }
+}
 
       // Function to check if user is logged in (placeholder function)
       function isLoggedIn() {
@@ -566,7 +568,7 @@ function getSelectedFilters() {
     </script>
     <script>
             function openFullscreen(imageUrl) {
-        console.log('dddddddd')
+    
     const fullscreenDiv = document.createElement("div");
     fullscreenDiv.className = "fixed top-0 right-0 left-0  flex items-center justify-center z-50";
     fullscreenDiv.innerHTML = `

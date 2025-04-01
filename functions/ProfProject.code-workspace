@@ -1,0 +1,15 @@
+{
+  "folders": [
+	{
+		"name": "ProfProject",
+		"path": ".."
+	}
+],
+  "settings": {},
+  "extensions": {
+    "recommendations": [
+      "xabikos.javascriptsnippets",
+      "akamud.vscode-javascript-snippet-pack"
+    ]
+  }
+}

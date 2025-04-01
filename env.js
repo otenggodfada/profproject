@@ -1,5 +1,5 @@
-
+/** @format */
 
 const ENV_VARS = {
-    API_KEY: "FLWPUBK_TEST-02b9b5fc6406bd4a41c3ff141cc45e93-X"
+  API_KEY: "FLWPUBK-0aa997a494a846d6534ed3dba0fbf341-X",
 };

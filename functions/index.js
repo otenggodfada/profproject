@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 require('dotenv').config();
 const nodemailer = require("nodemailer");
-var serviceAccount = require("./profstudymate-firebase-adminsdk-uq9zy-a4c5d4c902.json");
+// var serviceAccount = require("./profstudymate-firebase-adminsdk-uq9zy-0c528e6019.json");
 admin.initializeApp({ credential: admin.credential.cert(serviceAccount)});
 const db = admin.firestore();
 

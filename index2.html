@@ -1,0 +1,250 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profstudymate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      defer
+      src="https://unpkg.com/framer-motion@4.1.17/dist/framer-motion.umd.js"
+    ></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script type="module" src="./dynamiccon.js"></script>
+    <script type="module" src="./navbar.js"></script>
+    <script src="bottomnv.js"></script>
+    <script src="kaka.js"></script>
+ 
+    <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(() => console.log("Service Worker Registered"))
+          .catch((error) => console.log("Service Worker Registration Failed:", error));
+      }
+    </script>
+    
+    <style>
+
+      @keyframes spin-slow {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .animate-spin-slow {
+        animation: spin-slow 3s linear infinite;
+      }
+    </style>
+
+<script type="module">
+  // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, doc, getDoc, collection, getDocs, orderBy, query, where  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { initializeFirestore, persistentLocalCache } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+ // Your Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+  authDomain: "profstudymate-6d0fc.firebaseapp.com",
+  projectId: "profstudymate",
+  storageBucket: "profstudymate.appspot.com",
+  messagingSenderId: "141453158869",
+  appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// ✅ Enable Firestore Offline Caching
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache(), // Enables offline caching
+});
+
+// Initialize Authentication
+const auth = getAuth(app);
+
+// Function to update username
+const updateUsername = async (userId) => {
+  const userRef = doc(db, "users", userId);
+  const userSnap = await getDoc(userRef);
+  if (userSnap.exists()) {
+    let fullName = userSnap.data().name;
+    let displayName = fullName.length > 8 ? fullName.substring(0, 8) + "..." : fullName;
+    document.getElementById("username").textContent = `Hello, ${displayName}`;
+  }
+};
+
+// Check if user is logged in
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    updateUsername(user.uid);
+  }
+});
+async function fetchCategories() {
+  localStorage.removeItem("categories");
+  // Check for cached data in LocalStorage
+  const cachedData = localStorage.getItem("categories");
+  if (cachedData) {
+    document.getElementById("categories").innerHTML = cachedData;
+    document.getElementById("loadingScreen").style.display = "none";
+    return;
+  }
+
+  const categoriesRef = collection(db, "categories");
+  const categoriesQuery = query(categoriesRef, orderBy("index"));
+  const categoriesSnapshot = await getDocs(categoriesQuery);
+
+  let categoryHtmlList = [];
+  let categoryPromises = [];
+
+  categoriesSnapshot.forEach((categoryDoc) => {
+    const { name, image_url } = categoryDoc.data();
+    const categoryId = categoryDoc.id;
+
+    const coursePromise = (async () => {
+      const coursesRef = collection(db, "courses",);
+      const coursesQuery = query(coursesRef, where("cat_id", "==", categoryId));
+      const coursesSnapshot = await getDocs(coursesQuery);
+
+      const courseCount = coursesSnapshot.size;
+      let totalStudents = 0;
+      let totalRatings = 0;
+
+      coursesSnapshot.forEach((doc) => {
+        const courseData = doc.data();
+        totalStudents += courseData.students || 0;
+        totalRatings += courseData.rating || 0;
+      });
+
+      return `
+        <div class="relative border border-gray-500 rounded-lg overflow-hidden cursor-pointer"
+             onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'">
+        
+          <!-- Favorite Icon -->
+          <div class="absolute z-10 top-3 right-3 bg-white p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
+              </svg>
+          </div>
+
+          <!-- Image Container -->
+          <div class="relative">
+              <img loading='lazy' src="${image_url}" alt="${name}" class="w-50 h-26 object-cover">
+              <div class=" text-white p-3 rounded-b-lg space-x-2 space-y-2">
+                  <h2 class="text-lg font-bold hover:text-blue-500">${name}</h2>
+                  <p class="text-sm flex items-center gap-2">
+                      <i class="fas fa-book text-yellow-400"></i> ${courseCount} courses
+                  </p>
+                  <p class="text-sm flex items-center gap-2">
+                      <i class="fas fa-users text-blue-400"></i> ${totalStudents} students
+                  </p>
+                  <p class="text-sm flex items-center gap-2">
+                      <i class="fas fa-star text-red-400"></i> ${totalRatings} total ratings
+                  </p>
+
+                  <div class="border-t border-gray-700 mt-5 mb-5"></div>
+                  <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
+                      <i class="fas fa-arrow-right mr-2"></i> View Courses
+                  </p>
+              </div>
+          </div>
+        </div>
+      `;
+    })();
+
+    categoryPromises.push(coursePromise);
+  });
+
+  // Wait for all category data to be fetched
+  const categoryHtmlListResolved = await Promise.all(categoryPromises);
+
+  // Hide loading screen and update UI
+  document.getElementById("loadingScreen").style.display = "none";
+  document.getElementById("categories").innerHTML = categoryHtmlListResolved.join("");
+
+  // Store the data in LocalStorage for future fast access
+  localStorage.setItem("categories", categoryHtmlListResolved.join(""));
+}
+
+// Run fetchCategories() when the page loads
+document.addEventListener("DOMContentLoaded", fetchCategories);
+</script>
+
+  </head>
+    <!-- Loading Screen -->
+<div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
+  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
+</div>
+  <body class="bg-gray-900 text-white">
+    <script src="dark-mode.js"></script>
+    <div class="sticky top-0  z-20 w-full  border-b">
+      <div id="navbar-container"></div>
+      <div class="flex justify-between items-center items-start pb-3 px-6 bg-[#242525]  ">
+        <div>
+          <h1 id="username" class="text-2xl mb-2 font-extrabold text-white">
+            Hello, Studymate
+          </h1>
+          <p class="text-white/30 text-sm">What do you want to learn today?</p>
+        </div>
+        <div onclick="window.location.href='mprofilepage.html'" 
+        class="relative w-16 h-16 flex justify-center items-center cursor-pointer group">
+        
+        <!-- Rotating Outer Gear -->
+        <i class=" border w-16 h-16 rounded-full border-b-2 border-white absolute  bg-white/10 animate-spin-slow"></i>
+    
+        <!-- User Profile with Gear (Middle Icon) -->
+        <div class="relative flex items-center">
+            <i class="ph ph-user text-2xl text-white/80"></i>
+            <i class="ph ph-gear text-xl text-white/80 absolute -bottom-2 -right-3 
+                      transition-transform group-hover:rotate-180 duration-500"></i>
+        </div>
+    </div>
+      </div>
+    </div>
+    <div class=" mx-auto  mb-36">
+    
+        <!-- Courses Categories Section -->
+        <section class="  text-white lg:px-40  flex flex-col justify-center items-center  ">
+        
+    
+        
+    <!-- Cards Section -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full h-full p-4 " id="categories">
+
+      
+    </div>
+        </section>
+    
+
+      <footer>
+        <div
+          class="fixed z-50 bottom-0 right-0 left-0"
+          id="navbar-container1"
+        ></div>
+      </footer>
+    </div>
+<!-- Big Screen Footer -->
+<div class="w-full" id="footer-container"></div>
+<script src="footerp.js"></script>
+    <!-- Framer Motion Animation -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const { motion } = window.framerMotion;
+        const cards = document.querySelectorAll(".card");
+        cards.forEach((card, index) => {
+          motion(card, {
+            initial: { opacity: 0, y: 30 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: index * 0.15, duration: 0.6, ease: "easeOut" },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

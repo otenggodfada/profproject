@@ -1,392 +1,1239 @@
 <!-- @format -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
+  <!-- Mirrored from www.aspireexecutiveinstitute.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Jun 2024 04:07:02 GMT -->
+  <!-- Added by HTTrack --><meta
+    http-equiv="content-type"
+    content="text/html;charset=utf-8"
+  /><!-- /Added by HTTrack -->
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profstudymate</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+    defer
+    src="https://unpkg.com/framer-motion@4.1.17/dist/framer-motion.umd.js"
+  ></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.3.4/lib/darkmode-js.min.js"></script>
+    <!-- <script
+      src="https://static.elfsight.com/platform/platform.js"
+      data-use-service-core
+      defer
+    ></script> -->
+    <div
+      class="elfsight-app-5837f75c-ade7-4dd8-a1cb-bd1cc2ed68a4"
+      data-elfsight-app-lazy
+    ></div>
 
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Profstudymate</title>
+    <meta
+      name="description"
+      content="Profstudymate is a registered Partner in Learning of the ICAG and CTIG, providing world class tuition to prepare students for their professional exams"
+    />
+    <meta name="next-head-count" content="4" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="animatecss.css">
+    <script src="animatescript.js" defer></script>
+    <script type="module" src="./indexnav.js"></script>
+    <link
+      rel="preload"
+      href="_next/static/css/096eeec99e574319.css"
+      as="style"
+    />
     <script type="module" src="./dynamiccon.js"></script>
     <script type="module" src="./navbar.js"></script>
     <script src="bottomnv.js"></script>
     <script src="kaka.js"></script>
- 
-   
-  
-    
+    <script type="module" src="nava-links.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="_next/static/css/096eeec99e574319.css"
+      data-n-g=""
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.emailjs.com/dist/email.min.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init("0s5aKc23u4R444FF0"); // Replace with your EmailJS user ID
+      })();
+    </script>
+
     <style>
-
-      @keyframes spin-slow {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-      .animate-spin-slow {
-        animation: spin-slow 3s linear infinite;
-      }
-    </style>
-
-<script type="module">
-  // Import Firebase modules
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, doc, getDoc, collection, getDocs, orderBy, query, where  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-  import { initializeFirestore, persistentLocalCache } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
- // Your Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
-  authDomain: "profstudymate-6d0fc.firebaseapp.com",
-  projectId: "profstudymate",
-  storageBucket: "profstudymate.appspot.com",
-  messagingSenderId: "141453158869",
-  appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-// ✅ Enable Firestore Offline Caching
-const db = initializeFirestore(app, {
-  localCache: persistentLocalCache(), // Enables offline caching
-});
-
-// Initialize Authentication
-const auth = getAuth(app);
-
-// Function to update username
-const updateUsername = async (userId) => {
-  const userRef = doc(db, "users", userId);
-  const userSnap = await getDoc(userRef);
-  if (userSnap.exists()) {
-    let fullName = userSnap.data().name;
-    let displayName = fullName.length > 8 ? fullName.substring(0, 8) + "..." : fullName;
-    document.getElementById("username").textContent = `Hello, ${displayName}`;
-  }
-};
-document.addEventListener("DOMContentLoaded", function () {
-    const storedUserId = localStorage.getItem("userId");
-
-    if (!storedUserId) {
-      document.getElementById("loadingScreen").classList.add("hidden");
-    } else {
-      updateUsername(storedUserId);
-      document.getElementById("loadingScreen").classList.add("hidden");
-    }
-});
-
-</script>
-
-  </head>
-    <!-- Loading Screen -->
-<div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
-  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
-</div>
-  <body class="bg-gray-900 text-white">
-      <!-- Loading Screen -->
-<!-- <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
-  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
-</div> -->
-    <script src="dark-mode.js"></script>
-    <div class="sticky top-0  z-20 w-full  border-b">
-      <div id="navbar-container"></div>
-      <div class="flex justify-between items-center py-5 px-8 bg-[#1a1a1a] border border-white/10">
   
-        <!-- Left Section: Greeting -->
-        <div>
-          <h1 id="username" class="text-3xl font-bold text-white drop-shadow-md">
-            Hey, Studymate 👋
-          </h1>
-          <p class="text-white/60 text-sm">Ready to explore something new today?</p>
+      .program {
+        height: 500px;
+        width: 400px;
+        /* bg-white/30 backdrop-blur-lg p-6 rounded-lg shadow-md, */
+        background-color: rgba(255, 255, 255, 0.363);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        border-top-left-radius: 50px;
+        border-bottom-right-radius: 10px;
+      }
+      .program:hover {
+        transform: translateX(-10px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+      .star-icon {
+        color: #fcd34d; /* Yellow color for stars */
+      }
+      .scroll-reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      .scroll-reveal.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .neon-text {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00aaff,
+          0 0 20px #00aaff, 0 0 30px #00aaff, 0 0 40px #00aaff, 0 0 55px #00aaff,
+          0 0 75px #00aaff;
+      }
+
+      .rounded-lg {
+        border-radius: 1rem;
+      }
+
+      .overflow-hidden {
+        overflow: hidden;
+      }
+
+      .introduction-section .neon-text {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00aaff,
+          0 0 20px #00aaff, 0 0 30px #00aaff, 0 0 40px #00aaff, 0 0 55px #00aaff,
+          0 0 75px #00aaff;
+      }
+
+      .introduction-section .rounded-lg {
+        border-radius: 1rem;
+      }
+
+      .introduction-section .overflow-hidden {
+        overflow: hidden;
+      }
+
+      @media (max-width: 640px) {
+        .introduction-section .max-w-4xl {
+          padding-top: 8rem; /* Adjust padding for small screens */
+        }
+      }
+      /* Adjust the gradient overlay opacity and color */
+
+
+
+      
+    </style>
+     
+
+     <script>
+      const sections = document.querySelectorAll('section');
+
+      function animateOnScroll() {
+          sections.forEach(section => {
+              let rect = section.getBoundingClientRect();
+              if (rect.top < window.innerHeight * 0.8) {
+                  anime({
+                      targets: section,
+                      opacity: 1,
+                      translateY: 0,
+                      duration: 1000,
+                      easing: 'easeOutQuad'
+                  });
+              }
+          });
+      }
+
+      document.addEventListener('scroll', animateOnScroll);
+      animateOnScroll();
+  </script>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <div id="__next">
+      <div class="">
+        <div class=" bg-[#172554] sticky top-0 z-20 w-full">
+          <div id="navbar-container"></div>
         </div>
-      
-        <!-- Right Section: Profile Button -->
-        <div onclick="window.location.href='mprofilepage.html'"
-             class="relative w-20 h-20 flex justify-center items-center cursor-pointer group 
-              ">
-          
-          <!-- Glowing Border Animation -->
-          <div class="absolute w-20 h-20 rounded-full border border-transparent 
-                      animate-pulse bg-gradient-to-r from-white/10 to-transparent"></div>
-      
-          <!-- New Gear Animation with FAS -->
-          <div class="relative flex items-center">
-            <i class="fas fa-user text-4xl text-white/90 transition-transform duration-300 group-hover:scale-110"></i>
-            <i class="fas fa-cog text-2xl text-white/80 absolute -bottom-1.5 -right-2 
-                      transition-transform group-hover:rotate-[220deg] group-hover:scale-125 duration-500"></i>
+        <main class="  ">
+          <!-- Introduction Section -->
+          <div class="flex items-center bg-gray-900 bg-cover justify-center py-4 px-10"style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://profstudyhub.com/wp-content/uploads/2024/06/Untitled-design.png);" >
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center max-w-6xl fade-in">
+                <!-- Left Content -->
+                <div class="text-white">
+                    <h1 class="text-6xl font-bold text-blue-300">The Best CITG and</h1>
+                    <h1 class="text-6xl font-bold text-blue-400">ICAG Courses</h1>
+                    <p class="text-gray-300 mt-4">Choose from a wide range of CITG & ICAG Courses to pass your exam first attempt</p>
+                    <div class="mt-6 flex gap-4">
+                        <button onclick="window.location.href='courses.html'" class="px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-full shadow-md">Explore Courses</button>
+                        <button onclick="window.location.href='courses.html'" class="px-6 py-3 border border-yellow-500 text-yellow-400 hover:bg-yellow-500 hover:text-white font-semibold rounded-full shadow-md">Start Learning →</button>
+                    </div>
+                </div>
+                
+                <!-- Right Content -->
+                <div class="relative">
+                    <div class="absolute inset-0  bg-black/50 opacity-80 "></div>
+                    <img src="https://profstudyhub.com/wp-content/uploads/2024/06/medium-shot-student-working-with-laptop-1-min.png" alt="Student Learning" class="relative rounded-lg w-full h-auto">
+                </div>
+            </div>
+        </div>
+          <!-- Features Course Sections -->
+        <section class="bg-gradient-to-r from-blue-500 to-purple-500 py-10  px-4  lg:px-40">
+          <h2 class="text-3xl font-bold mb-6 text-center">Featured Courses</h2>
+          <p class="text-lg sm:text-xl text-white max-w-4xl mx-auto">
+            Learning should be Easier. Use Profs Study Hub to facilitate your CITG $ ICAG learning experience to pass your first attempt.
+          </p>
+          <div id="course-list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-14 fade-in">
+            <!-- Courses will be dynamically injected here -->
+           
           </div>
-        </div>
-      </div>
-      
-      
-      
-    </div>
-
-     <!-- New Affiliate Program Card -->
-     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full h-full p-4">
-
-       <!-- CITG Card -->
-       <div class="relative border border-gray-500 rounded-lg overflow-hidden">
-        <div class="relative">
-          <img  src="/imgss/citg.png" alt="CITG" class="w-full h-26 object-cover">
-          <div class="text-white p-3 rounded-b-lg space-x-2 space-y-2">
-            <h2 class="text-lg font-bold hover:text-blue-500">CITG Program</h2>
-            <p class="text-sm">Chartered Institute of Taxation Ghana.</p>
-            <div class="border-t border-gray-700 mt-5 mb-5"></div>
-            
-            <details class="border border-blue-500 rounded-md">
-              <summary class="flex items-center justify-center text-center space-x-2 text-blue-500 px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white transition">
-               Register
-              </summary>
-              <div class="p-4 border-t border-gray-500 bg-gray-800 text-white rounded-b-lg">
-                <h3 class="text-md font-semibold">CITG Program Levels</h3>
-                <!-- final level 1 -->
-                <div class="mt-2 space-y-3 cursor-pointer " onclick="window.location.href='courses.html?title1=CITGH - Final Level 1'">
-                  <div class="flex items-center space-x-3">
-                    <img loading='lazy' src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_CITG%20-%20PRofESSIONAL%20(1).png.png?alt=media&token=a3943ca9-5e5f-4715-90e0-b491ea69a46f" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                    <div>
-                      <p class="text-sm font-semibold">CITGH - Final Level 1</p>
-                      <p class="text-xs text-gray-400">Advanced certification for IT governance experts.</p>
-                    </div>
-                  </div>
-                </div>
-                <!-- Final Level 2  -->
-                <div class="mt-2 space-y-3 cursor-pointer" onclick="window.location.href='courses.html?title1=CITGH - Final Level 2'">
-                  <div class="flex items-center space-x-3">
-                    <img loading='lazy' src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_CITG%20-%20PRofESSIONAL%20(2).png.png?alt=media&token=ef0f808c-a68c-4f41-b093-3bb1f693a044" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                    <div>
-                      <p class="text-sm font-semibold">CITGH - Final Level 2</p>
-                      <p class="text-xs text-gray-400">CITGH Final Level 2 is the advanced stage of the Chartered Institute of Taxation Ghana program.</p>
-                    </div>
-                  </div>
-                </div>
-
-                     <!-- Final Level 2  -->
-                     <div class="mt-2 space-y-3 cursor-pointer" onclick="window.location.href='courses.html?title1=CITGH - Professional Level'">
-                      <div class="flex items-center space-x-3">
-                        <img loading='lazy' src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_CITG%20-%20PRofESSIONAL.png.png?alt=media&token=3bc0d552-8f31-493d-869a-4a0aa20ff88f" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                        <div>
-                          <p class="text-sm font-semibold">CITGH - Professional Level</p>
-                          <p class="text-xs text-gray-400">CITGH Professional Level is the final stage of the Chartered Institute of Taxation Ghana program.</p>
-                        </div>
-                      </div>
-                    </div>
-              </div>
-            </details>
-          </div>
-        </div>
-      </div>
-      
-      
-      
-      
-      
-    <!-- ICAGH Card -->
-       <div class="relative border border-gray-500 rounded-lg overflow-hidden">
-        <div class="relative">
-          <img  src="/imgss/icag.png" alt="CITG" class="w-full h-26 object-cover">
-          <div class="text-white p-3 rounded-b-lg space-x-2 space-y-2">
-            <h2 class="text-lg font-bold hover:text-blue-500">ICAGH Program</h2>
-            <p class="text-sm">Institute of Chartered Accountants Ghana program.</p>
-            <div class="border-t border-gray-700 mt-5 mb-5"></div>
-            
-            <details class="border border-blue-500 rounded-md">
-              <summary class="flex items-center justify-center text-center space-x-2 text-blue-500 px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white transition">
-               Register
-              </summary>
-              <div class="p-4 border-t border-gray-500 bg-gray-800 text-white rounded-b-lg">
-                <h3 class="text-md font-semibold">ICAGH Program Levels</h3>
-                <!-- final level 1 -->
-                <div class="mt-2 space-y-3 cursor-pointer " onclick="window.location.href='courses.html?title1=ICAGH - Level 1'">
-                  <div class="flex items-center space-x-3">
-                    <img loading='lazy' src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_ICA%20Level%201.png.png?alt=media&token=528bbee3-02b9-41b3-b26e-bc3a86124ff9" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                    <div>
-                      <p class="text-sm font-semibold">ICAGH - Level 1</p>
-                      <p class="text-xs text-gray-400">The foundation stage of the Chartered Accountancy program.</p>
-                    </div>
-                  </div>
-                </div>
-                <!-- Final Level 2  -->
-                <div class="mt-2 space-y-3 cursor-pointer" onclick="window.location.href='courses.html?title1=ICAGH - Level 2'">
-                  <div class="flex items-center space-x-3">
-                    <img loading='lazy' src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_ICA%20Level%202.jpg.png?alt=media&token=d15e68ba-fa36-458f-92d2-70735e377475" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                    <div>
-                      <p class="text-sm font-semibold">ICAGH - Level 2</p>
-                      <p class="text-xs text-gray-400">The intermediate stage of the Chartered Accountancy program.</p>
-                    </div>
-                  </div>
-                </div>
-
-                     <!-- Final Level 2  -->
-                     <div class="mt-2 space-y-3 cursor-pointer" onclick="window.location.href='courses.html?title1=ICAGH - Level 3'">
-                      <div class="flex items-center space-x-3">
-                        <img loading='lazy' src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_ICA%20Level%203.jpg.png?alt=media&token=d3f52396-90fa-41e4-8386-97a407930351" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                        <div>
-                          <p class="text-sm font-semibold">ICAGH - Level 3</p>
-                          <p class="text-xs text-gray-400">The final stage of the Chartered Accountancy program.</p>
-                        </div>
-                      </div>
-                    </div>
-              </div>
-            </details>
-          </div>
-        </div>
-      </div>
-      
-      
-
-
-   <!-- Digital Marketing Card-->
-   <div class="relative border border-gray-500 rounded-lg overflow-hidden">
-    <div class="relative">
-      <img  src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_Yellow%20Reaction%20Video%20Youtube%20Thumbnail.png.png?alt=media&token=b6101515-03e6-42ae-83b4-d38b7657b863" alt="CITG" class="w-full h-26 object-cover">
-      <div class="text-white p-3 rounded-b-lg space-x-2 space-y-2">
-        <h2 class="text-lg font-bold hover:text-blue-500">Grow your business (Digital marketing)</h2>
-        <p class="text-sm">Master digital marketing strategies to grow your business.</p>
-        <div class="border-t border-gray-700 mt-5 mb-5"></div>
-        
-        <details class="border border-blue-500 rounded-md">
-          <summary class="flex items-center justify-center text-center space-x-2 text-blue-500 px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white transition">
-           Register
-          </summary>
-          <div class="p-4 border-t border-gray-500 bg-gray-800 text-white rounded-b-lg">
-            <h3 class="text-md font-semibold">Digital Marketing and Business Growth Program Levels</h3>
-            <!-- final level 1 -->
-            <div class="mt-2 space-y-3 cursor-pointer " onclick="window.location.href='courses.html?title1=Digital Marketing and Business Growth'">
-              <div class="flex items-center space-x-3">
-                <img loading='lazy' src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_Yellow%20Reaction%20Video%20Youtube%20Thumbnail.png.png?alt=media&token=b6101515-03e6-42ae-83b4-d38b7657b863" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                <div>
-                  <p class="text-sm font-semibold">Digital Marketing and Business Growth</p>
-                  <p class="text-xs text-gray-400">Digital marketing fuels business growth by enhancing visibility, engagement, and sales. 🚀</p>
-                </div>
+          <section >
+            <div class=" ">
+              <div onclick="window.location.href='courses.html';" class="p-4 bg-[#172554] border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md w-40 cursor-pointer">
+                Explore Courses
               </div>
             </div>
+          </section>
+          
+        </section>
         
-          </div>
-        </details>
+       
+          <!-- Modal -->
+<div hidden id="course-modal" class="modal">
+  <div class="modal-content bg-white shadow-lg rounded-lg p-8 max-w-lg mx-auto">
+    <!-- Close Button -->
+    <span id="close-modal" class="text-gray-600 cursor-pointer text-3xl absolute top-4 right-4 font-bold">&times;</span>
+<!-- Course Image -->
+<div class="mb-6">
+
+  <img id="modal-image" src="" alt="Course Image" class="w-full h-64 object-cover rounded-lg" />
+</div>
+    <!-- Modal Title -->
+    <h2 id="modal-title" class="text-3xl font-semibold mb-6 text-gray-800"></h2>
+    <div class="flex flex-row"> <div></div> <p id="model-students"></p></div>
+    <p id="model-ratings"></p>
+<div class="flex flex-row justify-start items-center space-x-2 bg-slate-200 p-2">
+    <!-- Price Section -->
+<div class="">
+
+  <span id="modal-price" class="text-[#172554] font-bold p-2 rounded-3xl border border-gray-700 text-lg"></span>
+</div>
+
+<!-- Enroll Button -->
+<div class="w-full bg-[#172554] text-white font-bold py-2 rounded-3xl text-lg hover:bg-indigo-700 transition duration-300 flex justify-center items-center">
+  <a id="modal-enroll-button" href="#" class="    ">Enroll Now</a>
+</div>
+</div>
+    <!-- Modal Description -->
+    <div id="modal-description" class="mb-6 text-gray-700 text-lg"></div>
+
+    <!-- Course Information -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+      <!-- Created By -->
+      <div>
+        <p class="font-semibold text-gray-600">Created by:</p>
+        <p id="modal-id" style="display: none;"></p>
+        <p id="modal-author" class="text-blue-500"></p>
       </div>
+      
+      <!-- Updated At -->
+      <div>
+        <p class="font-semibold text-gray-600">Updated at:</p>
+        <p id="modal-updated" class="text-gray-700"></p>
+      </div>
+    </div>
+
+    <!-- Video URL -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Video URL:</p>
+      <a id="modal-video" href="#" target="_blank" class="text-blue-500 underline text-lg"></a>
+    </div>
+
+    <!-- Tags -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Tags:</p>
+      <span id="modal-tags" class="text-gray-700"></span>
+    </div>
+
+    <!-- Summary -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Summary:</p>
+      <span id="modal-summary" class="text-gray-700"></span>
+    </div>
+
+    <!-- Requirements -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Requirements:</p>
+      <ul id="modal-requirements" class="list-disc pl-5 text-gray-600"></ul>
+    </div>
+
+    <!-- Learnings -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">What you'll learn:</p>
+      <ul id="modal-learnings" class="list-disc pl-5 text-gray-600"></ul>
+    </div>
+
+    <!-- Languages -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Language(s):</p>
+      <ul id="modal-language" class="list-disc pl-5 text-gray-600"></ul>
+    </div>
+
+    <!-- Duration -->
+    <div class="mb-6">
+      <p class="font-semibold text-gray-600">Duration:</p>
+      <span id="modal-duration" class="text-gray-700"></span>
+    </div>
+
+    <!-- Created At -->
+    <div>
+      <p class="font-semibold text-gray-600">Created at:</p>
+      <span id="modal-created" class="text-gray-700"></span>
     </div>
   </div>
   
-
-
-  <!-- ADIT Card -->
-  <div class="relative border border-gray-500 rounded-lg overflow-hidden cursor-pointer" onclick="window.location.href='courses.html?title1=ADIT'">
-    <div class="relative">
-      <img  src="imgss/adit.png" alt="ADIT" class="w-full h-26 object-cover">
-      <div class="text-white p-3 rounded-b-lg space-x-2 space-y-2">
-        <h2 class="text-lg font-bold hover:text-blue-500">ADIT Program</h2>
-        <p class="text-sm">Advanced Diploma in International Taxation program.</p>
-        <div class="border-t border-gray-700 mt-5 mb-5"></div>
-        <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-          <i class="fas fa-arrow-right mr-2"></i> Register
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- PMP Professional Card -->
-  <div class="relative border border-gray-500 rounded-lg overflow-hidden cursor-pointer" onclick="window.location.href='courses.html?title1=PMP Professional'">
-    <div class="relative">
-      <img  src="imgss/pmp.png" alt="PMP Professional" class="w-full h-26 object-cover">
-      <div class="text-white p-3 rounded-b-lg space-x-2 space-y-2">
-        <h2 class="text-lg font-bold hover:text-blue-500">PMP PROFESSIONAL</h2>
-        <p class="text-sm">Project Management Professional certification training.</p>
-        <div class="border-t border-gray-700 mt-5 mb-5"></div>
-        <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-          <i class="fas fa-arrow-right mr-2"></i> Register
-        </p>
-      </div>
-    </div>
-  </div>
-
- <!-- Alumni Training Programs Card -->
- <div class="relative border border-gray-500 rounded-lg overflow-hidden cursor-pointer" onclick="window.location.href='courses.html?title1=Alumni Training'">
-  <div class="relative">
-    <img  src="https://higherlogicdownload.s3.amazonaws.com/BETAGAMMASIGMA/a8e50d81-26f2-4c75-9216-826808f3da50/UploadedImages/Alumni_Network/Alumni_Training_Header-web.png" alt="Alumni Training" class="w-full h-26 object-cover">
-    <div class="text-white p-3 rounded-b-lg space-x-2 space-y-2">
-      <h2 class="text-lg font-bold hover:text-blue-500">ALUMNI TRAINING PROGRAMS</h2>
-      <p class="text-sm">Exclusive training for our alumni members.</p>
-      <div class="border-t border-gray-700 mt-5 mb-5"></div>
-      <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-        <i class="fas fa-arrow-right mr-2"></i> Register
-      </p>
-    </div>
-  </div>
 </div>
+          <!-- Features Section -->
+          
+          <section class=" py-10 px-4 lg:px-40  bg-gray-300 text-gray-900 p-4 ">
+            
+            <h2 class="text-3xl font-bold mb-6 text-center">Features</h2>
+            <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-6 fade-in">
+              <!-- Feature 1 -->
+              <div
+                class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+              >
+                <div class="flex items-center mb-4  ">
+                  <svg
+                    class="w-10 h-10 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 2L2 6l10 4 10-4-10-4zm0 6.472l-8-3.2V14l8 4 8-4V5.272l-8 3.2z"
+                    />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">
+                  Comprehensive Accounting Courses
+                </h3>
+                <p>In depth Courses covering all aspects of Accounting and Taxation.</p>
+              </div>
 
+              <!-- Feature 2 -->
+              <div
+                class="bg-gradient-to-r from-green-500 to-green-700 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+              >
+                <div class="flex items-center mb-4">
+                  <svg
+                    class="w-10 h-10 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 2L2 6l10 4 10-4-10-4zm0 6.472l-8-3.2V14l8 4 8-4V5.272l-8 3.2z"
+                    />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">
+                  Interactive Learning Modules
+                </h3>
+                <p>
+                  Engaging modules that enhance learning through Interaction and practice.
+                </p>
+              </div>
 
+              <!-- Feature 3 -->
+              <div
+                class="bg-gradient-to-r from-yellow-500 to-yellow-700 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+              >
+                <div class="flex items-center mb-4">
+                  <svg
+                    class="w-10 h-10 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 2L2 6l10 4 10-4-10-4zm0 6.472l-8-3.2V14l8 4 8-4V5.272l-8 3.2z"
+                    />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Expert Instructors</h3>
+                <p>
+                  Learn from Industry Experts with over a decade of Experience
+.
+                </p>
+              </div>
 
-      <div class="relative border border-gray-500 rounded-lg overflow-hidden cursor-pointer" onclick="window.location.href='job.html'">
-        <div class="relative">
-          <img  src="https://cdn.amasty.com/media/amasty/blog/cache/a/f/915/433/affiliate_program_1_.png" alt="Affiliate Program" class="w-50 h-26 object-cover">
-          <div class="text-white p-3 rounded-b-lg space-x-2 space-y-2">
-            <h2 class="text-lg font-bold hover:text-blue-500">MAKE MONEY WITH PROFS (BECOME an affiliate)</h2>
-            <p class="text-sm">Join our affiliate program and earn commissions.</p>
-            <div class="border-t border-gray-700 mt-5 mb-5"></div>
-            <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-              <i class="fas fa-arrow-right mr-2"></i> Join Now
-            </p>
-          </div>
-        </div>
-      </div>
-           <!-- New Bookshop Card -->
-           <div class="relative border border-gray-500 rounded-lg overflow-hidden cursor-pointer" onclick="window.location.href='store.html'">
-            <div class="relative">
-              <img  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw-8jdfIxzKOFkPDe6xeC8KNT3s-MsjmRXkKyIjy2NziMvl2svnoYuE5uLLIvfd-HYMq4&usqp=CAU" alt="Bookshop" class="w-full h-26 object-cover">
-              <div class="text-white p-3 rounded-b-lg space-x-2 space-y-2">
-                <h2 class="text-lg font-bold hover:text-blue-500">BOOKSHOP</h2>
-                <p class="text-sm">Access a wide range of educational books and resources.</p>
-                <div class="border-t border-gray-700 mt-5 mb-5"></div>
-                <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-                  <i class="fas fa-arrow-right mr-2"></i> Visit Store
+              <!-- Feature 4 -->
+              <div
+                class="bg-gradient-to-r from-red-500 to-red-700 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+              >
+                <div class="flex items-center mb-4">
+                  <svg
+                    class="w-10 h-10 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 2L2 6l10 4 10-4-10-4zm0 6.472l-8-3.2V14l8 4 8-4V5.272l-8 3.2z"
+                    />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">
+                  Certification Upon Completion
+                </h3>
+                <p>
+                  Receive a recognized certification after completing your
+                  course.
                 </p>
               </div>
             </div>
-          </div>
+          </section>
+
+          <!-- Why Choose Us Section -->
+          <section
+            class=" text-center animate__animated animate__fadeInUp relative bg-blue-950 text-white p-4 lg:px-96 py-12"
+          >
+            <!-- Overlay -->
+            <div
+              class="absolute inset-0 bg-black opacity-30 pointer-events-none"
+            ></div>
+            <!-- Content -->
+            <div class="relative z-10 max-w-4xl mx-auto px-4 fade-in ">
+              <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-white">
+                Why Choose Us?
+              </h2>
+              <p class="text-lg sm:text-xl text-white max-w-2xl mx-auto">
+                ProfStudyMate is dedicated to providing top-notch accounting
+                education. Our platform is designed to be interactive and
+                engaging, ensuring that you get the best learning experience
+                possible.
+              </p>
+            </div>
+                <!-- Download Buttons -->
+                <div class="mt-6 text-center fade-in">
+                  <p class="text-3xl sm:text-4xl font-bold mb-4 text-white">📲 Get our study apps now!</p>
+                  <div class="flex justify-center space-x-4">
+                      <a href="#" class="hover:scale-105 transition">
+                          <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" class="h-12">
+                      </a>
+                      <a href="#" class="hover:scale-105 transition">
+                          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" class="h-12">
+                      </a>
+                  </div>
+              </div>
+              
+              <!-- Social Media Links -->
+
+              <p class="text-3xl sm:text-4xl font-bold mb-4 mt-10 text-white">📲 Follow our socials!</p>
+              <div class=" flex-wrap flex justify-center  space-x-4 mt-6 fade-in">
+                   <div>
+                <a
+                href="http://instagram.com/profs_training_solutions/"
+                target="_blank"
+                class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-pink-500/50"
+              >
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"
+                  class="w-6 h-6"
+                  alt="Instagram"
+                />
+              </a>
+              </div>
+             <div>
+              <a
+              href="http://tiktok.com/@profstraining"
+              target="_blank"
+              class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-gray-500/50"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/3046/3046120.png"
+                class="w-6 h-6"
+                alt="TikTok"
+              />
+            </a>
+             </div>
+               <div>
+                <a
+                href="http://youtube.com/@ProfsTrainingSolutions"
+                target="_blank"
+                class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-red-500/50"
+              >
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"
+                  class="w-6 h-6"
+                  alt="YouTube"
+                />
+              </a>
+               </div>
+              <div>
+                <a
+                href="https://linkedin.com/in/profs-training-solutions/"
+                target="_blank"
+                class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50"
+              >
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/1384/1384062.png"
+                  class="w-6 h-6"
+                  alt="LinkedIn"
+                />
+              </a>
+              </div>
+             <div>
+              <a
+              href="http://facebook.com/ProfsTraining"
+              target="_blank"
+              class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-600/50"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1384/1384053.png"
+                class="w-6 h-6"
+                alt="Facebook"
+              />
+            </a>
+             </div>
+             <div>
+              <a
+              href="https://whatsapp.com/channel/0029VaZV6OeEAKWHHdSdiR1S"
+              target="_blank"
+              class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-green-500/50"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1384/1384055.png"
+                class="w-6 h-6"
+                alt="WhatsApp"
+              />
+            </a>
+             </div>
+         <div>
+          <a
+          href="https://t.me/Profstrainingsolutions"
+          target="_blank"
+          class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-400/50"
+        >
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"
+            class="w-6 h-6"
+            alt="Telegram"
+          />
+        </a>
+         </div>
+              </div>
+          </section>
+        <!-- Courses Categories Section -->
+        <section class="  text-white lg:px-40 p-4 flex flex-col justify-center items-center py-10 ">
+        
+          <h2 class="text-3xl font-bold mb-8 text-center text-white">
+            Our Courses Categories
+          </h2>
+        
+    <!-- Cards Section -->
+    <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 md:grid-cols-2  mb-10 mt-6 fade-in" id="categories">
+
+      
+    </div>
+        </section>
+          <!-- Testimonials Section -->
+          <section class=" text-center bg-gradient-to-r from-blue-500 to-purple-500 lg:px-40 text-white py-10 p-6">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-white">
+              Testimonials
+            </h2>
+
+            <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-white">
+              Hear What Our Satisfied Students Have to Say About Us
+            </h2>
+            <div
+              class="grid gap-4 sm:grid-cols-1 lg:grid-cols-2 md:grid-cols-2  mb-10 mt-6"
+            >
+              <!-- Testimonial 1 -->
+              <div
+                class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg shadow-lg overflow-hidden transition duration-300 transform hover:scale-105"
+              >
+                <div class="p-6">
+                  <p class="text-lg italic mb-4">
+                    "Prof has the ability to break down concepts to your levels. I never believed I could pass Corporate Reporting on my first try"
+                  </p>
+                  <div class="flex items-center justify-center mb-4">
+                    <img
+                      src="data:image/jpeg;base64,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"
+                      alt="Jane Doe"
+                      class="rounded-full object-cover w-16 h-16 mr-3 border-4 border-white"
+                    />
+                    <div>
+                      <p class="text-lg font-semibold">Martin Asare </p>
+                      <p class="text-base">Accounts Manager</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testimonial 2 -->
+              <div
+                class="bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-lg shadow-lg overflow-hidden transition duration-300 transform hover:scale-105"
+              >
+                <div class="p-6">
+                  <p class="text-lg italic mb-4">
+                    "Profstudymate has transformed the way I learn for my CA exam even with my busy schedule. The Courses are well structured and the instructors are incredibly knowledgeable" 
+                  </p>
+                  <div class="flex items-center justify-center mb-4">
+                    <img
+                      src="https://dobetter.esade.edu/sites/default/files/post/2021-04/internal-auditor.jpg"
+                      alt="John Smith"
+                      class="rounded-full object-cover w-16 h-16 mr-3 border-4 border-white"
+                    />
+                    <div>
+                      <p class="text-lg font-semibold">Ephraim Tetteh</p>
+                      <p class="text-base">Auditor</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testimonial 3 -->
+              <div
+                class="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg overflow-hidden transition duration-300 transform hover:scale-105"
+              >
+                <div class="p-6">
+                  <p class="text-lg italic mb-4">
+                    "As a working mom, I had lost hope in the ICAG  until a friend recommended Prof. On my 8th attempt, I finally passed management accounting"
+                    
+                  </p>
+                  <div class="flex items-center justify-center mb-4">
+                    <img
+                      src="https://www.strong4life.com/-/media/Strong4Life/Pages/Healthy-Eating/Articles/Breastfeeding-Diet-Recommendations-for-Mom/SLP17_AA_5m_Mom_nursing_using_football_hold_6473.jpg?h=1200&la=en&w=1800&hash=F913C5A177CF96E5A0F7D022A8A1A53AEBA82D9B"
+                      alt="Emily Brown"
+                      class="rounded-full object-cover w-16 h-16 mr-3 border-4 border-white"
+                    />
+                    <div>
+                      <p class="text-lg font-semibold">Genevieve Kumson </p>
+                      <p class="text-base">Nursing mom</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+                  <!-- Testimonial 4 -->
+                  <div
+                  class="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg overflow-hidden transition duration-300 transform hover:scale-105"
+                >
+                  <div class="p-6">
+                    <p class="text-lg italic mb-4">
+                      "Prof told me I could pass my CITG exam on first attempt but I didn’t believe. Fast forward to today, I am shocked…….We just graduated. The guy knows his stuff"
+                      
+                    </p>
+                    <div class="flex items-center justify-center mb-4">
+                      <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDeYt3k3o9itiFyWPO7R6YQ_i9mMfczGIdJg&s"
+                        alt="Emily Brown"
+                        class="rounded-full w-16 object-cover h-16 mr-3 border-4 border-white"
+                      />
+                      <div>
+                        <p class="text-lg font-semibold">Isaac Kumi</p>
+                        <p class="text-base">Internal Auditor</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <section >
+              <div class=" ">
+                <div onclick="window.location.href='testimonials.html';" class="p-4 bg-[#172554] border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md w-40 cursor-pointer">
+                  More Testimonials
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <!-- Contact Us Section -->
+          <section
+            class=" text-center animate__animated animate__fadeInUp relative bg-gray-300 text-gray-900 lg:px-96 p-4 py-12"
+          >
+            <!-- Overlay -->
+         
+            <!-- Content -->
+            <div class="relative z-10 max-w-4xl mx-auto px-4 fade-in">
+              <h2 class="text-3xl sm:text-4xl font-bold mb-4 ">
+                Contact Us
+              </h2>
+              <p class="text-lg  mb-6">
+                Have any questions? Feel free to reach out to us at
+                <a href="support.html" class="underline"
+                  >Profstraining52@gmail.com</a
+                >.
+              </p>
+              <!-- Contact Form or CTA Button -->
+              <div class="flex justify-center">
+                <a
+                  href="support.html"
+                  class="bg-white text-blue-500 hover:bg-blue-500 hover:text-white py-2 px-6 rounded-full font-semibold transition duration-300"
+                  >Email Us</a
+                >
+              </div>
+            </div>
+          </section>
+
+  
+
+          <section class=" text-center bg-gradient-to-r from-blue-500 to-purple-500  py-10 px-4 lg:px-40 ">
+            <h2 class="text-3xl font-bold mb-8 text-white">
+              Quantitative Insights of Our Institute
+            </h2>
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 grid-cols-2  mb-10 mt-6 fade-in">
+              <!-- Students Helped -->
+              <div
+                class="bg-gradient-to-t from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+              >
+                <i class="fas fa-user-graduate text-4xl mb-4"></i>
+                <h3 class="text-3xl font-bold mb-2" data-count="2000">0+</h3>
+                <p class="text-lg">STUDENTS HELPED</p>
+              </div>
+              <!-- Subjects Available -->
+              <div
+                class="bg-gradient-to-t from-green-500 to-green-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+              >
+                <i class="fas fa-book-open text-4xl mb-4"></i>
+                <h3 class="text-3xl font-bold mb-2" data-count="60">0+</h3>
+                <p class="text-lg">SUBJECTS AVAILABLE</p>
+              </div>
+              <!-- Exams Conducted -->
+              <div
+                class="bg-gradient-to-t from-purple-500 to-purple-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+              >
+                <i class="fas fa-clipboard-check text-4xl mb-4"></i>
+                <h3 class="text-3xl font-bold mb-2" data-count="10">0+</h3>
+                <p class="text-lg">EXAMS CONDUCTED</p>
+              </div>
+              <!-- Certified Tutors -->
+              <div
+                class="bg-gradient-to-t from-red-500 to-red-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+              >
+                <i class="fas fa-chalkboard-teacher text-4xl mb-4"></i>
+                <h3 class="text-3xl font-bold mb-2" data-count="500">0+</h3>
+                <p class="text-lg">CERTIFIED TUTORS</p>
+              </div>
+              <!-- Courses Offered -->
+              <div
+                class="bg-gradient-to-t from-yellow-500 to-yellow-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+              >
+                <i class="fas fa-book text-4xl mb-4"></i>
+                <h3 class="text-3xl font-bold mb-2" data-count="1000">0+</h3>
+                <p class="text-lg">COURSES OFFERED</p>
+              </div>
+              <!-- Support -->
+              <div
+                class="bg-gradient-to-t from-indigo-500 to-indigo-600 text-white p-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+              >
+                <i class="fas fa-headset text-4xl mb-4"></i>
+                <h3 class="text-3xl font-bold mb-2" data-count="24">0/7</h3>
+                <p class="text-lg">SUPPORT</p>
+              </div>
+            </div>
+          </section>
+      
+   
+
+     
+            </div>
+          </section>
+        </main>
+
+        <div class="Toastify"></div>
+        <!-- <div id="footer"></div> -->
+        <footer>
+          <div
+            class="fixed z-50 bottom-0 right-0 left-0"
+            id="navbar-container1"
+          ></div>
+        </footer>
+      </div>
+    </div>
+    <script>
+      // Firebase configuration
+      const firebaseConfig = {
+          apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+        authDomain: "profstudymate-6d0fc.firebaseapp.com",
+        projectId: "profstudymate",
+        storageBucket: "profstudymate.appspot.com",
+        messagingSenderId: "141453158869",
+        appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+      };
+  
+      // Initialize Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+  
+      // Get Firestore and Authentication instances
+      const db = firebase.firestore(app);
+      const auth = firebase.auth(app);
+  
+      // Convert Firestore Timestamp to Human-Readable Date
+      async function fetchCategories() {
+            const querySnapshot = await db.collection("categories").orderBy("index").get();
+            let categoriesHtml = "";
+            querySnapshot.forEach((doc) => {
+                const { name, image_url } = doc.data();
+                categoriesHtml += `
+                    <div class="relative bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg rounded-lg overflow-hidden p-4 flex items-center space-x-4 cursor-pointer transition transform hover:scale-105 hover:shadow-2xl"
+                       onclick="window.location.href='courses.html?title1=${encodeURIComponent(name)}'" >
+                  <div class="relative overflow-hidden">      <img src="${image_url}" alt="${name}" class="w-50 h-20 object-cover rounded-lg border-2 border-white "></div>
+                        <h3 class="text-lg font-semibold text-white">${name}</h3>
+                    </div>
+                `;
+            });
+            document.getElementById("categories").innerHTML = categoriesHtml;
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchCategories);
+      
+      const formatTimestamp = (timestamp) => {
+        if (!timestamp) return "Unknown";
+        const date = new Date(timestamp.seconds * 1000);
+        return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+      };
+  
+      // Render Array Data as List
+      const renderArrayAsList = (array, containerId) => {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ""; // Clear previous content
+        if (Array.isArray(array) && array.length > 0) {
+          array.forEach((item) => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            container.appendChild(li);
+          });
+        } else {
+          const li = document.createElement("li");
+          li.textContent = "None";
+          container.appendChild(li);
+        }
+      };
+  
+      // Fetch Courses from Firestore
+      const fetchCourses = async (tagId = null) => {
+  try {
+    const coursesRef = db.collection("courses");
+    let query = coursesRef.where('featured', '==', true); // Only fetch featured courses
+
+    if (tagId) {
+      query = query.where('tag_ids', 'array-contains', tagId);
+    }
+
+    const courseSnapshot = await query.get();
+    const courses = courseSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    
+    return courses;
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    return [];
+  }
+};
+
+  
+      // Fetch Tags by IDs
+      const fetchTags = async (tagIds) => {
+        try {
+          const tagsRef = db.collection("tags");
+          const tagPromises = tagIds.map((tagId) => tagsRef.doc(tagId).get());
+          const tagSnapshots = await Promise.all(tagPromises);
+          return tagSnapshots.map((tagSnap) => tagSnap.data()?.name || "Unknown");
+        } catch (error) {
+          console.error("Error fetching tags:", error);
+          return [];
+        }
+      };
+  
+  
+      // Fetch All Tags
+      const fetchAllTags = async () => {
+      try {
+          const tagsSnapshot = await db.collection("tags").get();
+          const tagsContainer = document.getElementById("tags-container");
+          tagsContainer.innerHTML = ""; // Clear any existing content
+  
+          // Create "All" button
+          const allButton = document.createElement("div");
+          allButton.className = "tag"; // Apply styling class
+          allButton.textContent = "All";
+  
+          // Add click event listener for "All" button
+          allButton.addEventListener("click", () => {
+              // Remove highlight from all tags
+              const allTags = document.querySelectorAll(".tag");
+              allTags.forEach((t) => t.classList.remove("highlight"));
+  
+              // Highlight the "All" button
+              allButton.classList.add("highlight");
+  
+              // Show all courses
+              renderCourses(null); // Passing `null` for no filter
+          });
+  
+          // Append "All" button to the tags container
+          tagsContainer.appendChild(allButton);
+  
+          // Render other tags
+          tagsSnapshot.forEach((doc) => {
+              const tagId = doc.id; // Tag document ID
+              const tagName = doc.data().name; // Assuming each tag has a field 'name'
+  
+              const tagElement = document.createElement("div");
+              tagElement.className = "tag"; // Apply styling class
+              tagElement.textContent = tagName;
+  
+              // Add click event listener
+              tagElement.addEventListener("click", () => {
+                  // Remove highlight from all tags
+                  const allTags = document.querySelectorAll(".tag");
+                  allTags.forEach((t) => t.classList.remove("highlight"));
+  
+                  // Highlight the clicked tag
+                  tagElement.classList.add("highlight");
+  
+                  // Filter courses by the selected tag
+                  renderCourses(tagId);
+              });
+  
+              tagsContainer.appendChild(tagElement);
+          });
+  
+          // By default, highlight the "All" button
+          allButton.classList.add("highlight");
+      } catch (error) {
+          console.error("Error fetching tags:", error);
+      }
+  };
+  
+  
+  
+  const style = document.createElement('style');
+  style.innerHTML = `
+      .tag {
+          display: inline-block;
+          background-color: #e0e0e0;
+          color: #333;
+          padding: 10px 15px;
+          margin: 5px;
+          border-radius: 20px;
+          font-size: 16px;
+          font-weight: bold;
+          text-align: center;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          transition: background-color 0.3s, color 0.3s;
+      }
+      .tag:hover {
+          background-color: #d0d0d0;
+          cursor: pointer;
+      }
+      .tag.highlight {
+          background-color:#172554; /* Blue background */
+          color: #fff; /* White text */
+      }
+      .expandable-content {
+          display: none;
+      }
+      .expandable-content.expanded {
+          display: block;
+      }
+  `;
+  
+  document.head.appendChild(style);
+  const renderCourses = async (tagId = null) => {
+      const courseList = document.getElementById("course-list");
+      courseList.innerHTML = `<div class="text-center flex flex-col items-center justify-center ">
+          <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>
+          <p class="text-white text-lg font-semibold">Loading...</p>
+          
+      </div>`; // Loading state
+  
+      let courses = await fetchCourses(); // Fetch all courses
+      if (tagId) {
+          // Filter courses by tagId
+          courses = courses.filter(course => course.tag_ids.includes(tagId));
+      }
+  
+      if (courses.length === 0) {
+          courseList.innerHTML = "<p class='text-center text-gray-500'>No courses available.</p>";
+          return;
+      }
+  
+      // Render courses
+      courseList.innerHTML = courses
+          .map((course) => {
+              const imageUrl = course.image_url || 'https://via.placeholder.com/400x200?text=No+Image';
+              return `
+          <div
+  class="relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-pink-500 bg-gray-900 transition-all duration-500 ease-out hover:scale-[1.05] hover:shadow-pink-500/50 hover:border-pink-500/70"
+ onclick="window.location.href='courses.html?courseid=${encodeURIComponent(course.id)}'"
+> 
+  <!-- Image Wrapper -->
+  <div class="relative overflow-hidden">
+    <img 
+      src="${imageUrl}" 
+      alt="${course.name}" 
+      class="w-full object-cover transition-transform duration-500 ease-out hover:scale-110"
+    />
+    <div class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-500 ease-out hover:opacity-100"></div>
+  </div>
+
+  <!-- Course Info -->
+  <div class="p-5 rounded-b-lg">
+            <!-- Rating -->
+    <p class="text-gray-300 text-sm flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
+      </svg>
+    </p>
+    <!-- Course Title -->
+    <h3 class="text-lg font-semibold text-white flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
+      </svg>
+      ${course.name}
+    </h3>
+
+    <!-- Students Count -->
+    <p class="text-gray-400 text-sm flex items-center gap-2 mb-2 transition-all duration-500 ease-out hover:translate-x-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M7 10l5-5m0 0l5 5m-5-5v12" />
+      </svg>
+      ${course.students || 0} students
+    </p>
+
+   
+    <!-- Author -->
+    <p class="text-white font-semibold text-lg flex items-center gap-3 transition-all duration-500 ease-out hover:translate-x-1 mb-10">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 1118.88 17.8M15 19c0-2-3-3-3-3s-3 1-3 3m3-14a4 4 0 110 8 4 4 0 010-8z" />
+      </svg>
+    <span class="text-sm">by-${course.author.name}</span>
+    </p>
+    <!-- Price -->
+  
+  <div class="flex py-5 flex-row justify-between border-t border-gray-700">
+      <p class="text-lg font-semibold flex items-center gap-2 transition-all duration-500 ease-out hover:translate-x-1 ${course.price_status === 'free' ? 'text-green-400' : 'text-white'}">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ${course.price_status === 'free' ? 'text-green-500' : 'text-green-400'} transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.5 0-4 1.5-4 3s1.5 3 4 3 4-1.5 4-3-1.5-3-4-3zm0 10v2m-4-2a4 4 0 018 0" />
+      </svg>
+      ${course.price_status === "free" ? "Free" : `₵${course.pricee}`} 
+    </p>
+     <button  class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Add to cart</span>
+                  </button>
     </div>
 
+
+ <!-- Add to Favorite Icon -->
+    <div class="absolute top-3 right-3 bg-white p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300" onclick="addToFavorites(event, '${course.id}')">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
+    </svg>
+  </div>
+<div class="absolute top-2 left-2 bg-white/30 backdrop-blur-md text-lg font-semibold text-white px-3 py-1 rounded-full shadow-md">
+          🎖️ Featured
+        </div>
+  </div>
+  
+</div>
+
+              
+            `;
+           
+          })
+          .join("");
+          fetchAllTags()
+  };
+  
+  
+      // Show Course Details in Modal
+      const showCourseDetails = async (courseId) => {
+        showErrorToast()
+        const coursesRef = db.collection("courses");
+        const courseDoc = await coursesRef.doc(courseId).get();
+        const course = courseDoc.data();
+  
+        // Fetch Tags
+        const tags = course.tag_ids ? await fetchTags(course.tag_ids) : [];
+  
+        // Populate Modal
+        document.getElementById("modal-image").src = course.image_url;
+        document.getElementById("modal-title").innerText = course.name;
+        document.getElementById("modal-description").innerHTML = course.meta?.description || "<p>No description available.</p>";
+        document.getElementById("modal-author").innerText = course.author?.name || "Unknown";
+        document.getElementById("modal-updated").innerText = formatTimestamp(course.updated_at);
+        document.getElementById("modal-video").innerText = course.video_url || "No video available";
+        document.getElementById("modal-video").href = course.video_url || "#";
+        document.getElementById("modal-tags").innerText = tags.join(", ") || "None";
+        document.getElementById("modal-summary").innerText = course.meta?.summary || "No summary available";
+        document.getElementById("modal-id").innerText = course.author?.id || "Unknown";
+        renderArrayAsList(course.requirements || [], "modal-requirements");
+        renderArrayAsList(course.learns || [], "modal-learnings");
+        renderArrayAsList(course.language || [], "modal-language");
+        document.getElementById("modal-duration").innerText = course.meta?.duration || "Unknown";
+        document.getElementById("modal-created").innerText = formatTimestamp(course.created_at);
+  
+        // Add Price to Modal
+        document.getElementById("modal-price").innerText = course.price_status === "free" ? "Free" : `₵${course.pricee}`;
+        const userid = auth.currentUser.uid;
+        const user = auth.currentUser;
+        // Add Enroll Button Link
+        document.getElementById("modal-enroll-button").addEventListener("click", async function () {
+  
+  
+  
+  if(course.price_status === "free"){
+   
+    try {
+        // Add a new document to the "users" collection with the user's ID as the document ID
+        await db.collection("users").doc(userid).update({
+          course_id: firebase.firestore.FieldValue.arrayUnion(courseId),
+        });
+  
+        console.log("Course data successfully written!");
+        // Redirect or show a success message
+      } catch (error) {
+        console.error("Error writing document: ", error);
+      }
     
-        </section>
-    
-
-      <footer>
-        <div
-          class="fixed z-50 bottom-0 right-0 left-0"
-          id="navbar-container1"
-        ></div>
-      </footer>
-
-<!-- Big Screen Footer -->
-<div class="w-full" id="footer-container"></div>
-
-<script src="footerp.js"></script>
-    <!-- Framer Motion Animation -->
-    <script>
+            
+  } else{
+    const coursesRef1 = db.collection("users");
+        const courseDoc1 = await coursesRef1.doc(userid).get();
+        const course1 = courseDoc1.data();
+        const refcode = course1.underef|| '';
+    const queryParams = new URLSearchParams({
+                          userid: userid,
+                          id: courseId,
+                          title: course.name,
+                          amount: course.pricee,
+                          description: course.meta?.description,
+                          image_url: course.image_url,
+                          referalcode: refcode,
+                        }).toString();
+          window.location.href = `coursecart.html?${queryParams}`;
+  }
+  
+         
+         
+      });
+  
+   
+  
+  
+  
+        // Show Modal
+        document.getElementById("course-modal").style.display = "block";
+      };
+  
       document.addEventListener("DOMContentLoaded", () => {
-        const { motion } = window.framerMotion;
-        const cards = document.querySelectorAll(".card");
-        cards.forEach((card, index) => {
-          motion(card, {
-            initial: { opacity: 0, y: 30 },
-            animate: { opacity: 1, y: 0 },
-            transition: { delay: index * 0.15, duration: 0.6, ease: "easeOut" },
-          });
+        // Example: Set the author's name dynamically
+        const authorElement = document.getElementById("modal-id");
+        const clickElement = document.getElementById("modal-author");
+        const authorName = authorElement.textContent.trim(); // Replace this with dynamic data if needed
+        authorElement.textContent = authorName;
+  
+        // Add a click event listener
+        clickElement.addEventListener("click", (event) => {
+          event.preventDefault(); // Prevent default link behavior
+  
+          // Navigate to the author page
+          window.location.href = `authorpages.html?name=${authorElement.textContent.trim()}`;
         });
       });
+  
+      // Close Modal
+      document.getElementById("close-modal").addEventListener("click", () => {
+        document.getElementById("course-modal").style.display = "none";
+      });
+  
+      // Initialize
+      renderCourses();
+  </script>
+   
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+    <script>
+      // Scroll Reveal Function
+      document.addEventListener("scroll", function () {
+        const reveals = document.querySelectorAll(".scroll-reveal");
+        const windowHeight = window.innerHeight;
+        const revealPoint = 150;
+
+        reveals.forEach((reveal) => {
+          const revealTop = reveal.getBoundingClientRect().top;
+
+          if (revealTop < windowHeight - revealPoint) {
+            reveal.classList.add("show");
+          } else {
+            reveal.classList.remove("show");
+          }
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const counters = document.querySelectorAll("[data-count]");
+        const speed = 200; // The lower the slower
+
+        const countUp = () => {
+          counters.forEach((counter) => {
+            const target = +counter.getAttribute("data-count");
+            let count = 0;
+            const increment = target / speed;
+
+            const updateCount = () => {
+              count += increment;
+              if (count < target) {
+                counter.innerText = Math.ceil(count) + "+";
+                requestAnimationFrame(updateCount);
+              } else {
+                counter.innerText = target + "+";
+                setTimeout(resetCount, 2000); // Delay before resetting the count
+              }
+            };
+
+            updateCount();
+          });
+        };
+
+        const resetCount = () => {
+          counters.forEach((counter) => {
+            counter.innerText = "0+";
+          });
+          setTimeout(countUp, 500); // Delay before starting the count again
+        };
+
+        countUp(); // Initial call to start the counting
+      });
     </script>
-      <script>
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/service-worker.js')
-            .then(() => console.log("Service Worker Registered"))
-            .catch((error) => console.log("Service Worker Registration Failed:", error));
-        }
-      </script>
+     <script src="footerp.js"></script>
+     <div id="footer-container"></div>
   </body>
+  <!-- Mirrored from www.aspireexecutiveinstitute.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Jun 2024 04:07:17 GMT -->
 </html>

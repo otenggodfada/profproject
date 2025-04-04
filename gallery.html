@@ -1,11 +1,16 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gallery</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
     <script type="module" src="./dynamiccon.js"></script>
     <script type="module" src="./navbar.js"></script>
     <script src="bottomnv.js"></script>
@@ -13,177 +18,211 @@
     <script type="module" src="nava-links.js"></script>
     <script type="module" src="./indexnav.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
 
     <style>
-        .aspect-square { aspect-ratio: 1 / 1; } /* Forces images to be square */
+      .aspect-square {
+        aspect-ratio: 1 / 1;
+      } /* Forces images to be square */
     </style>
-
-</head>
-<div class="sticky top-0 bg-[#172554] z-20 w-full border-b">
+  </head>
+  <div class="sticky top-0 bg-[#172554] z-20 w-full border-b">
     <div id="navbar-container"></div>
-</div>
-<body class="bg-gray-900  text-white ">
-    <div id="lightbox" class="fixed p-3 inset-0 z-50 bg-black bg-opacity-80 flex  items-center justify-center hidden">
-        <img id="lightbox-img" class="max-w-full max-h-full rounded-lg">
+  </div>
+  <body class="bg-gray-900 text-white">
+    <div
+      id="lightbox"
+      class="fixed p-3 inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center hidden"
+    >
+      <img id="lightbox-img" class="max-w-full max-h-full rounded-lg" />
     </div>
-    
-    <div class="text-center text-3xl font-bold my-6">Gallery</div>
-    
-  
-     
 
-    <div id="imageGallery" class=" max-w-7xl grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-4 justify-center items-start mx-auto">
-        <!-- Images will be inserted here dynamically -->
+    <div class="text-center text-3xl font-bold my-6">Gallery</div>
+
+    <div
+      id="imageGallery"
+      class="max-w-7xl grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-4 justify-center items-start mx-auto"
+    >
+      <!-- Images will be inserted here dynamically -->
     </div>
 
     <section class="container mx-auto px-6 py-12 text-center">
-        <h2 class="text-4xl font-extrabold text-blue-400 mb-12 uppercase flex items-center justify-center gap-4">
-            <i class="fas fa-trophy text-5xl text-blue-500"></i>
-            Award Winners (2020 - Present)
-        </h2>
-        <div class="max-w-7xl grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 p-4 justify-center items-center mx-auto">
-            <div class=" p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform">
-                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-award text-blue-400"></i> Felicia Omotoyo
-                </h3>
-                <p class="text-gray-300 mt-2">Oil and Gas Taxation</p>
-            </div>
-            <div class=" p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform">
-                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-award text-blue-400"></i> Theophilus Nyarko
-                </h3>
-                <p class="text-gray-300 mt-2">Strategic Tax Planning</p>
-            </div>
-            <div class=" p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform">
-                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-award text-blue-400"></i> Dziedzorm
-                </h3>
-                <p class="text-gray-300 mt-2">Public Sector Economic and Finance</p>
-            </div>
-            <div class=" p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform">
-                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-award text-blue-400"></i> Frank Aboagye Bekyem
-                </h3>
-                <p class="text-gray-300 mt-2">Accounting and Finance</p>
-            </div>
-            <div class=" p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform">
-                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-award text-blue-400"></i> Musah Crispinus Piiba
-                </h3>
-                <p class="text-gray-300 mt-2">Overall Best Final 2</p>
-            </div>
-            <div class=" p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform">
-                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-award text-blue-400"></i> Owuraku Nsiah
-                </h3>
-                <p class="text-gray-300 mt-2">Overall Best Final 2</p>
-            </div>
-            <div class=" p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform">
-                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-award text-blue-400"></i> Milicent Freeman
-                </h3>
-                <p class="text-gray-300 mt-2">Overall Best Final 2</p>
-            </div>
-            <div class=" p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform">
-                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-award text-blue-400"></i> Frederick Morden
-                </h3>
-                <p class="text-gray-300 mt-2">Overall Best Final 1</p>
-            </div>
-            <div class=" p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform">
-                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-award text-blue-400"></i> Kwasi Agyen Benson
-                </h3>
-                <p class="text-gray-300 mt-2">International Taxation</p>
-            </div>
-            <div class=" p-6 rounded-2xl border border-blue-400 shadow-xl transform hover:scale-105 transition-transform">
-                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-award text-blue-400"></i> David Senaya
-                </h3>
-                <p class="text-gray-300 mt-2">Tax Audit and Investigations</p>
-            </div>
+      <h2
+        class="text-4xl font-extrabold text-blue-400 mb-12 uppercase flex items-center justify-center gap-4"
+      >
+        <i class="fas fa-trophy text-5xl text-blue-500"></i>
+        Award Winners (2020 - Present)
+      </h2>
+      <div
+        class="max-w-7xl grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 p-4 justify-center items-center mx-auto"
+      >
+        <div
+          class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+        >
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fas fa-award text-blue-400"></i> Felicia Omotoyo
+          </h3>
+          <p class="text-gray-300 mt-2">Oil and Gas Taxation</p>
         </div>
+        <div
+          class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+        >
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fas fa-award text-blue-400"></i> Theophilus Nyarko
+          </h3>
+          <p class="text-gray-300 mt-2">Strategic Tax Planning</p>
+        </div>
+        <div
+          class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+        >
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fas fa-award text-blue-400"></i> Dziedzorm
+          </h3>
+          <p class="text-gray-300 mt-2">Public Sector Economic and Finance</p>
+        </div>
+        <div
+          class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+        >
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fas fa-award text-blue-400"></i> Frank Aboagye Bekyem
+          </h3>
+          <p class="text-gray-300 mt-2">Accounting and Finance</p>
+        </div>
+        <div
+          class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+        >
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fas fa-award text-blue-400"></i> Musah Crispinus Piiba
+          </h3>
+          <p class="text-gray-300 mt-2">Overall Best Final 2</p>
+        </div>
+        <div
+          class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+        >
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fas fa-award text-blue-400"></i> Owuraku Nsiah
+          </h3>
+          <p class="text-gray-300 mt-2">Overall Best Final 2</p>
+        </div>
+        <div
+          class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+        >
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fas fa-award text-blue-400"></i> Milicent Freeman
+          </h3>
+          <p class="text-gray-300 mt-2">Overall Best Final 2</p>
+        </div>
+        <div
+          class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+        >
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fas fa-award text-blue-400"></i> Frederick Morden
+          </h3>
+          <p class="text-gray-300 mt-2">Overall Best Final 1</p>
+        </div>
+        <div
+          class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+        >
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fas fa-award text-blue-400"></i> Kwasi Agyen Benson
+          </h3>
+          <p class="text-gray-300 mt-2">International Taxation</p>
+        </div>
+        <div
+          class="p-6 rounded-2xl border border-blue-400 shadow-xl transform hover:scale-105 transition-transform"
+        >
+          <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fas fa-award text-blue-400"></i> David Senaya
+          </h3>
+          <p class="text-gray-300 mt-2">Tax Audit and Investigations</p>
+        </div>
+      </div>
     </section>
-    
+
     <script>
-        const mediaString  = 
-       'https://drive.google.com/file/d/16dmf72puO1ymRAREpQ9dioNc8m6M5Uky/view?usp=drive_link, https://drive.google.com/file/d/1ICrVj6wUliPb3KIfydmTfQlq3ThfMJjP/view?usp=drive_link, https://drive.google.com/file/d/1BPs2OytRkG-cqXaPOssmbzFnb6-Xggcg/view?usp=drive_link, https://drive.google.com/file/d/10TTGYNk6DcUZt1c8FzztGCclpfwfSKXS/view?usp=drive_link, https://drive.google.com/file/d/1x08F1PulACWzOyBYsYu5Q0VYP3SoUzWR/view?usp=drive_link, https://drive.google.com/file/d/1t00XRCtTsHh50xpFAyzVofDxy_vqEUdU/view?usp=drive_link, https://drive.google.com/file/d/1tTrBEcqnm82uR7vkpq0JBZJ2rvJHSRTr/view?usp=drive_link, https://drive.google.com/file/d/1Dvv5PutiDTmCxFij2PyyQ-PZKvK-oNly/view?usp=drive_link, https://drive.google.com/file/d/1VIShUDCGYaLuaSJyPij4LSljtKxwV3Up/view?usp=drive_link, https://drive.google.com/file/d/1eJRtfqTA9HkfDf5_4Opg-RdkpjMAlw7R/view?usp=drive_link, https://drive.google.com/file/d/1oh4H3RY8ULv1E4_fxi4dcHtBlKYnuD_i/view?usp=drive_link, https://drive.google.com/file/d/1uYfTQGHX2Zk8KHBNF85r7ltxnuFbnZMt/view?usp=drive_link, https://drive.google.com/file/d/10aN2tZIGMb9FTC82I2Td1R8e5KFSUR0-/view?usp=drive_link, https://drive.google.com/file/d/1_MZuU0lvqYciyDWye8Six8yvS-z3lEBM/view?usp=drive_link, https://drive.google.com/file/d/1zZMpUCQ9faZnQBn5ZhnhltcqagaPu3sT/view?usp=drive_link, https://drive.google.com/file/d/1-uXNkWNQ6I4dGIxgP8UHBcjkcL1UftRh/view?usp=drive_link, https://drive.google.com/file/d/1fhpod50CUtKEihmM9BywCvqumdohOKvc/view?usp=drive_link, https://drive.google.com/file/d/1exMzNCMd4wliyxio_LfAa7cCCMploWO3/view?usp=drive_link, https://drive.google.com/file/d/1vTOfzP1go5hthEx2wh5ZGBLqywgDR1Gu/view?usp=drive_link, https://drive.google.com/file/d/1jF0ahDACq8tmoeETqfXT1bzEBvDg2y4f/view?usp=drive_link, https://drive.google.com/file/d/1VqJtzcOaIGpPzECdOo7-ufatPDL2xqMV/view?usp=drive_link, https://drive.google.com/file/d/11lILGz9wrpC1A5E1n7PeTrMiOt88jXnA/view?usp=drive_link, https://drive.google.com/file/d/1RA2p6gk5iaJiG4xEp338uU-cP9dVHUTr/view?usp=drive_link, https://drive.google.com/file/d/1MYyPLLrbODYxUk5rVPRnWJ41VvU9N5og/view?usp=drive_link, https://drive.google.com/file/d/1NGZsulfkspv4OuRM9rjI6WuAYXfH2gbg/view?usp=drive_link, https://drive.google.com/file/d/1VkB5SBWq2RnTk03fwdmrXa1NpeL_df-M/view?usp=drive_link, https://drive.google.com/file/d/1MrnY2C8GF632DX5ihrgSAyEa1Hu-35sm/view?usp=drive_link, https://drive.google.com/file/d/1qOx4dMjz5fFnHRcpkNCnaeTD9UVCIXww/view?usp=drive_link, https://drive.google.com/file/d/19RNOFjtfD8oFs1gzgabCncOpgHKlk_hU/view?usp=drive_link, https://drive.google.com/file/d/1Nmwl-ByOyomg17IsZvAOcEmlPAIFSHZK/view?usp=drive_link, https://drive.google.com/file/d/12uP4vlv7cqV74qftDxMECTJ9tc1mIdR_/view?usp=drive_link, https://drive.google.com/file/d/1j97ogpP1qh-wsQiPWZt-jS2boxJy7-gK/view?usp=drive_link, https://drive.google.com/file/d/1UPKgsaM_Kg79lmTcRhirZqmBahKBqvHC/view?usp=drive_link, https://drive.google.com/file/d/1uz0LEGIil3XHXbl9NmbUaiadg2GMCGLL/view?usp=drive_link, https://drive.google.com/file/d/1BnACk-e3EIEt52yDBu9UJJ-Q_zlExMuq/view?usp=drive_link, https://drive.google.com/file/d/1qw8Yucl0XZZ2LPoy9PoVomfW_f8ychKy/view?usp=drive_link, https://drive.google.com/file/d/19tBPRoOL7SiGNcK_f0Zo1wE0lR0vAEsy/view?usp=drive_link, https://drive.google.com/file/d/1Ntl6CKXaXn9726E2pQBNUOOeYksnXMQT/view?usp=drive_link, https://drive.google.com/file/d/1ZScEihEcOO-U-mCshUGW6Hm6FubkHNX_/view?usp=drive_link, https://drive.google.com/file/d/1qfFGpTeiuXgEL4im3vq0eN2hdH6vkNAX/view?usp=drive_link, https://drive.google.com/file/d/1MliN2qwgbc2BK4rDzdgR4wG-B9foamb-/view?usp=drive_link, https://drive.google.com/file/d/1XydgM9l5eKGSYhzU1e9ZYPovr-5CrVIs/view?usp=drive_link, https://drive.google.com/file/d/1EVdID0AK62np8zMCG3V-XGfVnB-fqgou/view?usp=drive_link, https://drive.google.com/file/d/1IyZ6KwORvm2L4SDzeNSOxCVWBDpH_PWH/view?usp=drive_link, https://drive.google.com/file/d/1zf_MyrD8WTRc0e_AkLp0YrtSdh9kh0EG/view?usp=drive_link, https://drive.google.com/file/d/1WtBVn4aCr-XEKdLtHdjMWsfYcGevcYck/view?usp=drive_link, https://drive.google.com/file/d/1XmiPYDpfxad3HVQGLH2KtdKu-5a_Rzfn/view?usp=drive_link, https://drive.google.com/file/d/1Qp7JyIVVv2czFTI0t7Q5uyw-rjFVDPfM/view?usp=drive_link, https://drive.google.com/file/d/1-JvKMz-LeJB-KELtvrrwqJmAMlAsYzV6/view?usp=drive_link, https://drive.google.com/file/d/1485umXgm18Pxdo9t7sSqXORAkl8eFosB/view?usp=drive_link, https://drive.google.com/file/d/1HrRF69aUjWuRAhNW7DbrwjlVj3PAJFRB/view?usp=drive_link, https://drive.google.com/file/d/18RQFxSrSV744-8fVFKVp_fsHEUYMVltk/view?usp=drive_link, https://drive.google.com/file/d/1fXWeeNoRE4NxhvyS-4L0endKvBBPeqSQ/view?usp=drive_link, https://drive.google.com/file/d/1euGYREMaj-ZVo5JOuyIdBQKnaRg5SgyU/view?usp=drive_link, https://drive.google.com/file/d/1dThoEzBdmld9HstwwlpGyGqmMdDY-edR/view?usp=drive_link, https://drive.google.com/file/d/1nSpRlYcsTEm42CyBfejqLSPSyn_dTO5u/view?usp=drive_link, https://drive.google.com/file/d/1lzKMiSCE-ObkN7Sm7W7gxYqz25ofjgLW/view?usp=drive_link, https://drive.google.com/file/d/1VGfPsPm1RoGclf_FQEX5I3aNGMlPnTlS/view?usp=drive_link, https://drive.google.com/file/d/16oarv3l2W6-kjVDdzkCJH_DngG7MqBIn/view?usp=drive_link, https://drive.google.com/file/d/1uKWcNMGJXG2oOhWQ_MnP2H3YcQzUfEvZ/view?usp=drive_link, https://drive.google.com/file/d/1orppLohm0ZpgL2y22FFc0AosvgZegqIK/view?usp=drive_link, https://drive.google.com/file/d/17Ednpo_-1y_WcKqmoWCzddp0_sH7BiFh/view?usp=drive_link, https://drive.google.com/file/d/17DccYXXkID9dWRPM1ZZiEM4XiPNpXI_1/view?usp=drive_link, https://drive.google.com/file/d/1CGpcjAVOFGDKLSwUWr0Uj7Qb5XrXoJi4/view?usp=drive_link, https://drive.google.com/file/d/1yRVQas3TeUQRiTx0YIvPY3r2bzaEZpbT/view?usp=drive_link, https://drive.google.com/file/d/1pHb6go6dnCj1k_kubsFMq45K6zfnQDK-/view?usp=drive_link, https://drive.google.com/file/d/14NRkhmbi3VsIYhdGdkg-Og17wzXiE-El/view?usp=drive_link, https://drive.google.com/file/d/1XxNvoQZggXuspfgbRdL9q2UuY89oUQ40/view?usp=drive_link, https://drive.google.com/file/d/1WvDT6nV-sJC4hFtphp2t49ABv2YL4bMt/view?usp=drive_link, https://drive.google.com/file/d/1GfpoGARZXhJaP1_gkmHksnzlRmGRfU41/view?usp=drive_link, https://drive.google.com/file/d/1lwWAhjVt0be4YnWSBMvOyQUA48xp5t2M/view?usp=drive_link, https://drive.google.com/file/d/1SFK6MfD8JTZbllCiMpg6qtfHvkyqyXQJ/view?usp=drive_link, https://drive.google.com/file/d/1RRk0CszWOmoipSW8XghzxMTQ_UIh3UqO/view?usp=drive_link, https://drive.google.com/file/d/1rsDd-i7KvLli5ykS3u_seK9-xCHfC5JL/view?usp=drive_link, https://drive.google.com/file/d/1vohHjYSf1fUUmMToG2DjQd1XlV6iVucY/view?usp=drive_link, https://drive.google.com/file/d/1swV1kyGDxFLc_iTZW83wEx4s9htEout3/view?usp=drive_link, https://drive.google.com/file/d/1gmzE4jRzznK7wZaB9Z2fUMudVMwE9sBx/view?usp=drive_link, https://drive.google.com/file/d/1tNUs87y5X9xTaRknuaQx3HvYvmwZ6VHs/view?usp=drive_link, https://drive.google.com/file/d/1WwhrvE8hOdmzCQbBVaEqIpqj3mAhfARw/view?usp=drive_link, https://drive.google.com/file/d/1whlh_HTNK_fl3ZRFPYi8YslJFWTUTpBg/view?usp=drive_link, https://drive.google.com/file/d/129vzYdKIQO5aOgZGnxi73BywgBJOVu_z/view?usp=drive_link, https://drive.google.com/file/d/1cICDUEadPOcB6Q0j31GdwdL44O5pe2ju/view?usp=drive_link, https://drive.google.com/file/d/1RMraufdnJ9aIlwviA446F-x0Gx4Z3-l2/view?usp=drive_link, https://drive.google.com/file/d/14qByyIRy8bWraclfi8xVlUcKyMWNuzPL/view?usp=drive_link, https://drive.google.com/file/d/1VsK3dtDZrHv0u93qfm6OUi64258lTyVU/view?usp=drive_link, https://drive.google.com/file/d/1_LrLa3Qiq-rvHm_tU_Ti4WtEpDvvq3YP/view?usp=drive_link, https://drive.google.com/file/d/1fJDEdmOovOZ51apQvZcx7qSixOAbroKk/view?usp=drive_link, https://drive.google.com/file/d/1a83SYcJnNhqEYgIcaS18CNYoq49qsWBj/view?usp=drive_link, https://drive.google.com/file/d/1gEh2a7AjYNXO10SgkYLtBPtAMN-eLIYp/view?usp=drive_link, https://drive.google.com/file/d/1JNGboDUuEXcfH2NSDg0EHt8nW1akvOrI/view?usp=drive_link, https://drive.google.com/file/d/1kw1clUgGYrHgJi8StOQdViHFurA-4K8h/view?usp=drive_link, https://drive.google.com/file/d/1mpX65zeV3NmWsVc4fz0hBle5CSycIIWy/view?usp=drive_link, https://drive.google.com/file/d/1eJnccxFuzkEQlFU212vhBVKDBSZyvFs-/view?usp=drive_link, https://drive.google.com/file/d/1lrlF82oL5FaiCRzyrVrNxLjnVfsuEcEw/view?usp=drive_link, https://drive.google.com/file/d/1FoybNa6zuV57ml6X_CDgvJvJ975i6Ywj/view?usp=drive_link, https://drive.google.com/file/d/1V8YyhQFMeOn991QstxmEjUcHJNsdvD6t/view?usp=drive_link, https://drive.google.com/file/d/1cjMdZIn95U4CSZeTRy8rMl2RHJc48Kti/view?usp=drive_link, https://drive.google.com/file/d/1qjFZ6gyN4XxuesyNL2tzUbju6Idt239f/view?usp=drive_link, https://drive.google.com/file/d/1qCLj4AsukOiryH-dekKTC_v2x8kaNoKK/view?usp=drive_link, https://drive.google.com/file/d/1QCLP1lmyexIuSo67BxVBSH2yrftLaAEb/view?usp=drive_link, https://drive.google.com/file/d/1iGlGaDUtJeI8wEe7fbxNRmhqHcqEXkY5/view?usp=drive_link, https://drive.google.com/file/d/1uivVT6JbRohhPGdji99YbcNbreZjOZEL/view?usp=drive_link, https://drive.google.com/file/d/1OXkxLtNWGxFkre76pUg6tSC1qjFiD2Vt/view?usp=drive_link, https://drive.google.com/file/d/1P3eUOKd0j5zf-uxR_9oGMkrENBbiqWH4/view?usp=drive_link, https://drive.google.com/file/d/1CXmrCvwburS2ziwpVO8uzVU-4c-AnN4r/view?usp=drive_link, https://drive.google.com/file/d/17Hsg4ohdga2RqsXMgJCPRjbshVGwQwZv/view?usp=drive_link, https://drive.google.com/file/d/1BhJiqij62gMROFfbrMiVlyAZYsdQ49nA/view?usp=drive_link, https://drive.google.com/file/d/1eKNZS86yBN9uZhC29JZHoaz0HOzMrqg8/view?usp=drive_link, https://drive.google.com/file/d/1uNtSg1bdsnwXWUtB9f3mcIUtryx1V2LG/view?usp=drive_link, https://drive.google.com/file/d/1ouIdh5o6_VpuwccUKIcm8aEuK0fzc4Dz/view?usp=drive_link, https://drive.google.com/file/d/1TmZYJ8vprWpfYD5szwJTEkgevGiR2bdB/view?usp=drive_link, https://drive.google.com/file/d/13CUOXTm4MoKWqMtQhIdyY6rJ3GpYcG6r/view?usp=drive_link, https://drive.google.com/file/d/1A98rra8zxpUWpLp6oGjdoRCdX-T0_Zdr/view?usp=drive_link, https://drive.google.com/file/d/1NSO7RU5ZwAIgjqGtXUjv_dBvYDNy6uXy/view?usp=drive_link, https://drive.google.com/file/d/1AxYLu19zNOIEubOEKZrCTer763TDtv9Z/view?usp=drive_link, https://drive.google.com/file/d/16eUza_nAED_PJmqervOcUm9jC0KlZWl7/view?usp=drive_link, https://drive.google.com/file/d/1WXse6qgwxamhH23pt5YgAgOiCktI1v-M/view?usp=drive_link, https://drive.google.com/file/d/1Mbb3Rr7BR5GrKQhdet_Jl3ClfTrVlcIu/view?usp=drive_link, https://drive.google.com/file/d/1jvBJi9xg9KxFJ4UQX9JsCqkQBj_iN3wb/view?usp=drive_link, https://drive.google.com/file/d/1dvazPcyVkTQttrzGN9D45OWNsN0Nw5PA/view?usp=drive_link, https://drive.google.com/file/d/1hFORakGgzZ_NXe5Ldsw1wuQZkq7428Wp/view?usp=drive_link, https://drive.google.com/file/d/1Vh0h1no9-4DbNgvhbkcZRWw58uaq_JkD/view?usp=drive_link, https://drive.google.com/file/d/1CZettIRscpAZDtaNvqjwY5ysqBmAWyTO/view?usp=drive_link, https://drive.google.com/file/d/12i1kgPmR6DHJWmZSVEGVi2d2YU58yLA-/view?usp=drive_link, https://drive.google.com/file/d/1XW-lK7P3efXwO7XJe5FQ-Tgk6t6IjvPT/view?usp=drive_link, https://drive.google.com/file/d/1V72zjtXDlJfnmnP3Ho4ZRY-q8A_1ICbE/view?usp=drive_link, https://drive.google.com/file/d/1N51nYcSiaRSX6qZuRHp9Jqm2xZKtSjdm/view?usp=drive_link, https://drive.google.com/file/d/1re9JMfnADCw0D63tyyxbs8gKezGu2hfn/view?usp=drive_link, https://drive.google.com/file/d/1ussPOW87CBUVvY4QrTwiwRbRF-8G86mK/view?usp=drive_link, https://drive.google.com/file/d/1wxTZcfJYRQijcWyb3tplpDsUAhfz6LUx/view?usp=drive_link, https://drive.google.com/file/d/1IvK_iSAxq1aCakB0FqnsLTqY2yLszYqi/view?usp=drive_link, https://drive.google.com/file/d/15UJAOL4sKC99lENBxRGeTaIOO9PjtLsP/view?usp=drive_link, https://drive.google.com/file/d/1oJAW7RXkG-7cF_5VKxX-4UtG8bT70Tw9/view?usp=drive_link, https://drive.google.com/file/d/1utiYnoCK0RlAo9DVjrvLinH2jMJTBoHa/view?usp=drive_link, https://drive.google.com/file/d/1e9gviLNkd2hdp3N8f-AKl55qe-38ZLQD/view?usp=drive_link, https://drive.google.com/file/d/1IuAkhpRMAEvg6Tiuw2qOttDj5JSyV12y/view?usp=drive_link, https://drive.google.com/file/d/1j2_ch895Ud3UPJ5FlpbmLk9nhkeweIzU/view?usp=drive_link, https://drive.google.com/file/d/1weic_Nw6CVhRtMwyF7K8b7cs2d2JolXx/view?usp=drive_link, https://drive.google.com/file/d/1usMc63b37dZ4RV8hDaYuFLo0BhZW6L6l/view?usp=drive_link, https://drive.google.com/file/d/1IWUDeM3eyrQ6oyRtM90INQQA-lFRIf5x/view?usp=drive_link, https://drive.google.com/file/d/1OSDlR2YsFoBQqCemTD2WqUO9wtY7ZOJ0/view?usp=drive_link, https://drive.google.com/file/d/1CwIowUab0-824UrV0IkSR-FXSmVIy1cY/view?usp=drive_link, https://drive.google.com/file/d/1HhYc_PYgqrFdsX26qNLt2d9KaFAB3V4n/view?usp=drive_link, https://drive.google.com/file/d/1Hh23ezvxaasG_MXj2GI67OPYfL9AOV6t/view?usp=drive_link, https://drive.google.com/file/d/1YLXxjnzeTfC6fHp2I9CG8MiIF8BGx8A1/view?usp=drive_link, https://drive.google.com/file/d/1hN-kgO5f3l99OzQ7FHJt5lzxSf3h_I7L/view?usp=drive_link, https://drive.google.com/file/d/1M0Z-UHcAZ_DWvgX8C-XkMZQ1OAa_GCve/view?usp=drive_link, https://drive.google.com/file/d/1YmgtuqqirpcryPVDRWo7j8n4S_cnZfTO/view?usp=drive_link, https://drive.google.com/file/d/1IsRC3AuW3ycKzOd45XSlM0cFdia6tYD4/view?usp=drive_link';
+      const mediaString =
+        "https://drive.google.com/file/d/16dmf72puO1ymRAREpQ9dioNc8m6M5Uky/view?usp=drive_link, https://drive.google.com/file/d/1ICrVj6wUliPb3KIfydmTfQlq3ThfMJjP/view?usp=drive_link, https://drive.google.com/file/d/1BPs2OytRkG-cqXaPOssmbzFnb6-Xggcg/view?usp=drive_link, https://drive.google.com/file/d/10TTGYNk6DcUZt1c8FzztGCclpfwfSKXS/view?usp=drive_link, https://drive.google.com/file/d/1x08F1PulACWzOyBYsYu5Q0VYP3SoUzWR/view?usp=drive_link, https://drive.google.com/file/d/1t00XRCtTsHh50xpFAyzVofDxy_vqEUdU/view?usp=drive_link, https://drive.google.com/file/d/1tTrBEcqnm82uR7vkpq0JBZJ2rvJHSRTr/view?usp=drive_link, https://drive.google.com/file/d/1Dvv5PutiDTmCxFij2PyyQ-PZKvK-oNly/view?usp=drive_link, https://drive.google.com/file/d/1VIShUDCGYaLuaSJyPij4LSljtKxwV3Up/view?usp=drive_link, https://drive.google.com/file/d/1eJRtfqTA9HkfDf5_4Opg-RdkpjMAlw7R/view?usp=drive_link, https://drive.google.com/file/d/1oh4H3RY8ULv1E4_fxi4dcHtBlKYnuD_i/view?usp=drive_link, https://drive.google.com/file/d/1uYfTQGHX2Zk8KHBNF85r7ltxnuFbnZMt/view?usp=drive_link, https://drive.google.com/file/d/10aN2tZIGMb9FTC82I2Td1R8e5KFSUR0-/view?usp=drive_link, https://drive.google.com/file/d/1_MZuU0lvqYciyDWye8Six8yvS-z3lEBM/view?usp=drive_link, https://drive.google.com/file/d/1zZMpUCQ9faZnQBn5ZhnhltcqagaPu3sT/view?usp=drive_link, https://drive.google.com/file/d/1-uXNkWNQ6I4dGIxgP8UHBcjkcL1UftRh/view?usp=drive_link, https://drive.google.com/file/d/1fhpod50CUtKEihmM9BywCvqumdohOKvc/view?usp=drive_link, https://drive.google.com/file/d/1exMzNCMd4wliyxio_LfAa7cCCMploWO3/view?usp=drive_link, https://drive.google.com/file/d/1vTOfzP1go5hthEx2wh5ZGBLqywgDR1Gu/view?usp=drive_link, https://drive.google.com/file/d/1jF0ahDACq8tmoeETqfXT1bzEBvDg2y4f/view?usp=drive_link, https://drive.google.com/file/d/1VqJtzcOaIGpPzECdOo7-ufatPDL2xqMV/view?usp=drive_link, https://drive.google.com/file/d/11lILGz9wrpC1A5E1n7PeTrMiOt88jXnA/view?usp=drive_link, https://drive.google.com/file/d/1RA2p6gk5iaJiG4xEp338uU-cP9dVHUTr/view?usp=drive_link, https://drive.google.com/file/d/1MYyPLLrbODYxUk5rVPRnWJ41VvU9N5og/view?usp=drive_link, https://drive.google.com/file/d/1NGZsulfkspv4OuRM9rjI6WuAYXfH2gbg/view?usp=drive_link, https://drive.google.com/file/d/1VkB5SBWq2RnTk03fwdmrXa1NpeL_df-M/view?usp=drive_link, https://drive.google.com/file/d/1MrnY2C8GF632DX5ihrgSAyEa1Hu-35sm/view?usp=drive_link, https://drive.google.com/file/d/1qOx4dMjz5fFnHRcpkNCnaeTD9UVCIXww/view?usp=drive_link, https://drive.google.com/file/d/19RNOFjtfD8oFs1gzgabCncOpgHKlk_hU/view?usp=drive_link, https://drive.google.com/file/d/1Nmwl-ByOyomg17IsZvAOcEmlPAIFSHZK/view?usp=drive_link, https://drive.google.com/file/d/12uP4vlv7cqV74qftDxMECTJ9tc1mIdR_/view?usp=drive_link, https://drive.google.com/file/d/1j97ogpP1qh-wsQiPWZt-jS2boxJy7-gK/view?usp=drive_link, https://drive.google.com/file/d/1UPKgsaM_Kg79lmTcRhirZqmBahKBqvHC/view?usp=drive_link, https://drive.google.com/file/d/1uz0LEGIil3XHXbl9NmbUaiadg2GMCGLL/view?usp=drive_link, https://drive.google.com/file/d/1BnACk-e3EIEt52yDBu9UJJ-Q_zlExMuq/view?usp=drive_link, https://drive.google.com/file/d/1qw8Yucl0XZZ2LPoy9PoVomfW_f8ychKy/view?usp=drive_link, https://drive.google.com/file/d/19tBPRoOL7SiGNcK_f0Zo1wE0lR0vAEsy/view?usp=drive_link, https://drive.google.com/file/d/1Ntl6CKXaXn9726E2pQBNUOOeYksnXMQT/view?usp=drive_link, https://drive.google.com/file/d/1ZScEihEcOO-U-mCshUGW6Hm6FubkHNX_/view?usp=drive_link, https://drive.google.com/file/d/1qfFGpTeiuXgEL4im3vq0eN2hdH6vkNAX/view?usp=drive_link, https://drive.google.com/file/d/1MliN2qwgbc2BK4rDzdgR4wG-B9foamb-/view?usp=drive_link, https://drive.google.com/file/d/1XydgM9l5eKGSYhzU1e9ZYPovr-5CrVIs/view?usp=drive_link, https://drive.google.com/file/d/1EVdID0AK62np8zMCG3V-XGfVnB-fqgou/view?usp=drive_link, https://drive.google.com/file/d/1IyZ6KwORvm2L4SDzeNSOxCVWBDpH_PWH/view?usp=drive_link, https://drive.google.com/file/d/1zf_MyrD8WTRc0e_AkLp0YrtSdh9kh0EG/view?usp=drive_link, https://drive.google.com/file/d/1WtBVn4aCr-XEKdLtHdjMWsfYcGevcYck/view?usp=drive_link, https://drive.google.com/file/d/1XmiPYDpfxad3HVQGLH2KtdKu-5a_Rzfn/view?usp=drive_link, https://drive.google.com/file/d/1Qp7JyIVVv2czFTI0t7Q5uyw-rjFVDPfM/view?usp=drive_link, https://drive.google.com/file/d/1-JvKMz-LeJB-KELtvrrwqJmAMlAsYzV6/view?usp=drive_link, https://drive.google.com/file/d/1485umXgm18Pxdo9t7sSqXORAkl8eFosB/view?usp=drive_link, https://drive.google.com/file/d/1HrRF69aUjWuRAhNW7DbrwjlVj3PAJFRB/view?usp=drive_link, https://drive.google.com/file/d/18RQFxSrSV744-8fVFKVp_fsHEUYMVltk/view?usp=drive_link, https://drive.google.com/file/d/1fXWeeNoRE4NxhvyS-4L0endKvBBPeqSQ/view?usp=drive_link, https://drive.google.com/file/d/1euGYREMaj-ZVo5JOuyIdBQKnaRg5SgyU/view?usp=drive_link, https://drive.google.com/file/d/1dThoEzBdmld9HstwwlpGyGqmMdDY-edR/view?usp=drive_link, https://drive.google.com/file/d/1nSpRlYcsTEm42CyBfejqLSPSyn_dTO5u/view?usp=drive_link, https://drive.google.com/file/d/1lzKMiSCE-ObkN7Sm7W7gxYqz25ofjgLW/view?usp=drive_link, https://drive.google.com/file/d/1VGfPsPm1RoGclf_FQEX5I3aNGMlPnTlS/view?usp=drive_link, https://drive.google.com/file/d/16oarv3l2W6-kjVDdzkCJH_DngG7MqBIn/view?usp=drive_link, https://drive.google.com/file/d/1uKWcNMGJXG2oOhWQ_MnP2H3YcQzUfEvZ/view?usp=drive_link, https://drive.google.com/file/d/1orppLohm0ZpgL2y22FFc0AosvgZegqIK/view?usp=drive_link, https://drive.google.com/file/d/17Ednpo_-1y_WcKqmoWCzddp0_sH7BiFh/view?usp=drive_link, https://drive.google.com/file/d/17DccYXXkID9dWRPM1ZZiEM4XiPNpXI_1/view?usp=drive_link, https://drive.google.com/file/d/1CGpcjAVOFGDKLSwUWr0Uj7Qb5XrXoJi4/view?usp=drive_link, https://drive.google.com/file/d/1yRVQas3TeUQRiTx0YIvPY3r2bzaEZpbT/view?usp=drive_link, https://drive.google.com/file/d/1pHb6go6dnCj1k_kubsFMq45K6zfnQDK-/view?usp=drive_link, https://drive.google.com/file/d/14NRkhmbi3VsIYhdGdkg-Og17wzXiE-El/view?usp=drive_link, https://drive.google.com/file/d/1XxNvoQZggXuspfgbRdL9q2UuY89oUQ40/view?usp=drive_link, https://drive.google.com/file/d/1WvDT6nV-sJC4hFtphp2t49ABv2YL4bMt/view?usp=drive_link, https://drive.google.com/file/d/1GfpoGARZXhJaP1_gkmHksnzlRmGRfU41/view?usp=drive_link, https://drive.google.com/file/d/1lwWAhjVt0be4YnWSBMvOyQUA48xp5t2M/view?usp=drive_link, https://drive.google.com/file/d/1SFK6MfD8JTZbllCiMpg6qtfHvkyqyXQJ/view?usp=drive_link, https://drive.google.com/file/d/1RRk0CszWOmoipSW8XghzxMTQ_UIh3UqO/view?usp=drive_link, https://drive.google.com/file/d/1rsDd-i7KvLli5ykS3u_seK9-xCHfC5JL/view?usp=drive_link, https://drive.google.com/file/d/1vohHjYSf1fUUmMToG2DjQd1XlV6iVucY/view?usp=drive_link, https://drive.google.com/file/d/1swV1kyGDxFLc_iTZW83wEx4s9htEout3/view?usp=drive_link, https://drive.google.com/file/d/1gmzE4jRzznK7wZaB9Z2fUMudVMwE9sBx/view?usp=drive_link, https://drive.google.com/file/d/1tNUs87y5X9xTaRknuaQx3HvYvmwZ6VHs/view?usp=drive_link, https://drive.google.com/file/d/1WwhrvE8hOdmzCQbBVaEqIpqj3mAhfARw/view?usp=drive_link, https://drive.google.com/file/d/1whlh_HTNK_fl3ZRFPYi8YslJFWTUTpBg/view?usp=drive_link, https://drive.google.com/file/d/129vzYdKIQO5aOgZGnxi73BywgBJOVu_z/view?usp=drive_link, https://drive.google.com/file/d/1cICDUEadPOcB6Q0j31GdwdL44O5pe2ju/view?usp=drive_link, https://drive.google.com/file/d/1RMraufdnJ9aIlwviA446F-x0Gx4Z3-l2/view?usp=drive_link, https://drive.google.com/file/d/14qByyIRy8bWraclfi8xVlUcKyMWNuzPL/view?usp=drive_link, https://drive.google.com/file/d/1VsK3dtDZrHv0u93qfm6OUi64258lTyVU/view?usp=drive_link, https://drive.google.com/file/d/1_LrLa3Qiq-rvHm_tU_Ti4WtEpDvvq3YP/view?usp=drive_link, https://drive.google.com/file/d/1fJDEdmOovOZ51apQvZcx7qSixOAbroKk/view?usp=drive_link, https://drive.google.com/file/d/1a83SYcJnNhqEYgIcaS18CNYoq49qsWBj/view?usp=drive_link, https://drive.google.com/file/d/1gEh2a7AjYNXO10SgkYLtBPtAMN-eLIYp/view?usp=drive_link, https://drive.google.com/file/d/1JNGboDUuEXcfH2NSDg0EHt8nW1akvOrI/view?usp=drive_link, https://drive.google.com/file/d/1kw1clUgGYrHgJi8StOQdViHFurA-4K8h/view?usp=drive_link, https://drive.google.com/file/d/1mpX65zeV3NmWsVc4fz0hBle5CSycIIWy/view?usp=drive_link, https://drive.google.com/file/d/1eJnccxFuzkEQlFU212vhBVKDBSZyvFs-/view?usp=drive_link, https://drive.google.com/file/d/1lrlF82oL5FaiCRzyrVrNxLjnVfsuEcEw/view?usp=drive_link, https://drive.google.com/file/d/1FoybNa6zuV57ml6X_CDgvJvJ975i6Ywj/view?usp=drive_link, https://drive.google.com/file/d/1V8YyhQFMeOn991QstxmEjUcHJNsdvD6t/view?usp=drive_link, https://drive.google.com/file/d/1cjMdZIn95U4CSZeTRy8rMl2RHJc48Kti/view?usp=drive_link, https://drive.google.com/file/d/1qjFZ6gyN4XxuesyNL2tzUbju6Idt239f/view?usp=drive_link, https://drive.google.com/file/d/1qCLj4AsukOiryH-dekKTC_v2x8kaNoKK/view?usp=drive_link, https://drive.google.com/file/d/1QCLP1lmyexIuSo67BxVBSH2yrftLaAEb/view?usp=drive_link, https://drive.google.com/file/d/1iGlGaDUtJeI8wEe7fbxNRmhqHcqEXkY5/view?usp=drive_link, https://drive.google.com/file/d/1uivVT6JbRohhPGdji99YbcNbreZjOZEL/view?usp=drive_link, https://drive.google.com/file/d/1OXkxLtNWGxFkre76pUg6tSC1qjFiD2Vt/view?usp=drive_link, https://drive.google.com/file/d/1P3eUOKd0j5zf-uxR_9oGMkrENBbiqWH4/view?usp=drive_link, https://drive.google.com/file/d/1CXmrCvwburS2ziwpVO8uzVU-4c-AnN4r/view?usp=drive_link, https://drive.google.com/file/d/17Hsg4ohdga2RqsXMgJCPRjbshVGwQwZv/view?usp=drive_link, https://drive.google.com/file/d/1BhJiqij62gMROFfbrMiVlyAZYsdQ49nA/view?usp=drive_link, https://drive.google.com/file/d/1eKNZS86yBN9uZhC29JZHoaz0HOzMrqg8/view?usp=drive_link, https://drive.google.com/file/d/1uNtSg1bdsnwXWUtB9f3mcIUtryx1V2LG/view?usp=drive_link, https://drive.google.com/file/d/1ouIdh5o6_VpuwccUKIcm8aEuK0fzc4Dz/view?usp=drive_link, https://drive.google.com/file/d/1TmZYJ8vprWpfYD5szwJTEkgevGiR2bdB/view?usp=drive_link, https://drive.google.com/file/d/13CUOXTm4MoKWqMtQhIdyY6rJ3GpYcG6r/view?usp=drive_link, https://drive.google.com/file/d/1A98rra8zxpUWpLp6oGjdoRCdX-T0_Zdr/view?usp=drive_link, https://drive.google.com/file/d/1NSO7RU5ZwAIgjqGtXUjv_dBvYDNy6uXy/view?usp=drive_link, https://drive.google.com/file/d/1AxYLu19zNOIEubOEKZrCTer763TDtv9Z/view?usp=drive_link, https://drive.google.com/file/d/16eUza_nAED_PJmqervOcUm9jC0KlZWl7/view?usp=drive_link, https://drive.google.com/file/d/1WXse6qgwxamhH23pt5YgAgOiCktI1v-M/view?usp=drive_link, https://drive.google.com/file/d/1Mbb3Rr7BR5GrKQhdet_Jl3ClfTrVlcIu/view?usp=drive_link, https://drive.google.com/file/d/1jvBJi9xg9KxFJ4UQX9JsCqkQBj_iN3wb/view?usp=drive_link, https://drive.google.com/file/d/1dvazPcyVkTQttrzGN9D45OWNsN0Nw5PA/view?usp=drive_link, https://drive.google.com/file/d/1hFORakGgzZ_NXe5Ldsw1wuQZkq7428Wp/view?usp=drive_link, https://drive.google.com/file/d/1Vh0h1no9-4DbNgvhbkcZRWw58uaq_JkD/view?usp=drive_link, https://drive.google.com/file/d/1CZettIRscpAZDtaNvqjwY5ysqBmAWyTO/view?usp=drive_link, https://drive.google.com/file/d/12i1kgPmR6DHJWmZSVEGVi2d2YU58yLA-/view?usp=drive_link, https://drive.google.com/file/d/1XW-lK7P3efXwO7XJe5FQ-Tgk6t6IjvPT/view?usp=drive_link, https://drive.google.com/file/d/1V72zjtXDlJfnmnP3Ho4ZRY-q8A_1ICbE/view?usp=drive_link, https://drive.google.com/file/d/1N51nYcSiaRSX6qZuRHp9Jqm2xZKtSjdm/view?usp=drive_link, https://drive.google.com/file/d/1re9JMfnADCw0D63tyyxbs8gKezGu2hfn/view?usp=drive_link, https://drive.google.com/file/d/1ussPOW87CBUVvY4QrTwiwRbRF-8G86mK/view?usp=drive_link, https://drive.google.com/file/d/1wxTZcfJYRQijcWyb3tplpDsUAhfz6LUx/view?usp=drive_link, https://drive.google.com/file/d/1IvK_iSAxq1aCakB0FqnsLTqY2yLszYqi/view?usp=drive_link, https://drive.google.com/file/d/15UJAOL4sKC99lENBxRGeTaIOO9PjtLsP/view?usp=drive_link, https://drive.google.com/file/d/1oJAW7RXkG-7cF_5VKxX-4UtG8bT70Tw9/view?usp=drive_link, https://drive.google.com/file/d/1utiYnoCK0RlAo9DVjrvLinH2jMJTBoHa/view?usp=drive_link, https://drive.google.com/file/d/1e9gviLNkd2hdp3N8f-AKl55qe-38ZLQD/view?usp=drive_link, https://drive.google.com/file/d/1IuAkhpRMAEvg6Tiuw2qOttDj5JSyV12y/view?usp=drive_link, https://drive.google.com/file/d/1j2_ch895Ud3UPJ5FlpbmLk9nhkeweIzU/view?usp=drive_link, https://drive.google.com/file/d/1weic_Nw6CVhRtMwyF7K8b7cs2d2JolXx/view?usp=drive_link, https://drive.google.com/file/d/1usMc63b37dZ4RV8hDaYuFLo0BhZW6L6l/view?usp=drive_link, https://drive.google.com/file/d/1IWUDeM3eyrQ6oyRtM90INQQA-lFRIf5x/view?usp=drive_link, https://drive.google.com/file/d/1OSDlR2YsFoBQqCemTD2WqUO9wtY7ZOJ0/view?usp=drive_link, https://drive.google.com/file/d/1CwIowUab0-824UrV0IkSR-FXSmVIy1cY/view?usp=drive_link, https://drive.google.com/file/d/1HhYc_PYgqrFdsX26qNLt2d9KaFAB3V4n/view?usp=drive_link, https://drive.google.com/file/d/1Hh23ezvxaasG_MXj2GI67OPYfL9AOV6t/view?usp=drive_link, https://drive.google.com/file/d/1YLXxjnzeTfC6fHp2I9CG8MiIF8BGx8A1/view?usp=drive_link, https://drive.google.com/file/d/1hN-kgO5f3l99OzQ7FHJt5lzxSf3h_I7L/view?usp=drive_link, https://drive.google.com/file/d/1M0Z-UHcAZ_DWvgX8C-XkMZQ1OAa_GCve/view?usp=drive_link, https://drive.google.com/file/d/1YmgtuqqirpcryPVDRWo7j8n4S_cnZfTO/view?usp=drive_link, https://drive.google.com/file/d/1IsRC3AuW3ycKzOd45XSlM0cFdia6tYD4/view?usp=drive_link";
 
-         // Convert the string into an array
-         const mediaItems = mediaString.split(', ').map(link => link.trim());
+      // Convert the string into an array
+      const mediaItems = mediaString.split(", ").map((link) => link.trim());
 
-  // Function to extract file ID
-  function extractFileId(driveLink) {
-            const match = driveLink.match(/\/d\/(.*?)\//);
-            return match ? match[1] : null;
-        }
+      // Function to extract file ID
+      function extractFileId(driveLink) {
+        const match = driveLink.match(/\/d\/(.*?)\//);
+        return match ? match[1] : null;
+      }
 
-        // Generate direct image links
-        const imageLinks = mediaItems
-            .map(extractFileId)
-            .filter(id => id !== null)
-            .map(id => `https://lh3.googleusercontent.com/d/${id}`);
+      // Generate direct image links
+      const imageLinks = mediaItems
+        .map(extractFileId)
+        .filter((id) => id !== null)
+        .map((id) => `https://lh3.googleusercontent.com/d/${id}`);
 
-        // Display images
-        const imageGallery = document.getElementById("imageGallery");
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightbox-img");
+      // Display images
+      const imageGallery = document.getElementById("imageGallery");
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightbox-img");
 
-// Scroll Animation - Intersection Observer
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add("opacity-100", "translate-y-0");
-        }
-    });
-}, { threshold: 0.2 });
+      // Scroll Animation - Intersection Observer
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("opacity-100", "translate-y-0");
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
 
-imageLinks.forEach((url, index) => {
-    const container = document.createElement("div");
-    container.className = "relative group"; // Group for hover effects
-    observer.observe(container); // Apply observer for scroll animation
-    const imgElement = document.createElement("img");
+      imageLinks.forEach((url, index) => {
+        const container = document.createElement("div");
+        container.className = "relative group"; // Group for hover effects
+        observer.observe(container); // Apply observer for scroll animation
+        const imgElement = document.createElement("img");
 
-    // Load first 3 images immediately, lazy load the rest
-    imgElement.src = index < 3 ? url : "";
-    imgElement.dataset.src = url;
-    
-    // Tailwind classes for styling
-    imgElement.className = "w-full h-auto  rounded-lg shadow-lg lazyload transition-transform duration-300 hover:scale-105 cursor-pointer";
-    
-    // Lightbox functionality when clicking the image
-    imgElement.onclick = () => {
-        lightboxImg.src = url;
-        lightbox.classList.remove("hidden");
-    };
+        // Load first 3 images immediately, lazy load the rest
+        imgElement.src = index < 3 ? url : "";
+        imgElement.dataset.src = url;
 
-    // Fullscreen Icon Button
-    const fullscreenBtn = document.createElement("button");
-    fullscreenBtn.className = "absolute top-2 right-2 bg-black bg-opacity-50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300";
-    fullscreenBtn.innerHTML = `<i class="fas fa-expand"></i>`; // FontAwesome icon
+        // Tailwind classes for styling
+        imgElement.className =
+          "w-full h-auto  rounded-lg shadow-lg lazyload transition-transform duration-300 hover:scale-105 cursor-pointer";
 
-    // Click icon to open Lightbox
-    fullscreenBtn.onclick = (e) => {
-        e.stopPropagation(); // Prevent image click event
-        lightboxImg.src = url;
-        lightbox.classList.remove("hidden");
-    };
+        // Lightbox functionality when clicking the image
+        imgElement.onclick = () => {
+          lightboxImg.src = url;
+          lightbox.classList.remove("hidden");
+        };
 
-    // Append elements
-    container.appendChild(imgElement);
-    container.appendChild(fullscreenBtn);
-    imageGallery.appendChild(container);
-});
+        // Fullscreen Icon Button
+        const fullscreenBtn = document.createElement("button");
+        fullscreenBtn.className =
+          "absolute top-2 right-2 bg-black bg-opacity-50 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300";
+        fullscreenBtn.innerHTML = `<i class="fas fa-expand"></i>`; // FontAwesome icon
 
-// Close Lightbox on click outside the image
-lightbox.onclick = () => {
-    lightbox.classList.add("hidden");
-};
-    
+        // Click icon to open Lightbox
+        fullscreenBtn.onclick = (e) => {
+          e.stopPropagation(); // Prevent image click event
+          lightboxImg.src = url;
+          lightbox.classList.remove("hidden");
+        };
 
+        // Append elements
+        container.appendChild(imgElement);
+        container.appendChild(fullscreenBtn);
+        imageGallery.appendChild(container);
+      });
+
+      // Close Lightbox on click outside the image
+      lightbox.onclick = () => {
+        lightbox.classList.add("hidden");
+      };
     </script>
-      <div id="footer-container"></div>
-      <script src="footerp.js"></script>
-</body>
+    <div id="footer-container"></div>
+    <script src="footerp.js"></script>
+  </body>
 </html>

@@ -14,6 +14,8 @@
     <script type="module" src="./navbar.js"></script>
     <script src="bottomnv.js"></script>
     <script src="kaka.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script>
       tailwind.config = {
           theme: {
@@ -118,7 +120,7 @@
       import {
         getFirestore,
         collection,
-        getDocs, doc, getDoc,arrayUnion, updateDoc,setDoc
+        getDocs, doc, getDoc,arrayUnion, updateDoc,setDoc,serverTimestamp
       } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
       import {
         getAuth,
@@ -268,20 +270,28 @@ if (selectedFilters.length > 0) {
       const bookData = bookDoc.data();
       const { title, amount, description, image_url } = bookData;
       const bookId = bookDoc.id;
-
+      const bookRef1 = doc(db, 'Mybooks', user.uid, 'books', bookId);
       if (amount === "0" || amount === 0) {
         // If the book is free, add it to the user's collection
-        if (userDocSnap.exists()) {
-          await updateDoc(userDocRef, {
+        const bookSnap = await getDoc(bookRef1);
+        if (bookSnap.exists()) {
+          await updateDoc(bookRef1, {
             books: arrayUnion(bookId),
+            timestamp: serverTimestamp(),
           });
         } else {
-          await setDoc(userDocRef, {
+          await setDoc(bookRef1, {
             books: [bookId],
+            timestamp: serverTimestamp(),
           });
         }
 
-        alert("Book added to your collection!");
+        showSuccessToast1();
+
+// Wait for 10 seconds before redirecting
+setTimeout(() => {
+  window.location.href = "mybooks.html";
+}, 3000);
       } else {
         // Proceed with checkout for paid books
         const queryParams = new URLSearchParams({
@@ -316,7 +326,17 @@ if (selectedFilters.length > 0) {
 
 
 
-
+      function showSuccessToast1() {
+  Toastify({
+      text: "🎉 Book Purchased Successfully",
+      duration: 3000, // Auto close after 3 seconds
+      close: true, // Show close button
+      gravity: "top", // Position on top
+      position: "right", // Align to the right
+      backgroundColor: "linear-gradient(to right, #38a169, #2f855a)", // Green gradient
+      stopOnFocus: true, // Stop dismissing on hover
+  }).showToast();
+}
 
 
 

@@ -1,5 +1,7 @@
+/** @format */
+
 document.addEventListener("DOMContentLoaded", function () {
-    const footer = `
+  const footer = `
         <footer class="block bottom-0 left-0 right-0 w-full bg-[#242525] text-white py-6 px-4 border-t border-white">
             <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
                 <!-- Brand Info -->
@@ -43,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="mt-6 text-center">
                 <p class="text-lg font-semibold mb-2">📲 Get our study apps now!</p>
                 <div class="flex justify-center space-x-4">
-                    <a href="#" class="hover:scale-105 transition">
+                     <a href="https://play.google.com/store/apps/details?id=profstudymate.appev" class="hover:scale-105 transition">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" class="h-12">
                     </a>
                     <a href="#" class="hover:scale-105 transition">
@@ -153,5 +155,5 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
         </footer>
     `;
-    document.getElementById("footer-container").innerHTML = footer;
+  document.getElementById("footer-container").innerHTML = footer;
 });

@@ -44,8 +44,6 @@
           },
         ],
       };
-
-      
     </script>
 
     <style>
@@ -72,9 +70,11 @@
       <div class="py-8 px-4 md:px-8 lg:px-16">
         <div class="flex items-center justify-between">
           <!-- Logo -->
-
-          <a href="./index.html" class="flex items-center">
-            <img src="assets/logo (5).png" alt="Logo" class="h-10 mr-2" />
+          <a
+            href="./index.html"
+            class="flex items-center hover:opacity-90 transition-opacity duration-200"
+          >
+            <img src="assets/logo (5).png" alt="Logo" class="h-12 w-auto" />
           </a>
           <!-- Mobile menu button -->
           <div class="md:hidden">
@@ -95,107 +95,193 @@
 
           <!-- Primary Navbar items -->
           <div
-            class="hidden md:flex items-center space-x-4 bg-black p-3 shadow-lg rounded-full"
+            class="hidden md:flex items-center space-x-1 bg-black/90 backdrop-blur-sm p-1.5 shadow-lg rounded-full border border-gray-800"
           >
             <a
               id="home-link"
               href="./"
-              class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
+              class="text-white/90 py-2.5 px-5 hover:bg-white/5 hover:text-white rounded-full transition-all duration-200 font-medium text-sm"
             >
               Home
             </a>
             <a
               id="courses-link"
               href="./courses.html"
-              class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
+              class="text-white/90 py-2.5 px-5 hover:bg-white/5 hover:text-white rounded-full transition-all duration-200 font-medium text-sm"
             >
               Courses
             </a>
             <a
               id="meeting-link"
               href="./meeting.html"
-              class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
+              class="text-white/90 py-2.5 px-5 hover:bg-white/5 hover:text-white rounded-full transition-all duration-200 font-medium text-sm"
             >
               Meeting
             </a>
             <a
               id="shop-link"
               href="./store.html"
-              class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
+              class="text-white/90 py-2.5 px-5 hover:bg-white/5 hover:text-white rounded-full transition-all duration-200 font-medium text-sm"
             >
               Shop
             </a>
             <a
               id="blog-link"
               href="./blog.html"
-              class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
+              class="text-white/90 py-2.5 px-5 hover:bg-white/5 hover:text-white rounded-full transition-all duration-200 font-medium text-sm"
             >
               Blog
             </a>
 
-           
-<!-- Grouped Dropdown -->
-<div class="relative group inline-block">
-  <button
-    class="text-white py-2 px-3 flex items-center hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
-  >
-    Pages
-    <i
-      class="fas fa-chevron-up ml-2 transition-transform transform group-hover:rotate-180"
-    ></i>
-  </button>
-  <div
-    class="absolute hidden group-hover:flex flex-col bg-black text-white mt-1 rounded-lg shadow-lg w-48 
-           transition-all duration-300 ease-in-out z-10 pointer-events-auto"
-  >
-    <a
-      href="./support.html"
-      class="block px-4 py-2 hover:bg-gray-700 rounded-md"
-      >Contact Us</a
-    >
-    <a
-      href="./terms_conditions.html"
-      class="block px-4 py-2 hover:bg-gray-700 rounded-md"
-      >Terms & Conditions</a
-    >
-    <a
-   
-    href="./gallery.html"
-    class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
-  >
-    Gallery
-  </a>
-  <a
-  id="freev-link"
-  href="./freevideos.html"
-  class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
->
-  Free Videos
-</a>
-<a
-id="test-link"
-href="./testimonials.html"
-class="text-white py-2 px-3 hover:bg-white hover:text-[#172554] rounded-md transition duration-300"
->
-Testimonials
-</a>
-    <a
-      href="./aboutus.html"
-      class="block px-4 py-2 hover:bg-gray-700 rounded-md"
-      >About Us</a
-    >
-  </div>
-</div>
-
-
-
-
+            <!-- Grouped Dropdown -->
+            <div class="relative group">
+              <button
+                class="text-white/90 py-2.5 px-5 flex items-center hover:bg-white/5 hover:text-white rounded-full transition-all duration-200 font-medium text-sm"
+              >
+                Pages
+                <svg
+                  class="w-4 h-4 ml-1.5 transition-transform transform group-hover:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+              <div
+                class="absolute hidden group-hover:block bg-black/95 backdrop-blur-sm text-white mt-2 rounded-xl shadow-xl w-56 transition-all duration-200 ease-in-out z-10 border border-gray-800 origin-top scale-95 group-hover:scale-100 opacity-0 group-hover:opacity-100"
+              >
+                <div class="py-1.5 space-y-0.5">
+                  <a
+                    href="./support.html"
+                    class="block px-4 py-2.5 hover:bg-white/5 rounded-lg transition-colors duration-200 text-sm flex items-center"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                    Contact Us
+                  </a>
+                  <a
+                    href="./terms_conditions.html"
+                    class="block px-4 py-2.5 hover:bg-white/5 rounded-lg transition-colors duration-200 text-sm flex items-center"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                      />
+                    </svg>
+                    Terms & Conditions
+                  </a>
+                  <a
+                    href="./gallery.html"
+                    class="block px-4 py-2.5 hover:bg-white/5 rounded-lg transition-colors duration-200 text-sm flex items-center"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                    Gallery
+                  </a>
+                  <a
+                    id="freev-link"
+                    href="./freevideos.html"
+                    class="block px-4 py-2.5 hover:bg-white/5 rounded-lg transition-colors duration-200 text-sm flex items-center"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                      />
+                    </svg>
+                    Free Videos
+                  </a>
+                  <a
+                    id="test-link"
+                    href="./testimonials.html"
+                    class="block px-4 py-2.5 hover:bg-white/5 rounded-lg transition-colors duration-200 text-sm flex items-center"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                      />
+                    </svg>
+                    Testimonials
+                  </a>
+                  <a
+                    href="./aboutus.html"
+                    class="block px-4 py-2.5 hover:bg-white/5 rounded-lg transition-colors duration-200 text-sm flex items-center"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    About Us
+                  </a>
+                </div>
+              </div>
+            </div>
 
             <div id="sinb">
               <div
-                class="flex justify-center items-center text-white hover:bg-gray-600 border-[1px] w-[100px] h-10 bg-transparent rounded-2xl"
+                class="flex justify-center items-center text-white/90 hover:bg-white/5 border border-gray-700 w-[100px] h-10 bg-transparent rounded-full transition-all duration-200"
               >
-                <a href="./account.html">Sign in</a>
+                <a href="./account.html" class="font-medium text-sm">Sign in</a>
               </div>
             </div>
           </div>
@@ -204,80 +290,156 @@ Testimonials
       </div>
       <!-- Mobile menu -->
       <div class="hidden mobile-menu p-3">
-        <ul>
-          <li>
-            <a
-              id="mobile-contact-link"
-              href="./support.html"
-              class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
-              >Contact Us</a
-            >
-          </li>
-          <li>
-            <a
-              id="mobile-blog-link"
-              href="./blog.html"
-              class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
-              >Blog</a
-            >
-          </li>
-          <li>
-            <a
-              id="mobile-contact-link"
-              href="./terms_conditions.html"
-              class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
-              >Terms & Conditions</a
-            >
-          </li>
-
-
-      <li>
-        <a
-      
-        href="./gallery.html"
-        class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
+        <div
+        class=" mobile-menu bg-black/95 backdrop-blur-sm border-t border-gray-800"
       >
-        Gallery
-      </a>
-      </li>
-
-   <li>
-    <a
-
-    href="./freevideos.html"
-    class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
-  >
-    Free Videos
-  </a>
-   </li>
-
-   <li>
-    <a
-
-    href="./testimonials.html"
-    class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
-  >
-    Testimonials
-  </a>
-   </li>
-      
-          <li>
+        <div class="container mx-auto px-4 py-4">
+          <div class="grid grid-cols-2 gap-2">
             <a
-              id="mobile-contact-link"
-              href="./aboutus.html"
-              class="block text-sm px-4 py-4 text-white hover:bg-white hover:text-[#172554] transition duration-300"
-              >About Us</a
+              href="./support.html"
+              class="flex items-center p-3 hover:bg-white/5 rounded-lg transition-colors duration-200 text-white/90"
             >
-          </li>
-          <div class="border-t border-gray-500"></div>
-          <div
-            class="flex-wrap flex flex-auto justify-center space-x-4 mt-4 mb-4 mx-6"
-          >
-            <div>
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              Contact Us
+            </a>
+            <a
+              href="./blog.html"
+              class="flex items-center p-3 hover:bg-white/5 rounded-lg transition-colors duration-200 text-white/90"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                />
+              </svg>
+              Blog
+            </a>
+            <a
+              href="./terms_conditions.html"
+              class="flex items-center p-3 hover:bg-white/5 rounded-lg transition-colors duration-200 text-white/90"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
+              </svg>
+              Terms & Conditions
+            </a>
+            <a
+              href="./gallery.html"
+              class="flex items-center p-3 hover:bg-white/5 rounded-lg transition-colors duration-200 text-white/90"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              Gallery
+            </a>
+            <a
+              href="./freevideos.html"
+              class="flex items-center p-3 hover:bg-white/5 rounded-lg transition-colors duration-200 text-white/90"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                />
+              </svg>
+              Free Videos
+            </a>
+            <a
+              href="./testimonials.html"
+              class="flex items-center p-3 hover:bg-white/5 rounded-lg transition-colors duration-200 text-white/90"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                />
+              </svg>
+              Testimonials
+            </a>
+            <a
+              href="./aboutus.html"
+              class="flex items-center p-3 hover:bg-white/5 rounded-lg transition-colors duration-200 text-white/90"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              About Us
+            </a>
+          </div>
+
+          <!-- Social Media Links -->
+          <div class="mt-6">
+            <h3 class="text-white/90 text-sm font-medium mb-3 px-3">
+              Follow Us
+            </h3>
+            <div class="grid grid-cols-4 gap-3">
               <a
                 href="http://instagram.com/profs_training_solutions/"
                 target="_blank"
-                class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-pink-500/50"
+                class="glassmorphism p-3 flex items-center justify-center rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/50"
               >
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png"
@@ -285,12 +447,10 @@ Testimonials
                   alt="Instagram"
                 />
               </a>
-            </div>
-            <div>
               <a
                 href="http://tiktok.com/@profstraining"
                 target="_blank"
-                class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-gray-500/50"
+                class="glassmorphism p-3 flex items-center justify-center rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg hover:shadow-gray-500/50"
               >
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/3046/3046120.png"
@@ -298,12 +458,10 @@ Testimonials
                   alt="TikTok"
                 />
               </a>
-            </div>
-            <div>
               <a
                 href="http://youtube.com/@ProfsTrainingSolutions"
                 target="_blank"
-                class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-red-500/50"
+                class="glassmorphism p-3 flex items-center justify-center rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg hover:shadow-red-500/50"
               >
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"
@@ -311,12 +469,10 @@ Testimonials
                   alt="YouTube"
                 />
               </a>
-            </div>
-            <div>
               <a
                 href="https://linkedin.com/in/profs-training-solutions/"
                 target="_blank"
-                class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50"
+                class="glassmorphism p-3 flex items-center justify-center rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/50"
               >
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/1384/1384062.png"
@@ -324,12 +480,10 @@ Testimonials
                   alt="LinkedIn"
                 />
               </a>
-            </div>
-            <div>
               <a
                 href="http://facebook.com/ProfsTraining"
                 target="_blank"
-                class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-600/50"
+                class="glassmorphism p-3 flex items-center justify-center rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg hover:shadow-blue-600/50"
               >
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/1384/1384053.png"
@@ -337,12 +491,10 @@ Testimonials
                   alt="Facebook"
                 />
               </a>
-            </div>
-            <div>
               <a
                 href="https://whatsapp.com/channel/0029VaZV6OeEAKWHHdSdiR1S"
                 target="_blank"
-                class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-green-500/50"
+                class="glassmorphism p-3 flex items-center justify-center rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg hover:shadow-green-500/50"
               >
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/1384/1384055.png"
@@ -350,12 +502,10 @@ Testimonials
                   alt="WhatsApp"
                 />
               </a>
-            </div>
-            <div>
               <a
                 href="https://t.me/Profstrainingsolutions"
                 target="_blank"
-                class="glassmorphism p-2 flex items-center justify-center w-10 h-10 transition-transform transform hover:scale-110 hover:shadow-lg hover:shadow-blue-400/50"
+                class="glassmorphism p-3 flex items-center justify-center rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg hover:shadow-blue-400/50"
               >
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"
@@ -365,14 +515,12 @@ Testimonials
               </a>
             </div>
           </div>
-        </ul>
+        </div>
+      </div>
 
         <div id="textDiv1" class="top-0 right-0 left-0 hidden"></div>
       </div>
     </nav>
-
-
   </body>
   <!-- JavaScript -->
-
 </html>

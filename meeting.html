@@ -1,215 +1,351 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zoom Video List</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zoom Video List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      .gradient-bg {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      }
+      .card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+      .search-input {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .search-input:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      .status-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .suggestion-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+      }
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+      .countdown {
+        font-family: monospace;
+        font-size: 0.9rem;
+        color: #ff6b6b;
+      }
+    </style>
+    <script type="module" src="nava-links.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+      import {
+        query,
+        where,
+        orderBy,
+        getFirestore,
+        doc,
+        addDoc,
+        getDoc,
+        collection,
+        getDocs,
+        setDoc,
+        Timestamp,
+      } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
 
-  <script type="module" src="nava-links.js"></script>
-  <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-import {
-  query,
-  where,
-  orderBy,
-  getFirestore,
-  doc,
-  addDoc,
-  getDoc,
-  collection,
-  getDocs,
-  setDoc,
-  Timestamp,
-} from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
-import {
-  getAuth,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
+      // Initialize Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+        authDomain: "profstudymate-6d0fc.firebaseapp.com",
+        projectId: "profstudymate",
+        storageBucket: "profstudymate.appspot.com",
+        messagingSenderId: "141453158869",
+        appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+      };
 
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
-  authDomain: "profstudymate-6d0fc.firebaseapp.com",
-  projectId: "profstudymate",
-  storageBucket: "profstudymate.appspot.com",
-  messagingSenderId: "141453158869",
-  appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
-};
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+      const extractZoomLink = (zoomInvitation) => {
+        let zoomID = "";
+        let passcode = "";
+        const idMatch = zoomInvitation.match(/Meeting ID:\s*([\d\s]+)/i);
+        if (idMatch) zoomID = idMatch[1].replace(/\s+/g, "");
+        const passMatch = zoomInvitation.match(/Passcode:\s*([\S]+)/i);
+        if (passMatch) passcode = passMatch[1];
+        return zoomID && passcode
+          ? `https://app.zoom.us/wc/join/${zoomID}?pwd=${passcode}`
+          : zoomID
+          ? `https://app.zoom.us/wc/join/${zoomID}`
+          : "No valid Zoom link found";
+      };
 
+      let courses = [];
 
-    const extractZoomLink = (zoomInvitation) => {
-      let zoomID = "";
-      let passcode = "";
-      const idMatch = zoomInvitation.match(/Meeting ID:\s*([\d\s]+)/i);
-      if (idMatch) zoomID = idMatch[1].replace(/\s+/g, "");
-      const passMatch = zoomInvitation.match(/Passcode:\s*([\S]+)/i);
-      if (passMatch) passcode = passMatch[1];
-      return zoomID && passcode ? `https://app.zoom.us/wc/join/${zoomID}?pwd=${passcode}` : zoomID ? `https://app.zoom.us/wc/join/${zoomID}` : "No valid Zoom link found";
-    };
- 
-    let courses = [];
+      let currentPage = 1;
+      const coursesPerPage = 5;
 
-    let currentPage = 1;
-    const coursesPerPage = 5;
-  
-    const renderCourses = async () => {
-      const storedUserId = localStorage.getItem("userId");
-  const courseList = document.getElementById("userList");
-  courseList.innerHTML = "";
+      const renderCourses = async () => {
+        const storedUserId = localStorage.getItem("userId");
+        const courseList = document.getElementById("userList");
+        courseList.innerHTML = "";
 
-  // ✅ Fetch user's purchased courses
-  const userCoursesRef = collection(db, "users",storedUserId, "Courses");
-  const userCoursesSnapshot = await getDocs(userCoursesRef);
+        // ✅ Fetch user's purchased courses
+        const userCoursesRef = collection(db, "users", storedUserId, "Courses");
+        const userCoursesSnapshot = await getDocs(userCoursesRef);
 
+        const purchasedCourses = userCoursesSnapshot.docs.map(
+          (doc) => doc.data().course_id
+        );
 
+        // ✅ Pagination logic
+        const start = (currentPage - 1) * coursesPerPage;
+        const paginatedCourses = courses;
 
-  const purchasedCourses = userCoursesSnapshot.docs.map((doc) => doc.data().course_id);
+        paginatedCourses.forEach((course, index) => {
+          const getpurchased = purchasedCourses.includes(course.id);
 
+          if (
+            getpurchased &&
+            course.author &&
+            course.author.zoomId &&
+            course.status === "live"
+          ) {
+            const zoomLink = extractZoomLink(course.author.zoomId);
+            const isLive = course.author.status === "Live";
+            const statusColor = isLive ? "bg-green-800" : "bg-red-800";
+            const statusColor1 = isLive ? "text-green-800" : "text-red-800";
 
-
-
-  // ✅ Pagination logic
-  const start = (currentPage - 1) * coursesPerPage;
-  const paginatedCourses = courses
-
-  paginatedCourses.forEach((course, index) => {
-    const getpurchased = purchasedCourses.includes(course.id);
-
-  if (getpurchased && course.author && course.author.zoomId && course.status === "live") {
-  const zoomLink = extractZoomLink(course.author.zoomId);
-  const isLive = course.author.status === "Live";
-  const statusColor = isLive ? "bg-green-800" : "bg-red-800";
-  const statusColor1 = isLive ? "text-green-800" : "text-red-800";
-
-  const zoomButtonHTML = isLive
-    ? `
+            const zoomButtonHTML = isLive
+              ? `
     <a target="_blank" href="${zoomLink}" class="flex items-center w-full justify-center space-x-2 border border-blue-500 text-blue-500 px-5 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition-all duration-300">
       <i class="fas fa-video mr-2"></i> Join Meeting
     </a>
     `
-    : `
+              : `
     <a class="flex items-center w-full justify-center space-x-2 border border-blue-500 text-blue-500 px-5 py-2 rounded-lg opacity-50 cursor-not-allowed">
       <i class="fas fa-video mr-2"></i> Closed
     </a>
     `;
 
-  courseList.innerHTML += `
-  <li class="p-4 rounded-2xl shadow-lg flex flex-col sm:flex-row items-center justify-between border border-gray-300 w-full bg-white overflow-hidden relative">
-    <div class="flex items-center gap-4 w-full sm:w-auto">
-      <img src="${course.image_url}" alt="Course Image" class="w-16 h-16 rounded-lg object-cover border border-gray-300" />
+            courseList.innerHTML += `
+  <li class="card-hover p-6 rounded-2xl shadow-lg flex flex-col sm:flex-row items-center justify-between border border-white/10 w-full bg-white/5 overflow-hidden relative">
+    <div class="flex items-center gap-6 w-full sm:w-auto">
+      <div class="relative">
+        <img src="${
+          course.image_url
+        }" alt="Course Image" class="w-20 h-20 rounded-xl object-cover border border-white/10" />
+        <div class="absolute -bottom-2 -right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
+          ${course.duration || "60 min"}
+        </div>
+      </div>
       <div class="flex flex-col">
-        <span class="${statusColor} flex items-center justify-center px-3 py-1 rounded-full w-20 text-xs font-semibold bg-gray-100">
-          ${course.author.status}
-        </span>
-        <p class="font-semibold text-lg text-gray-800 mt-1">${course.name}</p>
-        <p class="text-sm text-gray-500">Author <span class="text-gray-700 font-medium">${course.author.name}</span> is <span class="${statusColor1}">${course.author.status}</span></p>
+        <p class="font-semibold text-xl text-white mb-2">${course.name}</p>
+        <p class="text-sm text-white/70">Author <span class="text-white font-medium">${
+          course.author.name
+        }</span></p>
+        <div class="flex items-center gap-2 mt-2">
+          <i class="fas fa-users text-white/50 text-sm"></i>
+          <span class="text-white/50 text-sm">${
+            course.participants || "0"
+          } participants</span>
+        </div>
       </div>
     </div>
-    <div class="flex flex-row sm:flex-row items-center gap-4 mt-4 sm:mt-0 w-full sm:w-auto">
+    <div class="flex flex-col sm:flex-row items-center gap-4 mt-4 sm:mt-0 w-full sm:w-auto">
+      <span class="${statusColor} status-badge">
+        ${course.author.status}
+      </span>
       ${zoomButtonHTML}
+      <button class="tooltip px-3 py-2 text-white/70 hover:text-white transition-colors">
+        <i class="fas fa-info-circle"></i>
+        <span class="tooltiptext">Click for session details and requirements</span>
+      </button>
     </div>
   </li>
   `;
-}
+          }
+        });
 
-  });
+        document.getElementById(
+          "pagination"
+        ).innerText = `Page ${currentPage} of ${Math.ceil(
+          courses.length / coursesPerPage
+        )}`;
+      };
 
-  document.getElementById("pagination").innerText = `Page ${currentPage} of ${Math.ceil(courses.length / coursesPerPage)}`;
-};
+      const loadCourses = async () => {
+        const coursesRef = collection(db, "courses");
+        const querySnapshot = await getDocs(coursesRef);
+        courses = [];
 
-  
-    const loadCourses = async () => {
+        querySnapshot.forEach((doc) => {
+          const course = doc.data();
+          // if (course.author) courses.push(course);
+          if (course.author) {
+            courses.push(course);
+          }
+        });
 
-      const coursesRef = collection(db, "courses");
-      const querySnapshot = await getDocs(coursesRef);
-      courses = [];
-  
-      querySnapshot.forEach((doc) => {
-        const course = doc.data();
-        // if (course.author) courses.push(course);
-        if(course.author){
-          courses.push(course)
+        document.getElementById("loadingScreen").classList.add("hidden");
+        document.getElementById("refreshBtn").classList.add("hidden");
+        renderCourses();
+      };
 
+      document.addEventListener("DOMContentLoaded", function () {
+        const storedUserId = localStorage.getItem("userId");
+
+        if (!storedUserId) {
+          window.location.href = "account.html"; // Redirect if userId is not set
+        } else {
+          loadCourses(); // Proceed to load courses if userId is available
         }
       });
-  
-      document.getElementById("loadingScreen").classList.add("hidden");
-      document.getElementById("refreshBtn").classList.add("hidden");
-      renderCourses();
-    
-    };
-  
-    document.addEventListener("DOMContentLoaded", function () {
-    const storedUserId = localStorage.getItem("userId");
+      document.getElementById("refreshBtn").addEventListener("click", () => {
+        window.location.href = "meeting.html";
+      });
 
-    if (!storedUserId) {
-        window.location.href = "account.html"; // Redirect if userId is not set
-    } else {
-        loadCourses(); // Proceed to load courses if userId is available
-    }
-});
-document.getElementById("refreshBtn").addEventListener("click", () => {
+      // document.getElementById("prevPage").addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderCourses(); }});
+      // document.getElementById("nextPage").addEventListener("click", () => { if (currentPage * coursesPerPage < courses.length) { currentPage++; renderCourses(); }});
+    </script>
 
-  
- 
-   window.location.href ="meeting.html";
-
-});
-
-    // document.getElementById("prevPage").addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderCourses(); }});
-    // document.getElementById("nextPage").addEventListener("click", () => { if (currentPage * coursesPerPage < courses.length) { currentPage++; renderCourses(); }});
-
-
-
-  </script>
-  
-  <script type="module" src="./dynamiccon.js"></script>
-  <script type="module" src="./navbar.js"></script>
-  <script src="bottomnv.js"></script>
-  <script src="kaka.js"></script>
-</head>
-<body class="bg-gray-900 text-white">
-  <div class="sticky top-0 bg-[#172554] z-20 w-full border-b">
+    <script type="module" src="./dynamiccon.js"></script>
+    <script type="module" src="./navbar.js"></script>
+    <script src="bottomnv.js"></script>
+    <script src="kaka.js"></script>
+  </head>
+  <body class="gradient-bg min-h-screen">
+    <div
+      class="sticky top-0 bg-[#172554]/80 backdrop-blur-md z-20 w-full border-b border-white/10"
+    >
       <div id="navbar-container"></div>
-  </div>
-  <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-40 ">
-    <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
-  </div>
-  <div class="flex items-center justify-center flex-col">
-    <button id="refreshBtn" 
-    class="fixed z-50 top-4  bg-blue-600 w-12 h-12 text-white rounded-full shadow-lg transition-all hover:bg-blue-700 hover:scale-110">
-    <i class="fas fa-sync-alt"></i>
-</button>
-    <div class="max-w-4xl w-full mt-4 p-2 lg:p-8">
-      <div class="flex justify-center mt-8 mb-6 space-x-6" >
-  
-        <button  
-        
-            class="px-6 py-3 bg-black backdrop-blur-lg border border-white/20 text-white rounded-lg transition-all shadow-lg hover:bg-white/20 hover:scale-105 flex items-center gap-2">
+    </div>
+    <div
+      id="loadingScreen"
+      class="fixed inset-0 bg-[#1a1a2e]/90 backdrop-blur-sm flex items-center justify-center z-40"
+    >
+      <div
+        class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"
+      ></div>
+    </div>
+    <div class="flex items-center justify-center flex-col py-8">
+      <button
+        id="refreshBtn"
+        class="fixed z-50 top-4 right-4 bg-blue-600/90 hover:bg-blue-700 w-12 h-12 text-white rounded-full shadow-lg transition-all hover:scale-110 backdrop-blur-sm tooltip"
+      >
+        <i class="fas fa-sync-alt"></i>
+        <span class="tooltiptext">Refresh to check for new sessions</span>
+      </button>
+      <div class="max-w-4xl w-full px-4 lg:px-8">
+        <div class="flex justify-center gap-4 mb-8">
+          <button
+            class="px-6 py-3 bg-blue-600/90 hover:bg-blue-700 text-white rounded-xl transition-all shadow-lg hover:scale-105 flex items-center gap-2 backdrop-blur-sm tooltip"
+          >
             <i class="fas fa-broadcast-tower"></i> Live Sessions
-        </button>
-        <button 
+            <span class="tooltiptext">View currently active sessions</span>
+          </button>
+          <button
             onclick="window.location.href='freevideos.html'"
-            class="px-6 py-3 bg-white/10 backdrop-blur-lg border border-white/20 text-white rounded-lg transition-all shadow-lg hover:bg-white/20 hover:scale-105 flex items-center gap-2">
+            class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all shadow-lg hover:scale-105 flex items-center gap-2 backdrop-blur-sm tooltip"
+          >
             Previous Sessions <i class="fas fa-history"></i>
-        </button>
+            <span class="tooltiptext">Access recorded sessions</span>
+          </button>
+        </div>
+        <div class="relative mb-8">
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search authors..."
+            class="search-input w-full px-4 py-3 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+          />
+          <i
+            class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-white/50"
+          ></i>
+        </div>
+
+        <!-- Suggestions Section -->
+        <div class="mb-8">
+          <h3
+            class="text-white text-lg font-semibold mb-4 flex items-center gap-2"
+          >
+            <i class="fas fa-lightbulb text-yellow-400"></i> Quick Tips
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="suggestion-card p-4 rounded-xl">
+              <div class="flex items-start gap-3">
+                <i class="fas fa-clock text-blue-400 mt-1"></i>
+                <div>
+                  <h4 class="text-white font-medium mb-1">Join Early</h4>
+                  <p class="text-white/70 text-sm">
+                    Join sessions 5 minutes before they start to ensure a smooth
+                    experience.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="suggestion-card p-4 rounded-xl">
+              <div class="flex items-start gap-3">
+                <i class="fas fa-headphones text-green-400 mt-1"></i>
+                <div>
+                  <h4 class="text-white font-medium mb-1">Audio Check</h4>
+                  <p class="text-white/70 text-sm">
+                    Test your microphone and speakers before joining a session.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ul id="userList" class="space-y-6 w-full"></ul>
+      </div>
     </div>
-      <input id="searchInput" type="text" placeholder="Search authors..." class="w-full px-4 py-2 mb-4 rounded-lg bg-gray-800 text-white border border-gray-600 focus:outline-none"/>
-      <ul id="userList" class="space-y-4 w-full"></ul>
-      <!-- <div class="flex justify-between items-center mt-4">
-        <button id="prevPage" class="px-4 py-2 bg-gray-700 text-white rounded">Previous</button>
-        <span id="pagination" class="text-gray-400"></span>
-        <button id="nextPage" class="px-4 py-2 bg-gray-700 text-white rounded">Next</button>
-      </div> -->
-    </div>
-  </div>
-  <div id="footer-container"></div>
-  <script src="footerp.js"></script>
-</body>
+    <div id="footer-container"></div>
+    <script src="footerp.js"></script>
+  </body>
 </html>

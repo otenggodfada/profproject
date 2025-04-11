@@ -15,59 +15,140 @@
     <script type="module" src="./dynamiccon.js"></script>
     <script src="bottomnv.js"></script>
     <script src="kaka.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <script type="module" src="nava-links.js"></script>
     <style>
-      .glass {
-        background: rgba(255, 255, 255, 0.15);
+      .glass-card {
+        background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(10px);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .gradient-bg {
+        background: linear-gradient(135deg, #70b0e4 0%, #081550 100%);
+      }
+      .hover-scale {
+        transition: transform 0.3s ease;
+      }
+      .hover-scale:hover {
+        transform: scale(1.02);
+      }
+      .profile-picture {
+        box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s ease;
+      }
+      .profile-picture:hover {
+        transform: scale(1.05);
+      }
+      .edit-button {
+        background: linear-gradient(135deg, #172554 0%, #1e40af 100%);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .edit-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+      }
+      .edit-button::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: 0.5s;
+      }
+      .edit-button:hover::after {
+        left: 100%;
+      }
+      .role-badge {
+        background: linear-gradient(
+          135deg,
+          rgba(30, 64, 175, 0.2),
+          rgba(23, 37, 84, 0.2)
+        );
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .info-item {
+        transition: transform 0.3s ease;
+      }
+      .info-item:hover {
+        transform: translateX(5px);
       }
     </style>
   </head>
 
-  <body class="bg-gray-900">
-    <div class="bg-[#172554] z-20 fixed w-screen top-0">
+  <body
+    class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-screen"
+  >
+    <div class="bg-[#172554]/80 backdrop-blur-md z-20 fixed w-screen top-0">
       <div id="navbar-container"></div>
     </div>
 
-    <div class="p-2 mb-20 mt-48 w-full flex justify-center">
+    <div class="p-4 mb-20 mt-48 w-full flex justify-center">
       <div
-        class="mt-10 w-full  max-w-3xl bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-6 text-center border text-white border-white/20"
+        class="max-w-4xl mx-auto glass-card rounded-2xl overflow-hidden shadow-2xl"
       >
-   
-        <motion.div
-          class="relative overflow-hidden rounded-lg"
-          animate="{ opacity: 1, y: 0 }"
-          initial="{ opacity: 0, y: -20 }"
-          transition="{ duration: 0.5 }"
-        >
-          <img
-            id="photo"
-            class="w-36 h-36 rounded-full border-4 border-white shadow-xl mx-auto -mt-20 transition duration-300 hover:scale-105"
-            src="https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw"
-            alt="Profile Picture"
-          />
-        </motion.div>
+        <div class="flex flex-col lg:flex-row">
+          <!-- Left Section -->
+          <div class="gradient-bg p-8 lg:w-1/3 flex flex-col justify-between">
+            <div class="space-y-6">
+              <div class="flex items-center gap-4">
+                <img
+                  id="photo"
+                  class="profile-picture w-24 h-24 rounded-full border-4 border-white/30"
+                  src="https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw"
+                  alt="Profile Picture"
+                />
+                <div>
+                  <h2 id="name" class="text-3xl font-bold text-white">
+                    Loading...
+                  </h2>
+                  <p id="role" class="text-white/80">Loading...</p>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <h3 class="text-xl font-semibold text-white">
+                  Profile Details
+                </h3>
+                <p id="email" class="text-white/80">Loading...</p>
+              </div>
+            </div>
 
-        <div class="mt-4">
-          <h2 id="role" class="text-xl font-medium text-gray-300 flex items-center justify-center gap-2">
-            <i data-lucide="database"></i> <span>User Role</span>
-          </h2>
-          <h2 id="name" class="text-3xl font-semibold text-white mt-2 flex items-center justify-center gap-2">
-            <i data-lucide="user"></i> <span>John Doe</span>
-          </h2>
-          <p id="email" class="text-lg text-gray-400 mt-1 flex items-center justify-center gap-2">
-            <i data-lucide="mail"></i> <span>johndoe@example.com</span>
-          </p>
-        
-          <a href="editprofile.html"
-            class="mt-5 px-5 py-3 bg-[#172554] border rounded-md hover:bg-blue-600 transition duration-300 shadow-lg flex items-center justify-center gap-2">
-            <i data-lucide="edit"></i> Edit Profile
-          </a>
+            <a
+              href="editprofile.html"
+              class="edit-button mt-8 px-8 py-3 rounded-lg text-white font-medium inline-flex items-center justify-center gap-2"
+            >
+              <i class="fas fa-edit"></i>
+              Edit Profile
+            </a>
+          </div>
+
+          <!-- Right Section -->
+          <div class="bg-[#1a1a1a] lg:w-2/3 p-8">
+            <div class="h-full flex items-center justify-center">
+              <div class="text-center">
+                <i class="fas fa-user-circle text-6xl text-gray-600 mb-4"></i>
+                <h3 class="text-xl font-semibold text-white mb-2">
+                  Welcome to Your Profile
+                </h3>
+                <p class="text-gray-400">
+                  Manage your account settings and preferences
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        
       </div>
     </div>
 
@@ -84,11 +165,14 @@
         getFirestore,
         doc,
         getDoc,
+        collection,
+        query,
+        where,
+        getDocs,
       } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
       import {
         getAuth,
         onAuthStateChanged,
-        signOut,
       } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
 
       const firebaseConfig = {
@@ -104,56 +188,96 @@
       const db = getFirestore(app);
       const auth = getAuth(app);
 
-      document.addEventListener("DOMContentLoaded", () => {
-        onAuthStateChanged(auth, (user) => {
-          if (user) {
-            const userId = user.uid;
-            const userDoc = doc(db, "users", userId);
+      // Function to update UI with user data
+      function updateUserProfile(userData) {
+        console.log("Updating UI with user data:", userData);
 
-            getDoc(userDoc)
-              .then((docSnap) => {
-                if (docSnap.exists()) {
-                  const userData = docSnap.data();
-                  if (userData.role && !userData.role.includes("student")) {
-                    document
-                      .getElementById("name")
-                      .querySelector("span").textContent =
-                      userData.name || "N/A";
-                    document
-                      .getElementById("email")
-                      .querySelector("span").textContent =
-                      userData.email || "N/A";
+        // Update profile picture
+        const photoElement = document.getElementById("photo");
+        if (userData.photoURL) {
+          photoElement.src = userData.photoURL;
+        }
 
-                    document.getElementById("photo").src =
-                      userData.photoURL ||
-                      "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";
-                  }
-                  if (userData.role && !userData.role.includes("author")) {
-                    document
-                      .getElementById("role")
-                      .querySelector("span").textContent =
-                      userData.role || "N/A";
-                    document
-                      .getElementById("name")
-                      .querySelector("span").textContent =
-                      userData.name || "N/A";
-                    document
-                      .getElementById("email")
-                      .querySelector("span").textContent =
-                      userData.email || "N/A";
-                    document.getElementById("photo").src =
-                      userData.photoURL ||
-                      "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";
-                  }
-                }
-              })
-              .catch((error) => {
-                console.log("Error getting document:", error);
-              });
-          } else {
-            window.location.href = "./account.html";
+        // Update name
+        const nameElement = document.getElementById("name");
+        nameElement.textContent = userData.name || "Not set";
+
+        // Update role
+        const roleElement = document.getElementById("role");
+        roleElement.textContent = userData.role || "Not set";
+
+        // Update email
+        const emailElement = document.getElementById("email");
+        emailElement.textContent = userData.email || "Not set";
+      }
+
+      // Function to fetch user data
+      async function fetchUserData(userId) {
+        try {
+          console.log("Fetching data for user:", userId);
+
+          // Try to find user in users collection
+          const userDoc = doc(db, "users", userId);
+          const docSnap = await getDoc(userDoc);
+
+          if (docSnap.exists()) {
+            console.log("Found user in users collection");
+            const userData = docSnap.data();
+            updateUserProfile(userData);
+            return;
           }
-        });
+
+          // If not found in users collection, try to find by email
+          const user = auth.currentUser;
+          if (user && user.email) {
+            console.log("Trying to find user by email:", user.email);
+            const usersRef = collection(db, "users");
+            const q = query(usersRef, where("email", "==", user.email));
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+              console.log("Found user by email");
+              const userData = querySnapshot.docs[0].data();
+              updateUserProfile(userData);
+              return;
+            }
+          }
+
+          // If still not found, try to create a new document
+          console.log("Creating new user document");
+          const newUserData = {
+            name: user.displayName || "Not set",
+            email: user.email || "Not set",
+            role: "student",
+            photoURL:
+              user.photoURL ||
+              "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw",
+            createdAt: new Date(),
+          };
+
+          updateUserProfile(newUserData);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          // Set default values on error
+          updateUserProfile({
+            name: "Error loading data",
+            role: "Error loading data",
+            email: "Error loading data",
+          });
+        }
+      }
+
+      // Initialize auth state listener
+      onAuthStateChanged(auth, (user) => {
+        console.log("Auth state changed:", user ? "User signed in" : "No user");
+
+        if (user) {
+          console.log("User ID:", user.uid);
+          fetchUserData(user.uid);
+        } else {
+          console.log("Redirecting to account page");
+          window.location.href = "./account.html";
+        }
       });
     </script>
     <script>
@@ -192,11 +316,18 @@
     <!-- Loading Screen -->
     <div
       id="loadingScreen"
-      class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100"
+      class="fixed inset-0 bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100"
     >
-      <div
-        class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"
-      ></div>
+      <div class="relative">
+        <div
+          class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"
+        ></div>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div
+            class="w-12 h-12 border-4 border-blue-500/20 border-solid rounded-full animate-ping"
+          ></div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

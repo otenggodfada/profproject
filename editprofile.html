@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,93 +13,162 @@
     ></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module" src="./dynamiccon.js"></script>
-  <script type="module" src="./navbar.js"></script>
-  <script src="bottomnv.js"></script>
+    <script type="module" src="./navbar.js"></script>
+    <script src="bottomnv.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .gradient-bg {
+        background: linear-gradient(135deg, #70b0e4 0%, #081550 100%);
+      }
+      .profile-picture {
+        box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s ease;
+      }
+      .profile-picture:hover {
+        transform: scale(1.05);
+      }
+      .save-button {
+        background: linear-gradient(135deg, #172554 0%, #1e40af 100%);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .save-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+      }
+      .save-button::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: 0.5s;
+      }
+      .save-button:hover::after {
+        left: 100%;
+      }
+      .input-field {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+      .input-field:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+      }
+    </style>
   </head>
-  <body class="bg-gray-900 text-white">
-    <div class=" bg-[#172554] px-5 z-20 fixed top-0 w-screen ">
-       
-      <div id="navbar-container"></div></div>
-     <div class=" mt-44  flex  justify-center mb-40 m-8">
-      <div class="w-full max-w-3xl  border border-gray-500/30  p-10 rounded-lg shadow-lg">
-        <h2 class="text-3xl font-semibold text-center mb-8">Edit Profile</h2>
-        <form id="editProfileForm" class="space-y-6">
-          <div>
-            <label class="block text-gray-300 flex items-center gap-3 mb-2">
-              <i data-lucide="user"></i> Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              class="w-full p-3 border border-gray-500/50 rounded bg-gray-800 text-white focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-  
-          <div>
-            <label class="block text-gray-300 flex items-center gap-3 mb-2">
-              <i data-lucide="mail"></i> Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              class="w-full p-3 border rounded  border-gray-500/50 bg-gray-800 text-white focus:ring-2 focus:ring-blue-500"
-              required
-              disabled
-            />
-          </div>
-  
-          <div>
-            <label class="block text-gray-300 flex items-center gap-3 mb-2">
-              <i data-lucide="image"></i> Profile Picture URL
-            </label>
-            <input
-              type="text"
-              id="photoURL"
-              class="w-full p-3 border rounded  border-gray-500/50 bg-gray-800 text-white focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-  
-          <div id="zoomFields" class="hidden space-y-6">
-            <div>
-              <label class="block text-gray-300 flex items-center gap-3 mb-2">
-                <i data-lucide="video"></i> Zoom ID
-              </label>
-              <input
-                type="text"
-                id="zoomId"
-                class="w-full p-3 border rounded  border-gray-500/50 bg-gray-800 text-white focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-  
-            <div>
-              <label class="block text-gray-300 flex items-center gap-3 mb-2">
-                <i data-lucide="lock"></i> Zoom Passcode
-              </label>
-              <input
-                type="text"
-                id="zoomPasscode"
-                class="w-full p-3 border rounded  border-gray-500/50 bg-gray-800 text-white focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-  
-          <button
-            type="submit"
-            class="w-full p-4 bg-[#172554]  border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md"
-          >
-            <i data-lucide="save"></i> Save Changes
-          </button>
-        </form>
-      </div>
-     </div>
-      <footer>
-        <div
-          class="fixed z-50 bottom-0 right-0 left-0"
-          id="navbar-container1"
-        ></div>
-      </footer>
+  <body class="bg-gray-900 min-h-screen">
+    <div class="bg-[#172554] sticky top-0 w-screen z-20 shadow-lg">
+      <div id="navbar-container"></div>
     </div>
+
+    <div class="p-4 mb-20 mt-48 w-full flex justify-center">
+      <div
+        class="max-w-4xl mx-auto glass-card rounded-2xl overflow-hidden shadow-2xl"
+      >
+        <div class="flex flex-col lg:flex-row">
+          <!-- Left Section -->
+          <div class="gradient-bg p-8 lg:w-1/3 flex flex-col justify-between">
+            <div class="space-y-6">
+              <div class="flex items-center gap-4">
+                <img
+                  id="photo"
+                  class="profile-picture w-24 h-24 rounded-full border-4 border-white/30"
+                  src="https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw"
+                  alt="Profile Picture"
+                />
+                <div>
+                  <h2 class="text-3xl font-bold text-white">Edit Profile</h2>
+                  <p class="text-white/80">Update your information</p>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <h3 class="text-xl font-semibold text-white">
+                  Profile Picture
+                </h3>
+                <button
+                  class="w-full px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
+                >
+                  <i class="fas fa-camera mr-2"></i>
+                  Change Photo
+                </button>
+              </div>
+            </div>
+
+            <button
+              class="save-button mt-8 px-8 py-3 rounded-lg text-white font-medium inline-flex items-center justify-center gap-2"
+            >
+              <i class="fas fa-save"></i>
+              Save Changes
+            </button>
+          </div>
+
+          <!-- Right Section -->
+          <div class="bg-[#1a1a1a] lg:w-2/3 p-8">
+            <div class="space-y-6">
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-white/80 mb-2">Full Name</label>
+                  <input
+                    type="text"
+                    class="input-field w-full px-4 py-3 rounded-lg text-white"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+                <div>
+                  <label class="block text-white/80 mb-2">Email Address</label>
+                  <input
+                    type="email"
+                    class="input-field w-full px-4 py-3 rounded-lg text-white"
+                    placeholder="Enter your email"
+                  />
+                </div>
+                <div>
+                  <label class="block text-white/80 mb-2">Role</label>
+                  <input
+                    type="text"
+                    class="input-field w-full px-4 py-3 rounded-lg text-white"
+                    placeholder="Enter your role"
+                  />
+                </div>
+                <div>
+                  <label class="block text-white/80 mb-2">Bio</label>
+                  <textarea
+                    class="input-field w-full px-4 py-3 rounded-lg text-white h-32"
+                    placeholder="Tell us about yourself"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div
+        class="fixed z-50 bottom-0 right-0 left-0"
+        id="navbar-container1"
+      ></div>
+    </footer>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
@@ -142,32 +213,38 @@
           if (userData.role === "author") {
             document.getElementById("zoomFields").classList.remove("hidden");
             document.getElementById("zoomId").value = userData.zoomId || "";
-            document.getElementById("zoomPasscode").value = userData.zoomPasscode || "";
+            document.getElementById("zoomPasscode").value =
+              userData.zoomPasscode || "";
           }
         }
       });
 
-      document.getElementById("editProfileForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
+      document
+        .getElementById("editProfileForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
 
-        const user = auth.currentUser;
-        if (!user) return;
+          const user = auth.currentUser;
+          if (!user) return;
 
-        const userDoc = doc(db, "users", user.uid);
-        const updatedData = {
-          name: document.getElementById("name").value,
-          photoURL: document.getElementById("photoURL").value,
-        };
+          const userDoc = doc(db, "users", user.uid);
+          const updatedData = {
+            name: document.getElementById("name").value,
+            photoURL: document.getElementById("photoURL").value,
+          };
 
-        if (!document.getElementById("zoomFields").classList.contains("hidden")) {
-          updatedData.zoomId = document.getElementById("zoomId").value;
-          updatedData.zoomPasscode = document.getElementById("zoomPasscode").value;
-        }
+          if (
+            !document.getElementById("zoomFields").classList.contains("hidden")
+          ) {
+            updatedData.zoomId = document.getElementById("zoomId").value;
+            updatedData.zoomPasscode =
+              document.getElementById("zoomPasscode").value;
+          }
 
-        await updateDoc(userDoc, updatedData);
-        alert("Profile updated successfully!");
-        window.location.href = "profile.html";
-      });
+          await updateDoc(userDoc, updatedData);
+          alert("Profile updated successfully!");
+          window.location.href = "profile.html";
+        });
     </script>
     <script>
       lucide.createIcons();

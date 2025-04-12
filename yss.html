@@ -1,107 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cards Section</title>
-    <script src="https://unpkg.com/phosphor-icons"></script>
-    <link rel="stylesheet" href="animatecss.css">
-    <script src="animatescript.js" defer></script>
-    <link
-      rel="preload"
-      href="_next/static/css/096eeec99e574319.css"
-      as="style"
-    />
-    <script type="module" src="./dynamiccon.js"></script>
-    <script type="module" src="./navbar.js"></script>
-    <script src="bottomnv.js"></script>
-    <script src="kaka.js"></script>
-    <script type="module" src="nava-links.js"></script>
-
-    <link
-      rel="stylesheet"
-      href="_next/static/css/096eeec99e574319.css"
-      data-n-g=""
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const options = [
-                { title1: "CITG", description: "Certified IT Governance program for professionals.", link: "courses.html" },
-                { title1: "ICAGH", description: "Institute of Chartered Accountants Ghana program.", link: "courses.html" },
-                { title1: "BOOKSHOP", description: "Access a wide range of educational books and resources.", link: "store.html" },
-                { title1: "ALUMNI TRAINING PROGRAMS", description: "Exclusive training for our alumni members.", link: "courses.html" },
-                { title1: "Grow your business (Digital marketing)", description: "Master digital marketing strategies to grow your business.", link: "blog.html" },
-                { title1: "MAKE MONEY WITH PROFS (BECOME an affiliate)", description: "Join our affiliate program and earn commissions.", link: "job.html" },
-                { title1: "ADIT", description: "Advanced Diploma in International Taxation program.", link: "courses.html" },
-                { title1: "PMP PROFESSIONAL", description: "Project Management Professional certification training.", link: "courses.html" }
-            ];
-
-            const container = document.getElementById("card-container");
-
-            options.forEach(option => {
-                const card = document.createElement("div");
-                card.className = "card flex items-stretch justify-between rounded-xl border border-gray-500 cursor-pointer";
-                card.onclick = () => window.location.href = `${option.link}?title1=${encodeURIComponent(option.title1)}`;
-
-                card.innerHTML = `
-                    <div class="m-6">
-                        <p class="text-gray-300 text-sm flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
-                            ${'<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" /></svg>'.repeat(5)}
-                        </p>
-                        <div class="flex flex-row items-center">   
-                            <div class="mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
-                                </svg>
-                            </div>               
-                            <h2 class="text-lg font-semibold text-white">${option.title1}</h2>
-                        </div>
-                        <p class="text-sm text-gray-500">${option.description}</p>
-                    </div>
-                    <div class="bg-[#172554] text-white px-5 flex flex-col items-center justify-center rounded-r-xl transform transition hover:scale-105">
-                        <i class="ph ph-arrow-right text-xl"></i>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        });
-    </script>
-    <style>
-        body {
-            background-color: #111827;
-            color: white;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        #card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="space-y-6" id="card-container"></div>
-        <!-- New Affiliate Program Card -->
-     
-          <div class="relative border border-gray-500 rounded-lg overflow-hidden cursor-pointer" onclick="window.location.href='job.html'">
-            <div class="relative">
-              <img loading='lazy' src="https://cdn.amasty.com/media/amasty/blog/cache/a/f/915/433/affiliate_program_1_.png" alt="Affiliate Program" class="w-50 h-26 object-cover">
-              <div class="text-white p-3 rounded-b-lg space-x-2 space-y-2">
-                <h2 class="text-lg font-bold hover:text-blue-500">MAKE MONEY WITH PROFS (BECOME an affiliate)</h2>
-                <p class="text-sm">Join our affiliate program and earn commissions.</p>
-                <div class="border-t border-gray-700 mt-5 mb-5"></div>
-                <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-                  <i class="fas fa-arrow-right mr-2"></i> Join Now
-                </p>
-              </div>
-            </div>
-          </div>
-        
-</body>
-</html>
+<section class="container mx-auto px-6 py-12 text-center">
+    <h2
+      class="text-4xl font-extrabold text-blue-400 mb-12 uppercase flex items-center justify-center gap-4"
+    >
+      <i class="fas fa-trophy text-5xl text-blue-500"></i>
+      Award Winners (2020 - Present)
+    </h2>
+    <div
+      class="max-w-7xl grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 p-4 justify-center items-center mx-auto"
+    >
+      <div
+        class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+      >
+        <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-award text-blue-400"></i> Felicia Omotoyo
+        </h3>
+        <p class="text-gray-300 mt-2">Oil and Gas Taxation</p>
+      </div>
+      <div
+        class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+      >
+        <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-award text-blue-400"></i> Theophilus Nyarko
+        </h3>
+        <p class="text-gray-300 mt-2">Strategic Tax Planning</p>
+      </div>
+      <div
+        class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+      >
+        <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-award text-blue-400"></i> Dziedzorm
+        </h3>
+        <p class="text-gray-300 mt-2">Public Sector Economic and Finance</p>
+      </div>
+      <div
+        class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+      >
+        <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-award text-blue-400"></i> Frank Aboagye Bekyem
+        </h3>
+        <p class="text-gray-300 mt-2">Accounting and Finance</p>
+      </div>
+      <div
+        class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+      >
+        <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-award text-blue-400"></i> Musah Crispinus Piiba
+        </h3>
+        <p class="text-gray-300 mt-2">Overall Best Final 2</p>
+      </div>
+      <div
+        class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+      >
+        <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-award text-blue-400"></i> Owuraku Nsiah
+        </h3>
+        <p class="text-gray-300 mt-2">Overall Best Final 2</p>
+      </div>
+      <div
+        class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+      >
+        <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-award text-blue-400"></i> Milicent Freeman
+        </h3>
+        <p class="text-gray-300 mt-2">Overall Best Final 2</p>
+      </div>
+      <div
+        class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+      >
+        <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-award text-blue-400"></i> Frederick Morden
+        </h3>
+        <p class="text-gray-300 mt-2">Overall Best Final 1</p>
+      </div>
+      <div
+        class="p-6 rounded-2xl shadow-xl border border-blue-400 transform hover:scale-105 transition-transform"
+      >
+        <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-award text-blue-400"></i> Kwasi Agyen Benson
+        </h3>
+        <p class="text-gray-300 mt-2">International Taxation</p>
+      </div>
+      <div
+        class="p-6 rounded-2xl border border-blue-400 shadow-xl transform hover:scale-105 transition-transform"
+      >
+        <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fas fa-award text-blue-400"></i> David Senaya
+        </h3>
+        <p class="text-gray-300 mt-2">Tax Audit and Investigations</p>
+      </div>
+    </div>
+  </section>

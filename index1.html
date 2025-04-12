@@ -2348,97 +2348,129 @@
               course.image_url ||
               "https://via.placeholder.com/400x200?text=No+Image";
             return `
-          <div
-  class="relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-pink-500 bg-gray-900 transition-all duration-500 ease-out hover:scale-[1.05] hover:shadow-pink-500/50 hover:border-pink-500/70"
- onclick="window.location.href='courses.html?courseid=${encodeURIComponent(
-   course.id
- )}'"
-> 
-  <!-- Image Wrapper -->
-  <div class="relative overflow-hidden">
-    <img 
-      src="${imageUrl}" 
-      alt="${course.name}" 
-      class="w-full object-cover transition-transform duration-500 ease-out hover:scale-110"
-    />
-    <div class="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-500 ease-out hover:opacity-100"></div>
-  </div>
+         <div class="group relative bg-gray-900 rounded-xl overflow-hidden border border-gray-700 hover:border-blue-500 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 animate-fade-in">
+                      <!-- Course Image with Overlay -->
+                      <div class="relative h-48 overflow-hidden">
+                        <img 
+                          src="${imageUrl}" 
+                          alt="${course.name}"
+                          class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 ease-out"
+                          loading="lazy"
+                          onerror="this.src='https://via.placeholder.com/400x200?text=No+Image'"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        
+                        <!-- Featured Badge with Premium Design -->
+                        <div class="absolute top-4 left-4 flex items-center gap-2">
+                          <div class="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 
+                                      text-white px-4 py-1.5 rounded-full 
+                                      text-sm font-bold tracking-wide
+                                      shadow-lg shadow-yellow-500/30
+                                      transform -translate-x-1 opacity-100 
+                                      group-hover:translate-x-0 group-hover:opacity-100 
+                                      transition-all duration-500 
+                                      hover:scale-105 hover:shadow-yellow-500/50
+                                      border border-yellow-300/30
+                                      backdrop-blur-sm">
+                            <!-- Star Icon -->
+                            <div class="flex items-center gap-1.5">
+                              <svg xmlns="http://www.w3.org/2000/svg" 
+                                   class="h-4 w-4 text-white animate-pulse" 
+                                   viewBox="0 0 20 20" 
+                                   fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                              </svg>
+                              <span class="inline-block transform group-hover:scale-110 transition-transform duration-300">
+                                Featured
+                              </span>
+                            </div>
+                          </div>
+                        </div>
 
-  <!-- Course Info -->
-  <div class="p-5 rounded-b-lg">
-            <!-- Rating -->
-    <p class="text-gray-300 text-sm flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg>
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg> <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.318l1.946 3.946 4.355.634-3.15 3.068.744 4.34L12 14.8l-3.895 2.065.744-4.34-3.15-3.068 4.355-.634L12 4.318z" />
-      </svg>
-    </p>
-    <!-- Course Title -->
-    <h3 class="text-lg font-semibold text-white flex items-center gap-2 mb-3 transition-all duration-500 ease-out hover:translate-x-1">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-pink-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 7v-6m0 0L3 9m9 5l9-5" />
-      </svg>
-      ${course.name}
-    </h3>
+                        <!-- Enhanced Favorite Button -->
+                        <button 
+                          onclick="addToFavorites(event, '${course.id}')"
+                          aria-label="Add to favorites"
+                          class="absolute top-4 right-4 p-3 bg-white/10 rounded-full backdrop-blur-sm hover:bg-white/20 transition-all duration-300 transform translate-x-1 group-hover:translate-x-0 hover:scale-110"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white transform group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                          </svg>
+                        </button>
 
-    <!-- Students Count -->
-    <p class="text-gray-400 text-sm flex items-center gap-2 mb-2 transition-all duration-500 ease-out hover:translate-x-1">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-400 transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M7 10l5-5m0 0l5 5m-5-5v12" />
-      </svg>
-      ${course.students || 0} students
-    </p>
+                        <!-- New: Course Duration Badge -->
+                        <div class="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-full text-xs backdrop-blur-sm flex items-center gap-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          ${course.meta?.duration || "Self-paced"}
+                        </div>
+                      </div>
 
-   
-    <!-- Author -->
-    <p class="text-white font-semibold text-lg flex items-center gap-3 transition-all duration-500 ease-out hover:translate-x-1 mb-10">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 1118.88 17.8M15 19c0-2-3-3-3-3s-3 1-3 3m3-14a4 4 0 110 8 4 4 0 010-8z" />
-      </svg>
-    <span class="text-sm">by-${course.author.name}</span>
-    </p>
-    <!-- Price -->
-  
-  <div class="flex py-5 flex-row justify-between border-t border-gray-700">
-      <p class="text-lg font-semibold flex items-center gap-2 transition-all duration-500 ease-out hover:translate-x-1 ${
-        course.price_status === "free" ? "text-green-400" : "text-white"
-      }">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 ${
-        course.price_status === "free" ? "text-green-500" : "text-green-400"
-      } transition-transform duration-300 hover:scale-125" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.5 0-4 1.5-4 3s1.5 3 4 3 4-1.5 4-3-1.5-3-4-3zm0 10v2m-4-2a4 4 0 018 0" />
-      </svg>
-      ${course.price_status === "free" ? "Free" : `₵${course.pricee}`} 
-    </p>
-     <button  class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Add to cart</span>
-                  </button>
-    </div>
+                      <!-- Course Content with Enhanced Layout -->
+                      <div class="p-6 space-y-4">
+                        <!-- Rating with Animation -->
+                        <div class="flex items-center gap-2">
+                          <div class="flex gap-0.5">
+                            ${Array(5).fill().map((_, i) => `
+                              <svg xmlns="http://www.w3.org/2000/svg" 
+                                class="w-4 h-4 text-yellow-500 transform group-hover:scale-110 transition-transform delay-${i*100}" 
+                                viewBox="0 0 20 20" 
+                                fill="currentColor"
+                              >
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            `).join('')}
+                          </div>
+                          <span class="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                            (${course.students || 0} students)
+                          </span>
+                        </div>
 
+                        <!-- Course Title with Hover Effect -->
+                        <h3 
+                          onclick="showCourseDetails('${course.id}')"
+                          class="text-xl font-semibold text-white group-hover:text-blue-400 transition-colors duration-300 cursor-pointer line-clamp-2 hover:line-clamp-none"
+                          title="${course.name}"
+                        >
+                          ${course.name}
+                        </h3>
 
- <!-- Add to Favorite Icon -->
-    <div class="absolute top-3 right-3 bg-white p-2 rounded-full cursor-pointer hover:bg-gray-700 transition duration-300" onclick="addToFavorites(event, '${
-      course.id
-    }')">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-500 hover:text-red-500 transition duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21l-1.45-1.35C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6.174 6.174 0 0116.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.15L12 21z" />
-    </svg>
-  </div>
-<div class="absolute top-2 left-2 bg-white/30 backdrop-blur-md text-lg font-semibold text-white px-3 py-1 rounded-full shadow-md">
-          🎖️ Featured
-        </div>
-  </div>
-  
-</div>
+                        <!-- Author Info with Enhanced Style -->
+                        <div class="flex items-center gap-3 group/author">
+                          <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center transform group-hover/author:scale-110 transition-transform">
+                            <span class="text-white text-sm font-bold">${course.author.name.charAt(0)}</span>
+                          </div>
+                          <span class="text-sm text-gray-400 group-hover/author:text-white transition-colors">
+                            by ${course.author.name}
+                          </span>
+                        </div>
+
+                        <!-- Price and Action with Improved Layout -->
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-700">
+                          <div class="flex items-center gap-2">
+                            <span class="text-2xl font-bold ${course.pricee === '0' ? 'text-green-400' : 'text-white'} group-hover:scale-110 transition-transform">
+                              ${course.pricee === "0" ? "Free" : `₵${course.pricee}`}
+                            </span>
+                          </div>
+                          
+                          <!-- Enhanced Add to Cart Button -->
+                          <button 
+                            class="add-to-cart-btn flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
+                            data-id="${course.id}"
+                            data-title="${course.name}"
+                            data-price="${course.pricee === '0' ? '0' : course.pricee}"
+                            data-image="${course.image_url || 'https://via.placeholder.com/150'}"
+                            aria-label="Add ${course.name} to cart"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transform group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <span>Add to Cart</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
 
               
             `;

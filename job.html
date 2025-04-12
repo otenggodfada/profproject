@@ -222,45 +222,85 @@
     </div>
     <div class="min-h-screen flex mb-8 flex-col items-center px-2">
       <div class="max-w-4xl w-full rounded-xl p-2">
-        <div
-          class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8 p-6 bg-gray-900 rounded-xl shadow-lg"
-        >
-          <!-- Left Section -->
-          <div class="flex-1 text-center md:text-left">
-            <h1 class="text-4xl font-extrabold text-white leading-tight">
-              🚀 Refer & Earn <span class="text-blue-400">10% Commission</span>
-            </h1>
-            <p class="text-gray-300 mt-3 text-lg">
-              Introduce students & earn rewards on all their purchases. Your
-              success starts here! 🎯
-            </p>
-
-            <!-- Referral Copy -->
-            <div class="mt-6 flex flex-col sm:flex-row items-center gap-3">
-              <p
-                id="referral-link"
-                class="text-blue-400 text-lg bg-gray-800 px-5 py-2 rounded-lg transition hover:bg-gray-700"
-              >
-                Generating link...
+        <div class="relative z-10 overflow-hidden">
+          <!-- Animated Background Effect -->
+          <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 animate-gradient"></div>
+          
+          <!-- Main Content -->
+          <div class="relative flex flex-col md:flex-row justify-between items-center gap-8 p-8 bg-gray-900/90 backdrop-blur-lg rounded-xl shadow-2xl border border-gray-800/50" 
+               data-aos="fade-up" 
+               data-aos-duration="1000">
+            
+            <!-- Left Section with Staggered Animations -->
+            <div class="flex-1 text-center md:text-left space-y-6">
+              <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 leading-tight animate-text-fade">
+                🌟 Refer & Earn
+                <span class="block mt-2 text-4xl">
+                  <span class="animate-pulse">10%</span> Commission
+                </span>
+              </h1>
+              
+              <p class="text-gray-300 text-lg leading-relaxed animate-text-fade" style="animation-delay: 0.2s">
+                Introduce students & earn rewards on all their purchases.
+                <span class="text-blue-400 font-semibold">Your success starts here!</span> 🎯
               </p>
-              <button
-                id="copy-referral"
-                class="flex items-center gap-2 px-5 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
-              >
-                <i class="fas fa-copy"></i> Copy Link
-              </button>
+
+              <!-- Referral Link Section -->
+              <div class="mt-8 space-y-4 sm:space-y-0 sm:flex sm:items-center sm:gap-4"
+                   data-aos="fade-right" 
+                   data-aos-delay="300">
+                <div class="group relative flex-1">
+                  <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-300"></div>
+                  <p id="referral-link" 
+                     class="relative bg-gray-800 text-blue-400 px-6 py-3 rounded-lg font-mono text-sm sm:text-base break-all hover:bg-gray-700/80 transition-all duration-300">
+                    <i class="fas fa-link mr-2"></i>
+                    <span class="loading-shimmer">Generating link...</span>
+                  </p>
+                </div>
+                
+                <button id="copy-referral" 
+                        class="relative w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg group hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 animate-pulse">
+                  <span class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  <span class="relative flex items-center justify-center gap-2">
+                    <i class="fas fa-copy"></i>
+                    Copy Link
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Right Section with Floating Animation -->
+            <div class="relative" data-aos="fade-left" data-aos-delay="500">
+              <div class="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-2xl animate-pulse"></div>
+              <img loading="lazy"
+                   src="https://www.pngplay.com/wp-content/uploads/6/Affiliate-Program-Network-PNG.png"
+                   class="relative h-40 w-40 md:h-48 md:w-48 drop-shadow-2xl animate-float"
+                   alt="Affiliate Program Icon" />
             </div>
           </div>
-
-          <!-- Right Section -->
-          <div class="flex items-center justify-center">
-            <img
-              loading="lazy"
-              src="https://www.pngplay.com/wp-content/uploads/6/Affiliate-Program-Network-PNG.png"
-              class="h-32 w-32 md:h-36 md:w-36 drop-shadow-xl"
-            />
-          </div>
         </div>
+
+        <style>
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        .animate-gradient {
+          background-size: 200% 200%;
+          animation: gradient 15s ease infinite;
+        }
+        </style></span>
 
         <!-- User Info Section -->
         <div id="referral-details" class="mb-12">
@@ -310,7 +350,7 @@
                   class="font-bold text-4xl text-green-400"
                 ></span>
               </div>
-              <p class="text-gray-400">Total Earnings</p>
+              <p class="text-gray-400">Balance</p>
               <button
                 onclick="scrollToSection('withd')"
                 class="mt-4 px-6 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-all duration-300 flex items-center gap-2 action-button"
@@ -468,76 +508,76 @@
           </div>
 
           <!-- Withdrawal History Section -->
-          <div
+            <div
             id="withdhistory"
-            class="mt-10 bg-gradient-to-br from-gray-800 to-gray-800 border border-gray-700 shadow-lg rounded-2xl p-6"
-          >
-            <div class="flex items-center gap-4 mb-8">
+            class="mt-10 bg-gradient-to-br from-gray-800 to-gray-800 border border-gray-700 shadow-lg rounded-2xl p-4 sm:p-6"
+            >
+            <div class="flex items-center gap-4 mb-6 sm:mb-8">
               <div
-                class="w-12 h-12 bg-purple-500/10 rounded-full flex items-center justify-center"
+              class="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/10 rounded-full flex items-center justify-center"
               >
-                <i class="fas fa-history text-xl text-purple-400"></i>
+              <i class="fas fa-history text-lg sm:text-xl text-purple-400"></i>
               </div>
-              <h3 class="text-3xl font-bold text-white">Withdrawal History</h3>
+              <h3 class="text-2xl sm:text-3xl font-bold text-white">Withdrawal History</h3>
             </div>
 
-            <div class="bg-gray-900/50 backdrop-blur rounded-xl p-6">
-              <div class="overflow-x-auto">
-                <table class="min-w-full">
-                  <thead>
-                    <tr>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                      >
-                        Date
-                      </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                      >
-                        Amount
-                      </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                      >
-                        Method
-                      </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                      >
-                        Status
-                      </th>
-                      <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                      >
-                        Details
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody
-                    id="pending-withdrawals"
-                    class="divide-y divide-gray-800"
+            <div class="bg-gray-900/50 backdrop-blur rounded-xl p-3 sm:p-6">
+              <div class="overflow-x-auto -mx-3 sm:mx-0">
+              <table class="min-w-full">
+                <thead>
+                <tr>
+                  <th
+                  class="px-4 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
                   >
-                    <!-- Withdrawal items will be inserted here -->
-                  </tbody>
-                </table>
+                  Date
+                  </th>
+                  <th
+                  class="px-4 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                  >
+                  Amount
+                  </th>
+                  <th
+                  class="hidden sm:table-cell px-4 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                  >
+                  Method
+                  </th>
+                  <th
+                  class="px-4 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                  >
+                  Status
+                  </th>
+                  <th
+                  class="hidden sm:table-cell px-4 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                  >
+                  Details
+                  </th>
+                </tr>
+                </thead>
+                <tbody
+                id="pending-withdrawals"
+                class="divide-y divide-gray-800"
+                >
+                <!-- Withdrawal items will be inserted here -->
+                </tbody>
+              </table>
               </div>
 
               <!-- Empty State -->
-              <div id="no-withdrawals" class="hidden text-center py-12">
-                <div
-                  class="w-16 h-16 bg-gray-800/50 rounded-full mx-auto mb-4 flex items-center justify-center"
-                >
-                  <i class="fas fa-scroll text-2xl text-gray-600"></i>
-                </div>
-                <h3 class="text-lg font-medium text-gray-400 mb-2">
-                  No Withdrawals Yet
-                </h3>
-                <p class="text-sm text-gray-500">
-                  Your withdrawal history will appear here
-                </p>
+              <div id="no-withdrawals" class="hidden text-center py-8 sm:py-12">
+              <div
+                class="w-12 h-12 sm:w-16 sm:h-16 bg-gray-800/50 rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center"
+              >
+                <i class="fas fa-scroll text-xl sm:text-2xl text-gray-600"></i>
+              </div>
+              <h3 class="text-base sm:text-lg font-medium text-gray-400 mb-2">
+                No Withdrawals Yet
+              </h3>
+              <p class="text-xs sm:text-sm text-gray-500">
+                Your withdrawal history will appear here
+              </p>
               </div>
             </div>
-          </div>
+            </div>
         </div>
       </div>
     </div>

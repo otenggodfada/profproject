@@ -1,6 +1,6 @@
 /** @format */
 
-// Import the required Firebase modules
+// Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
 import {
   query,
@@ -14,13 +14,14 @@ import {
   getDocs,
   setDoc,
   Timestamp,
+  onSnapshot,
 } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
 import {
   getAuth,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
 
-// Initialize Firebase
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
   authDomain: "profstudymate-6d0fc.firebaseapp.com",
@@ -30,590 +31,513 @@ const firebaseConfig = {
   appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
 };
 
+// Initialize Firebase Services
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Fetch user purchased courses along with sections and lessons
-async function fetchPurchasedCourses(userId) {
-  try {
-    
-    // ✅ Fetch user's purchased courses along with expiry dates
-    const userCoursesRef = collection(db, "users", userId, "Courses");
-    const userCoursesSnapshot = await getDocs(userCoursesRef);
+// Course Types and Interfaces
+class Course {
+  constructor(data) {
+    this.id = data.id;
+    this.name = data.name;
+    this.description = data.description;
+    this.imageUrl = data.image_url;
+    this.expireDate = data.expire_date;
+    this.averageRating = data.averageRating;
+    this.author = {
+      name: data.author?.name || "Unknown Author",
+      imageUrl: data.author?.image_url || "https://via.placeholder.com/32",
+      id: data.author?.id,
+    };
+    this.students = data.students || 0;
+    this.language = data.language;
+    this.sections = [];
+    this.progress = { total: 0, completed: 0, percentage: 0 };
+  }
+}
 
-    if (userCoursesSnapshot.empty) {
-      console.error("No purchased courses found");
-      return [];
+// Course Service
+class CourseService {
+  constructor() {
+    this.cache = new Map();
+    this.subscriptions = new Set();
+  }
+
+  subscribe(callback) {
+    this.subscriptions.add(callback);
+    return () => this.subscriptions.delete(callback);
+  }
+
+  notify(courses) {
+    this.subscriptions.forEach((callback) => callback(courses));
+  }
+
+  async fetchCourse(courseId, expireDate) {
+    // Check cache first
+    if (this.cache.has(courseId)) {
+      const cached = this.cache.get(courseId);
+      if (Date.now() - cached.timestamp < 300000) {
+        // 5 minutes cache
+        return { ...cached.data, expire_date: expireDate };
+      }
     }
 
-    const purchasedCourses = userCoursesSnapshot.docs.map((doc) => ({
-      course_id: doc.data().course_id,
-      expire_date: doc.data().expire_date,
-    }));
+    const courseDoc = await getDoc(doc(db, "courses", courseId));
+    if (!courseDoc.exists()) return null;
 
-    if (purchasedCourses.length === 0) {
-      return [];
-    }
+    const courseData = new Course({
+      id: courseDoc.id,
+      ...courseDoc.data(),
+      expire_date: expireDate,
+    });
 
-    // ✅ Fetch completed lessons in one query
-    const completedLessonsSnapshot = await getDocs(
-      collection(db, "users", userId, "completedLessons")
-    );
-    const completedLessons = new Set(
-      completedLessonsSnapshot.docs.map((doc) => doc.id)
-    );
+    // Cache the result
+    this.cache.set(courseId, {
+      data: courseData,
+      timestamp: Date.now(),
+    });
 
-    // ✅ Fetch course details
-    const coursePromises = purchasedCourses.map((course) =>
-      getDoc(doc(db, "courses", course.course_id))
-    );
-    const courseDocs = await Promise.allSettled(coursePromises);
+    return courseData;
+  }
 
-    const validCourses = courseDocs
-      .map((result, index) => {
-        if (result.status === "fulfilled" && result.value.exists()) {
-          return {
-            id: result.value.id,
-            ...result.value.data(),
-            expire_date: purchasedCourses[index].expire_date, // ✅ Add expiry date
-          };
-        }
-        return null;
-      })
-      .filter((course) => course !== null);
+  async fetchSections(courseId, completedLessons) {
+    const sectionsRef = collection(db, "courses", courseId, "sections");
+    const sectionsSnap = await getDocs(query(sectionsRef, orderBy("order")));
 
-    // ✅ Fetch sections and reviews in parallel
-    const sectionPromises = validCourses.map((course) =>
-      getDocs(query(collection(db, "courses", course.id, "sections"), orderBy("order")))
-    );
-    const reviewPromises = validCourses.map((course) =>
-      getDocs(collection(db, "courses", course.id, "reviews"))
-    );
-
-    const [sectionResults, reviewResults] = await Promise.all([
-      Promise.allSettled(sectionPromises),
-      Promise.allSettled(reviewPromises),
-    ]);
-
-    for (let i = 0; i < validCourses.length; i++) {
-      // ✅ Process Sections & Lessons
-      if (sectionResults[i].status === "fulfilled") {
-        const sections = sectionResults[i].value.docs.map((sectionDoc) => ({
+    return Promise.all(
+      sectionsSnap.docs.map(async (sectionDoc) => {
+        const section = {
           id: sectionDoc.id,
-          name: sectionDoc.data().name,
+          courseId,
+          ...sectionDoc.data(),
           lessons: [],
+        };
+
+        const lessonsRef = collection(
+          db,
+          "courses",
+          courseId,
+          "sections",
+          section.id,
+          "lessons"
+        );
+        const lessonsSnap = await getDocs(query(lessonsRef, orderBy("order")));
+
+        section.lessons = lessonsSnap.docs.map((lessonDoc) => ({
+          id: lessonDoc.id,
+          ...lessonDoc.data(),
+          completed: completedLessons.has(lessonDoc.id),
         }));
 
-        const lessonPromises = sections.map((section) =>
-          getDocs(query(collection(db, "courses", validCourses[i].id, "sections", section.id, "lessons"), orderBy("order")))
+        return section;
+      })
+    );
+  }
+
+  async getCompletedLessons(userId) {
+    const completedRef = collection(db, "users", userId, "completedLessons");
+    const completedSnap = await getDocs(completedRef);
+    return new Set(completedSnap.docs.map((doc) => doc.id));
+  }
+
+  calculateProgress(sections) {
+    let total = 0;
+    let completed = 0;
+
+    sections.forEach((section) => {
+      section.lessons.forEach((lesson) => {
+        total++;
+        if (lesson.completed) completed++;
+      });
+    });
+
+    return {
+      total,
+      completed,
+      percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
+    };
+  }
+
+  async initialize(userId) {
+    if (!userId) return;
+
+    const userCoursesRef = collection(db, "users", userId, "Courses");
+
+    // Setup real-time listener
+    onSnapshot(userCoursesRef, async (snapshot) => {
+      try {
+        const completedLessons = await this.getCompletedLessons(userId);
+        const courses = await this.processCourses(
+          snapshot.docs,
+          completedLessons
         );
-
-
-
-        const lessonResults = await Promise.allSettled(lessonPromises);
-        let totalLessons = 0;
-        let completedCount = 0;
-
-        lessonResults.forEach((result, index) => {
-          if (result.status === "fulfilled") {
-            const lessons = result.value.docs.map((lessonDoc) => {
-              totalLessons++;
-              const isCompleted = completedLessons.has(lessonDoc.id);
-              if (isCompleted) completedCount++;
-              return {
-                ...lessonDoc.data(),
-                id: lessonDoc.id,
-                completed: isCompleted,
-              };
-            });
-
-            sections[index].lessons = lessons;
-          }
-        });
-
-        validCourses[i].sections = sections;
-        validCourses[i].totalLessons = totalLessons;
-        validCourses[i].completedLessons = completedCount;
+        this.notify(courses);
+      } catch (error) {
+        console.error("Error processing courses:", error);
+        this.notify([]);
       }
+    });
+  }
 
-      // ✅ Process Reviews & Calculate Average Rating
-      if (reviewResults[i].status === "fulfilled") {
-        const reviews = reviewResults[i].value.docs.map((reviewDoc) =>
-          reviewDoc.data()
-        );
-        validCourses[i].reviews = reviews;
+  async processCourses(courseDocs, completedLessons) {
+    const coursePromises = courseDocs.map(async (doc) => {
+      const courseId = doc.data().course_id;
+      const expireDate = doc.data().expire_date;
 
-        const totalRatings = reviews.reduce(
-          (sum, review) => sum + (review.rating || 0),
-          0
-        );
-        validCourses[i].averageRating =
-          reviews.length > 0
-            ? (totalRatings / reviews.length).toFixed(1)
-            : "No ratings yet";
-      }
+      const course = await this.fetchCourse(courseId, expireDate);
+      if (!course) return null;
 
-      // ✅ Convert expire_date to a readable "YYYY-MM-DD" format
-      if (validCourses[i].expire_date instanceof Timestamp) {
-        const dateObj = validCourses[i].expire_date.toDate();
-        validCourses[i].expire_date = dateObj.toISOString().split("T")[0]; // "YYYY-MM-DD"
-      }
+      const sections = await this.fetchSections(courseId, completedLessons);
+      course.sections = sections;
+      course.progress = this.calculateProgress(sections);
+
+      return course;
+    });
+
+    return (await Promise.all(coursePromises)).filter(Boolean);
+  }
+
+  async markLessonComplete(userId, lessonId) {
+    try {
+      await setDoc(doc(db, "users", userId, "completedLessons", lessonId), {
+        completed: true,
+        timestamp: Date.now(),
+      });
+      return true;
+    } catch (error) {
+      console.error("Error marking lesson complete:", error);
+      return false;
     }
-
-    return validCourses;
-  } catch (error) {
-    console.error("Error fetching courses:", error);
-    return [];
   }
 }
 
-async function markLessonComplete(userId, lessonId) {
-  try {
-    console.log(`Marking lesson ${lessonId} as completed for user ${userId}`);
-
-    const lessonRef = doc(db, "users", userId, "completedLessons", lessonId);
-    await setDoc(lessonRef, {
-      completed: true,
-      timestamp: Date.now(),
-    });
-
-    console.log(`✅ Lesson ${lessonId} marked as completed in Firestore`);
-  } catch (error) {
-    console.error("❌ Error marking lesson complete:", error);
-  }
-}
-
-async function submitReview(courseId, userId, rating, reviewText) {
-  try {
-    const reviewRef = collection(db, "courses", courseId, "reviews");
-    await addDoc(reviewRef, {
-      userId,
-      rating: Number(rating),
-      reviewText,
-      timestamp: Date.now(),
-    });
-
-    console.log(`✅ Review submitted for course ${courseId}`);
-  } catch (error) {
-    console.error("❌ Error submitting review:", error);
-  }
-}
-
-// Render purchased courses to the page
-function renderCourses(courses) {
-  const courseContainer = document.getElementById("course-container");
-  courseContainer.innerHTML = "";
-
-  if (courses.length === 0) {
-    courseContainer.innerHTML = `
-    <div class="flex flex-col items-center justify-center h-[60vh] text-white">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-32 h-32 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422M12 14l-6.16-3.422M12 14v7M12 14l6.16-3.422" />
-      </svg>
-      <p class="text-2xl font-semibold opacity-80 mt-4">No Courses Purchased</p>
-      <p class="text-sm opacity-60 mt-2 text-center">Browse our catalog and start learning today!</p>
-    
-        <div class="lg:px-48 mt-4">
-            <div onclick="window.location.href='courses.html';" class="p-4 bg-[#172554] border rounded-md hover:bg-blue-600 transition flex items-center justify-center gap-3 shadow-md w-40 cursor-pointer">
-              Explore Courses
-            </div>
-          </div>
-    </div>
-  `;
-
-    return;
-  }
-
-  courses.forEach((course) => {
+// UI Components
+class CourseCard {
+  static render(course) {
+    const isExpired = new Date(course.expireDate) < new Date();
     const hasLessons = course.sections.some(
       (section) => section.lessons.length > 0
     );
-    const progress =
-      course.totalLessons > 0
-        ? Math.round((course.completedLessons / course.totalLessons) * 100)
-        : 0;
-    const courseCard = document.createElement("div");
-    courseCard.className =
-      "relative shadow-2xl rounded-lg overflow-hidden cursor-pointer border border-gray-500 bg-gray-900 m-3 hover:shadow-pink-500/50 hover:border-pink-500/70";
 
-    courseCard.innerHTML = `
-      <div class="overflow-hidden transition duration-300 cursor-pointer">
-        <img src="${course.image_url}" alt="${
-      course.name
-    }" class="w-full object-cover" />
-        <div class="p-4 rounded-b-lg">
-          <h3 class="text-lg font-semibold text-gray-400 flex items-center gap-2 mb-2">
-            <span class="material-icons text-[#172554]">school</span>
-            ${course.name}
-          </h3>
-          <p class="text-gray-200 text-sm flex items-center gap-2 mb-2">
-            <span class="material-icons text-[#172554]">group</span>
-            ${course.students || 0} students
-          </p>
-       <p class="text-gray-200 text-sm flex items-center gap-2 mb-2">
-  <span class="material-icons text-[#172554]">event</span>
-  ${course.expire_date ? course.expire_date : "N/A"} expire date
-</p>
-
-          <!-- ⭐ Course Rating -->
-          <p class="text-yellow-400 font-semibold mt-2">⭐ ${
-            course.averageRating || "No ratings yet"
-          }</p>
-
-            <!-- ✅ Progress Bar -->
-          <div class="mt-2">
-            <p class="text-gray-300 text-sm mb-1">Progress: ${progress}%</p>
-            <div class="w-full bg-gray-700 rounded-full h-2">
-              <div class="bg-green-500 h-2 rounded-full" style="width: ${progress}%"></div>
-            </div>
-          </div>
-        
-        </div>
-      </div>
-        </div>
-      </div>
-  
-      <div class="p-4">
-      
-        <p class="text-gray-500 text-sm mb-2">Language: <span class="font-medium">${
-          course.language || "Not specified"
-        }</span></p>
-  
-        <div class="text-sm text-gray-500 mb-4">
-          <strong class="font-medium">Tags:</strong> ${
-            course.tags?.length > 0 ? course.tags.join(", ") : "None"
-          }
-        </div>
-  
-        ${
-           course.expire_date && new Date(course.expire_date) >= new Date().setHours(0,0,0,0)  ? course.sections && course.sections.length > 0 && course.sections.some(section => section.lessons && section.lessons.length > 0)
-            ? `
-          <details   class=" mb-4 flex items-center justify-center  border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-            <summary onclick="turnonfixed()" class="font-semibold w-full h-full text-center cursor-pointer list-none">
-              <i class="fas fa-book-open"></i> <span>Continue Learning</span>
-            </summary>
-            <div id="modal-container" style="display:fixed;" class="z-50 inset-0 w-screen   bg-black bg-opacity-80 flex items-center justify-center  ">
-              <div class="bg-gray-900 h-screen overflow-auto scrollbar-hide max-w-2xl sm:w-screen
-">
-                <button onclick="toggleDetails()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                </button>
-                <h2 class="text-2xl font-bold text-gray-200 flex items-center gap-2 border-b border-gray-700 p-4">
-                 <div> <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h11M9 21V3m7 0l4 4m0 0l-4 4m4-4H13"></path>
-                  </svg></div>   ${course.name}
-                </h2>
-
-                        <!-- ✅ Progress Bar -->
-          <div class="mt-2 mx-6">
-            <p class="text-gray-300 text-sm mb-1">Progress: ${progress}%</p>
-            <div class="w-full bg-gray-700 rounded-full h-2">
-              <div class="bg-green-500 h-2 rounded-full" style="width: ${progress}%"></div>
-            </div>
-          </div>
-                <div class="space-y-6 p-2 max-w-4xl mx-auto">
-                  ${course.sections
-                    .map(
-                      (section, sectionIndex) => `
-                    <div class="bg-gray-900 p-2 rounded-lg shadow-xl border border-gray-800">
-                      <button onclick="
-                        const container = document.getElementById('lessons-container-${sectionIndex}');
-                        container.classList.toggle('hidden');
-                        this.querySelector('.arrow-icon').classList.toggle('rotate-180');
-                      " 
-                      class="w-full flex justify-between items-center bg-purple-600 text-white px-5 py-4 rounded-lg hover:bg-purple-700 transition-all duration-300">
-                        <span class="text-xl font-semibold flex items-center gap-3">
-                          <div><svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
-                          </svg></div> ${section.name}
-                        </span>
-    
-                        <svg class="w-5 h-5 text-white transition-transform arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                      </button>
-                      <div id="lessons-container-${sectionIndex}" class="mt-4 hidden space-y-3 relative">
-
-
-                        ${section.lessons
-                          .map(
-                            (lesson, lessonIndex) => `
-                          <div class="bg-gray-800 p-4 rounded-lg shadow-lg border border-gray-700 relative">
-                            <button onclick="
-                              const lessonDetails = document.getElementById('lesson-details-${sectionIndex}-${lessonIndex}');
-                              lessonDetails.classList.toggle('hidden');
-                              this.querySelector('.lesson-arrow').classList.toggle('rotate-180');
-                            " 
-                            class="w-full flex justify-between items-center text-gray-300 text-lg font-semibold hover:text-white transition">
-                              <span class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.58M6.16 10.42L12 14v7"></path>
-                                </svg> ${lesson.name}
-                              </span>
-                              <svg class="w-4 h-4 text-gray-400 transition-transform lesson-arrow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                              </svg>
-                              
-                            </button>
-                                                   <button onclick="toggleFullScreen('lessons-container-${sectionIndex}')" 
-    class="absolute top-2 right-2 bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-600 transition">
-    <i class="fas fa-expand"></i> <!-- FontAwesome Icon -->
-  </button>
-                            <div id="lesson-details-${sectionIndex}-${lessonIndex}" class="hidden mt-3 text-gray-400 text-sm space-y-2">
-                              <p><span class="font-medium text-gray-300">Type:</span> ${
-                                lesson.content_type
-                              }</p>
-                              <p>${
-                                lesson.description ||
-                                '<span class="italic text-gray-500">No description available</span>'
-                              }</p>
-                              ${
-                                lesson.quiz
-                                  ? `<p class="text-green-400 font-medium">✅ Quiz Available</p>`
-                                  : ""
-                              }
-                              ${
-                                lesson.video_url
-                                  ? `
-                                <div class="relative mt-4 rounded-lg overflow-hidden border border-gray-500 shadow-md">
-    ${getVideoEmbedCode(lesson.video_url)}
-  </div>
-                              `
-                                  : '<p class="italic text-gray-500">No video available</p>'
-                              }
-                            </div>
-                               <button class="lesson-complete-btn mt-3 text-sm px-3 py-1 rounded-lg ${
-                                 lesson.completed
-                                   ? "bg-green-500 text-white"
-                                   : "bg-gray-600 text-gray-300"
-                               }" 
-                                data-lesson-id="${lesson.id}" 
-                                data-course-id="${course.id}">
-                          ${
-                            lesson.completed
-                              ? "✔ Completed"
-                              : "Mark as Complete"
-                          }
-                        </button>
-                          </div>
-                          
-                        `
-                          )
-                          .join("")}
-                      </div>
-                    </div>
-                  `
-                    )
-                    .join("")}
+    return `
+            <div class="group relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-xl overflow-hidden">
+                <div class="relative aspect-video overflow-hidden">
+                    <img src="${course.imageUrl}" alt="${course.name}" 
+                         class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    
+                    ${
+                      course.progress.percentage > 0
+                        ? `
+                        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gray-700">
+                            <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500"
+                                 style="width: ${course.progress.percentage}%"></div>
+                        </div>
+                    `
+                        : ""
+                    }
                 </div>
-              </div>
+
+                <div class="p-6 space-y-4">
+                    <div class="flex justify-between items-start gap-4">
+                        <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors line-clamp-2">
+                            ${course.name}
+                        </h3>
+                        <span class="px-2 py-1 text-xs font-medium bg-blue-500/10 text-blue-400 rounded-full whitespace-nowrap">
+                            ${course.language || "Not specified"}
+                        </span>
+                    </div>
+
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center gap-2 text-gray-400">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M12 4.318l-1.318 2.844-2.844 1.318 2.844 1.318L12 12.682l1.318-2.844 2.844-1.318-2.844-1.318L12 4.318z"/>
+                            </svg>
+                            <span>${course.students} enrolled</span>
+                        </div>
+
+                        <div class="flex items-center gap-2 text-gray-400">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span>Expires: ${this.formatDate(
+                              course.expireDate
+                            )}</span>
+                        </div>
+
+                        ${
+                          course.progress.percentage > 0
+                            ? `
+                            <div class="flex items-center gap-2 text-gray-400">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>${course.progress.percentage}% Complete</span>
+                            </div>
+                        `
+                            : ""
+                        }
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-800">
+                        ${this.renderActionButton(
+                          course,
+                          hasLessons,
+                          isExpired
+                        )}
+                    </div>
+                </div>
             </div>
-          </details> 
-        `
-        : `
-        <div class="flex flex-row space-x-2">
-          <details class="w-full mb-4 flex items-center justify-center border border-gray-500 text-gray-500 px-4 py-2 rounded-md hover:bg-gray-500 hover:text-white transition">
-            <summary style="pointer-events: none; user-select: none;" class="font-semibold cursor-pointer list-none">
-              <i class="fas fa-exclamation-circle"></i> <span>No Lessons Available</span>
-            </summary>
-          </details>
-        </div>
-        ` 
-  
-        : ` <div class ="flex flex-row space-x-2">
-            
-            <details  class="w-full mb-4 flex items-center justify-center  border border-red-500 text-red-500 px-4 py-2 rounded-md hover:bg-red-500 hover:text-white transition">
-            <summary  style="pointer-events: none; user-select: none;" class="font-semibold cursor-pointer list-none">
-              <i class="fas fa-lock"></i> <span>Expired Course</span>
-            </summary>
-       
-          </details>   <button  onclick="window.location.href='courses.html?courseid=${encodeURIComponent(course.id)}'" class=" w-full mb-4 flex items-center justify-center  border border-green-500 text-green-500 px-4 py-2 rounded-md hover:bg-green-500 hover:text-white transition">
-        <i class="fas fa-sync-alt"></i>
-        Renew
-    </button> 
-            </div> ` 
-        }
-<!-- ✅ Review Form - Modern UI -->
-<div class="mt-6 border-t border-gray-600 pt-4">
-  <h4 class="text-gray-300 font-semibold mb-2">Leave a Review</h4>
+        `;
+  }
 
-  <!-- ⭐ Star Rating -->
-  <div class="flex space-x-2 text-yellow-400 text-xl rating-stars" data-course-id="${
-    course.id
-  }">
-    <i class="fas fa-star cursor-pointer" data-value="1"></i>
-    <i class="fas fa-star cursor-pointer" data-value="2"></i>
-    <i class="fas fa-star cursor-pointer" data-value="3"></i>
-    <i class="fas fa-star cursor-pointer" data-value="4"></i>
-    <i class="fas fa-star cursor-pointer" data-value="5"></i>
-  </div>
-
-  <!-- Hidden Input for Rating -->
-  <input type="hidden" class="rating-value" data-course-id="${
-    course.id
-  }" value="5">
-
-  <!-- Review Textarea -->
-  <textarea class="review-text bg-gray-800 text-white p-3 rounded w-full mt-3 focus:ring-2 focus:ring-blue-500" 
-    rows="3" placeholder="Write your review..." data-course-id="${
-      course.id
-    }"></textarea>
-
-  <!-- Submit Button -->
-  <!-- ✅ Submit Button with FA Icon -->
-<button class="submit-review mt-4 flex items-center justify-between space-x-4 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition" data-course-id="${
-      course.id
-    }">
-  <i class="fas fa-paper-plane mr-2"></i> Submit Review
-</button>
-
-</div>
-
-    
-      </div>
-    `;
-
-    courseContainer.appendChild(courseCard);
-  });
-
-  // Attach event listeners for submitting reviews
-  document.querySelectorAll(".submit-review").forEach((button) => {
-    button.addEventListener("click", async function () {
-      const courseId = this.getAttribute("data-course-id");
-      const userId = auth.currentUser?.uid;
-      const rating = document.querySelector(
-        `.rating-value[data-course-id="${courseId}"]`
-      ).value;
-      const reviewText = document.querySelector(
-        `.review-text[data-course-id="${courseId}"]`
-      ).value;
-
-      if (!userId) {
-        alert("Please log in to submit a review.");
-        return;
-      }
-
-      await submitReview(courseId, userId, rating, reviewText);
-      alert("Review submitted successfully!");
-      fetchReviews(courseId);
-    });
-  });
-
-  // ⭐ Handle Star Rating Selection
-  document.querySelectorAll(".rating-stars").forEach((starContainer) => {
-    const stars = starContainer.querySelectorAll("i");
-    const courseId = starContainer.getAttribute("data-course-id");
-
-    stars.forEach((star) => {
-      star.addEventListener("click", () => {
-        const ratingValue = star.getAttribute("data-value");
-        document.querySelector(
-          `.rating-value[data-course-id="${courseId}"]`
-        ).value = ratingValue;
-
-        // Update star colors
-        stars.forEach((s) =>
-          s.classList.toggle(
-            "text-yellow-500",
-            s.getAttribute("data-value") <= ratingValue
-          )
-        );
-      });
-    });
-  });
-
-  // Attach event listeners for lesson completion
-  document.querySelectorAll(".lesson-complete-btn").forEach((button) => {
-    button.addEventListener("click", async function () {
-      const lessonId = this.getAttribute("data-lesson-id");
-      const userId = auth.currentUser.uid;
-      await markLessonComplete(userId, lessonId);
-      this.classList.add("bg-green-500", "text-white");
-      this.textContent = "✔ Completed";
-    });
-  });
-}
-
-// Toggle lessons visibility
-document.querySelectorAll(".toggle-lessons").forEach((button) => {
-  button.addEventListener("click", function () {
-    const sectionIndex = this.getAttribute("data-section-index");
-    const container = document.getElementById(
-      `lessons-container-${sectionIndex}`
-    );
-
-    if (container) {
-      container.classList.toggle("hidden");
-      this.textContent = container.classList.contains("hidden")
-        ? "Show Lessons"
-        : "Hide Lessons";
+  static renderActionButton(course, hasLessons, isExpired) {
+    if (isExpired) {
+      return `
+                <button onclick="window.location.href='courses.html?courseid=${encodeURIComponent(
+                  course.id
+                )}'" 
+                        class="w-full px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg 
+                               hover:from-green-700 hover:to-emerald-700 transition-all duration-300 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Renew Course
+                </button>`;
     }
-  });
-});
 
+    return hasLessons
+      ? `<button onclick="window.showCourseContent('${encodeURIComponent(
+          JSON.stringify(course)
+        )}')" 
+                        class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg 
+                               hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Continue Learning
+                </button>`
+      : `<button disabled 
+                        class="w-full px-4 py-2 bg-gray-800 text-gray-500 rounded-lg cursor-not-allowed 
+                               flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    No Lessons Available
+                </button>`;
+  }
 
-function getVideoEmbedCode(url) {
-  if (!url) return '<p class="italic text-gray-500">No video available</p>';
-
-  const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/;
-  const vimeoRegex = /vimeo\.com\/(\d+)/;
-  const dailymotionRegex = /dailymotion\.com\/video\/([\w]+)/;
-  const googleDriveRegex = /drive\.google\.com\/file\/d\/(.*?)\/view/;
-  const mp4Regex = /\.(mp4|webm|ogg)$/i;
-
-  if (youtubeRegex.test(url)) {
-    const videoId = url.match(youtubeRegex)[1];
-    return `<iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-
-  } else if (vimeoRegex.test(url)) {
-    const videoId = url.match(vimeoRegex)[1];
-    return `<iframe class="w-full h-64 rounded-lg" src="https://player.vimeo.com/video/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-
-  } else if (dailymotionRegex.test(url)) {
-    const videoId = url.match(dailymotionRegex)[1];
-    return `<iframe class="w-full h-64 rounded-lg" src="https://www.dailymotion.com/embed/video/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-
-  } else if (googleDriveRegex.test(url)) {
-    const fileId = url.match(googleDriveRegex)[1];
-    return `<iframe class="w-full h-64 rounded-lg" src="https://drive.google.com/file/d/${fileId}/preview" frameborder="0" allowfullscreen></iframe>`;
-
-  } else if (mp4Regex.test(url)) {
-    return `<video class="w-full h-64 rounded-lg" controls><source src="${url}" type="video/mp4">Your browser does not support the video tag.</video>`;
-
-  } else {
-    return `<p class="italic text-gray-500">Unsupported video format</p>`;
+  static formatDate(timestamp) {
+    if (!timestamp) return "N/A";
+    const date =
+      timestamp instanceof Timestamp ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   }
 }
 
+class CourseContentModal {
+  static render(course) {
+    return `
+            <div class="space-y-8">
+                <div class="flex items-center gap-6">
+                    <div class="relative w-24 h-24 rounded-xl overflow-hidden">
+                        <img src="${course.imageUrl}" alt="${course.name}" 
+                             class="w-full h-full object-cover" />
+                        ${
+                          course.progress.percentage > 0
+                            ? `
+                            <div class="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                <div class="relative w-16 h-16">
+                                    <svg class="w-full h-full" viewBox="0 0 36 36">
+                                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="#4F46E5" stroke-width="3" stroke-dasharray="${course.progress.percentage}, 100"/>
+                                        <text x="18" y="20.35" class="progress-text" text-anchor="middle" fill="#4F46E5" font-size="8">
+                                            ${course.progress.percentage}%
+                                        </text>
+                                    </svg>
+                                </div>
+                            </div>
+                        `
+                            : ""
+                        }
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">${
+                          course.name
+                        }</h2>
+                        <p class="text-gray-400 mt-1">by ${
+                          course.author.name
+                        }</p>
+                    </div>
+                </div>
 
-
-
-
-// Main function to load user purchased courses
-async function loadPurchasedCourses(userId) {
-  const courses = await fetchPurchasedCourses(userId);
-
-  requestAnimationFrame(() => {
-    renderCourses(courses);
-  });
+                ${course.sections
+                  .map(
+                    (section) => `
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                                ${section.order || "•"}
+                            </span>
+                            ${section.name}
+                        </h3>
+                        <div class="space-y-2">
+                            ${section.lessons
+                              .map(
+                                (lesson, index) => `
+                                <div class="group flex items-center justify-between p-4 bg-gray-800/50 rounded-xl hover:bg-gray-800 transition-colors">
+                                    <div class="flex items-center gap-4">
+                                        <div class="relative w-10 h-10 rounded-lg bg-gray-700/50 flex items-center justify-center">
+                                            ${
+                                              lesson.completed
+                                                ? `<svg class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                   </svg>`
+                                                : `<span class="text-gray-400">${
+                                                    index + 1
+                                                  }</span>`
+                                            }
+                                        </div>
+                                        <div>
+                                            <h4 class="text-white font-medium group-hover:text-indigo-400 transition-colors">
+                                                ${
+                                                  lesson.title ||
+                                                  `Lesson ${index + 1}`
+                                                }
+                                            </h4>
+                                            ${
+                                              lesson.duration
+                                                ? `
+                                                <p class="text-sm text-gray-500">${lesson.duration}</p>
+                                            `
+                                                : ""
+                                            }
+                                        </div>
+                                    </div>
+                                    <button onclick="window.startLesson('${
+                                      section.courseId
+                                    }', '${section.id}', '${lesson.id}')"
+                                            class="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 
+                                                   transition-colors flex items-center gap-2">
+                                        ${lesson.completed ? "Review" : "Start"}
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            `
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+                `
+                  )
+                  .join("")}
+            </div>
+        `;
+  }
 }
 
-// Initialize the page
+// Initialize Course Service and UI
+const courseService = new CourseService();
 
-// Fetch and load courses for the authenticated user
+// Global UI handlers
+window.showCourseContent = (courseData) => {
+  try {
+    const course = JSON.parse(decodeURIComponent(courseData));
+    const modal = document.getElementById("modal-container");
+    const content = document.getElementById("modal-content");
+
+    modal.classList.remove("hidden");
+    content.innerHTML = CourseContentModal.render(course);
+  } catch (error) {
+    console.error("Error showing course content:", error);
+    // Show error toast
+    Toastify({
+      text: "Failed to load course content",
+      duration: 3000,
+      close: true,
+      gravity: "top",
+      position: "right",
+      style: { background: "linear-gradient(to right, #ef4444, #dc2626)" },
+    }).showToast();
+  }
+};
+
+window.startLesson = (courseId, sectionId, lessonId) => {
+  window.location.href = `lesson.html?course=${courseId}&section=${sectionId}&lesson=${lessonId}`;
+};
+
+// Setup auth listener
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loadPurchasedCourses(user.uid);
-  } else {
-    const courseContainer = document.getElementById("course-container");
-    courseContainer.innerHTML =
-      '<p class="text-center text-gray-500">Please log in to view your courses.</p>';
-  }
-});
+  const container = document.getElementById("course-container");
+  const loadingScreen = document.getElementById("loadingScreen");
 
-// Show Lessons
+  if (!user) {
+    loadingScreen.classList.add("hidden");
+    container.innerHTML = `
+            <div class="col-span-full flex flex-col items-center justify-center min-h-[60vh]">
+                <div class="text-center space-y-4">
+                    <svg class="w-20 h-20 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    <h2 class="text-2xl font-bold text-gray-400">Please Log In</h2>
+                    <p class="text-gray-500 max-w-md">Sign in to access your courses and continue your learning journey</p>
+                    <button onclick="window.location.href='account.html'" 
+                            class="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Sign In
+                    </button>
+                </div>
+            </div>
+        `;
+    return;
+  }
+
+  courseService.subscribe((courses) => {
+    loadingScreen.classList.add("hidden");
+
+    if (courses.length === 0) {
+      container.innerHTML = `
+                <div class="col-span-full flex flex-col items-center justify-center min-h-[60vh]">
+                    <div class="text-center space-y-4">
+                        <div class="relative">
+                            <svg class="w-24 h-24 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                            <div class="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-2xl rounded-full"></div>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-400">No Courses Yet</h2>
+                        <p class="text-gray-500 max-w-md">Start your learning journey by exploring our course catalog</p>
+                        <button onclick="window.location.href='courses.html'" 
+                                class="mt-4 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg 
+                                       hover:from-blue-700 hover:to-indigo-700 transition-all duration-300">
+                            Browse Courses
+                        </button>
+                    </div>
+                </div>
+            `;
+      return;
+    }
+
+    container.innerHTML = courses
+      .map((course) => CourseCard.render(course))
+      .join("");
+  });
+
+  courseService.initialize(user.uid);
+});

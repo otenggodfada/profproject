@@ -1,0 +1,912 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lesson View</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <script
+      src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"
+      type="module"
+    ></script>
+    <script
+      src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js"
+      type="module"
+    ></script>
+    <script
+      src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"
+      type="module"
+    ></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script type="module" src="./dynamiccon.js"></script>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <!-- Navigation Bar -->
+    <div class="sticky top-0 bg-[#172554] z-20 w-full border-b">
+      <div id="navbar-container"></div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div
+      id="loadingScreen"
+      class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50"
+    >
+      <div class="flex flex-col items-center gap-4">
+        <div class="relative">
+          <div
+            class="w-16 h-16 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin"
+          ></div>
+        </div>
+        <p class="text-blue-500 text-lg font-semibold animate-pulse">
+          Loading lesson...
+        </p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-32 container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <!-- Course Navigation -->
+        <div class="mb-8 flex items-center justify-between">
+          <div class="flex items-center gap-2 text-gray-400">
+            <a href="mycourse.html" class="hover:text-white transition-colors"
+              >My Courses</a
+            >
+            <i class="fas fa-chevron-right text-xs"></i>
+            <span id="courseName" class="text-white"></span>
+          </div>
+          <!-- Author Info -->
+          <div class="flex items-center gap-3">
+            <img
+              id="authorImage"
+              alt="Author"
+              class="w-8 h-8 rounded-full object-cover border border-gray-700"
+            />
+            <span id="authorName" class="text-sm text-gray-400"></span>
+          </div>
+        </div>
+
+        <!-- Lesson Content -->
+        <div class="space-y-8">
+          <!-- Title and Progress -->
+          <div class="flex justify-between items-center">
+            <div>
+              <h1 id="lessonTitle" class="text-3xl font-bold"></h1>
+              <p id="lessonDescription" class="text-gray-400 mt-2"></p>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-clock text-blue-400"></i>
+                <span id="lessonDuration" class="text-gray-400"></span>
+              </div>
+              <div class="w-32 h-2 bg-gray-800 rounded-full">
+                <div
+                  id="progressBar"
+                  class="h-full bg-blue-500 rounded-full transition-all duration-500"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Content Type Indicator -->
+          <div class="flex items-center gap-2 text-sm">
+            <span
+              id="contentTypeIndicator"
+              class="px-3 py-1 rounded-full text-white"
+            ></span>
+          </div>
+
+          <!-- Video Section -->
+          <div
+            id="videoContainer"
+            class="bg-gray-800 rounded-xl overflow-hidden aspect-w-16 aspect-h-9 hidden"
+          >
+            <!-- Video will be inserted here -->
+          </div>
+
+          <!-- Description Section -->
+          <div
+            id="descriptionContainer"
+            class="bg-gray-800 rounded-xl p-6 space-y-4"
+          >
+            <h2 class="text-xl font-semibold flex items-center gap-2">
+              <i class="fas fa-info-circle text-blue-400"></i>
+              Lesson Overview
+            </h2>
+            <div
+              id="descriptionContent"
+              class="text-gray-300 prose prose-invert max-w-none"
+            >
+              <!-- Description will be inserted here -->
+            </div>
+          </div>
+
+          <!-- Quiz Section -->
+          <div
+            id="quizContainer"
+            class="hidden space-y-6 bg-gray-800 p-6 rounded-xl"
+          >
+            <h2 class="text-2xl font-bold flex items-center gap-2">
+              <i class="fas fa-question-circle text-blue-400"></i>
+              Quiz
+            </h2>
+            <div id="quizContent" class="space-y-4">
+              <!-- Quiz questions will be inserted here -->
+            </div>
+            <button
+              id="submitQuiz"
+              class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              Submit Answers
+            </button>
+          </div>
+
+          <!-- Review Section -->
+          <div class="mt-8 space-y-6 bg-gray-800 p-6 rounded-xl">
+            <div class="flex justify-between items-center">
+              <h2 class="text-2xl font-bold flex items-center gap-2">
+                <i class="fas fa-star text-yellow-400"></i>
+                Course Reviews
+              </h2>
+              <button
+                id="writeReviewBtn"
+                class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                Write a Review
+              </button>
+            </div>
+
+            <!-- Review Form (Hidden by default) -->
+            <div
+              id="reviewForm"
+              class="hidden space-y-4 border border-gray-700 rounded-lg p-4"
+            >
+              <h3 class="text-lg font-semibold">Write Your Review</h3>
+              <div class="flex items-center gap-2">
+                <div id="ratingStars" class="flex gap-1">
+                  <i
+                    class="fas fa-star text-gray-400 cursor-pointer hover:text-yellow-400"
+                    data-rating="1"
+                  ></i>
+                  <i
+                    class="fas fa-star text-gray-400 cursor-pointer hover:text-yellow-400"
+                    data-rating="2"
+                  ></i>
+                  <i
+                    class="fas fa-star text-gray-400 cursor-pointer hover:text-yellow-400"
+                    data-rating="3"
+                  ></i>
+                  <i
+                    class="fas fa-star text-gray-400 cursor-pointer hover:text-yellow-400"
+                    data-rating="4"
+                  ></i>
+                  <i
+                    class="fas fa-star text-gray-400 cursor-pointer hover:text-yellow-400"
+                    data-rating="5"
+                  ></i>
+                </div>
+                <span id="ratingText" class="text-sm text-gray-400"
+                  >Select rating</span
+                >
+              </div>
+              <textarea
+                id="reviewText"
+                rows="4"
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white placeholder-gray-400"
+                placeholder="Write your review here..."
+              ></textarea>
+              <div class="flex justify-end gap-2">
+                <button
+                  id="cancelReview"
+                  class="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  id="submitReview"
+                  class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  Submit Review
+                </button>
+              </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div id="reviewsList" class="space-y-4">
+              <!-- Reviews will be loaded here dynamically -->
+            </div>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="flex justify-between items-center pt-6">
+            <button
+              id="prevLesson"
+              class="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center gap-2"
+            >
+              <i class="fas fa-arrow-left"></i>
+              Previous Lesson
+            </button>
+            <button
+              id="markComplete"
+              class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              Mark as Complete
+            </button>
+            <button
+              id="nextLesson"
+              class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
+            >
+              Next Lesson
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        updateDoc,
+        arrayUnion,
+        collection,
+        getDocs,
+        query,
+        orderBy,
+        limit,
+        addDoc,
+        where,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
+
+      // Initialize Firebase (you'll need to add your config)
+      const firebaseConfig = {
+        apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+        authDomain: "profstudymate-6d0fc.firebaseapp.com",
+        projectId: "profstudymate",
+        storageBucket: "profstudymate.appspot.com",
+        messagingSenderId: "141453158869",
+        appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      // Get URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const courseId = urlParams.get("course");
+      const sectionId = urlParams.get("section");
+      const lessonId = urlParams.get("lesson");
+
+      // Add navigation handling functions
+      async function setupNavigation() {
+        // Get all sections for navigation
+        const sectionsRef = collection(db, "courses", courseId, "sections");
+        const sectionsSnap = await getDocs(
+          query(sectionsRef, orderBy("order"))
+        );
+        const sections = sectionsSnap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Find current section
+        const currentSectionIndex = sections.findIndex(
+          (s) => s.id === sectionId
+        );
+        const currentSection = sections[currentSectionIndex];
+
+        // Get lessons in current section
+        const lessonsRef = collection(
+          db,
+          "courses",
+          courseId,
+          "sections",
+          sectionId,
+          "lessons"
+        );
+        const lessonsSnap = await getDocs(query(lessonsRef, orderBy("order")));
+        const lessons = lessonsSnap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Find current lesson
+        const currentLessonIndex = lessons.findIndex((l) => l.id === lessonId);
+
+        // Setup navigation buttons
+        const prevButton = document.getElementById("prevLesson");
+        const nextButton = document.getElementById("nextLesson");
+
+        // Previous lesson/section logic
+        if (currentLessonIndex > 0) {
+          // Previous lesson in same section
+          const prevLesson = lessons[currentLessonIndex - 1];
+          prevButton.onclick = () =>
+            navigateToLesson(courseId, sectionId, prevLesson.id);
+          prevButton.disabled = false;
+        } else if (currentSectionIndex > 0) {
+          // Last lesson of previous section
+          const prevSection = sections[currentSectionIndex - 1];
+          const prevLessonsRef = collection(
+            db,
+            "courses",
+            courseId,
+            "sections",
+            prevSection.id,
+            "lessons"
+          );
+          const prevLessonsSnap = await getDocs(
+            query(prevLessonsRef, orderBy("order", "desc"), limit(1))
+          );
+
+          if (!prevLessonsSnap.empty) {
+            const prevLesson = prevLessonsSnap.docs[0];
+            prevButton.onclick = () =>
+              navigateToLesson(courseId, prevSection.id, prevLesson.id);
+            prevButton.disabled = false;
+          } else {
+            prevButton.disabled = true;
+          }
+        } else {
+          prevButton.disabled = true;
+        }
+
+        // Next lesson/section logic
+        if (currentLessonIndex < lessons.length - 1) {
+          // Next lesson in same section
+          const nextLesson = lessons[currentLessonIndex + 1];
+          nextButton.onclick = () =>
+            navigateToLesson(courseId, sectionId, nextLesson.id);
+          nextButton.disabled = false;
+        } else if (currentSectionIndex < sections.length - 1) {
+          // First lesson of next section
+          const nextSection = sections[currentSectionIndex + 1];
+          const nextLessonsRef = collection(
+            db,
+            "courses",
+            courseId,
+            "sections",
+            nextSection.id,
+            "lessons"
+          );
+          const nextLessonsSnap = await getDocs(
+            query(nextLessonsRef, orderBy("order"), limit(1))
+          );
+
+          if (!nextLessonsSnap.empty) {
+            const nextLesson = nextLessonsSnap.docs[0];
+            nextButton.onclick = () =>
+              navigateToLesson(courseId, nextSection.id, nextLesson.id);
+            nextButton.disabled = false;
+          } else {
+            nextButton.disabled = true;
+          }
+        } else {
+          nextButton.disabled = true;
+        }
+
+        return {
+          currentSection,
+          currentLessonIndex,
+          totalLessons: lessons.length,
+        };
+      }
+
+      // Navigation helper function
+      function navigateToLesson(courseId, sectionId, lessonId) {
+        window.location.href = `lesson.html?course=${courseId}&section=${sectionId}&lesson=${lessonId}`;
+      }
+
+      // Update loadLesson function to use navigation setup
+      async function loadLesson() {
+        try {
+          const lessonDoc = await getDoc(
+            doc(
+              db,
+              "courses",
+              courseId,
+              "sections",
+              sectionId,
+              "lessons",
+              lessonId
+            )
+          );
+          if (!lessonDoc.exists()) {
+            throw new Error("Lesson not found");
+          }
+
+          const lesson = lessonDoc.data();
+          const courseDoc = await getDoc(doc(db, "courses", courseId));
+          const course = courseDoc.data();
+
+          // Setup navigation and get current position info
+          const { currentSection, currentLessonIndex, totalLessons } =
+            await setupNavigation();
+
+          // Update UI with lesson progress within section
+          const progressText = document.getElementById("lessonProgress");
+          if (progressText) {
+            progressText.textContent = `Lesson ${
+              currentLessonIndex + 1
+            } of ${totalLessons}`;
+          }
+
+          // Rest of the loadLesson function remains the same...
+          // Get user's progress for this lesson
+          const userProgressDoc = await getDoc(
+            doc(db, "users", auth.currentUser.uid, "progress", courseId)
+          );
+          const userProgress = userProgressDoc.data();
+          const lessonProgress = userProgress?.[sectionId]?.[lessonId] || {};
+
+          // Update UI based on lesson type and progress
+          document.getElementById("courseName").textContent = course.name;
+          document.getElementById("lessonTitle").textContent =
+            lesson.name || "Untitled Lesson";
+          document.getElementById("lessonDescription").textContent =
+            lesson.description || "No description available";
+          document.getElementById("lessonDuration").textContent =
+            lesson.duration || "No duration set";
+
+          // Handle content type indicator and visibility
+          const contentType = lesson.content_type || "text";
+          const contentTypeIndicator = document.getElementById(
+            "contentTypeIndicator"
+          );
+          const videoContainer = document.getElementById("videoContainer");
+          const quizContainer = document.getElementById("quizContainer");
+
+          // Set content type indicator
+          contentTypeIndicator.textContent =
+            contentType.charAt(0).toUpperCase() + contentType.slice(1);
+          contentTypeIndicator.className =
+            "px-3 py-1 rounded-full text-white " +
+            (contentType === "video" ? "bg-blue-500" : "bg-purple-500");
+
+          // Show/hide appropriate content sections
+          if (contentType === "video" && lesson.video_url) {
+            videoContainer.classList.remove("hidden");
+            quizContainer.classList.add("hidden");
+
+            // Handle different video URL types
+            if (
+              lesson.video_url.includes("youtube.com") ||
+              lesson.video_url.includes("youtu.be")
+            ) {
+              // Convert URL to embed format if needed
+              const videoId = lesson.video_url.includes("youtu.be")
+                ? lesson.video_url.split("/").pop()
+                : new URLSearchParams(new URL(lesson.video_url).search).get(
+                    "v"
+                  );
+
+              videoContainer.innerHTML = `
+                <iframe 
+                  src="https://www.youtube.com/embed/${videoId}" 
+                  class="w-full h-full" 
+                  frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen>
+                </iframe>`;
+            } else {
+              videoContainer.innerHTML = `
+                <video class="w-full h-full" controls>
+                  <source src="${lesson.video_url}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>`;
+            }
+          } else if (contentType === "quiz" && lesson.quiz) {
+            videoContainer.classList.add("hidden");
+            quizContainer.classList.remove("hidden");
+
+            // Generate quiz content
+            const quizContent = document.getElementById("quizContent");
+            quizContent.innerHTML = lesson.quiz.questions
+              .map(
+                (question, index) => `
+                <div class="space-y-3">
+                  <p class="font-medium">${index + 1}. ${question.text}</p>
+                  <div class="space-y-2">
+                    ${question.options
+                      .map(
+                        (option, optIndex) => `
+                        <label class="flex items-center gap-2 p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
+                          <input type="radio" name="q${index}" value="${optIndex}" class="text-blue-500"
+                            ${
+                              lessonProgress.quiz?.[index]?.answerIndex ===
+                              optIndex
+                                ? "checked"
+                                : ""
+                            }>
+                          <span>${option}</span>
+                        </label>
+                      `
+                      )
+                      .join("")}
+                  </div>
+                </div>
+              `
+              )
+              .join("");
+          } else {
+            // Hide both video and quiz containers if neither type
+            videoContainer.classList.add("hidden");
+            quizContainer.classList.add("hidden");
+          }
+
+          // Update complete button state
+          const markCompleteButton = document.getElementById("markComplete");
+          if (lessonProgress.completed) {
+            markCompleteButton.textContent = "Completed";
+            markCompleteButton.disabled = true;
+            markCompleteButton.classList.add("bg-gray-600");
+            markCompleteButton.classList.remove("hover:bg-green-700");
+          }
+
+          // Set progress bar
+          const progressBar = document.getElementById("progressBar");
+          progressBar.style.width = lessonProgress.completed ? "100%" : "0%";
+
+          // Hide loading screen
+          document.getElementById("loadingScreen").classList.add("hidden");
+        } catch (error) {
+          console.error("Error loading lesson:", error);
+          Toastify({
+            text: "Error loading lesson. Please try again.",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            style: {
+              background: "linear-gradient(to right, #EF4444, #DC2626)",
+            },
+          }).showToast();
+        }
+      }
+
+      // Handle quiz submission
+      document
+        .getElementById("submitQuiz")
+        ?.addEventListener("click", async () => {
+          const answers = [];
+          const quizInputs = document.querySelectorAll(
+            'input[type="radio"]:checked'
+          );
+
+          quizInputs.forEach((input) => {
+            answers.push({
+              questionIndex: parseInt(input.name.replace("q", "")),
+              answerIndex: parseInt(input.value),
+            });
+          });
+
+          // Save answers to Firebase
+          try {
+            await updateDoc(
+              doc(db, "users", auth.currentUser.uid, "progress", courseId),
+              {
+                [`${sectionId}.${lessonId}.quiz`]: answers,
+              }
+            );
+
+            Toastify({
+              text: "Quiz submitted successfully!",
+              duration: 3000,
+              gravity: "top",
+              position: "right",
+              style: {
+                background: "linear-gradient(to right, #10B981, #059669)",
+              },
+            }).showToast();
+          } catch (error) {
+            console.error("Error submitting quiz:", error);
+            Toastify({
+              text: "Error submitting quiz. Please try again.",
+              duration: 3000,
+              gravity: "top",
+              position: "right",
+              style: {
+                background: "linear-gradient(to right, #EF4444, #DC2626)",
+              },
+            }).showToast();
+          }
+        });
+
+      // Handle marking lesson as complete
+      document
+        .getElementById("markComplete")
+        .addEventListener("click", async () => {
+          try {
+            await updateDoc(
+              doc(db, "users", auth.currentUser.uid, "progress", courseId),
+              {
+                [`${sectionId}.${lessonId}.completed`]: true,
+                [`${sectionId}.${lessonId}.completedAt`]:
+                  new Date().toISOString(),
+              }
+            );
+
+            // Update UI to reflect completion
+            document.getElementById("markComplete").textContent = "Completed";
+            document.getElementById("markComplete").disabled = true;
+            document
+              .getElementById("markComplete")
+              .classList.add("bg-gray-600");
+            document
+              .getElementById("markComplete")
+              .classList.remove("hover:bg-green-700");
+
+            // Update progress bar
+            document.getElementById("progressBar").style.width = "100%";
+
+            Toastify({
+              text: "Lesson marked as complete!",
+              duration: 3000,
+              gravity: "top",
+              position: "right",
+              style: {
+                background: "linear-gradient(to right, #10B981, #059669)",
+              },
+            }).showToast();
+
+            // Automatically move to next lesson if available
+            if (!nextButton.disabled) {
+              setTimeout(() => nextButton.click(), 1500);
+            }
+          } catch (error) {
+            console.error("Error marking lesson as complete:", error);
+            Toastify({
+              text: "Error updating progress. Please try again.",
+              duration: 3000,
+              gravity: "top",
+              position: "right",
+              style: {
+                background: "linear-gradient(to right, #EF4444, #DC2626)",
+              },
+            }).showToast();
+          }
+        });
+
+      // Review System
+      let selectedRating = 0;
+
+      // Initialize review system
+      function initializeReviewSystem() {
+        const writeReviewBtn = document.getElementById("writeReviewBtn");
+        const reviewForm = document.getElementById("reviewForm");
+        const cancelReview = document.getElementById("cancelReview");
+        const submitReview = document.getElementById("submitReview");
+        const ratingStars = document.querySelectorAll("#ratingStars i");
+        const reviewsList = document.getElementById("reviewsList");
+
+        // Toggle review form
+        writeReviewBtn.addEventListener("click", () => {
+          reviewForm.classList.toggle("hidden");
+        });
+
+        cancelReview.addEventListener("click", () => {
+          reviewForm.classList.add("hidden");
+          resetReviewForm();
+        });
+
+        // Handle star rating
+        ratingStars.forEach((star) => {
+          star.addEventListener("click", () => {
+            const rating = parseInt(star.getAttribute("data-rating"));
+            selectedRating = rating;
+            updateStarDisplay(rating);
+          });
+
+          star.addEventListener("mouseover", () => {
+            const rating = parseInt(star.getAttribute("data-rating"));
+            updateStarDisplay(rating, true);
+          });
+
+          star.addEventListener("mouseout", () => {
+            updateStarDisplay(selectedRating);
+          });
+        });
+
+        // Handle review submission
+        submitReview.addEventListener("click", async () => {
+          const reviewText = document.getElementById("reviewText").value.trim();
+
+          if (selectedRating === 0) {
+            showToast("Please select a rating", "error");
+            return;
+          }
+
+          if (reviewText.length < 10) {
+            showToast("Please write a review (minimum 10 characters)", "error");
+            return;
+          }
+
+          try {
+            // Get user data from users collection
+            const userDocRef = doc(db, "users", auth.currentUser.uid);
+            const userDocSnap = await getDoc(userDocRef);
+            const userData = userDocSnap.exists() ? userDocSnap.data() : {};
+
+            const review = {
+              course_author_id: await getCourseAuthorId(),
+              course_id: courseId,
+              course_title: document.getElementById("courseName").textContent,
+              created_at: serverTimestamp(),
+              rating: selectedRating,
+              review: reviewText,
+              user: {
+                id: auth.currentUser.uid,
+                image_url: userData.photoURL || auth.currentUser.photoURL || "",
+                name: userData.name || "Anonymous",
+              },
+            };
+
+            // Add review to Firestore
+            await addDoc(collection(db, "reviews"), review);
+
+            showToast("Review submitted successfully!", "success");
+            reviewForm.classList.add("hidden");
+            resetReviewForm();
+            loadReviews(); // Reload reviews
+          } catch (error) {
+            console.error("Error submitting review:", error);
+            showToast("Error submitting review. Please try again.", "error");
+          }
+        });
+
+        // Load initial reviews
+        loadReviews();
+      }
+
+      // Helper function to get course author ID
+      async function getCourseAuthorId() {
+        const courseDoc = await getDoc(doc(db, "courses", courseId));
+        return courseDoc.data()?.author?.id || "";
+      }
+
+      // Update star display
+      function updateStarDisplay(rating, isHover = false) {
+        const stars = document.querySelectorAll("#ratingStars i");
+        const ratingText = document.getElementById("ratingText");
+
+        stars.forEach((star, index) => {
+          if (index < rating) {
+            star.classList.remove("text-gray-400");
+            star.classList.add("text-yellow-400");
+          } else {
+            star.classList.remove("text-yellow-400");
+            star.classList.add("text-gray-400");
+          }
+        });
+
+        if (!isHover) {
+          ratingText.textContent =
+            rating > 0
+              ? `${rating} star${rating > 1 ? "s" : ""}`
+              : "Select rating";
+        }
+      }
+
+      // Reset review form
+      function resetReviewForm() {
+        selectedRating = 0;
+        updateStarDisplay(0);
+        document.getElementById("reviewText").value = "";
+      }
+
+      // Load reviews
+      async function loadReviews() {
+        const reviewsList = document.getElementById("reviewsList");
+        try {
+          const q = query(
+            collection(db, "reviews"),
+            where("course_id", "==", courseId),
+            orderBy("created_at", "desc")
+          );
+
+          const reviewsSnapshot = await getDocs(q);
+
+          if (reviewsSnapshot.empty) {
+            reviewsList.innerHTML =
+              '<p class="text-gray-400">No reviews yet. Be the first to review!</p>';
+            return;
+          }
+
+          reviewsList.innerHTML = reviewsSnapshot.docs
+            .map((doc) => {
+              const review = doc.data();
+              const date = new Date(review.created_at).toLocaleDateString();
+
+              return `
+              <div class="border border-gray-700 rounded-lg p-4 space-y-3">
+                <div class="flex justify-between items-start">
+                  <div class="flex items-center gap-3">
+                    <img src="${
+                      review.user.image_url || "https://via.placeholder.com/40"
+                    }" 
+                         alt="${review.user.name}" 
+                         class="w-10 h-10 rounded-full object-cover">
+                    <div>
+                      <h4 class="font-medium">${review.user.name}</h4>
+                      <div class="flex items-center gap-1">
+                        ${Array(5)
+                          .fill(0)
+                          .map(
+                            (_, i) =>
+                              `<i class="fas fa-star ${
+                                i < review.rating
+                                  ? "text-yellow-400"
+                                  : "text-gray-600"
+                              }"></i>`
+                          )
+                          .join("")}
+                      </div>
+                    </div>
+                  </div>
+                  <span class="text-sm text-gray-400">${date}</span>
+                </div>
+                <p class="text-gray-300">${review.review}</p>
+              </div>
+            `;
+            })
+            .join("");
+        } catch (error) {
+          console.error("Error loading reviews:", error);
+          reviewsList.innerHTML =
+            '<p class="text-red-500">Error loading reviews. Please try again later.</p>';
+        }
+      }
+
+      // Helper function to show toast messages
+      function showToast(message, type = "success") {
+        Toastify({
+          text: message,
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          style: {
+            background:
+              type === "success"
+                ? "linear-gradient(to right, #10B981, #059669)"
+                : "linear-gradient(to right, #EF4444, #DC2626)",
+          },
+        }).showToast();
+      }
+
+      // Initialize review system when authentication is confirmed
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          loadLesson();
+          initializeReviewSystem();
+        } else {
+          window.location.href = "account.html";
+        }
+      });
+
+      // Load navbar
+      fetch("navbar.html")
+        .then((response) => response.text())
+        .then((html) => {
+          document.getElementById("navbar-container").innerHTML = html;
+        });
+    </script>
+  </body>
+</html>

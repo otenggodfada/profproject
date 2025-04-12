@@ -1,19 +1,71 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bottom Navigation</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/framer-motion@4.1.17/dist/framer-motion.umd.js"></script>
+    <script
+      defer
+      src="https://unpkg.com/framer-motion@4.1.17/dist/framer-motion.umd.js"
+    ></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="bottomNav.js" defer></script> <!-- Include your JavaScript file here -->
+    <script src="bottomNav.js" defer></script>
+    <!-- Include your JavaScript file here -->
     <script src="kaka.js"></script>
- 
-</head>
-<body class="bg-[#172554]">
-
+  </head>
+  <body class="bg-[#172554]">
     <!-- Your content goes here -->
 
-</body>
+    <!-- Mobile Bottom Navigation -->
+    <nav
+      class="mobile-nav fixed bottom-0 left-0 right-0 bg-gray-900/80 backdrop-blur-lg border-t border-gray-800"
+    >
+      <div class="max-w-screen-xl mx-auto px-4">
+        <ul class="flex items-center justify-around py-3">
+          <li>
+            <a
+              href="index.html"
+              class="flex flex-col items-center gap-1 text-blue-400 transition-colors"
+            >
+              <i class="ph ph-house text-xl"></i>
+              <span class="text-xs">Home</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="courses.html"
+              class="flex flex-col items-center gap-1 text-gray-400 hover:text-blue-400 transition-colors"
+            >
+              <i class="ph ph-book-open text-xl"></i>
+              <span class="text-xs">Courses</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="store.html"
+              class="flex flex-col items-center gap-1 text-gray-400 hover:text-blue-400 transition-colors"
+            >
+              <i class="ph ph-shopping-cart text-xl"></i>
+              <span class="text-xs">Store</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="myprofile.html"
+              class="flex flex-col items-center gap-1 text-gray-400 hover:text-blue-400 transition-colors"
+            >
+              <i class="ph ph-user-circle text-xl"></i>
+              <span class="text-xs">Profile</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </body>
 </html>

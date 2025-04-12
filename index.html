@@ -13,25 +13,36 @@
     <script type="module" src="./navbar.js"></script>
     <script src="bottomnv.js"></script>
     <script src="kaka.js"></script>
- 
-   
-  
-    
+
     <style>
       @keyframes spin-slow {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
 
       @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
       }
 
       @keyframes shimmer {
-        0% { background-position: -1000px 0; }
-        100% { background-position: 1000px 0; }
+        0% {
+          background-position: -1000px 0;
+        }
+        100% {
+          background-position: 1000px 0;
+        }
       }
 
       .animate-spin-slow {
@@ -43,7 +54,12 @@
       }
 
       .shimmer {
-        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.1) 50%,
+          rgba(255, 255, 255, 0) 100%
+        );
         background-size: 2000px 100%;
         animation: shimmer 2s infinite linear;
       }
@@ -84,13 +100,18 @@
       }
 
       .register-button::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
         transition: 0.5s;
       }
 
@@ -149,332 +170,765 @@
       }
     </style>
 
-<script type="module">
-  // Import Firebase modules
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, doc, getDoc, collection, getDocs, orderBy, query, where  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-  import { initializeFirestore, persistentLocalCache } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    <script type="module">
+      // Import Firebase modules
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        collection,
+        getDocs,
+        orderBy,
+        query,
+        where,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import {
+        initializeFirestore,
+        persistentLocalCache,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
- // Your Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
-  authDomain: "profstudymate-6d0fc.firebaseapp.com",
-  projectId: "profstudymate",
-  storageBucket: "profstudymate.appspot.com",
-  messagingSenderId: "141453158869",
-  appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
-};
+      // Your Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+        authDomain: "profstudymate-6d0fc.firebaseapp.com",
+        projectId: "profstudymate",
+        storageBucket: "profstudymate.appspot.com",
+        messagingSenderId: "141453158869",
+        appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+      };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
 
-// ✅ Enable Firestore Offline Caching
-const db = initializeFirestore(app, {
-  localCache: persistentLocalCache(), // Enables offline caching
-});
+      // ✅ Enable Firestore Offline Caching
+      const db = initializeFirestore(app, {
+        localCache: persistentLocalCache(), // Enables offline caching
+      });
 
-// Initialize Authentication
-const auth = getAuth(app);
+      // Initialize Authentication
+      const auth = getAuth(app);
 
-// Function to update username
-const updateUsername = async (userId) => {
-  const userRef = doc(db, "users", userId);
-  const userSnap = await getDoc(userRef);
-  if (userSnap.exists()) {
-    let fullName = userSnap.data().name;
-    let displayName = fullName.length > 8 ? fullName.substring(0, 8) + "..." : fullName;
-    document.getElementById("username").textContent = `Hello, ${displayName}`;
-  }
-};
-document.addEventListener("DOMContentLoaded", function () {
-    const storedUserId = localStorage.getItem("userId");
+      // Function to update username
+      const updateUsername = async (userId) => {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          let fullName = userSnap.data().name;
+          let displayName =
+            fullName.length > 8 ? fullName.substring(0, 8) + "..." : fullName;
+          document.getElementById(
+            "username"
+          ).textContent = `Hello, ${displayName}`;
+        }
+      };
+      document.addEventListener("DOMContentLoaded", function () {
+        const storedUserId = localStorage.getItem("userId");
 
-    if (!storedUserId) {
-      document.getElementById("loadingScreen").classList.add("hidden");
-    } else {
-      updateUsername(storedUserId);
-      document.getElementById("loadingScreen").classList.add("hidden");
-    }
-});
-
-</script>
-
+        if (!storedUserId) {
+          document.getElementById("loadingScreen").classList.add("hidden");
+        } else {
+          updateUsername(storedUserId);
+          document.getElementById("loadingScreen").classList.add("hidden");
+        }
+      });
+    </script>
   </head>
-    <!-- Loading Screen -->
-<div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
-  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
-</div>
+  <!-- Loading Screen -->
+  <div
+    id="loadingScreen"
+    class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100"
+  >
+    <div
+      class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"
+    ></div>
+  </div>
   <body class="min-h-screen">
-      <!-- Loading Screen -->
-<!-- <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
+    <!-- Loading Screen -->
+    <!-- <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
   <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
 </div> -->
     <script src="dark-mode.js"></script>
-    <div class="sticky top-0  z-20 w-full  border-b">
+    <div class="sticky top-0 z-20 w-full border-b">
       <div id="navbar-container"></div>
-      <div class="header-section flex justify-between items-center py-6 px-8">
-  
-        <!-- Left Section: Greeting -->
-        <div>
-          <h1 id="username" class="text-3xl font-bold text-white drop-shadow-md">
-            Hey, <span class="gradient-text">Studymate</span> 👋
-          </h1>
-          <p class="text-white/60 text-sm mt-1">Ready to explore something new today?</p>
-        </div>
-      
-        <!-- Right Section: Profile Button -->
-        <div onclick="window.location.href='mprofilepage.html'"
-             class="profile-icon relative w-20 h-20 flex justify-center items-center cursor-pointer">
-          
-          <!-- Glowing Border Animation -->
-          <div class="absolute w-20 h-20 rounded-full border-2 border-blue-500/30 animate-pulse"></div>
-      
-          <!-- New Gear Animation with FAS -->
-          <div class="relative flex items-center">
-            <i class="fas fa-user text-4xl text-white/90"></i>
-            <i class="fas fa-cog text-2xl text-white/80 absolute -bottom-1.5 -right-2"></i>
+      <div class="header-section relative overflow-hidden"></div>
+        <!-- Animated Background -->
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 animate-gradient"></div>
+        
+        <!-- Glass Container -->
+        <div class="relative backdrop-blur-lg bg-white/10 border-b border-white/10">
+          <div class="max-w-7xl mx-auto px-4 py-4">
+            <!-- Header Content -->
+            <div class="flex justify-between items-center">
+              <!-- Left: Logo + Greeting -->
+              <div class="flex items-center space-x-6">
+                <!-- Animated Logo -->
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 animate-pulse p-0.5">
+                  <div class="w-full h-full bg-gray-900 rounded-lg flex items-center justify-center">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 font-bold text-lg">P</span>
+                  </div>
+                </div>
+                
+                <!-- Greeting with Shimmer -->
+                <div class="relative">
+                  <h1 id="username" class="text-xl font-medium">
+                    <span class="text-white opacity-90">Welcome back,</span>
+                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text font-semibold ml-1">
+                      Studymate
+                    </span>
+                  </h1>
+                  <div class="absolute inset-0 shimmer"></div>
+                </div>
+              </div>
+
+              <!-- Right: Profile Button -->
+              <div onclick="window.location.href='mprofilepage.html'" 
+                class="group relative">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-200"></div>
+                <button class="relative flex items-center space-x-2 bg-gray-900 text-white px-4 py-2 rounded-full hover:scale-105 transition duration-200">
+                  <i class="ph ph-user text-lg"></i>
+                  <span class="text-sm font-medium">Profile</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      
-      
-      
+      </div></button>
     </div>
 
-     <!-- New Affiliate Program Card -->
-     <div class="container mx-auto px-4 py-8">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <!-- Programs Grid Section -->
+    <div class="container mx-auto px-4 py-6">
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+      >
         <!-- CITG Card -->
-        <div class="card rounded-xl overflow-hidden">
-          <div class="relative">
-            <img src="/imgss/citg.png" alt="CITG" class="card-image w-full h-48 object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+        <div
+          class="card transform hover:scale-[1.02] transition-all duration-300 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl"
+        >
+          <div class="relative group">
+            <img
+              src="/imgss/citg.png"
+              alt="CITG"
+              class="w-full h-40 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"
+            ></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <span
+                class="inline-block px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full mb-2"
+                >Professional Course</span
+              >
+              <h2 class="text-xl font-bold text-white">CITG Program</h2>
+              <p class="text-gray-300 text-sm">
+                Chartered Institute of Taxation Ghana
+              </p>
+            </div>
           </div>
-          <div class="p-6">
-            <h2 class="text-xl font-bold text-white mb-2">CITG Program</h2>
-            <p class="text-white/70 text-sm mb-4">Chartered Institute of Taxation Ghana.</p>
-            
-            <details class="w-full">
-              <summary class="register-button flex items-center justify-center text-white px-6 py-3 rounded-lg cursor-pointer">
-                <span class="flex items-center">
-                  <i class="fas fa-arrow-right mr-2"></i>
-                  Register Now
+
+          <div class="p-4">
+            <details class="group">
+              <summary
+                class="flex items-center justify-between cursor-pointer list-none"
+              >
+                <span class="text-white font-medium"
+                  >View Available Levels</span
+                >
+                <span class="transition group-open:rotate-180">
+                  <svg
+                    class="fill-white"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M7 10l5 5 5-5z" />
+                  </svg>
                 </span>
               </summary>
-              <div class="mt-4 p-4 glass-effect rounded-lg">
-                <h3 class="text-lg font-semibold text-white mb-4">CITG Program Levels</h3>
-                <div class="space-y-4">
-                  <div class="course-item flex items-center space-x-4 p-4 rounded-lg cursor-pointer" onclick="window.location.href='courses.html?title1=CITGH - Final Level 1'">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_CITG%20-%20PRofESSIONAL%20(1).png.png?alt=media&token=a3943ca9-5e5f-4715-90e0-b491ea69a46f" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                    <div>
-                      <p class="text-sm font-semibold text-white">CITGH - Final Level 1</p>
-                      <p class="text-xs text-gray-400">Advanced certification for IT governance experts.</p>
-                    </div>
-                  </div>
-                  <!-- Final Level 2  -->
-                  <div class="course-item flex items-center space-x-4 p-4 rounded-lg cursor-pointer" onclick="window.location.href='courses.html?title1=CITGH - Final Level 2'">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_CITG%20-%20PRofESSIONAL%20(2).png.png?alt=media&token=ef0f808c-a68c-4f41-b093-3bb1f693a044" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                    <div>
-                      <p class="text-sm font-semibold text-white">CITGH - Final Level 2</p>
-                      <p class="text-xs text-gray-400">CITGH Final Level 2 is the advanced stage of the Chartered Institute of Taxation Ghana program.</p>
-                    </div>
-                  </div>
 
-                     <!-- Final Level 2  -->
-                     <div class="course-item flex items-center space-x-4 p-4 rounded-lg cursor-pointer" onclick="window.location.href='courses.html?title1=CITGH - Professional Level'">
-                      <img src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_CITG%20-%20PRofESSIONAL.png.png?alt=media&token=3bc0d552-8f31-493d-869a-4a0aa20ff88f" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                      <div>
-                        <p class="text-sm font-semibold text-white">CITGH - Professional Level</p>
-                        <p class="text-xs text-gray-400">CITGH Professional Level is the final stage of the Chartered Institute of Taxation Ghana program.</p>
-                      </div>
+              <div class="mt-4 space-y-3">
+                <!-- Level 1 -->
+                <div
+                  class="course-item bg-white/5 rounded-xl p-3 hover:bg-white/10 transition-all cursor-pointer"
+                  onclick="window.location.href='courses.html?title1=CITGH - Final Level 1'"
+                >
+                  <div class="flex items-center gap-3">
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_CITG%20-%20PRofESSIONAL%20(1).png.png?alt=media&token=a3943ca9-5e5f-4715-90e0-b491ea69a46f"
+                      alt="Final Level 1"
+                      class="w-14 h-14 rounded-lg object-cover"
+                    />
+                    <div>
+                      <h3 class="text-white font-medium text-sm">
+                        CITGH - Final Level 1
+                      </h3>
+                      <p class="text-gray-400 text-xs mt-1">
+                        Advanced certification for IT governance experts
+                      </p>
                     </div>
+                  </div>
+                </div>
+
+                <!-- Level 2 -->
+                <div
+                  class="course-item bg-white/5 rounded-xl p-3 hover:bg-white/10 transition-all cursor-pointer"
+                  onclick="window.location.href='courses.html?title1=CITGH - Final Level 2'"
+                >
+                  <div class="flex items-center gap-3">
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_CITG%20-%20PRofESSIONAL%20(2).png.png?alt=media&token=ef0f808c-a68c-4f41-b093-3bb1f693a044"
+                      alt="Final Level 2"
+                      class="w-14 h-14 rounded-lg object-cover"
+                    />
+                    <div>
+                      <h3 class="text-white font-medium text-sm">
+                        CITGH - Final Level 2
+                      </h3>
+                      <p class="text-gray-400 text-xs mt-1">
+                        Advanced stage of CITG program
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Professional Level -->
+                <div
+                  class="course-item bg-white/5 rounded-xl p-3 hover:bg-white/10 transition-all cursor-pointer"
+                  onclick="window.location.href='courses.html?title1=CITGH - Professional Level'"
+                >
+                  <div class="flex items-center gap-3">
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_CITG%20-%20PRofESSIONAL.png.png?alt=media&token=3bc0d552-8f31-493d-869a-4a0aa20ff88f"
+                      alt="Professional Level"
+                      class="w-14 h-14 rounded-lg object-cover"
+                    />
+                    <div>
+                      <h3 class="text-white font-medium text-sm">
+                        CITGH - Professional Level
+                      </h3>
+                      <p class="text-gray-400 text-xs mt-1">
+                        Final stage of CITG certification
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </details>
+
+            <button
+              onclick="window.location.href='courses.html?program=citg'"
+              class="mt-4 w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all"
+            >
+              <span>Register Now</span>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
           </div>
         </div>
-      
-      
-      
-      
-      
-    <!-- ICAGH Card -->
-       <div class="card rounded-xl overflow-hidden">
-        <div class="relative">
-          <img  src="/imgss/icag.png" alt="CITG" class="card-image w-full h-48 object-cover">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-        </div>
-        <div class="p-6">
-          <h2 class="text-xl font-bold text-white mb-2">ICAGH Program</h2>
-          <p class="text-white/70 text-sm mb-4">Institute of Chartered Accountants Ghana program.</p>
-          
-          <details class="w-full">
-            <summary class="register-button flex items-center justify-center text-white px-6 py-3 rounded-lg cursor-pointer">
-              <span class="flex items-center">
-                <i class="fas fa-arrow-right mr-2"></i>
-                Register Now
-              </span>
-            </summary>
-            <div class="mt-4 p-4 glass-effect rounded-lg">
-              <h3 class="text-lg font-semibold text-white mb-4">ICAGH Program Levels</h3>
-              <div class="space-y-4">
-                <div class="course-item flex items-center space-x-4 p-4 rounded-lg cursor-pointer" onclick="window.location.href='courses.html?title1=ICAGH - Level 1'">
-                  <img src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_ICA%20Level%201.png.png?alt=media&token=528bbee3-02b9-41b3-b26e-bc3a86124ff9" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                  <div>
-                    <p class="text-sm font-semibold text-white">ICAGH - Level 1</p>
-                    <p class="text-xs text-gray-400">The foundation stage of the Chartered Accountancy program.</p>
-                  </div>
-                </div>
-                <!-- Final Level 2  -->
-                <div class="course-item flex items-center space-x-4 p-4 rounded-lg cursor-pointer" onclick="window.location.href='courses.html?title1=ICAGH - Level 2'">
-                  <img src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_ICA%20Level%202.jpg.png?alt=media&token=d15e68ba-fa36-458f-92d2-70735e377475" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                  <div>
-                    <p class="text-sm font-semibold text-white">ICAGH - Level 2</p>
-                    <p class="text-xs text-gray-400">The intermediate stage of the Chartered Accountancy program.</p>
-                  </div>
-                </div>
 
-                     <!-- Final Level 2  -->
-                     <div class="course-item flex items-center space-x-4 p-4 rounded-lg cursor-pointer" onclick="window.location.href='courses.html?title1=ICAGH - Level 3'">
-                      <img src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_ICA%20Level%203.jpg.png?alt=media&token=d3f52396-90fa-41e4-8386-97a407930351" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-                      <div>
-                        <p class="text-sm font-semibold text-white">ICAGH - Level 3</p>
-                        <p class="text-xs text-gray-400">The final stage of the Chartered Accountancy program.</p>
-                      </div>
-                    </div>
-              </div>
-            </div>
-          </details>
-        </div>
-      </div>
-      
-      
-
-
-   <!-- Digital Marketing Card-->
-   <div class="card rounded-xl overflow-hidden">
-    <div class="relative">
-      <img  src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_Yellow%20Reaction%20Video%20Youtube%20Thumbnail.png.png?alt=media&token=b6101515-03e6-42ae-83b4-d38b7657b863" alt="CITG" class="card-image w-full h-48 object-cover">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-    </div>
-    <div class="p-6">
-      <h2 class="text-xl font-bold text-white mb-2">Grow your business (Digital marketing)</h2>
-      <p class="text-white/70 text-sm mb-4">Master digital marketing strategies to grow your business.</p>
-      
-      <details class="w-full">
-        <summary class="register-button flex items-center justify-center text-white px-6 py-3 rounded-lg cursor-pointer">
-          <span class="flex items-center">
-            <i class="fas fa-arrow-right mr-2"></i>
-            Register Now
-          </span>
-        </summary>
-        <div class="mt-4 p-4 glass-effect rounded-lg">
-          <h3 class="text-lg font-semibold text-white mb-4">Digital Marketing and Business Growth Program Levels</h3>
-          <div class="space-y-4">
-            <div class="course-item flex items-center space-x-4 p-4 rounded-lg cursor-pointer" onclick="window.location.href='courses.html?title1=Digital Marketing and Business Growth'">
-              <img src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_Yellow%20Reaction%20Video%20Youtube%20Thumbnail.png.png?alt=media&token=b6101515-03e6-42ae-83b4-d38b7657b863" alt="CITG Level" class="w-16 h-16 rounded-lg object-cover">
-              <div>
-                <p class="text-sm font-semibold text-white">Digital Marketing and Business Growth</p>
-                <p class="text-xs text-gray-400">Digital marketing fuels business growth by enhancing visibility, engagement, and sales. 🚀</p>
-              </div>
-            </div>
-        
-          </div>
-        </div>
-      </details>
-    </div>
-  </div>
-  
-
-
-  <!-- ADIT Card -->
-  <div class="card rounded-xl overflow-hidden cursor-pointer" onclick="window.location.href='courses.html?title1=ADIT'">
-    <div class="relative">
-      <img  src="imgss/adit.png" alt="ADIT" class="card-image w-full h-48 object-cover">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-      <div class="p-6">
-        <h2 class="text-xl font-bold text-white mb-2">ADIT Program</h2>
-        <p class="text-white/70 text-sm mb-4">Advanced Diploma in International Taxation program.</p>
-        <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-          <i class="fas fa-arrow-right mr-2"></i> Register
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- PMP Professional Card -->
-  <div class="card rounded-xl overflow-hidden cursor-pointer" onclick="window.location.href='courses.html?title1=PMP Professional'">
-    <div class="relative">
-      <img  src="imgss/pmp.png" alt="PMP Professional" class="card-image w-full h-48 object-cover">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-      <div class="p-6">
-        <h2 class="text-xl font-bold text-white mb-2">PMP PROFESSIONAL</h2>
-        <p class="text-white/70 text-sm mb-4">Project Management Professional certification training.</p>
-        <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-          <i class="fas fa-arrow-right mr-2"></i> Register
-        </p>
-      </div>
-    </div>
-  </div>
-
- <!-- Alumni Training Programs Card -->
- <div class="card rounded-xl overflow-hidden cursor-pointer" onclick="window.location.href='courses.html?title1=Alumni Training'">
-  <div class="relative">
-    <img  src="https://higherlogicdownload.s3.amazonaws.com/BETAGAMMASIGMA/a8e50d81-26f2-4c75-9216-826808f3da50/UploadedImages/Alumni_Network/Alumni_Training_Header-web.png" alt="Alumni Training" class="card-image w-full h-48 object-cover">
-    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-    <div class="p-6">
-      <h2 class="text-xl font-bold text-white mb-2">ALUMNI TRAINING PROGRAMS</h2>
-      <p class="text-white/70 text-sm mb-4">Exclusive training for our alumni members.</p>
-      <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-        <i class="fas fa-arrow-right mr-2"></i> Register
-      </p>
-    </div>
-  </div>
-</div>
-
-
-
-      <div class="card rounded-xl overflow-hidden cursor-pointer" onclick="window.location.href='job.html'">
-        <div class="relative">
-          <img  src="https://cdn.amasty.com/media/amasty/blog/cache/a/f/915/433/affiliate_program_1_.png" alt="Affiliate Program" class="card-image w-full h-48 object-cover">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-          <div class="p-6">
-            <h2 class="text-xl font-bold text-white mb-2">MAKE MONEY WITH PROFS (BECOME an affiliate)</h2>
-            <p class="text-white/70 text-sm mb-4">Join our affiliate program and earn commissions.</p>
-            <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-              <i class="fas fa-arrow-right mr-2"></i> Join Now
-            </p>
-          </div>
-        </div>
-      </div>
-           <!-- New Bookshop Card -->
-           <div class="card rounded-xl overflow-hidden cursor-pointer mb-10" onclick="window.location.href='store.html'">
-            <div class="relative">
-              <img  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw-8jdfIxzKOFkPDe6xeC8KNT3s-MsjmRXkKyIjy2NziMvl2svnoYuE5uLLIvfd-HYMq4&usqp=CAU" alt="Bookshop" class="card-image w-full h-48 object-cover">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-              <div class="p-6">
-                <h2 class="text-xl font-bold text-white mb-2">BOOKSHOP</h2>
-                <p class="text-white/70 text-sm mb-4">Access a wide range of educational books and resources.</p>
-                <p class="flex items-center justify-center text-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition">
-                  <i class="fas fa-arrow-right mr-2"></i> Visit Store
-                </p>
-              </div>
-            </div>
-          </div>
-    </div>
-
-    
-        </section>
-    
-
-      <footer>
+        <!-- ICAGH Card -->
         <div
-          class="fixed z-50 bottom-0 right-0 left-0"
-          id="navbar-container1"
-        ></div>
-      </footer>
+          class="card transform hover:scale-[1.02] transition-all duration-300 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl"
+        >
+          <div class="relative group">
+            <img
+              src="/imgss/icag.png"
+              alt="ICAGH"
+              class="w-full h-40 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"
+            ></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <span
+                class="inline-block px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full mb-2"
+                >Professional Course</span
+              >
+              <h2 class="text-xl font-bold text-white">ICAGH Program</h2>
+              <p class="text-gray-300 text-sm">
+                Institute of Chartered Accountants Ghana
+              </p>
+            </div>
+          </div>
 
+          <div class="p-4">
+            <details class="group">
+              <summary
+                class="flex items-center justify-between cursor-pointer list-none"
+              >
+                <span class="text-white font-medium"
+                  >View Available Levels</span
+                >
+                <span class="transition group-open:rotate-180">
+                  <svg
+                    class="fill-white"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M7 10l5 5 5-5z" />
+                  </svg>
+                </span>
+              </summary>
+
+              <div class="mt-4 space-y-3">
+                <!-- Level 1 -->
+                <div
+                  class="course-item bg-white/5 rounded-xl p-3 hover:bg-white/10 transition-all cursor-pointer"
+                  onclick="window.location.href='courses.html?title1=ICAGH - Level 1'"
+                >
+                  <div class="flex items-center gap-3">
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_ICA%20Level%201.png.png?alt=media&token=528bbee3-02b9-41b3-b26e-bc3a86124ff9"
+                      alt="Level 1"
+                      class="w-14 h-14 rounded-lg object-cover"
+                    />
+                    <div>
+                      <h3 class="text-white font-medium text-sm">
+                        ICAGH - Level 1
+                      </h3>
+                      <p class="text-gray-400 text-xs mt-1">
+                        Foundation stage of Chartered Accountancy program
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Level 2 -->
+                <div
+                  class="course-item bg-white/5 rounded-xl p-3 hover:bg-white/10 transition-all cursor-pointer"
+                  onclick="window.location.href='courses.html?title1=ICAGH - Level 2'"
+                >
+                  <div class="flex items-center gap-3">
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_ICA%20Level%202.jpg.png?alt=media&token=d15e68ba-fa36-458f-92d2-70735e377475"
+                      alt="Level 2"
+                      class="w-14 h-14 rounded-lg object-cover"
+                    />
+                    <div>
+                      <h3 class="text-white font-medium text-sm">
+                        ICAGH - Level 2
+                      </h3>
+                      <p class="text-gray-400 text-xs mt-1">
+                        Intermediate stage of Chartered Accountancy program
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Level 3 -->
+                <div
+                  class="course-item bg-white/5 rounded-xl p-3 hover:bg-white/10 transition-all cursor-pointer"
+                  onclick="window.location.href='courses.html?title1=ICAGH - Level 3'"
+                >
+                  <div class="flex items-center gap-3">
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_ICA%20Level%203.jpg.png?alt=media&token=d3f52396-90fa-41e4-8386-97a407930351"
+                      alt="Level 3"
+                      class="w-14 h-14 rounded-lg object-cover"
+                    />
+                    <div>
+                      <h3 class="text-white font-medium text-sm">
+                        ICAGH - Level 3
+                      </h3>
+                      <p class="text-gray-400 text-xs mt-1">
+                        Final stage of Chartered Accountancy program
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </details>
+
+            <button
+              onclick="window.location.href='courses.html?program=icagh'"
+              class="mt-4 w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all"
+            >
+              <span>Register Now</span>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Digital Marketing Card -->
+        <div
+          class="card transform hover:scale-[1.02] transition-all duration-300 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl"
+        >
+          <div class="relative group">
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_Yellow%20Reaction%20Video%20Youtube%20Thumbnail.png.png?alt=media&token=b6101515-03e6-42ae-83b4-d38b7657b863"
+              alt="Digital Marketing"
+              class="w-full h-40 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"
+            ></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <span
+                class="inline-block px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full mb-2"
+                >Professional Course</span
+              >
+              <h2 class="text-xl font-bold text-white">
+                Grow your business (Digital marketing)
+              </h2>
+              <p class="text-gray-300 text-sm">
+                Master digital marketing strategies to grow your business
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4">
+            <details class="group">
+              <summary
+                class="flex items-center justify-between cursor-pointer list-none"
+              >
+                <span class="text-white font-medium"
+                  >View Available Levels</span
+                >
+                <span class="transition group-open:rotate-180">
+                  <svg
+                    class="fill-white"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M7 10l5 5 5-5z" />
+                  </svg>
+                </span>
+              </summary>
+
+              <div class="mt-4 space-y-3">
+                <!-- Digital Marketing and Business Growth -->
+                <div
+                  class="course-item bg-white/5 rounded-xl p-3 hover:bg-white/10 transition-all cursor-pointer"
+                  onclick="window.location.href='courses.html?title1=Digital Marketing and Business Growth'"
+                >
+                  <div class="flex items-center gap-3">
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/profstudymate.appspot.com/o/category_thumbnails%2Fscaled_Yellow%20Reaction%20Video%20Youtube%20Thumbnail.png.png?alt=media&token=b6101515-03e6-42ae-83b4-d38b7657b863"
+                      alt="Digital Marketing and Business Growth"
+                      class="w-14 h-14 rounded-lg object-cover"
+                    />
+                    <div>
+                      <h3 class="text-white font-medium text-sm">
+                        Digital Marketing and Business Growth
+                      </h3>
+                      <p class="text-gray-400 text-xs mt-1">
+                        Digital marketing fuels business growth by enhancing
+                        visibility, engagement, and sales
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </details>
+
+            <button
+              onclick="window.location.href='courses.html?program=digital-marketing'"
+              class="mt-4 w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all"
+            >
+              <span>Register Now</span>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- ADIT Card -->
+        <div
+          class="card transform hover:scale-[1.02] transition-all duration-300 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl cursor-pointer"
+          onclick="window.location.href='courses.html?title1=ADIT'"
+        >
+          <div class="relative group">
+            <img
+              src="imgss/adit.png"
+              alt="ADIT"
+              class="w-full h-40 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"
+            ></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <span
+                class="inline-block px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full mb-2"
+                >Professional Course</span
+              >
+              <h2 class="text-xl font-bold text-white">ADIT Program</h2>
+              <p class="text-gray-300 text-sm">
+                Advanced Diploma in International Taxation program
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4">
+            <button
+              onclick="window.location.href='courses.html?program=adit'"
+              class="mt-4 w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all"
+            >
+              <span>Register Now</span>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- PMP Professional Card -->
+        <div
+          class="card transform hover:scale-[1.02] transition-all duration-300 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl cursor-pointer"
+          onclick="window.location.href='courses.html?title1=PMP Professional'"
+        >
+          <div class="relative group">
+            <img
+              src="imgss/pmp.png"
+              alt="PMP Professional"
+              class="w-full h-40 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"
+            ></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <span
+                class="inline-block px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full mb-2"
+                >Professional Course</span
+              >
+              <h2 class="text-xl font-bold text-white">PMP PROFESSIONAL</h2>
+              <p class="text-gray-300 text-sm">
+                Project Management Professional certification training
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4">
+            <button
+              onclick="window.location.href='courses.html?program=pmp-professional'"
+              class="mt-4 w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all"
+            >
+              <span>Register Now</span>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Alumni Training Programs Card -->
+        <div
+          class="card transform hover:scale-[1.02] transition-all duration-300 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl cursor-pointer"
+          onclick="window.location.href='courses.html?title1=Alumni Training'"
+        >
+          <div class="relative group">
+            <img
+              src="https://higherlogicdownload.s3.amazonaws.com/BETAGAMMASIGMA/a8e50d81-26f2-4c75-9216-826808f3da50/UploadedImages/Alumni_Network/Alumni_Training_Header-web.png"
+              alt="Alumni Training"
+              class="w-full h-40 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"
+            ></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <span
+                class="inline-block px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full mb-2"
+                >Professional Course</span
+              >
+              <h2 class="text-xl font-bold text-white">
+                ALUMNI TRAINING PROGRAMS
+              </h2>
+              <p class="text-gray-300 text-sm">
+                Exclusive training for our alumni members
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4">
+            <button
+              onclick="window.location.href='courses.html?program=alumni-training'"
+              class="mt-4 w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all"
+            >
+              <span>Register Now</span>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Affiliate Program Card -->
+        <div
+          class="card transform hover:scale-[1.02] transition-all duration-300 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl cursor-pointer"
+          onclick="window.location.href='job.html'"
+        >
+          <div class="relative group">
+            <img
+              src="https://cdn.amasty.com/media/amasty/blog/cache/a/f/915/433/affiliate_program_1_.png"
+              alt="Affiliate Program"
+              class="w-full h-40 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"
+            ></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <span
+                class="inline-block px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full mb-2"
+                >Professional Course</span
+              >
+              <h2 class="text-xl font-bold text-white">
+                MAKE MONEY WITH PROFS (BECOME an affiliate)
+              </h2>
+              <p class="text-gray-300 text-sm">
+                Join our affiliate program and earn commissions
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4">
+            <button
+              onclick="window.location.href='job.html'"
+              class="mt-4 w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all"
+            >
+              <span>Join Now</span>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bookshop Card -->
+        <div
+          class="card transform hover:scale-[1.02] transition-all duration-300 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden shadow-xl cursor-pointer mb-10"
+          onclick="window.location.href='store.html'"
+        >
+          <div class="relative group">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw-8jdfIxzKOFkPDe6xeC8KNT3s-MsjmRXkKyIjy2NziMvl2svnoYuE5uLLIvfd-HYMq4&usqp=CAU"
+              alt="Bookshop"
+              class="w-full h-40 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"
+            ></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <span
+                class="inline-block px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full mb-2"
+                >Professional Course</span
+              >
+              <h2 class="text-xl font-bold text-white">BOOKSHOP</h2>
+              <p class="text-gray-300 text-sm">
+                Access a wide range of educational books and resources
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4">
+            <button
+              onclick="window.location.href='store.html'"
+              class="mt-4 w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all"
+            >
+              <span>Visit Store</span>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div
+        class="fixed z-50 bottom-0 right-0 left-0"
+        id="navbar-container1"
+      ></div>
+    </footer>
 
     <!-- Framer Motion Animation -->
     <script>
@@ -490,12 +944,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
     </script>
-      <script>
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/service-worker.js')
-            .then(() => console.log("Service Worker Registered"))
-            .catch((error) => console.log("Service Worker Registration Failed:", error));
-        }
-      </script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .then(() => console.log("Service Worker Registered"))
+          .catch((error) =>
+            console.log("Service Worker Registration Failed:", error)
+          );
+      }
+    </script>
   </body>
 </html>

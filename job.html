@@ -1,387 +1,938 @@
-
+<!-- @format -->
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Affiliate Dashboard</title>
-  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="navbar.js"></script>
-  <script type="module" src="./dynamiccon.js"></script>
-  <script src="bottomnv.js"></script>
-  <script src="kaka.js"></script>
-  <script type="module" src="nava-links.js"></script>
-  <link rel="stylesheet" href="animatecss.css">
-  <script src="animatescript.js" defer></script>
-</head>
-<body class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white ">
-    <!-- Loading Screen -->
-<div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100">
-  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
-</div>
-  <div class="sticky bg-[#172554] top-0 z-20 w-full">
-    <div id="navbar-container"></div>
-  </div>
-  <div  class="min-h-screen flex mb-8 flex-col items-center  px-2 ">
-    <div class="max-w-4xl w-full   rounded-xl p-2 ">
-
-    
-      <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8 p-6 bg-gray-900 rounded-xl shadow-lg">
-        <!-- Left Section -->
-        <div class="flex-1 text-center md:text-left">
-          <h1 class="text-4xl font-extrabold text-white leading-tight">
-            🚀 Refer & Earn <span class="text-blue-400">10% Commission</span>
-          </h1>
-          <p class="text-gray-300 mt-3 text-lg">
-            Introduce students & earn rewards on all their purchases. Your success starts here! 🎯
-          </p>
-      
-          <!-- Referral Copy -->
-          <div class="mt-6 flex flex-col sm:flex-row items-center gap-3">
-            <p id="referral-link"  class="text-blue-400 text-lg bg-gray-800 px-5 py-2 rounded-lg transition hover:bg-gray-700">
-              Generating link...
-            </p>
-            <button id="copy-referral" class="flex items-center gap-2 px-5 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition">
-              <i class="fas fa-copy"></i> Copy Link
-            </button>
-          </div>
-        </div>
-      
-        <!-- Right Section -->
-        <div class="flex items-center justify-center">
-          <img loading="lazy" src="https://www.pngplay.com/wp-content/uploads/6/Affiliate-Program-Network-PNG.png" 
-            class="h-32 w-32 md:h-36 md:w-36 drop-shadow-xl">
-        </div>
-      </div>
-      
-      <!-- User Info Section -->
-      <div id="referral-details" class="mb-12">
-       
-        <div class="bg-gradient-to-br from-gray-800 to-gray-800  border border-gray-700 shadow-lg rounded-2xl p-6 max-w-4xl mx-auto mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Total Referrals -->
-          <div class="bg-gray-900 rounded-lg p-6 flex flex-col items-center fade-in">
-            <h3 id="total-referrals" class="font-bold text-4xl text-blue-400 animate-pulse">0</h3>
-            <p class="text-gray-400 mt-2">Total Referrals</p>
-            <button id="copy-referral1" onclick="scrollToSection('referral-link')" class="mt-4 px-4 py-2 bg-blue-600 text-white  rounded-lg hover:scale-105 transition-all">Refer More</button>
-          </div>
-        
-          <!-- Total Earnings -->
-          <div class="bg-gray-900 rounded-lg p-6 flex flex-col items-center fade-in">
-     <div class="flex flex-row space-x-2">
-      <p class="font-bold text-3xl text-green-400 ">Ghc</p> <p id="total-earnings" class="font-bold text-3xl text-green-400 "></p>
-     </div>
-            <p class="text-gray-400 mt-2">Total Earnings</p>
-            <button onclick="scrollToSection('withd')" class="bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg hover:scale-105 transition-all">Withdraw</button>
-          </div>
-        
-          <!-- Total Withdrawals -->
-          <div class="bg-gray-900 rounded-lg p-6 flex flex-col items-center fade-in">
-            <div class="flex flex-row space-x-2">
-              <p class="font-bold text-3xl text-red-400 ">Ghc</p> <p id="total-withdrawals" class="font-bold text-3xl text-red-400 "></p>
-            </div>
-            <p class="text-gray-400 mt-2">Total Withdrawals</p>
-            <button onclick="scrollToSection('withdhistory')" class="bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg hover:scale-105 transition-all">View</button>
-          </div>
-        </div>
-        
-        
-
-
-   
-      <!-- Withdrawal Section -->
-      <div id="withd" class="mt-7 bg-gradient-to-br from-gray-800 to-gray-800  border border-gray-700 shadow-lg rounded-2xl p-6 border border-gray-700">
-        <h3 class="text-3xl font-bold mb-6 text-gray-200">Make a Withdrawal</h3>
-      
-        <label for="withdraw-amount" class="block text-lg font-medium mb-2 text-gray-300">Amount (Ghc):</label>
-        <input type="number" id="withdraw-amount" class="w-full p-4 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500" placeholder="Enter amount" />
-      
-        <label for="withdraw-method" class="block text-lg font-medium mt-4 mb-2 text-gray-300">Withdrawal Method:</label>
-        <select id="withdraw-method" class="w-full p-4 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500">
-          <option value="">Select a method</option>
-          <option value="crypto">Crypto</option>
-          <option value="mobile-money">Mobile Money</option>
-          <option value="bank">Bank Transfer</option>
-        </select>
-      
-        <label for="payment-address" class="block text-lg font-medium mt-4 mb-2 text-gray-300">Payment Details:</label>
-        <input type="text" id="payment-address" class="w-full p-4 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500" placeholder="Enter your payment details" />
-      
-        <button id="withdraw-button" class="w-full mt-6 bg-gradient-to-r from-blue-500 to-blue-700 py-3 rounded-lg font-semibold text-lg hover:scale-105 transition-all text-white shadow-lg">
-          Submit Withdrawal Request
-        </button>
-      
-        <p id="withdraw-message" class="mt-6 text-sm text-red-400"></p>
-      </div>
-      
-      
-      <!-- Pending Withdrawals Section -->
-      <div id="withdhistory" class="mt-10 bg-gradient-to-br from-gray-800 to-gray-800  border border-gray-700 shadow-lg rounded-2xl p-6 rounded-xl shadow-xl border border-gray-700">
-        <h3 class="text-3xl font-bold mb-6 text-gray-200">Withdrawal History</h3>
-        <div class="bg-gray-900 p-6 rounded-lg shadow-lg">
-          <ul id="pending-withdrawals" class="space-y-4">
-            <li class="flex items-center justify-between p-4 bg-blue-600 text-white rounded-lg">
-              <span>No withdrawals yet.</span>
-              <button class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400 transition">Refresh</button>
-            </li>
-          </ul>
-        </div>
-      </div>
-      
-      
-      
-      
-    
-      </div>
-
-  
-</div>
-  </div>
-  <script src="footerp.js"></script>
-  <div id="footer-container"></div>
-  <style>
-    /* Custom Keyframe Animation for Text Fade-In */
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
-        transform: translateY(-20px);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Affiliate Dashboard</title>
+    <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="navbar.js"></script>
+    <script type="module" src="./dynamiccon.js"></script>
+    <script src="bottomnv.js"></script>
+    <script src="kaka.js"></script>
+    <script type="module" src="nava-links.js"></script>
+    <link rel="stylesheet" href="animatecss.css" />
+    <script src="animatescript.js" defer></script>
+    <style>
+      /* Custom Keyframe Animation for Text Fade-In */
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
-      100% {
-        opacity: 1;
+
+      /* Apply Animation to the Text */
+      .animate-text-fade {
+        animation: fadeIn 1s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      /* Loading States */
+      .loading-shimmer {
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.03) 0%,
+          rgba(255, 255, 255, 0.08) 50%,
+          rgba(255, 255, 255, 0.03) 100%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+
+      /* Smooth transitions */
+      .transition-all {
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+      }
+
+      /* Card hover effects */
+      .hover-card {
         transform: translateY(0);
-      }
-    }
-  
-    /* Apply Animation to the Text */
-    .animate-text-fade {
-      animation: fadeIn 1s ease-out;
-    }
-  </style>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, updateDoc, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
-      authDomain: "profstudymate-6d0fc.firebaseapp.com",
-      projectId: "profstudymate",
-      storageBucket: "profstudymate.appspot.com",
-      messagingSenderId: "141453158869",
-      appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
-    onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    document.getElementById('loadingScreen').classList.add('hidden')
-    const userId = user.uid;
-    await fetchReferralData(userId);
-    await fetchPendingWithdrawals(userId);
-  } else {
-    console.log("No user is signed in. Redirecting...");
-    window.location.href = "account.html"; // Redirect to account.html if user is not authenticated
-  }
-});
-
-async function fetchReferralData(userId) {
-  try {
-    const siteUrl = 'https://profstudymate.com';
-    const referralLink = `${siteUrl}/account.html?referral=${userId}`;
-    document.getElementById("referral-link").href = referralLink;
-    document.getElementById("referral-link").textContent = referralLink;
-
-    document.getElementById("copy-referral").addEventListener("click", () => {
-      navigator.clipboard
-        .writeText(referralLink)
-        .then(() => alert("✅ Referral link copied!"))
-        .catch(() => alert("❌ Failed to copy"));
-    });
-
-    console.log("Fetching fresh user data...");
-    const userDoc = doc(db, "users", userId);
-    const docSnapshot = await getDoc(userDoc);
-
-    if (docSnapshot.exists()) {
-      const userData = docSnapshot.data();
-      updateUI(userData);
-    } else {
-      console.error("No user data found!");
-    }
-  } catch (error) {
-    console.error("Error fetching user data:", error);
-  }
-}
-
-// Update UI with data
-function updateUI(userData) {
-  animateCount("total-referrals", 0, userData.totalrefs, 2000);
-  animateCount("total-earnings", 0, userData.earnings, 2500);
-  animateCount("total-withdrawals", 0, 0, 2000);
-
-  const referralLinkElement = document.getElementById("referral-link");
-  referralLinkElement.textContent = userData.affiliatelink || "N/A";
-
-  // Copy to clipboard functionality
-  document.getElementById("copy-referral").addEventListener("click", copyReferralLink);
-  document.getElementById("copy-referral1").addEventListener("click", copyReferralLink);
-}
-
-
-
-// Count animation function
-function animateCount(elementId, start, end, duration) {
-  let startTime = null;
-  const element = document.getElementById(elementId);
-  const step = (timestamp) => {
-    if (!startTime) startTime = timestamp;
-    const progress = Math.min((timestamp - startTime) / duration, 1);
-    const currentValue = Math.floor(progress * (end - start) + start);
-    element.innerText = currentValue.toLocaleString();
-    if (progress < 1) {
-      window.requestAnimationFrame(step);
-    }
-  };
-  window.requestAnimationFrame(step);
-}
-
-async function fetchPendingWithdrawals(userId) {
-  try {
-    console.log("Fetching fresh withdrawal data...");
-    const withdrawalsQuery = query(
-      collection(db, "withdrawals"),
-      where("userId", "==", userId)
-    );
-    const querySnapshot = await getDocs(withdrawalsQuery);
-
-    let withdrawals = [];
-    if (!querySnapshot.empty) {
-      querySnapshot.forEach((doc) => {
-        withdrawals.push(doc.data());
-      });
-    }
-
-    updateWithdrawalsUI(withdrawals);
-  } catch (error) {
-    console.error("Error fetching pending withdrawals:", error);
-  }
-}
-
-// Update UI with withdrawals data
-function updateWithdrawalsUI(withdrawals) {
-  const pendingList = document.getElementById("pending-withdrawals");
-  pendingList.innerHTML = "";
-
-  if (withdrawals.length > 0) {
-    withdrawals.forEach((data) => {
-      const listItem = document.createElement("li");
-      listItem.className = "bg-gray-700 p-6 rounded-lg shadow-lg";
-      listItem.innerHTML = `
-        <strong>Amount:</strong> Ghc${data.amount} |
-        <strong>Method:</strong> ${data.method} |
-        <strong>Address:</strong> ${data.paymentaddress} |
-        <strong>Date:</strong> ${new Date(data.timestamp.seconds * 1000).toLocaleString()} |
-        <span class="inline-block py-1 px-4 rounded text-white ${
-          data.status === "pending" ? "bg-red-500" : "bg-green-500"
-        }">${data.status}</span>
-      `;
-      pendingList.appendChild(listItem);
-    });
-  } else {
-    pendingList.innerHTML = `<li class="text-gray-500">No pending withdrawals.</li>`;
-  }
-}
-
-
-    document.getElementById("withdraw-button").addEventListener("click", async () => {
-      const withdrawAmount = parseFloat(document.getElementById("withdraw-amount").value);
-      const paymentaddress = document.getElementById("payment-address").value;
-      const withdrawMethod = document.getElementById("withdraw-method").value;
-      const messageElement = document.getElementById("withdraw-message");
-
-      if (isNaN(withdrawAmount) || withdrawAmount <= 0) {
-        messageElement.textContent = "Please enter a valid amount.";
-        return;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s ease;
       }
 
-      try {
-        const user = auth.currentUser;
+      .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      /* Button animations */
+      .button-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      /* Success animation */
+      @keyframes checkmark {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .success-checkmark {
+        animation: checkmark 0.5s ease-out forwards;
+      }
+
+      /* Error shake animation */
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-5px);
+        }
+        75% {
+          transform: translateX(5px);
+        }
+      }
+
+      .error-shake {
+        animation: shake 0.5s ease-in-out;
+      }
+
+      /* Progress bar animation */
+      @keyframes progress {
+        0% {
+          width: 0;
+        }
+        100% {
+          width: 100%;
+        }
+      }
+
+      .animate-progress {
+        animation: progress 2s ease-out forwards;
+      }
+
+      /* Toast notification slide */
+      @keyframes slideIn {
+        from {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .toast-slide {
+        animation: slideIn 0.3s ease-out forwards;
+      }
+
+      /* Add these classes to existing elements */
+      .stat-card {
+        @apply hover-card bg-opacity-95 backdrop-blur-sm;
+      }
+
+      .action-button {
+        @apply button-pulse hover:button-pulse-none;
+      }
+
+      .success-message {
+        @apply success-checkmark;
+      }
+
+      .error-message {
+        @apply error-shake;
+      }
+
+      .progress-bar {
+        @apply animate-progress;
+      }
+
+      .notification {
+        @apply toast-slide;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white"
+  >
+    <!-- Loading Screen -->
+    <div
+      id="loadingScreen"
+      class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50 transition-opacity duration-500 opacity-100"
+    >
+      <div
+        class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"
+      ></div>
+    </div>
+    <div class="sticky bg-[#172554] top-0 z-20 w-full">
+      <div id="navbar-container"></div>
+    </div>
+    <div class="min-h-screen flex mb-8 flex-col items-center px-2">
+      <div class="max-w-4xl w-full rounded-xl p-2">
+        <div
+          class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8 p-6 bg-gray-900 rounded-xl shadow-lg"
+        >
+          <!-- Left Section -->
+          <div class="flex-1 text-center md:text-left">
+            <h1 class="text-4xl font-extrabold text-white leading-tight">
+              🚀 Refer & Earn <span class="text-blue-400">10% Commission</span>
+            </h1>
+            <p class="text-gray-300 mt-3 text-lg">
+              Introduce students & earn rewards on all their purchases. Your
+              success starts here! 🎯
+            </p>
+
+            <!-- Referral Copy -->
+            <div class="mt-6 flex flex-col sm:flex-row items-center gap-3">
+              <p
+                id="referral-link"
+                class="text-blue-400 text-lg bg-gray-800 px-5 py-2 rounded-lg transition hover:bg-gray-700"
+              >
+                Generating link...
+              </p>
+              <button
+                id="copy-referral"
+                class="flex items-center gap-2 px-5 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
+              >
+                <i class="fas fa-copy"></i> Copy Link
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Section -->
+          <div class="flex items-center justify-center">
+            <img
+              loading="lazy"
+              src="https://www.pngplay.com/wp-content/uploads/6/Affiliate-Program-Network-PNG.png"
+              class="h-32 w-32 md:h-36 md:w-36 drop-shadow-xl"
+            />
+          </div>
+        </div>
+
+        <!-- User Info Section -->
+        <div id="referral-details" class="mb-12">
+          <!-- Stats Cards with improved UI -->
+          <div
+            class="bg-gradient-to-br from-gray-800 to-gray-800 border border-gray-700 shadow-lg rounded-2xl p-6 max-w-4xl mx-auto mt-6 grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            <!-- Total Referrals Card -->
+            <div
+              class="bg-gray-900/50 backdrop-blur rounded-xl p-6 flex flex-col items-center transform hover:scale-105 transition-all duration-300 border border-gray-800 hover:border-blue-500/50 stat-card"
+            >
+              <div
+                class="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center mb-4"
+              >
+                <i class="fas fa-users text-2xl text-blue-400"></i>
+              </div>
+              <h3
+                id="total-referrals"
+                class="font-bold text-4xl text-blue-400 animate-pulse mb-2"
+              >
+                0
+              </h3>
+              <p class="text-gray-400">Total Referrals</p>
+              <button
+                id="copy-referral1"
+                onclick="scrollToSection('referral-link')"
+                class="mt-4 px-6 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-all duration-300 flex items-center gap-2 action-button"
+              >
+                <i class="fas fa-share-alt"></i>
+                Refer More
+              </button>
+            </div>
+
+            <!-- Total Earnings Card -->
+            <div
+              class="bg-gray-900/50 backdrop-blur rounded-xl p-6 flex flex-col items-center transform hover:scale-105 transition-all duration-300 border border-gray-800 hover:border-green-500/50 stat-card"
+            >
+              <div
+                class="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-4"
+              >
+                <i class="fas fa-coins text-2xl text-green-400"></i>
+              </div>
+              <div class="flex items-baseline mb-2">
+                <span class="text-2xl text-green-400 mr-1">GH₵</span>
+                <span
+                  id="total-earnings"
+                  class="font-bold text-4xl text-green-400"
+                ></span>
+              </div>
+              <p class="text-gray-400">Total Earnings</p>
+              <button
+                onclick="scrollToSection('withd')"
+                class="mt-4 px-6 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-all duration-300 flex items-center gap-2 action-button"
+              >
+                <i class="fas fa-wallet"></i>
+                Withdraw
+              </button>
+            </div>
+
+            <!-- Total Withdrawals Card -->
+            <div
+              class="bg-gray-900/50 backdrop-blur rounded-xl p-6 flex flex-col items-center transform hover:scale-105 transition-all duration-300 border border-gray-800 hover:border-purple-500/50 stat-card"
+            >
+              <div
+                class="w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center mb-4"
+              >
+                <i class="fas fa-history text-2xl text-purple-400"></i>
+              </div>
+              <div class="flex items-baseline mb-2">
+                <span class="text-2xl text-purple-400 mr-1">GH₵</span>
+                <span
+                  id="total-withdrawals"
+                  class="font-bold text-4xl text-purple-400"
+                ></span>
+              </div>
+              <p class="text-gray-400">Total Withdrawals</p>
+              <button
+                onclick="scrollToSection('withdhistory')"
+                class="mt-4 px-6 py-2 bg-purple-500/20 text-purple-400 rounded-lg hover:bg-purple-500/30 transition-all duration-300 flex items-center gap-2 action-button"
+              >
+                <i class="fas fa-list"></i>
+                View History
+              </button>
+            </div>
+          </div>
+
+          <!-- Withdrawal Section with improved UI -->
+          <div id="withd" class="mt-8 max-w-4xl mx-auto">
+            <div
+              class="bg-gray-900/50 backdrop-blur rounded-xl p-8 border border-gray-800 hover:border-blue-500/30 transition-all duration-300"
+            >
+              <div class="flex items-center gap-4 mb-8">
+                <div
+                  class="w-12 h-12 bg-blue-500/10 rounded-full flex items-center justify-center"
+                >
+                  <i class="fas fa-wallet text-xl text-blue-400"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-white">Make a Withdrawal</h3>
+              </div>
+
+              <div class="space-y-6">
+                <!-- Amount Input -->
+                <div class="group">
+                  <label
+                    for="withdraw-amount"
+                    class="block text-sm font-medium mb-2 text-gray-300 group-hover:text-blue-400 transition-colors"
+                  >
+                    Amount (GH₵)
+                  </label>
+                  <div class="relative">
+                    <span
+                      class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                      >GH₵</span
+                    >
+                    <input
+                      type="number"
+                      id="withdraw-amount"
+                      class="w-full pl-12 pr-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300"
+                      placeholder="Enter withdrawal amount"
+                    />
+                  </div>
+                </div>
+
+                <!-- Method Selection -->
+                <div class="group">
+                  <label
+                    for="withdraw-method"
+                    class="block text-sm font-medium mb-2 text-gray-300 group-hover:text-blue-400 transition-colors"
+                  >
+                    Withdrawal Method
+                  </label>
+                  <div class="relative">
+                    <select
+                      id="withdraw-method"
+                      class="w-full pl-12 pr-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300 appearance-none"
+                    >
+                      <option value="">Select payment method</option>
+                      <option value="mobile-money">Mobile Money</option>
+                      <option value="bank">Bank Transfer</option>
+                      <option value="crypto">Cryptocurrency</option>
+                    </select>
+                    <i
+                      class="fas fa-money-bill-wave absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                    ></i>
+                    <i
+                      class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                    ></i>
+                  </div>
+                </div>
+
+                <!-- Payment Details -->
+                <div class="group">
+                  <label
+                    for="payment-address"
+                    class="block text-sm font-medium mb-2 text-gray-300 group-hover:text-blue-400 transition-colors"
+                  >
+                    Payment Details
+                  </label>
+                  <div class="relative">
+                    <i
+                      class="fas fa-info-circle absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                    ></i>
+                    <input
+                      type="text"
+                      id="payment-address"
+                      class="w-full pl-12 pr-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300"
+                      placeholder="Enter your payment details (account number, wallet address, etc.)"
+                    />
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                  id="withdraw-button"
+                  class="w-full py-4 mt-6 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-xl transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center gap-2 action-button"
+                >
+                  <i class="fas fa-paper-plane"></i>
+                  Submit Withdrawal Request
+                </button>
+
+                <!-- Message Display -->
+                <div
+                  id="withdraw-message"
+                  class="mt-4 text-center text-sm"
+                ></div>
+              </div>
+
+              <!-- Info Card -->
+              <div
+                class="mt-6 bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 flex items-start gap-3"
+              >
+                <i class="fas fa-info-circle text-blue-400 mt-1"></i>
+                <div>
+                  <h4 class="font-medium text-blue-400 mb-1">
+                    Withdrawal Information
+                  </h4>
+                  <p class="text-sm text-gray-400">
+                    Withdrawals are typically processed within 24-48 hours.
+                    Minimum withdrawal amount is GH₵50. Make sure to
+                    double-check your payment details before submitting.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Withdrawal History Section -->
+          <div
+            id="withdhistory"
+            class="mt-10 bg-gradient-to-br from-gray-800 to-gray-800 border border-gray-700 shadow-lg rounded-2xl p-6"
+          >
+            <div class="flex items-center gap-4 mb-8">
+              <div
+                class="w-12 h-12 bg-purple-500/10 rounded-full flex items-center justify-center"
+              >
+                <i class="fas fa-history text-xl text-purple-400"></i>
+              </div>
+              <h3 class="text-3xl font-bold text-white">Withdrawal History</h3>
+            </div>
+
+            <div class="bg-gray-900/50 backdrop-blur rounded-xl p-6">
+              <div class="overflow-x-auto">
+                <table class="min-w-full">
+                  <thead>
+                    <tr>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                      >
+                        Date
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                      >
+                        Amount
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                      >
+                        Method
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                      >
+                        Status
+                      </th>
+                      <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                      >
+                        Details
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    id="pending-withdrawals"
+                    class="divide-y divide-gray-800"
+                  >
+                    <!-- Withdrawal items will be inserted here -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Empty State -->
+              <div id="no-withdrawals" class="hidden text-center py-12">
+                <div
+                  class="w-16 h-16 bg-gray-800/50 rounded-full mx-auto mb-4 flex items-center justify-center"
+                >
+                  <i class="fas fa-scroll text-2xl text-gray-600"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-400 mb-2">
+                  No Withdrawals Yet
+                </h3>
+                <p class="text-sm text-gray-500">
+                  Your withdrawal history will appear here
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="footerp.js"></script>
+    <div id="footer-container"></div>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        updateDoc,
+        collection,
+        addDoc,
+        query,
+        where,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
+        authDomain: "profstudymate-6d0fc.firebaseapp.com",
+        projectId: "profstudymate",
+        storageBucket: "profstudymate.appspot.com",
+        messagingSenderId: "141453158869",
+        appId: "1:141453158869:web:d4ded426a90e9937e2f55c",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      onAuthStateChanged(auth, async (user) => {
         if (user) {
+          document.getElementById("loadingScreen").classList.add("hidden");
           const userId = user.uid;
+          await fetchReferralData(userId);
+          await fetchPendingWithdrawals(userId);
+        } else {
+          console.log("No user is signed in. Redirecting...");
+          window.location.href = "account.html"; // Redirect to account.html if user is not authenticated
+        }
+      });
+
+      async function fetchReferralData(userId) {
+        try {
+          const siteUrl = "https://profstudymate.com";
+          const referralLink = `${siteUrl}/account.html?referral=${userId}`;
+          document.getElementById("referral-link").href = referralLink;
+          document.getElementById("referral-link").textContent = referralLink;
+
+          document
+            .getElementById("copy-referral")
+            .addEventListener("click", () => {
+              navigator.clipboard
+                .writeText(referralLink)
+                .then(() => alert("✅ Referral link copied!"))
+                .catch(() => alert("❌ Failed to copy"));
+            });
+
+          console.log("Fetching fresh user data...");
           const userDoc = doc(db, "users", userId);
           const docSnapshot = await getDoc(userDoc);
 
           if (docSnapshot.exists()) {
             const userData = docSnapshot.data();
-            const currentEarnings = userData.earnings || 0;
-
-            if (withdrawAmount > currentEarnings) {
-              messageElement.textContent = "Insufficient earnings to withdraw this amount.";
-            } else {
-              const newEarnings = currentEarnings - withdrawAmount;
-              await updateDoc(userDoc, { earnings: newEarnings });
-
-              await addDoc(collection(db, "withdrawals"), {
-                userId,
-                amount: withdrawAmount,
-                method: withdrawMethod,
-                paymentaddress,
-                status: "pending",
-                timestamp: new Date(),
-              });
-
-              messageElement.textContent = "Withdrawal request submitted successfully!";
-              await fetchReferralData(userId);
-              await fetchPendingWithdrawals(userId);
-            }
+            updateUI(userData);
           } else {
-            messageElement.textContent = "User data not found.";
+            console.error("No user data found!");
           }
-        } else {
-          messageElement.textContent = "User is not logged in.";
+        } catch (error) {
+          console.error("Error fetching user data:", error);
         }
-      } catch (error) {
-        console.error("Error processing withdrawal:", error);
-        messageElement.textContent = "Error processing withdrawal. Please try again.";
       }
-    });
-  </script>
-   <script>
-    AOS.init();
-  </script>
-<script>
-  function scrollToSection(id) { 
-    window.scrollTo({
-      top: document.getElementById(id).offsetTop,
-      behavior: 'smooth', 
-    });
-  }
 
-  document.querySelectorAll('button').forEach(button => {
-    button.addEventListener('mouseover', () => {
-      button.classList.add('scale-105');
-    });
-    button.addEventListener('mouseleave', () => {
-      button.classList.remove('scale-105');
-    });
-  });
-</script>
-<script>
-  if ("serviceWorker" in navigator) {
-navigator.serviceWorker.register("sw.js").then(() => {
-  console.log("Service Worker Registered");
-});
-}
+      // Update UI with data
+      function updateUI(userData) {
+        animateCount("total-referrals", 0, userData.totalrefs, 2000);
+        animateCount("total-earnings", 0, userData.earnings, 2500);
+        animateCount("total-withdrawals", 0, 0, 2000);
 
-</script>
+        const referralLinkElement = document.getElementById("referral-link");
+        referralLinkElement.textContent = userData.affiliatelink || "N/A";
 
-</body>
+        // Copy to clipboard functionality
+        document
+          .getElementById("copy-referral")
+          .addEventListener("click", copyReferralLink);
+        document
+          .getElementById("copy-referral1")
+          .addEventListener("click", copyReferralLink);
+      }
+
+      // Count animation function
+      function animateCount(elementId, start, end, duration) {
+        let startTime = null;
+        const element = document.getElementById(elementId);
+        const step = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const currentValue = Math.floor(progress * (end - start) + start);
+          element.innerText = currentValue.toLocaleString();
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          }
+        };
+        window.requestAnimationFrame(step);
+      }
+
+      async function fetchPendingWithdrawals(userId) {
+        try {
+          console.log("Fetching fresh withdrawal data...");
+          const withdrawalsQuery = query(
+            collection(db, "withdrawals"),
+            where("userId", "==", userId)
+          );
+          const querySnapshot = await getDocs(withdrawalsQuery);
+
+          let withdrawals = [];
+          if (!querySnapshot.empty) {
+            querySnapshot.forEach((doc) => {
+              withdrawals.push(doc.data());
+            });
+          }
+
+          updateWithdrawalsUI(withdrawals);
+        } catch (error) {
+          console.error("Error fetching pending withdrawals:", error);
+        }
+      }
+
+      // Update UI with withdrawals data
+      function updateWithdrawalsUI(withdrawals) {
+        const pendingList = document.getElementById("pending-withdrawals");
+        const noWithdrawals = document.getElementById("no-withdrawals");
+
+        if (withdrawals.length > 0) {
+          noWithdrawals.classList.add("hidden");
+          pendingList.innerHTML = withdrawals
+            .map(
+              (withdrawal, index) => `
+            <tr class="bg-gray-800/30 hover:bg-gray-800/50 transition-colors" 
+                style="animation: fadeIn 0.3s ease-out ${index * 0.1}s both;">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                ${new Date(
+                  withdrawal.timestamp.seconds * 1000
+                ).toLocaleDateString()}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-green-400 font-medium">GH₵${
+                  withdrawal.amount
+                }</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
+                  ${
+                    withdrawal.method === "mobile-money"
+                      ? "bg-blue-100 text-blue-800"
+                      : withdrawal.method === "bank"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-purple-100 text-purple-800"
+                  }">
+                  ${withdrawal.method}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                  ${
+                    withdrawal.status === "pending"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : withdrawal.status === "completed"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-red-100 text-red-800"
+                  }">
+                  ${withdrawal.status}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                ${withdrawal.paymentaddress}
+              </td>
+            </tr>
+          `
+            )
+            .join("");
+        } else {
+          pendingList.innerHTML = "";
+          noWithdrawals.classList.remove("hidden");
+        }
+      }
+
+      document
+        .getElementById("withdraw-button")
+        .addEventListener("click", async () => {
+          const withdrawAmount = parseFloat(
+            document.getElementById("withdraw-amount").value
+          );
+          const paymentaddress =
+            document.getElementById("payment-address").value;
+          const withdrawMethod =
+            document.getElementById("withdraw-method").value;
+          const messageElement = document.getElementById("withdraw-message");
+
+          if (isNaN(withdrawAmount) || withdrawAmount <= 0) {
+            messageElement.textContent = "Please enter a valid amount.";
+            return;
+          }
+
+          try {
+            const user = auth.currentUser;
+            if (user) {
+              const userId = user.uid;
+              const userDoc = doc(db, "users", userId);
+              const docSnapshot = await getDoc(userDoc);
+
+              if (docSnapshot.exists()) {
+                const userData = docSnapshot.data();
+                const currentEarnings = userData.earnings || 0;
+
+                if (withdrawAmount > currentEarnings) {
+                  messageElement.textContent =
+                    "Insufficient earnings to withdraw this amount.";
+                } else {
+                  const newEarnings = currentEarnings - withdrawAmount;
+                  await updateDoc(userDoc, { earnings: newEarnings });
+
+                  await addDoc(collection(db, "withdrawals"), {
+                    userId,
+                    amount: withdrawAmount,
+                    method: withdrawMethod,
+                    paymentaddress,
+                    status: "pending",
+                    timestamp: new Date(),
+                  });
+
+                  messageElement.textContent =
+                    "Withdrawal request submitted successfully!";
+                  await fetchReferralData(userId);
+                  await fetchPendingWithdrawals(userId);
+                }
+              } else {
+                messageElement.textContent = "User data not found.";
+              }
+            } else {
+              messageElement.textContent = "User is not logged in.";
+            }
+          } catch (error) {
+            console.error("Error processing withdrawal:", error);
+            messageElement.textContent =
+              "Error processing withdrawal. Please try again.";
+          }
+        });
+    </script>
+    <script>
+      AOS.init();
+    </script>
+    <script>
+      function scrollToSection(id) {
+        window.scrollTo({
+          top: document.getElementById(id).offsetTop,
+          behavior: "smooth",
+        });
+      }
+
+      document.querySelectorAll("button").forEach((button) => {
+        button.addEventListener("mouseover", () => {
+          button.classList.add("scale-105");
+        });
+        button.addEventListener("mouseleave", () => {
+          button.classList.remove("scale-105");
+        });
+      });
+    </script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js").then(() => {
+          console.log("Service Worker Registered");
+        });
+      }
+    </script>
+    <script>
+      // Add loading states
+      function showLoading(element) {
+        element.classList.add("loading-shimmer");
+        element.setAttribute("disabled", true);
+      }
+
+      function hideLoading(element) {
+        element.classList.remove("loading-shimmer");
+        element.removeAttribute("disabled");
+      }
+
+      // Add toast notifications
+      function showToast(message, type = "success") {
+        const toast = document.createElement("div");
+        toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg notification ${
+          type === "success" ? "bg-green-500" : "bg-red-500"
+        } text-white z-50`;
+        toast.innerHTML = `
+    <div class="flex items-center gap-2">
+      <i class="fas ${
+        type === "success" ? "fa-check-circle" : "fa-exclamation-circle"
+      }"></i>
+      <span>${message}</span>
+    </div>
+  `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
+
+      // Enhanced button click feedback
+      document.querySelectorAll("button").forEach((button) => {
+        button.addEventListener("click", function (e) {
+          if (!this.classList.contains("loading-shimmer")) {
+            const ripple = document.createElement("div");
+            ripple.className =
+              "absolute inset-0 bg-white opacity-25 rounded-lg transform scale-0";
+            this.appendChild(ripple);
+            ripple.style.animation = "ripple 0.6s linear";
+            setTimeout(() => ripple.remove(), 600);
+          }
+        });
+      });
+
+      // Add smooth scroll behavior
+      function scrollToSection(id) {
+        const element = document.getElementById(id);
+        if (element) {
+          const offset = 80; // Adjust for fixed header
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = element.getBoundingClientRect().top;
+          const elementPosition = elementRect - bodyRect;
+          const offsetPosition = elementPosition - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
+      }
+
+      // Update form validation with better feedback
+      function validateForm() {
+        const amount = document.getElementById("withdraw-amount");
+        const method = document.getElementById("withdraw-method");
+        const details = document.getElementById("payment-address");
+
+        let isValid = true;
+
+        [amount, method, details].forEach((field) => {
+          if (!field.value) {
+            field.classList.add("border-red-500", "error-shake");
+            isValid = false;
+            setTimeout(() => field.classList.remove("error-shake"), 500);
+          } else {
+            field.classList.remove("border-red-500");
+          }
+        });
+
+        return isValid;
+      }
+
+      // Add loading indicators during async operations
+      async function processWithdrawal() {
+        const button = document.getElementById("withdraw-button");
+        if (!validateForm()) return;
+
+        showLoading(button);
+        try {
+          // Your existing withdrawal logic here
+          await submitWithdrawal();
+          showToast("Withdrawal processed successfully!");
+        } catch (error) {
+          showToast(error.message, "error");
+        } finally {
+          hideLoading(button);
+        }
+      }
+
+      // Initialize animations when page loads
+      document.addEventListener("DOMContentLoaded", () => {
+        // Add animation classes to stat cards
+        document.querySelectorAll(".stat-card").forEach((card, index) => {
+          card.style.animation = `fadeIn 0.5s ease-out ${
+            index * 0.1
+          }s forwards`;
+        });
+
+        // Initialize loading states
+        const loadingElements = document.querySelectorAll(".loading-shimmer");
+        loadingElements.forEach((element) => hideLoading(element));
+      });
+    </script>
+  </body>
 </html>

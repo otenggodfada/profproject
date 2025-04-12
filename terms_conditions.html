@@ -1,10 +1,12 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms and Conditions</title>
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms and Conditions - Profs Training Solutions</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module" src="./dynamiccon.js"></script>
     <script src="bottomnv.js"></script>
@@ -12,52 +14,358 @@
     <script src="kaka.js"></script>
     <script type="module"></script>
     <script type="module" src="nava-links.js"></script>
-    <link rel="stylesheet" href="animatecss.css">
+    <link rel="stylesheet" href="animatecss.css" />
     <script src="animatescript.js" defer></script>
-</head>
-<body class="bg-gray-900 text-gray-800">
+    <style>
+      .section-content {
+        display: none;
+        transition: all 0.3s ease;
+      }
+      .section-content.active {
+        display: block;
+      }
+      .toc-item:hover {
+        transform: translateX(5px);
+        transition: transform 0.2s ease;
+      }
+    </style>
+  </head>
+  <body class="bg-gradient-to-b from-gray-900 to-gray-800 text-gray-200">
     <div class="fixed top-0 bg-[#172554] z-20 w-full">
-        <div id="navbar-container"></div>
-      </div>
-    <div class="max-w-3xl mx-auto p-6  mt-36 mb-36 fade-in">
-        <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">Terms and Conditions</h1>
-        <p class="text-gray-600 text-center mb-6">Welcome to Profs Training Solutions & Profstudyhub.com</p>
-
-        <h2 class="text-2xl font-semibold text-gray-700 mt-6">1. Course Content and Access</h2>
-        <ul class="list-disc list-inside mt-2 text-gray-600">
-            <li>All course content, including materials, lectures, and assessments, is the intellectual property of Profs.</li>
-            <li>Course Materials are for personal educational purposes only and must not be shared.</li>
-            <li>Access is granted until the relevant professional exam period for the current semester.</li>
-        </ul>
-
-        <h2 class="text-2xl font-semibold text-gray-700 mt-6">2. Student Responsibilities</h2>
-        <ul class="list-disc list-inside mt-2 text-gray-600">
-            <li>Complete lessons according to the provided schedule.</li>
-            <li>Attend weekly online lectures via Zoom.</li>
-            <li>Participate in all assigned activities, projects, and mock exams.</li>
-        </ul>
-
-        <h2 class="text-2xl font-semibold text-gray-700 mt-6">3. Data Privacy</h2>
-        <p class="text-gray-600 mt-2">Your enrollment information is used solely for processing registration and training purposes.</p>
-
-        <h2 class="text-2xl font-semibold text-gray-700 mt-6">4. Directives and Expectations</h2>
-        <p class="text-gray-600 mt-2">Profs may issue directives to enhance exam preparation. Students must act responsibly during mentorship.</p>
-
-        <h2 class="text-2xl font-semibold text-gray-700 mt-6">5. Course Engagement and Disengagement</h2>
-        <ul class="list-disc list-inside mt-2 text-gray-600">
-            <li>Regular assignments are mandatory for participation in live discussions.</li>
-            <li>Repeated failure to complete assignments may result in disciplinary action.</li>
-        </ul>
-
-        <h2 class="text-2xl font-semibold text-gray-700 mt-6">6. Modifications</h2>
-        <p class="text-gray-600 mt-2">Profs reserves the right to modify these Terms at any time. Changes will be posted on the Platform.</p>
-
-        <h2 class="text-2xl font-semibold text-gray-700 mt-6">7. Contact Us</h2>
-        <p class="text-gray-600 mt-2">If you have any questions, contact us at <a href="/support.html" class="text-blue-600 hover:underline">profstudymate@email.com</a>.</p>
-
-        <p class="text-center text-gray-500 mt-6">Thank you for choosing Profs Training Solutions!</p>
+      <div id="navbar-container"></div>
     </div>
+
+    <div class="max-w-6xl mx-auto p-6 mt-36 mb-36 fade-in">
+      <div class="bg-gray-800 rounded-lg shadow-2xl p-8 border border-blue-900">
+        <h1 class="text-4xl font-bold text-center text-blue-400 mb-8">
+          Terms and Conditions
+        </h1>
+        <p class="text-gray-300 text-center mb-8 text-lg">
+          Welcome to Profs Training Solutions & Profstudyhub.com
+        </p>
+
+        <!-- Table of Contents -->
+        <div class="lg:flex gap-8">
+          <div class="lg:w-1/4 mb-8">
+            <div class="bg-gray-900 p-6 rounded-lg sticky top-24">
+              <h3 class="text-xl font-semibold text-blue-400 mb-4">
+                Quick Navigation
+              </h3>
+              <ul class="space-y-2" id="toc">
+                <li
+                  class="toc-item cursor-pointer text-gray-400 hover:text-blue-400"
+                  data-section="1"
+                >
+                  1. Course Content and Access
+                </li>
+                <li
+                  class="toc-item cursor-pointer text-gray-400 hover:text-blue-400"
+                  data-section="2"
+                >
+                  2. Student Responsibilities
+                </li>
+                <li
+                  class="toc-item cursor-pointer text-gray-400 hover:text-blue-400"
+                  data-section="3"
+                >
+                  3. Data Privacy
+                </li>
+                <li
+                  class="toc-item cursor-pointer text-gray-400 hover:text-blue-400"
+                  data-section="4"
+                >
+                  4. Directives and Expectations
+                </li>
+                <li
+                  class="toc-item cursor-pointer text-gray-400 hover:text-blue-400"
+                  data-section="5"
+                >
+                  5. Course Engagement
+                </li>
+                <li
+                  class="toc-item cursor-pointer text-gray-400 hover:text-blue-400"
+                  data-section="6"
+                >
+                  6. Modifications
+                </li>
+                <li
+                  class="toc-item cursor-pointer text-gray-400 hover:text-blue-400"
+                  data-section="7"
+                >
+                  7. Contact Information
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="lg:w-3/4">
+            <div
+              id="section1"
+              class="mb-10 bg-gray-900 p-6 rounded-lg border border-gray-700"
+            >
+              <h2 class="text-2xl font-semibold text-blue-400 mb-4">
+                1. Course Content and Access
+              </h2>
+              <ul class="space-y-3 text-gray-300">
+                <li class="flex items-start">
+                  <svg
+                    class="w-6 h-6 text-blue-500 mr-2 mt-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  All course content, including materials, lectures, and
+                  assessments, is the intellectual property of Profs.
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="w-6 h-6 text-blue-500 mr-2 mt-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  Course Materials are for personal educational purposes only
+                  and must not be shared.
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="w-6 h-6 text-blue-500 mr-2 mt-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  Access is granted until the relevant professional exam period
+                  for the current semester.
+                </li>
+              </ul>
+            </div>
+
+            <div
+              id="section2"
+              class="mb-10 bg-gray-900 p-6 rounded-lg border border-gray-700"
+            >
+              <h2 class="text-2xl font-semibold text-blue-400 mb-4">
+                2. Student Responsibilities
+              </h2>
+              <ul class="space-y-3 text-gray-300">
+                <li class="flex items-start">
+                  <svg
+                    class="w-6 h-6 text-blue-500 mr-2 mt-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  Complete lessons according to the provided schedule.
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="w-6 h-6 text-blue-500 mr-2 mt-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  Attend weekly online lectures via Zoom.
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="w-6 h-6 text-blue-500 mr-2 mt-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  Participate in all assigned activities, projects, and mock
+                  exams.
+                </li>
+              </ul>
+            </div>
+
+            <div
+              id="section3"
+              class="mb-10 bg-gray-900 p-6 rounded-lg border border-gray-700"
+            >
+              <h2 class="text-2xl font-semibold text-blue-400 mb-4">
+                3. Data Privacy
+              </h2>
+              <p class="text-gray-300">
+                Your enrollment information is used solely for processing
+                registration and training purposes.
+              </p>
+            </div>
+
+            <div
+              id="section4"
+              class="mb-10 bg-gray-900 p-6 rounded-lg border border-gray-700"
+            >
+              <h2 class="text-2xl font-semibold text-blue-400 mb-4">
+                4. Directives and Expectations
+              </h2>
+              <p class="text-gray-300">
+                Profs may issue directives to enhance exam preparation. Students
+                must act responsibly during mentorship.
+              </p>
+            </div>
+
+            <div
+              id="section5"
+              class="mb-10 bg-gray-900 p-6 rounded-lg border border-gray-700"
+            >
+              <h2 class="text-2xl font-semibold text-blue-400 mb-4">
+                5. Course Engagement
+              </h2>
+              <ul class="space-y-3 text-gray-300">
+                <li class="flex items-start">
+                  <svg
+                    class="w-6 h-6 text-blue-500 mr-2 mt-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  Regular assignments are mandatory for participation in live
+                  discussions.
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="w-6 h-6 text-blue-500 mr-2 mt-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  Repeated failure to complete assignments may result in
+                  disciplinary action.
+                </li>
+              </ul>
+            </div>
+
+            <div
+              id="section6"
+              class="mb-10 bg-gray-900 p-6 rounded-lg border border-gray-700"
+            >
+              <h2 class="text-2xl font-semibold text-blue-400 mb-4">
+                6. Modifications
+              </h2>
+              <p class="text-gray-300">
+                Profs reserves the right to modify these Terms at any time.
+                Changes will be posted on the Platform.
+              </p>
+            </div>
+
+            <div
+              id="section7"
+              class="mb-10 bg-gray-900 p-6 rounded-lg border border-gray-700"
+            >
+              <h2 class="text-2xl font-semibold text-blue-400 mb-4">
+                7. Contact Information
+              </h2>
+              <p class="text-gray-300">
+                If you have any questions, contact us at
+                <a href="/support.html" class="text-blue-400 hover:underline"
+                  >profstudymate@email.com</a
+                >.
+              </p>
+            </div>
+
+            <div
+              class="mt-10 bg-gray-900 p-6 rounded-lg border border-gray-700"
+            >
+              <div class="flex items-center mb-6">
+                <input
+                  type="checkbox"
+                  id="accept-terms"
+                  class="w-5 h-5 text-blue-600 rounded border-gray-600 focus:ring-blue-500"
+                />
+                <label for="accept-terms" class="ml-3 text-gray-300"
+                  >I have read and agree to these Terms and Conditions</label
+                >
+              </div>
+              <button
+                id="accept-button"
+                disabled
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Accept Terms & Conditions
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Enable/disable accept button based on checkbox
+      document
+        .getElementById("accept-terms")
+        .addEventListener("change", function () {
+          document.getElementById("accept-button").disabled = !this.checked;
+        });
+
+      // Smooth scroll to sections
+      document.querySelectorAll(".toc-item").forEach((item) => {
+        item.addEventListener("click", (e) => {
+          const sectionId = "section" + e.target.dataset.section;
+          document
+            .getElementById(sectionId)
+            .scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    </script>
+
     <script src="footerp.js"></script>
-    <div  id="footer-container" ></div>
-</body>
+    <div id="footer-container"></div>
+  </body>
 </html>

@@ -6,28 +6,58 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Books</title>
-    <script
-      defer
-      src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"
-    ></script>
-    <script
-      defer
-      src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"
-    ></script>
-    <script
-      defer
-      src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"
-    ></script>
-    <script defer src="https://cdn.tailwindcss.com"></script>
-    <script src="kaka.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="navbar.js"></script>
+    <script type="module" src="./navbar.js"></script>
     <script type="module" src="./dynamiccon.js"></script>
     <script src="bottomnv.js"></script>
+    <style>
+      .pdf-protection {
+        position: relative;
+        overflow: hidden;
+      }
+      .pdf-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        pointer-events: none;
+        z-index: 1000;
+      }
+      .watermark {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: 48px;
+        color: rgba(0, 0, 0, 0.1);
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 1000;
+        user-select: none;
+      }
+      @media print {
+        body * {
+          display: none !important;
+        }
+        .pdf-protection,
+        .pdf-protection * {
+          display: block !important;
+        }
+        .watermark {
+          display: block !important;
+          color: rgba(0, 0, 0, 0.3) !important;
+        }
+      }
+    </style>
   </head>
   <body class="bg-gray-900 text-white p-5 flex flex-col items-center">
     <div
@@ -38,29 +68,81 @@
         class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"
       ></div>
     </div>
+
     <div class="fixed top-0 bg-[#172554] z-20 w-full border-b">
       <div id="navbar-container"></div>
     </div>
-    <div class="max-w-7xl w-full py-2 mt-28 mb-28 rounded-lg">
+
+    <!-- Book Search and Filter -->
+    <div class="max-w-7xl w-full mt-28 mb-6">
+      <div
+        class="flex flex-col md:flex-row gap-4 items-center justify-between bg-gray-800 p-4 rounded-lg"
+      >
+        <div class="relative w-full md:w-96">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search your books..."
+            class="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
+        </div>
+        <div class="flex gap-4">
+          <select
+            id="sortSelect"
+            class="bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="title">Title A-Z</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-7xl w-full py-2 mb-28 rounded-lg">
       <div
         id="booksContainer"
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
       ></div>
     </div>
 
-    <!-- Modal for PDF Viewer -->
+    <!-- Enhanced Modal for PDF Viewer -->
     <div
       id="pdfModal"
-      class="hidden fixed z-50 inset-0 bg-black bg-opacity-80 flex items-center justify-center"
+      class="hidden fixed z-50 inset-0 bg-black bg-opacity-90 flex items-center justify-center"
     >
-      <div class="bg-white w-full h-full rounded-lg relative shadow-lg">
-        <button
-          id="closeModal"
-          class="absolute top-3 w-10 bg-white right-3 text-red-500 text-2xl font-bold"
+      <div
+        class="bg-white w-full h-full rounded-lg relative shadow-lg pdf-protection"
+      >
+        <div
+          class="absolute top-0 left-0 right-0 bg-gray-800 p-3 flex justify-between items-center z-20"
         >
-          &times;
-        </button>
-        <iframe id="pdfViewer" class="w-full h-full"></iframe>
+          <div class="flex items-center space-x-4">
+            <button
+              id="zoomOut"
+              class="text-white hover:text-blue-400 transition"
+            >
+              <i class="fas fa-search-minus"></i>
+            </button>
+            <button
+              id="zoomIn"
+              class="text-white hover:text-blue-400 transition"
+            >
+              <i class="fas fa-search-plus"></i>
+            </button>
+            <span id="pageInfo" class="text-white text-sm"></span>
+          </div>
+          <button
+            id="closeModal"
+            class="text-white hover:text-red-500 transition"
+          >
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+        <div class="watermark"></div>
+        <div class="pdf-overlay"></div>
+        <iframe id="pdfViewer" class="w-full h-full pt-12"></iframe>
       </div>
     </div>
 
@@ -77,86 +159,124 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        let allBooks = [];
 
+        // Initialize UI elements
         const pdfModal = document.getElementById("pdfModal");
         const pdfViewer = document.getElementById("pdfViewer");
         const closeModal = document.getElementById("closeModal");
+        const searchInput = document.getElementById("searchInput");
+        const sortSelect = document.getElementById("sortSelect");
+        const zoomIn = document.getElementById("zoomIn");
+        const zoomOut = document.getElementById("zoomOut");
+
+        // Add event listeners for search and sort
+        searchInput.addEventListener("input", filterBooks);
+        sortSelect.addEventListener("change", filterBooks);
+
+        function filterBooks() {
+          const searchTerm = searchInput.value.toLowerCase();
+          const sortOption = sortSelect.value;
+
+          let filteredBooks = allBooks.filter(
+            (book) =>
+              book.title.toLowerCase().includes(searchTerm) ||
+              book.description.toLowerCase().includes(searchTerm)
+          );
+
+          // Apply sorting
+          filteredBooks.sort((a, b) => {
+            switch (sortOption) {
+              case "newest":
+                return b.timestamp - a.timestamp;
+              case "oldest":
+                return a.timestamp - b.timestamp;
+              case "title":
+                return a.title.localeCompare(b.title);
+              default:
+                return 0;
+            }
+          });
+
+          renderBooks(filteredBooks);
+        }
+
+        function renderBooks(books) {
+          const booksContainer = document.getElementById("booksContainer");
+          booksContainer.innerHTML = "";
+
+          books.forEach((book) => {
+            const bookCard = createBookCard(book);
+            booksContainer.appendChild(bookCard);
+          });
+        }
+
+        function createBookCard(book) {
+          const { title, description, image_url, pdf_url } = book;
+          const fileIdMatch = pdf_url.match(/\/d\/(.*)\/view/);
+          const fileId = fileIdMatch ? fileIdMatch[1] : null;
+          const embeddedPdfUrl = fileId
+            ? `https://drive.google.com/file/d/${fileId}/preview`
+            : pdf_url;
+
+          const bookCard = document.createElement("div");
+          bookCard.className =
+            "bg-gray-800 rounded-xl overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-blue-500/20 border border-gray-700";
+          bookCard.innerHTML = `
+                    <div class="relative group">
+                        <img src="${image_url}" alt="${title}" class="w-full h-48 object-cover transition duration-300 group-hover:opacity-75">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h2 class="text-xl font-bold text-white line-clamp-2">${title}</h2>
+                        <p class="text-gray-400 text-sm line-clamp-3">${description}</p>
+                        <button class="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+                            onclick="openPdf('${embeddedPdfUrl}', '${title}')">
+                            <i class="fas fa-book-reader"></i>
+                            <span>Read Book</span>
+                        </button>
+                    </div>
+                `;
+          return bookCard;
+        }
 
         firebase.auth().onAuthStateChanged(async (user) => {
           const booksContainer = document.getElementById("booksContainer");
-          booksContainer.innerHTML = ` <div id="loadingScreen" class="fixed inset-0 bg-gray-900 flex items-center justify-center z-50">
-      <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-16 h-16 animate-spin"></div>
-    </div>`;
-
           if (!user) {
             booksContainer.innerHTML =
               "<p class='text-center text-red-500 font-semibold'>Please log in to view your books.</p>";
             return;
           }
 
-          const userId = user.uid;
-
           try {
             const myBooksSnapshot = await db
               .collection("Mybooks")
-              .doc(userId)
+              .doc(user.uid)
               .collection("books")
               .get();
 
             if (myBooksSnapshot.empty) {
               booksContainer.innerHTML =
-                "<p class='text-center text-gray-600 font-semibold'>No books found.</p>";
+                "<p class='text-center text-gray-400 font-semibold'>No books found.</p>";
               return;
             }
 
-            booksContainer.innerHTML = "";
-
             const bookPromises = myBooksSnapshot.docs.map(async (doc) => {
-              const bookId = doc.id;
-              const bookDoc = await db.collection("books").doc(bookId).get();
-              return bookDoc.exists ? { id: bookId, ...bookDoc.data() } : null;
+              const bookDoc = await db.collection("books").doc(doc.id).get();
+              return bookDoc.exists
+                ? {
+                    id: doc.id,
+                    ...bookDoc.data(),
+                    timestamp: doc.data().timestamp?.toMillis() || 0,
+                  }
+                : null;
             });
 
-            const books = await Promise.all(bookPromises);
-
-            books.forEach((book) => {
-              if (book) {
-                document
-                  .getElementById("loadingScreen")
-                  .classList.add("hidden");
-                const { id, title, description, image_url, pdf_url } = book;
-
-                // Extract file ID from Google Drive link
-                const fileIdMatch = pdf_url.match(/\/d\/(.*)\/view/);
-                const fileId = fileIdMatch ? fileIdMatch[1] : null;
-                const embeddedPdfUrl = fileId
-                  ? `https://drive.google.com/file/d/${fileId}/preview`
-                  : pdf_url;
-
-                const bookCard = document.createElement("div");
-                bookCard.className =
-                  "bg-white p-5 rounded-lg shadow-md flex flex-col items-center transform transition duration-300 hover:scale-105 hover:shadow-xl";
-                bookCard.innerHTML = `
-                             <div class="flex flex-col items-center ">
-    <img src="${image_url}" alt="${title}" class=" object-cover rounded-md mb-3">
-    
-    <h2 class="text-lg font-semibold text-gray-800 text-center">${title}</h2>
-    
-    <p class="text-sm text-gray-600 text-center px-3 line-clamp-2">${description}</p>
-    
-    <button class="flex w-full items-center justify-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 mt-3 rounded-md hover:bg-blue-500 hover:text-white transition"
-        onclick="openPdf('${embeddedPdfUrl}')">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l-7-7 7-7m8 14l-7-7 7-7" />
-        </svg>
-        <span>Read Book</span>
-    </button>
-</div>
-
-                          `;
-                booksContainer.appendChild(bookCard);
-              }
-            });
+            allBooks = (await Promise.all(bookPromises)).filter(
+              (book) => book !== null
+            );
+            filterBooks(); // Initial render with all books
+            document.getElementById("loadingScreen").classList.add("hidden");
           } catch (error) {
             console.error("Error fetching books:", error);
             booksContainer.innerHTML =
@@ -164,16 +284,61 @@
           }
         });
 
-        // Open the modal and display PDF
-        window.openPdf = (pdfUrl) => {
+        // Enhanced PDF viewer functionality
+        window.openPdf = (pdfUrl, title) => {
+          const watermark = document.querySelector(".watermark");
+          watermark.textContent = `${
+            firebase.auth().currentUser.email
+          } - ${new Date().toLocaleDateString()}`;
+
           pdfViewer.src = pdfUrl;
           pdfModal.classList.remove("hidden");
+
+          // Disable right-click
+          pdfViewer.contentWindow.document.addEventListener(
+            "contextmenu",
+            (e) => e.preventDefault()
+          );
+
+          // Prevent keyboard shortcuts
+          document.addEventListener("keydown", preventKeyboardShortcuts);
         };
 
-        // Close modal
+        function preventKeyboardShortcuts(e) {
+          // Prevent common screenshot and print shortcuts
+          if (
+            (e.ctrlKey &&
+              (e.key === "p" ||
+                e.key === "P" ||
+                e.key === "s" ||
+                e.key === "S")) ||
+            e.key === "PrintScreen" ||
+            (e.altKey && e.key === "PrintScreen")
+          ) {
+            e.preventDefault();
+            return false;
+          }
+        }
+
+        // Close modal and cleanup
         closeModal.addEventListener("click", () => {
           pdfModal.classList.add("hidden");
-          pdfViewer.src = ""; // Reset the iframe
+          pdfViewer.src = "";
+          document.removeEventListener("keydown", preventKeyboardShortcuts);
+        });
+
+        // Zoom controls
+        let currentZoom = 100;
+        zoomIn.addEventListener("click", () => {
+          currentZoom += 10;
+          pdfViewer.style.transform = `scale(${currentZoom / 100})`;
+        });
+
+        zoomOut.addEventListener("click", () => {
+          if (currentZoom > 50) {
+            currentZoom -= 10;
+            pdfViewer.style.transform = `scale(${currentZoom / 100})`;
+          }
         });
       };
     </script>

@@ -1,8 +1,10 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Our Story - Profs Training Solutions</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -11,75 +13,415 @@
     <script src="bottomnv.js"></script>
     <script src="kaka.js"></script>
     <script type="module" src="nava-links.js"></script>
-    <link rel="stylesheet" href="animatecss.css">
+    <link rel="stylesheet" href="animatecss.css" />
     <script src="animatescript.js" defer></script>
-</head>
-<body class="bg-gray-900 text-white">
-    <div class="sticky top-0 bg-[#172554] z-20 w-full">
-        <div id="navbar-container"></div>
-      </div>
-    <div class="flex flex-col lg:flex-row items-center lg:items-stretch mt-28 fade-in">
-        <div class="relative w-full lg:w-1/2 h-[400px] lg:h-screen bg-cover bg-center   overflow-hidden" style="background-image: url('https://profstudyhub.com/wp-content/uploads/2024/07/pexels-mikhail-nilov-8653608-600x900.jpg');">
-            <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-center p-6">
-                <h1 class="text-5xl font-extrabold text-white drop-shadow-lg">Our Story</h1>
-                <p class="text-lg text-white font-light mt-4">Make learning and teaching more effective with active participation and student collaboration.</p>
-            </div>
-        </div>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+      .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+        padding: 2rem;
+        transition: all 0.3s ease;
+      }
+
+      .glass-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .stat-card {
+        @apply glass-card flex flex-col items-center justify-center text-center p-8;
+      }
+
+      .team-card {
+        @apply glass-card overflow-hidden relative;
+      }
+
+      .team-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 50%;  
+        height: 100%;  
+        background: linear-gradient(
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transform: rotate(45deg);
+        transition: all 0.5s ease;
+        opacity: 0;
+      }
+
+      .team-card:hover::before {
+        animation: shine 1.5s;
+      }
+
+      @keyframes shine {
+        0% {
+          transform: translateX(-100%) rotate(45deg);
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          transform: translateX(100%) rotate(45deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-b from-gray-900 via-[#1a1f35] to-[#172554] text-white min-h-screen"
+  >
+    <div id="particles-js"></div>
+    <div class="loading-screen" id="loadingScreen">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <div class="sticky top-0 bg-[#172554]/80 backdrop-blur-sm z-20 ">
+      <div id="navbar-container"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <div
+      class="relative h-[80vh] w-full overflow-hidden parallax"
+      data-speed="0.5"
+    >
+      <div class="absolute inset-0 bg-gradient-to-r from-black/80 to-black/60">
+        <img
+          src="https://profstudyhub.com/wp-content/uploads/2024/07/pexels-mikhail-nilov-8653608-600x900.jpg"
+          class="absolute w-full h-full object-cover -z-10 scale-110"
         
-        <div  class=" p-10 lg:p-20 lg:w-full bg-[#172554]  ">
-            <section class="mb-10">
-                <h2 class="text-3xl font-semibold mb-4 text-white">Background</h2>
-                <p class="text-gray-500 leading-relaxed">Led by a team of seasoned professors and industry experts, Profs Training Solutions is dedicated to equipping students with the knowledge, skills, and confidence needed to excel in the dynamic world of audit and assurance. With a track record of over 2000 successful students, our commitment to academic excellence and professional growth is unwavering.</p>
-            </section>
-
-            <section class="mb-10">
-                <h2 class="text-3xl font-semibold mb-4 text-white">Mission & Vision</h2>
-                <h3 class="text-xl font-medium mb-2 text-gray-300">Mission</h3>
-                <p class="text-gray-500 leading-relaxed">Empowering individuals in Ghana to excel in the fields of accountancy and taxation by providing comprehensive, industry-focused education. We are dedicated to nurturing a learning environment that fosters critical thinking, ethical practices, and professional proficiency.</p>
-                <h3 class="text-xl font-medium mt-4 mb-2 text-gray-500">Vision</h3>
-                <p class="text-gray-500 leading-relaxed">To be the foremost educational institution in Ghana for accountancy and taxation, recognized for our commitment to excellence, innovation, and the holistic development of individuals.</p>
-            </section>
-        </div>
-    </div>
-
-    <div class="max-w-6xl mx-auto p-8 mb-28">
-        <section>
-            <h2 class="text-3xl font-semibold mb-6 text-center text-white">Our Team</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 fade-in"> 
-                <div class="bg-white/10 p-6 rounded-lg shadow-lg text-center transition-transform transform hover:scale-105">
-                    <img src="https://profstudyhub.com/wp-content/uploads/2024/07/portrait-professional-elegant-businessman__7_-removebg-preview.png" alt="Prof" class="w-32 h-32 mx-auto rounded-full border-4 border-gray-200">
-                    <h3 class="font-bold mt-4 text-gray-900">Prof</h3>
-                    <p class="text-gray-600">Lead Tutor</p>
-                </div>
-                <div class="bg-white/10 p-6 rounded-lg shadow-lg text-center transition-transform transform hover:scale-105">
-                    <img src="https://profstudyhub.com/wp-content/uploads/2024/07/Prince_Okyerewith-Background.png" alt="Prince Okyere" class="w-32 h-32 mx-auto rounded-full border-4 border-gray-200">
-                    <h3 class="font-bold mt-4 text-gray-900">Prince Okyere</h3>
-                    <p class="text-gray-600">Tutor-CIT</p>
-                </div>
-                <div class="bg-white/5 p-6 rounded-lg shadow-lg text-center transition-transform transform hover:scale-105">
-                    <img src="https://profstudyhub.com/wp-content/uploads/2024/07/Abigail_dadzie-with-Background.png" alt="Abigail Dadzie" class="w-32 h-32 mx-auto rounded-full border-4 border-gray-200">
-                    <h3 class="font-bold mt-4 text-gray-900">Abigail Dadzie</h3>
-                    <p class="text-gray-600">Tutor - Oil and Gas / CIT</p>
-                </div>
-                <div class="bg-white/20 p-6 rounded-lg shadow-lg text-center transition-transform transform hover:scale-105">
-                    <img src="https://profstudyhub.com/wp-content/uploads/2024/07/business-person-futuristic-business-environment__2_-removebg-preview.png" alt="Prince Tetteh" class="w-32 h-32 mx-auto rounded-full border-4 border-gray-200">
-                    <h3 class="font-bold mt-4 text-gray-900">Prince Tetteh</h3>
-                    <p class="text-gray-600">Tutor-CIT</p>
-                </div>
-                <div class="bg-white/60 p-6 rounded-lg shadow-lg text-center transition-transform transform hover:scale-105">
-                    <img src="https://profstudyhub.com/wp-content/uploads/2024/07/portrait-professional-elegant-businessman-removebg-preview.png" alt="Enock Sani" class="w-32 h-32 mx-auto rounded-full border-4 border-gray-200">
-                    <h3 class="font-bold mt-4 text-gray-900">Enock Sani</h3>
-                    <p class="text-gray-600">Tutor-CIT</p>
-                </div>
-                <div class="bg-white/50 p-6 rounded-lg shadow-lg text-center transition-transform transform hover:scale-105">
-                    <img src="https://profstudyhub.com/wp-content/uploads/2024/07/Thomas_-removebg-preview.png" alt="Thomas Ansah" class="w-32 h-32 mx-auto rounded-full border-4 border-gray-200">
-                    <h3 class="font-bold mt-4 text-gray-900">Thomas Ansah</h3>
-                    <p class="text-gray-600">Tutor-ICAG</p>
-                </div>
+        />
+        <div class="container mx-auto h-full flex items-center px-6">
+          <div data-aos="fade-right" class="max-w-2xl space-y-6">
+            <h1
+              class="text-7xl font-bold mb-4 leading-tight animate-text bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+            >
+              Our Story
+            </h1>
+            <p class="text-xl text-gray-300 animate-text leading-relaxed">
+              Make learning and teaching more effective with active
+              participation and student collaboration.
+            </p>
+            <div class="flex gap-4">
+              <div class="h-2 w-20 bg-blue-500 rounded-full"></div>
+              <div class="h-2 w-12 bg-purple-500 rounded-full"></div>
+              <div class="h-2 w-8 bg-pink-500 rounded-full"></div>
             </div>
-        </section>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Stats Section -->
+    <div class="relative bg-gradient-to-b from-blue-900 to-gray-900 py-20 overflow-hidden">
+
+  
+        <div class="container mx-auto px-6 text-center relative z-10">
+        
+  
+          <div class="grid grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div class="transform hover:scale-105 transition-transform duration-300">
+              <div class="relative bg-gradient-to-br from-blue-900/50 to-transparent p-6 rounded-xl backdrop-blur-sm border border-blue-500/30">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 px-4 py-1 rounded-full text-sm font-medium">
+                  Graduates
+                </div>
+                <div class="text-5xl font-bold text-blue-400 mb-2 counter" data-target="500">0</div>
+                <p class="text-gray-400">Successful Students</p>
+              </div>
+            </div>
+  
+            <div class="transform hover:scale-105 transition-transform duration-300">
+              <div class="relative bg-gradient-to-br from-purple-900/50 to-transparent p-6 rounded-xl backdrop-blur-sm border border-purple-500/30">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-500 px-4 py-1 rounded-full text-sm font-medium">
+                  Success Rate
+                </div>
+                <div class="text-5xl font-bold text-purple-400 mb-2 counter" data-target="95">0</div>
+                <p class="text-gray-400">Pass Rate</p>
+              </div>
+            </div>
+  
+            <div class="transform hover:scale-105 transition-transform duration-300">
+              <div class="relative bg-gradient-to-br from-cyan-900/50 to-transparent p-6 rounded-xl backdrop-blur-sm border border-cyan-500/30">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-cyan-500 px-4 py-1 rounded-full text-sm font-medium">
+                  Excellence
+                </div>
+                <div class="text-5xl font-bold text-cyan-400 mb-2 counter" data-target="50">0</div>
+                <p class="text-gray-400">Award Winners</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <style>
+          @keyframes float-slow {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, -20px); }
+          }
+          @keyframes float-medium {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-15px, 15px); }
+          }
+          @keyframes float-fast {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(10px, -10px); }
+          }
+          @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          .animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
+          .animate-float-medium { animation: float-medium 4s ease-in-out infinite; }
+          .animate-float-fast { animation: float-fast 3s ease-in-out infinite; }
+          .animate-gradient {
+            background-size: 200% 200%;
+            animation: gradient 8s linear infinite;
+          }
+        </style>
+  
+        <script>
+          // Animated counter
+          const counters = document.querySelectorAll('.counter');
+          counters.forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            const duration = 2000;
+            const step = target / (duration / 16);
+            
+            function updateCounter() {
+              const current = +counter.innerText;
+              if (current < target) {
+                counter.innerText = Math.ceil(Math.min(current + step, target));
+                setTimeout(updateCounter, 16);
+              }
+            }
+            
+            const observer = new IntersectionObserver((entries) => {
+              if (entries[0].isIntersecting) {
+                updateCounter();
+                observer.unobserve(counter);
+              }
+            });
+            
+            observer.observe(counter);
+          });
+        </script>
+      </div>
+  
+
+    <!-- Mission & Vision Section -->
+    <div class="container mx-auto py-24 px-6">
+      <div class="grid md:grid-cols-2 gap-12">
+        <div data-aos="fade-right" class="glass-card hover:bg-blue-900/10">
+          <div class="flex items-center mb-8">
+            <i
+              class="ph ph-target text-4xl text-blue-400 mr-4 float animate-pulse"
+            ></i>
+            <h2
+              class="text-4xl font-bold animate-text bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+            >
+              Our Mission
+            </h2>
+          </div>
+          <p class="text-gray-300 leading-relaxed">
+            Empowering individuals in Ghana to excel in the fields of
+            accountancy and taxation by providing comprehensive,
+            industry-focused education. We are dedicated to nurturing a learning
+            environment that fosters critical thinking, ethical practices, and
+            professional proficiency.
+          </p>
+        </div>
+        <div data-aos="fade-left" class="glass-card hover:bg-blue-900/10">
+          <div class="flex items-center mb-8">
+            <i
+              class="ph ph-eye text-4xl text-blue-400 mr-4 float animate-pulse"
+            ></i>
+            <h2
+              class="text-4xl font-bold animate-text bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+            >
+              Our Vision
+            </h2>
+          </div>
+          <p class="text-gray-300 leading-relaxed">
+            To be the foremost educational institution in Ghana for accountancy
+            and taxation, recognized for our commitment to excellence,
+            innovation, and the holistic development of individuals.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Section -->
+    <div class="container mx-auto py-24 px-6">
+      <h2
+        class="text-5xl font-bold text-center mb-16 animate-text bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+        data-aos="fade-up"
+      >
+        Meet Our Expert Team
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div data-aos="fade-up" data-aos-delay="100" class="group">
+          <div class="team-card">
+            <div
+              class="relative overflow-hidden rounded-full mx-auto w-48 h-48 mb-6"
+            >
+              <img
+                src="https://profstudyhub.com/wp-content/uploads/2024/07/portrait-professional-elegant-businessman__7_-removebg-preview.png"
+                alt="Prof"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/30"
+              ></div>
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-center animate-text">
+              Prof
+            </h3>
+            <p class="text-blue-400 text-center text-lg">Lead Tutor</p>
+          </div>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="200" class="group">
+          <div class="team-card">
+            <div
+              class="relative overflow-hidden rounded-full mx-auto w-48 h-48 mb-6"
+            >
+              <img
+                src="https://profstudyhub.com/wp-content/uploads/2024/07/Prince_Okyerewith-Background.png"
+                alt="Prince Okyere"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/30"
+              ></div>
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-center animate-text">
+              Prince Okyere
+            </h3>
+            <p class="text-blue-400 text-center text-lg">Tutor-CIT</p>
+          </div>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="300" class="group">
+          <div class="team-card">
+            <div
+              class="relative overflow-hidden rounded-full mx-auto w-48 h-48 mb-6"
+            >
+              <img
+                src="https://profstudyhub.com/wp-content/uploads/2024/07/Abigail_dadzie-with-Background.png"
+                alt="Abigail Dadzie"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/30"
+              ></div>
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-center animate-text">
+              Abigail Dadzie
+            </h3>
+            <p class="text-blue-400 text-center text-lg">
+              Tutor - Oil and Gas / CIT
+            </p>
+          </div>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="400" class="group">
+          <div class="team-card">
+            <div
+              class="relative overflow-hidden rounded-full mx-auto w-48 h-48 mb-6"
+            >
+              <img
+                src="https://profstudyhub.com/wp-content/uploads/2024/07/business-person-futuristic-business-environment__2_-removebg-preview.png"
+                alt="Prince Tetteh"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/30"
+              ></div>
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-center animate-text">
+              Prince Tetteh
+            </h3>
+            <p class="text-blue-400 text-center text-lg">Tutor-CIT</p>
+          </div>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="500" class="group">
+          <div class="team-card">
+            <div
+              class="relative overflow-hidden rounded-full mx-auto w-48 h-48 mb-6"
+            >
+              <img
+                src="https://profstudyhub.com/wp-content/uploads/2024/07/portrait-professional-elegant-businessman-removebg-preview.png"
+                alt="Enock Sani"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/30"
+              ></div>
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-center animate-text">
+              Enock Sani
+            </h3>
+            <p class="text-blue-400 text-center text-lg">Tutor-CIT</p>
+          </div>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="600" class="group">
+          <div class="team-card">
+            <div
+              class="relative overflow-hidden rounded-full mx-auto w-48 h-48 mb-6"
+            >
+              <img
+                src="https://profstudyhub.com/wp-content/uploads/2024/07/Thomas_-removebg-preview.png"
+                alt="Thomas Ansah"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/30"
+              ></div>
+            </div>
+            <h3 class="text-2xl font-bold mt-4 text-center animate-text">
+              Thomas Ansah
+            </h3>
+            <p class="text-blue-400 text-center text-lg">Tutor-ICAG</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Background Section -->
+    <div class="container mx-auto py-24 px-6 mb-12">
+      <div data-aos="fade-up" class="glass-card relative overflow-hidden">
+        <div
+          class="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"
+        ></div>
+        <div
+          class="absolute -bottom-24 -left-24 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl"
+        ></div>
+        <h2
+          class="text-4xl font-bold mb-8 animate-text bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+        >
+          Our Background
+        </h2>
+        <p class="text-gray-300 leading-relaxed text-lg relative z-10">
+          Led by a team of seasoned professors and industry experts, Profs
+          Training Solutions is dedicated to equipping students with the
+          knowledge, skills, and confidence needed to excel in the dynamic world
+          of audit and assurance. With a track record of over 2000 successful
+          students, our commitment to academic excellence and professional
+          growth is unwavering.
+        </p>
+      </div>
+    </div>
+
     <script src="footerp.js"></script>
     <div id="footer-container"></div>
-</body>
+  </body>
 </html>

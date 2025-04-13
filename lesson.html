@@ -637,7 +637,7 @@
         .getElementById("markComplete")
         .addEventListener("click", async () => {
           try {
-            const docRef = doc(db, "users", auth.currentUser.uid, "completedLessons", courseId);
+            const docRef = doc(db, "users", auth.currentUser.uid, "completedLessons", lessonId);
             const docSnap = await getDoc(docRef);
             
             if (!docSnap.exists()) {

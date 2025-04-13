@@ -216,7 +216,7 @@
           const fileIdMatch = pdf_url.match(/\/d\/(.*)\/view/);
           const fileId = fileIdMatch ? fileIdMatch[1] : null;
           const embeddedPdfUrl = fileId
-            ? `https://drive.google.com/file/d/${fileId}/preview`
+            ? `https://drive.google.com/file/d/${fileId}/preview?usp=drivesdk&embedded=true&rm=minimal`
             : pdf_url;
 
           const bookCard = document.createElement("div");

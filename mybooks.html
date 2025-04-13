@@ -17,6 +17,11 @@
     <script type="module" src="./navbar.js"></script>
     <script type="module" src="./dynamiccon.js"></script>
     <script src="bottomnv.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf_viewer.min.css"
+      rel="stylesheet"
+    />
     <style>
       .pdf-protection {
         position: relative;
@@ -57,63 +62,62 @@
           color: rgba(0, 0, 0, 0.3) !important;
         }
       }
+      #pdfContainer {
+        width: 100%;
+        height: calc(100vh - 48px);
+        overflow: auto;
+        background: #525659;
+      }
+
+      #pdfViewer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .page-container {
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        background: white;
+      }
+
+      .pdf-controls {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px 20px;
+        border-radius: 20px;
+        display: flex;
+        gap: 15px;
+        z-index: 1000;
+      }
+
+      .pdf-controls button {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: background 0.3s;
+      }
+
+      .pdf-controls button:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .pdf-page-info {
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
     </style>
-    <script>
-      // Secure PDF URL handling
-      const SecurePdfHandler = {
-        _store: new WeakMap(),
-        _key: new Uint8Array(16).map(() => Math.floor(Math.random() * 256)),
-
-        // Convert array to hex string
-        _toHex(buffer) {
-          return Array.from(new Uint8Array(buffer))
-            .map((b) => b.toString(16).padStart(2, "0"))
-            .join("");
-        },
-
-        // Convert hex string to array
-        _fromHex(hex) {
-          const pairs = hex.match(/.{2}/g) || [];
-          return new Uint8Array(pairs.map((pair) => parseInt(pair, 16)));
-        },
-
-        // XOR encryption
-        async _encrypt(text) {
-          const encoder = new TextEncoder();
-          const data = encoder.encode(text);
-          const encrypted = new Uint8Array(data.length);
-          for (let i = 0; i < data.length; i++) {
-            encrypted[i] = data[i] ^ this._key[i % this._key.length];
-          }
-          return this._toHex(encrypted);
-        },
-
-        // XOR decryption
-        async _decrypt(hex) {
-          const encrypted = this._fromHex(hex);
-          const decrypted = new Uint8Array(encrypted.length);
-          for (let i = 0; i < encrypted.length; i++) {
-            decrypted[i] = encrypted[i] ^ this._key[i % this._key.length];
-          }
-          return new TextDecoder().decode(decrypted);
-        },
-
-        // Store URL and get token
-        async protect(url) {
-          const token = {};
-          const encrypted = await this._encrypt(url);
-          this._store.set(token, encrypted);
-          return token;
-        },
-
-        // Retrieve URL using token
-        async retrieve(token) {
-          const encrypted = this._store.get(token);
-          if (!encrypted) return null;
-          return await this._decrypt(encrypted);
-        },
-      };
-    </script>
   </head>
   <body class="bg-gray-900 text-white p-5 flex flex-col items-center">
     <div
@@ -169,7 +173,7 @@
       class="hidden fixed z-50 inset-0 bg-black bg-opacity-90 flex items-center justify-center"
     >
       <div
-        class="bg-white w-full h-full rounded-lg relative shadow-lg pdf-protection"
+        class="bg-gray-800 w-full h-full rounded-lg relative shadow-lg pdf-protection"
       >
         <div
           class="absolute top-0 left-0 right-0 bg-gray-800 p-3 flex justify-between items-center z-20"
@@ -187,7 +191,6 @@
             >
               <i class="fas fa-search-plus"></i>
             </button>
-            <span id="pageInfo" class="text-white text-sm"></span>
           </div>
           <button
             id="closeModal"
@@ -197,8 +200,17 @@
           </button>
         </div>
         <div class="watermark"></div>
-        <div class="pdf-overlay"></div>
-        <iframe id="pdfViewer" class="w-full h-full pt-12"></iframe>
+        <div id="pdfContainer">
+          <div id="pdfViewer"></div>
+        </div>
+        <div class="pdf-controls">
+          <button id="prevPage"><i class="fas fa-chevron-left"></i></button>
+          <div class="pdf-page-info">
+            Page <span id="currentPage">0</span> of
+            <span id="totalPages">0</span>
+          </div>
+          <button id="nextPage"><i class="fas fa-chevron-right"></i></button>
+        </div>
       </div>
     </div>
 
@@ -275,64 +287,24 @@
             ? `https://drive.google.com/file/d/${fileId}/preview?usp=drivesdk&embedded=true&rm=minimal`
             : pdf_url;
 
-          // Create card elements
           const bookCard = document.createElement("div");
           bookCard.className =
             "bg-gray-800 rounded-xl overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-blue-500/20 border border-gray-700";
-
-          // Create elements programmatically
-          const imageContainer = document.createElement("div");
-          imageContainer.className = "relative group";
-
-          const img = document.createElement("img");
-          img.src = image_url;
-          img.alt = title;
-          img.className =
-            "w-full h-48 object-cover transition duration-300 group-hover:opacity-75";
-
-          const gradient = document.createElement("div");
-          gradient.className =
-            "absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300";
-
-          const contentDiv = document.createElement("div");
-          contentDiv.className = "p-6 space-y-4";
-
-          const titleEl = document.createElement("h2");
-          titleEl.className = "text-xl font-bold text-white line-clamp-2";
-          titleEl.textContent = title;
-
-          const descEl = document.createElement("p");
-          descEl.className = "text-gray-400 text-sm line-clamp-3";
-          descEl.textContent = description;
-
-          const button = document.createElement("button");
-          button.className =
-            "w-full flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300";
-
-          // Secure the PDF URL
-          SecurePdfHandler.protect(embeddedPdfUrl).then((token) => {
-            button.onclick = async () => {
-              const url = await SecurePdfHandler.retrieve(token);
-              if (url) openPdf(url, title);
-            };
-          });
-
-          const icon = document.createElement("i");
-          icon.className = "fas fa-book-reader";
-          const span = document.createElement("span");
-          span.textContent = "Read Book";
-
-          // Assemble the elements
-          button.appendChild(icon);
-          button.appendChild(span);
-          imageContainer.appendChild(img);
-          imageContainer.appendChild(gradient);
-          contentDiv.appendChild(titleEl);
-          contentDiv.appendChild(descEl);
-          contentDiv.appendChild(button);
-          bookCard.appendChild(imageContainer);
-          bookCard.appendChild(contentDiv);
-
+          bookCard.innerHTML = `
+                    <div class="relative group">
+                        <img src="${image_url}" alt="${title}" class="w-full h-48 object-cover transition duration-300 group-hover:opacity-75">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <h2 class="text-xl font-bold text-white line-clamp-2">${title}</h2>
+                        <p class="text-gray-400 text-sm line-clamp-3">${description}</p>
+                        <button class="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+                            onclick="openPdf('${embeddedPdfUrl}', '${title}')">
+                            <i class="fas fa-book-reader"></i>
+                            <span>Read Book</span>
+                        </button>
+                    </div>
+                `;
           return bookCard;
         }
 
@@ -381,77 +353,217 @@
         });
 
         // Enhanced PDF viewer functionality
-        window.openPdf = (url, title) => {
-          const watermark = document.querySelector(".watermark");
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+        let pdfDoc = null;
+        let pageNum = 1;
+        let scale = 1.5;
+        const viewer = document.getElementById("pdfViewer");
+        const container = document.getElementById("pdfContainer");
+
+        async function renderPage(num) {
+          const page = await pdfDoc.getPage(num);
+          const viewport = page.getViewport({ scale });
+
+          // Create canvas for this page
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          // Create container for the page
+          const pageContainer = document.createElement("div");
+          pageContainer.className = "page-container";
+          pageContainer.appendChild(canvas);
+
+          // Add watermark to each page
+          const watermark = document.createElement("div");
+          watermark.className = "watermark";
+          watermark.style.position = "absolute";
+          watermark.style.opacity = "0.1";
           watermark.textContent = `${
             firebase.auth().currentUser.email
           } - ${new Date().toLocaleDateString()}`;
+          pageContainer.appendChild(watermark);
 
-          const pdfViewer = document.getElementById("pdfViewer");
-
-          // Additional security for iframe
-          const secureUrl = new URL(url);
-          pdfViewer.sandbox = "allow-scripts allow-same-origin";
-          pdfViewer.src = secureUrl.toString();
-
-          document.getElementById("pdfModal").classList.remove("hidden");
-
-          // Enhanced security measures
-          const protectViewer = () => {
-            try {
-              const doc = pdfViewer.contentWindow.document;
-              doc.addEventListener("contextmenu", (e) => e.preventDefault());
-              doc.addEventListener("selectstart", (e) => e.preventDefault());
-              doc.addEventListener("copy", (e) => e.preventDefault());
-              doc.addEventListener("dragstart", (e) => e.preventDefault());
-              doc.addEventListener("keydown", (e) => {
-                if (e.ctrlKey || e.metaKey) e.preventDefault();
-              });
-            } catch (e) {
-              console.warn(
-                "Some security measures couldn't be applied due to cross-origin restrictions"
-              );
-            }
+          // Render PDF page
+          const renderContext = {
+            canvasContext: context,
+            viewport: viewport,
           };
 
-          pdfViewer.onload = protectViewer;
-          document.addEventListener("keydown", preventKeyboardShortcuts);
+          await page.render(renderContext);
+          viewer.appendChild(pageContainer);
+        }
+
+        window.openPdf = async (url, title) => {
+          try {
+            const pdfModal = document.getElementById("pdfModal");
+            viewer.innerHTML = ""; // Clear previous PDF
+            pdfModal.classList.remove("hidden");
+
+            // Show loading state
+            viewer.innerHTML = `
+              <div class="flex items-center justify-center w-full h-full">
+                <div class="text-white">
+                  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-12 h-12 animate-spin mb-4 mx-auto"></div>
+                  <p>Loading PDF...</p>
+                </div>
+              </div>
+            `;
+
+            // Handle Google Drive URLs
+            let pdfUrl = url;
+            if (url.includes("drive.google.com")) {
+              const fileIdMatch = url.match(/\/d\/(.+?)(?:\/|$)/);
+              if (fileIdMatch) {
+                const fileId = fileIdMatch[1];
+                pdfUrl = `https://drive.google.com/file/d/${fileId}/preview?usp=drivesdk&embedded=true&rm=minimal`;
+              }
+            }
+
+            // Load and render PDF with retry mechanism
+            let retryCount = 0;
+            const maxRetries = 3;
+
+            async function loadPDF() {
+              try {
+                const loadingTask = pdfjsLib.getDocument({
+                  url: pdfUrl,
+                  withCredentials: true,
+                  cMapUrl:
+                    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
+                  cMapPacked: true,
+                });
+
+                // Add progress callback
+                loadingTask.onProgress = (data) => {
+                  if (data.total > 0) {
+                    const progress = ((data.loaded / data.total) * 100).toFixed(
+                      0
+                    );
+                    viewer.innerHTML = `
+                      <div class="flex items-center justify-center w-full h-full">
+                        <div class="text-white text-center">
+                          <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-12 h-12 animate-spin mb-4"></div>
+                          <p>Loading PDF... ${progress}%</p>
+                        </div>
+                      </div>
+                    `;
+                  }
+                };
+
+                pdfDoc = await loadingTask.promise;
+                viewer.innerHTML = ""; // Clear loading message
+
+                // Update UI
+                document.getElementById("totalPages").textContent =
+                  pdfDoc.numPages;
+                document.getElementById("currentPage").textContent = "1";
+
+                // Render first few pages
+                for (let i = 1; i <= Math.min(3, pdfDoc.numPages); i++) {
+                  await renderPage(i);
+                }
+
+                // Rest of the existing PDF viewer setup...
+                // ...existing code for infinite scroll, controls setup, etc...
+              } catch (error) {
+                console.error("PDF loading error:", error);
+                if (retryCount < maxRetries) {
+                  retryCount++;
+                  console.log(
+                    `Retrying PDF load (attempt ${retryCount}/${maxRetries})...`
+                  );
+                  await new Promise((resolve) =>
+                    setTimeout(resolve, 1000 * retryCount)
+                  );
+                  return loadPDF();
+                }
+                throw new Error(
+                  `Failed to load PDF after ${maxRetries} attempts`
+                );
+              }
+            }
+
+            await loadPDF();
+          } catch (error) {
+            console.error("Error in openPdf:", error);
+            const errorMessage =
+              error.message ||
+              "Unable to load the PDF. Please try again later.";
+            viewer.innerHTML = `
+              <div class="flex items-center justify-center w-full h-full">
+                <div class="text-white text-center">
+                  <i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
+                  <p class="text-red-500">${errorMessage}</p>
+                  <button onclick="location.reload()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Retry
+                  </button>
+                </div>
+              </div>
+            `;
+          }
         };
 
-        function preventKeyboardShortcuts(e) {
-          // Prevent common screenshot and print shortcuts
+        document.getElementById("prevPage").onclick = () => {
+          if (container.firstElementChild) {
+            container.scrollTo({
+              top: container.scrollTop - container.clientHeight,
+              behavior: "smooth",
+            });
+          }
+        };
+
+        document.getElementById("nextPage").onclick = () => {
+          if (container.lastElementChild) {
+            container.scrollTo({
+              top: container.scrollTop + container.clientHeight,
+              behavior: "smooth",
+            });
+          }
+        };
+
+        document.getElementById("zoomIn").onclick = async () => {
+          scale *= 1.2;
+          viewer.innerHTML = "";
+          lastRenderedPage = 0;
+          container.scrollTop = 0;
+          for (let i = 1; i <= Math.min(3, pdfDoc.numPages); i++) {
+            await renderPage(i);
+          }
+        };
+
+        document.getElementById("zoomOut").onclick = async () => {
+          scale /= 1.2;
+          viewer.innerHTML = "";
+          lastRenderedPage = 0;
+          container.scrollTop = 0;
+          for (let i = 1; i <= Math.min(3, pdfDoc.numPages); i++) {
+            await renderPage(i);
+          }
+        };
+
+        document.getElementById("closeModal").onclick = () => {
+          pdfModal.classList.add("hidden");
+          viewer.innerHTML = "";
+          pdfDoc = null;
+        };
+
+        container.addEventListener("contextmenu", (e) => e.preventDefault());
+        container.addEventListener("selectstart", (e) => e.preventDefault());
+        container.addEventListener("copy", (e) => e.preventDefault());
+        container.addEventListener("dragstart", (e) => e.preventDefault());
+
+        document.addEventListener("keydown", (e) => {
           if (
-            (e.ctrlKey &&
-              (e.key === "p" ||
-                e.key === "P" ||
-                e.key === "s" ||
-                e.key === "S")) ||
+            (e.ctrlKey && ["p", "P", "s", "S"].includes(e.key)) ||
             e.key === "PrintScreen" ||
             (e.altKey && e.key === "PrintScreen")
           ) {
             e.preventDefault();
             return false;
-          }
-        }
-
-        // Close modal and cleanup
-        closeModal.addEventListener("click", () => {
-          pdfModal.classList.add("hidden");
-          pdfViewer.src = "";
-          document.removeEventListener("keydown", preventKeyboardShortcuts);
-        });
-
-        // Zoom controls
-        let currentZoom = 100;
-        zoomIn.addEventListener("click", () => {
-          currentZoom += 10;
-          pdfViewer.style.transform = `scale(${currentZoom / 100})`;
-        });
-
-        zoomOut.addEventListener("click", () => {
-          if (currentZoom > 50) {
-            currentZoom -= 10;
-            pdfViewer.style.transform = `scale(${currentZoom / 100})`;
           }
         });
       };

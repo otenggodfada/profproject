@@ -175,34 +175,163 @@
       <div
         class="bg-gray-800 w-full h-full rounded-lg relative shadow-lg pdf-protection"
       >
+        <!-- Top Toolbar -->
         <div
-          class="absolute top-0 left-0 right-0 bg-gray-800 p-3 flex justify-between items-center z-20"
+          class="absolute top-0 left-0 right-0 bg-gray-800 p-3 flex justify-between items-center z-20 border-b border-gray-700"
         >
           <div class="flex items-center space-x-4">
             <button
               id="zoomOut"
-              class="text-white hover:text-blue-400 transition"
+              class="text-white hover:text-blue-400 transition tooltip"
+              title="Zoom Out"
             >
               <i class="fas fa-search-minus"></i>
             </button>
             <button
               id="zoomIn"
-              class="text-white hover:text-blue-400 transition"
+              class="text-white hover:text-blue-400 transition tooltip"
+              title="Zoom In"
             >
               <i class="fas fa-search-plus"></i>
             </button>
+            <button
+              id="rotateLeft"
+              class="text-white hover:text-blue-400 transition tooltip"
+              title="Rotate Left"
+            >
+              <i class="fas fa-undo"></i>
+            </button>
+            <button
+              id="rotateRight"
+              class="text-white hover:text-blue-400 transition tooltip"
+              title="Rotate Right"
+            >
+              <i class="fas fa-redo"></i>
+            </button>
+            <div class="h-6 w-px bg-gray-600"></div>
+            <button
+              id="toggleReviews"
+              class="text-white hover:text-blue-400 transition tooltip flex items-center gap-2"
+              title="Show Reviews"
+            >
+              <i class="fas fa-comments"></i>
+              <span class="text-sm">Reviews</span>
+            </button>
           </div>
-          <button
-            id="closeModal"
-            class="text-white hover:text-red-500 transition"
-          >
-            <i class="fas fa-times text-xl"></i>
-          </button>
+          <div class="flex items-center gap-4">
+         
+            <button
+              id="closeModal"
+              class="text-white hover:text-red-500 transition tooltip"
+              title="Close"
+            >
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
         </div>
+
         <div class="watermark"></div>
-        <div id="pdfContainer">
-          <div id="pdfViewer"></div>
+
+        <!-- Main content area with PDF and Reviews -->
+        <div class="flex h-full pt-12">
+          <!-- PDF Viewer -->
+          <div id="pdfContainer" class="flex-1">
+            <div id="pdfViewer"></div>
+          </div>
+
+          <!-- Reviews Sidebar (hidden by default) -->
+          <div
+            id="reviewsSidebar"
+            class="hidden w-96 bg-gray-800 border-l border-gray-700 overflow-y-auto"
+          >
+            <div class="p-4">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-white">Reviews</h3>
+                <div class="flex items-center gap-2">
+                  <span
+                    class="text-yellow-400 text-lg font-bold"
+                    id="averageRating"
+                    >0.0</span
+                  >
+                  <div class="flex items-center">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <span class="text-gray-400 text-sm ml-1" id="totalReviews"
+                      >(0)</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add Review Button -->
+              <button
+                id="writeReviewBtn"
+                class="w-full bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition mb-4"
+              >
+                <i class="fas fa-pen mr-2"></i>Write a Review
+              </button>
+
+              <!-- Review Form (hidden by default) -->
+              <div id="reviewForm" class="hidden mb-4">
+                <div class="bg-gray-700 rounded-lg p-4">
+                  <div class="flex items-center gap-2 mb-3">
+                    <div class="rating">
+                      <i
+                        class="fas fa-star text-gray-400 cursor-pointer hover:text-yellow-400"
+                        data-rating="1"
+                      ></i>
+                      <i
+                        class="fas fa-star text-gray-400 cursor-pointer hover:text-yellow-400"
+                        data-rating="2"
+                      ></i>
+                      <i
+                        class="fas fa-star text-gray-400 cursor-pointer hover:text-yellow-400"
+                        data-rating="3"
+                      ></i>
+                      <i
+                        class="fas fa-star text-gray-400 cursor-pointer hover:text-yellow-400"
+                        data-rating="4"
+                      ></i>
+                      <i
+                        class="fas fa-star text-gray-400 cursor-pointer hover:text-yellow-400"
+                        data-rating="5"
+                      ></i>
+                    </div>
+                    <span class="text-sm text-gray-400" id="ratingText"
+                      >Select rating</span
+                    >
+                  </div>
+                  <textarea
+                    id="reviewText"
+                    class="w-full bg-gray-600 text-white rounded-lg p-3 mb-3"
+                    rows="4"
+                    placeholder="Share your thoughts about this book..."
+                  ></textarea>
+                  <div class="flex justify-end gap-2">
+                    <button
+                      id="cancelReview"
+                      class="px-3 py-1 text-gray-300 hover:text-white"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      id="submitReview"
+                      class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reviews List -->
+              <div id="reviewsList" class="space-y-4">
+                <!-- Reviews will be loaded here -->
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Bottom Controls -->
         <div class="pdf-controls">
           <button id="prevPage"><i class="fas fa-chevron-left"></i></button>
           <div class="pdf-page-info">
@@ -213,6 +342,21 @@
         </div>
       </div>
     </div>
+
+    <style>
+      .tooltip:hover::after {
+        content: attr(title);
+        position: absolute;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        z-index: 1000;
+        transform: translateY(24px);
+      }
+    </style>
 
     <script>
       window.onload = () => {
@@ -398,8 +542,18 @@
         window.openPdf = async (url, title, fileId) => {
           try {
             const pdfModal = document.getElementById("pdfModal");
+            const viewer = document.getElementById("pdfViewer");
+            const reviewsSidebar = document.getElementById("reviewsSidebar");
             viewer.innerHTML = ""; // Clear previous PDF
             pdfModal.classList.remove("hidden");
+            reviewsSidebar.classList.add("hidden"); // Hide reviews sidebar initially
+
+            // Store the current PDF information
+            window.currentPdfInfo = {
+              url: url,
+              title: title,
+              fileId: fileId,
+            };
 
             // Show loading state
             viewer.innerHTML = `
@@ -411,180 +565,148 @@
               </div>
             `;
 
-            // Handle Google Drive URLs
+            // Initialize reviews system
+            initializeReviews(fileId);
+
+            // Handle Google Drive URLs with clean parameters
             let pdfUrl = url;
             if (fileId) {
-              // Try different Google Drive URL formats
-              const urls = [
-                `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
-                `https://drive.google.com/uc?export=download&id=${fileId}`,
-                `https://drive.google.com/file/d/${fileId}/preview`,
-              ];
+              // Use embed URL with parameters to hide controls
+              pdfUrl = `https://drive.google.com/file/d/${fileId}/preview?usp=embed_view&rm=minimal&hl=en&embedded=true&usp=drivesdk&chrome=false&disablekb=1`;
 
-              for (const testUrl of urls) {
-                try {
-                  const response = await fetch(testUrl, {
-                    method: "HEAD",
-                    mode: "cors",
-                  });
-                  if (response.ok) {
-                    pdfUrl = testUrl;
-                    break;
-                  }
-                } catch (error) {
-                  console.log("Trying alternative URL format...");
-                }
-              }
-
-              // If direct access fails, show alternate viewing options
-              if (pdfUrl === url) {
+              try {
                 viewer.innerHTML = `
-                  <div class="flex items-center justify-center w-full h-full">
-                    <div class="text-white text-center max-w-lg p-6">
-                      <i class="fas fa-exclamation-circle text-4xl text-yellow-500 mb-4"></i>
-                      <h3 class="text-xl font-bold mb-4">PDF Viewer Options</h3>
-                      <p class="mb-6">Due to Google Drive security settings, we cannot display the PDF directly. Please choose an option below:</p>
-                      <div class="space-y-4">
-                        <a href="https://drive.google.com/file/d/${fileId}/view" target="_blank" 
-                           class="block w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-                          <i class="fab fa-google-drive mr-2"></i>Open in Google Drive
-                        </a>
-                        <a href="https://drive.google.com/uc?export=download&id=${fileId}" 
-                           class="block w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
-                          <i class="fas fa-download mr-2"></i>Download PDF
-                        </a>
-                      </div>
-                    </div>
+                  <div class="w-full h-full relative">
+                    <div class="absolute inset-0 z-10" style="pointer-events: none;"></div>
+                    <iframe 
+                      src="${pdfUrl}"
+                      class="w-full h-full"
+                      style="border: none; background: #fff;"
+                      sandbox="allow-scripts allow-same-origin allow-popups"
+                    ></iframe>
                   </div>
+                `;
+
+                // Add an overlay to prevent interactions with Google Drive controls
+                const overlay = document.createElement("div");
+                overlay.className =
+                  "absolute top-0 left-0 right-0 h-[50px] z-20";
+                overlay.style.background = "#525659";
+                viewer.firstElementChild.appendChild(overlay);
+
+                return; // Exit since we're using iframe for Google Drive
+              } catch (error) {
+                console.log("Cannot embed file directly, showing alternatives");
+                viewer.innerHTML = `
+                
                 `;
                 return;
               }
             }
 
-            // Load and render PDF with retry mechanism
-            let retryCount = 0;
-            const maxRetries = 3;
+            // Validate PDF before loading
+            try {
+              const response = await fetch(pdfUrl);
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
 
-            async function loadPDF() {
-              try {
-                const loadingTask = pdfjsLib.getDocument({
-                  url: pdfUrl,
-                  withCredentials: false, // Changed to false for Google Drive URLs
-                  cMapUrl:
-                    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
-                  cMapPacked: true,
-                });
+              // Check if the response is actually a PDF
+              const contentType = response.headers.get("content-type");
+              if (contentType && !contentType.includes("application/pdf")) {
+                // If it's not a PDF, try to get it as a blob and validate the magic number
+                const blob = await response.blob();
+                const arr = new Uint8Array(await blob.arrayBuffer());
+                const pdfHeader = [0x25, 0x50, 0x44, 0x46]; // %PDF
 
-                loadingTask.onProgress = (data) => {
-                  if (data.total > 0) {
-                    const progress = ((data.loaded / data.total) * 100).toFixed(
-                      0
-                    );
-                    viewer.innerHTML = `
-                      <div class="flex items-center justify-center w-full h-full">
-                        <div class="text-white text-center">
-                          <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-12 h-12 animate-spin mb-4"></div>
-                          <p>Loading PDF... ${progress}%</p>
-                        </div>
-                      </div>
-                    `;
-                  }
-                };
-
-                pdfDoc = await loadingTask.promise;
-                viewer.innerHTML = "";
-
-                // Update UI
-                document.getElementById("totalPages").textContent =
-                  pdfDoc.numPages;
-                document.getElementById("currentPage").textContent = "1";
-
-                // Render first few pages
-                for (let i = 1; i <= Math.min(3, pdfDoc.numPages); i++) {
-                  await renderPage(i);
+                const isPDF = pdfHeader.every((byte, i) => arr[i] === byte);
+                if (!isPDF) {
+                  throw new Error("Invalid PDF format");
                 }
+              }
 
-                // Setup infinite scroll
-                let lastRenderedPage = 3;
-                container.onscroll = async () => {
-                  if (
-                    container.scrollTop + container.clientHeight >=
-                    container.scrollHeight - 500
-                  ) {
-                    if (lastRenderedPage < pdfDoc.numPages) {
+              // Create a blob URL from the response
+              const pdfBlob = await response.blob();
+              const blobUrl = URL.createObjectURL(pdfBlob);
+
+              // Load and render PDF
+              const loadingTask = pdfjsLib.getDocument({
+                url: blobUrl,
+                cMapUrl:
+                  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
+                cMapPacked: true,
+              });
+
+              loadingTask.onProgress = (data) => {
+                if (data.total > 0) {
+                  const progress = ((data.loaded / data.total) * 100).toFixed(
+                    0
+                  );
+                  viewer.innerHTML = `
+                    <div class="flex items-center justify-center w-full h-full">
+                      <div class="text-white text-center">
+                        <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-12 h-12 animate-spin mb-4"></div>
+                        <p>Loading PDF... ${progress}%</p>
+                      </div>
+                    </div>
+                  `;
+                }
+              };
+
+              pdfDoc = await loadingTask.promise;
+              viewer.innerHTML = "";
+
+              // Clean up the blob URL after loading
+              URL.revokeObjectURL(blobUrl);
+
+              // Update UI
+              document.getElementById("totalPages").textContent =
+                pdfDoc.numPages;
+              document.getElementById("currentPage").textContent = "1";
+
+              // Render first few pages
+              const initialPages = Math.min(3, pdfDoc.numPages);
+              for (let i = 1; i <= initialPages; i++) {
+                await renderPage(i);
+              }
+
+              // Setup infinite scroll with error handling
+              let lastRenderedPage = initialPages;
+              container.onscroll = async () => {
+                if (
+                  container.scrollTop + container.clientHeight >=
+                  container.scrollHeight - 500
+                ) {
+                  if (lastRenderedPage < pdfDoc.numPages) {
+                    try {
                       lastRenderedPage++;
                       await renderPage(lastRenderedPage);
                       document.getElementById("currentPage").textContent =
                         lastRenderedPage;
+                    } catch (error) {
+                      console.error("Error rendering page:", error);
+                      // Show error message but don't interrupt scrolling
+                      const errorDiv = document.createElement("div");
+                      errorDiv.className = "text-red-500 text-center p-4";
+                      errorDiv.textContent = `Error loading page ${lastRenderedPage}. Please try refreshing.`;
+                      viewer.appendChild(errorDiv);
                     }
                   }
-                };
-              } catch (error) {
-                console.error("PDF loading error:", error);
-                if (retryCount < maxRetries) {
-                  retryCount++;
-                  console.log(
-                    `Retrying PDF load (attempt ${retryCount}/${maxRetries})...`
-                  );
-                  await new Promise((resolve) =>
-                    setTimeout(resolve, 1000 * retryCount)
-                  );
-                  return loadPDF();
                 }
-
-                // If all attempts fail, show error with options
-                viewer.innerHTML = `
-                  <div class="flex items-center justify-center w-full h-full">
-                    <div class="text-white text-center max-w-lg p-6">
-                      <i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
-                      <h3 class="text-xl font-bold mb-4">Unable to Load PDF</h3>
-                      <p class="mb-6">We couldn't load the PDF directly. Please try one of these options:</p>
-                      <div class="space-y-4">
-                        ${
-                          fileId
-                            ? `
-                          <a href="https://drive.google.com/file/d/${fileId}/view" target="_blank" 
-                             class="block w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-                            <i class="fab fa-google-drive mr-2"></i>Open in Google Drive
-                          </a>
-                          <a href="https://drive.google.com/uc?export=download&id=${fileId}" 
-                             class="block w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
-                            <i class="fas fa-download mr-2"></i>Download PDF
-                          </a>
-                        `
-                            : `
-                          <a href="${url}" target="_blank" 
-                             class="block w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-                            <i class="fas fa-external-link-alt mr-2"></i>Open PDF in New Tab
-                          </a>
-                        `
-                        }
-                        <button onclick="location.reload()" 
-                                class="block w-full bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
-                          <i class="fas fa-redo mr-2"></i>Retry
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                `;
-              }
+              };
+            } catch (error) {
+              console.error("Error loading PDF:", error);
+              viewer.innerHTML = `
+              
+              `;
             }
-
-            await loadPDF();
           } catch (error) {
-            console.error("Error in openPdf:", error);
+            console.error("Fatal error:", error);
             viewer.innerHTML = `
-              <div class="flex items-center justify-center w-full h-full">
-                <div class="text-white text-center">
-                  <i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
-                  <p class="text-red-500">Unable to load the PDF. Please try again later.</p>
-                  <button onclick="location.reload()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                    Retry
-                  </button>
-                </div>
-              </div>
+          
             `;
           }
+          initializeReviews(fileId);
         };
 
         document.getElementById("prevPage").onclick = () => {
@@ -646,6 +768,259 @@
             return false;
           }
         });
+
+        let currentBookId = null;
+        let selectedRating = 0;
+
+        function initializeReviews(bookId) {
+          if (!bookId) {
+            console.error("No book ID provided for reviews");
+            return;
+          }
+
+          currentBookId = bookId;
+          const reviewForm = document.getElementById("reviewForm");
+          const writeReviewBtn = document.getElementById("writeReviewBtn");
+          const cancelReview = document.getElementById("cancelReview");
+          const submitReview = document.getElementById("submitReview");
+          const ratingStars = document.querySelectorAll(".rating i");
+          const toggleReviews = document.getElementById("toggleReviews");
+          const reviewsSidebar = document.getElementById("reviewsSidebar");
+
+          // Toggle reviews sidebar with immediate load
+          toggleReviews.onclick = () => {
+            const isHidden = reviewsSidebar.classList.contains("hidden");
+            reviewsSidebar.classList.toggle("hidden");
+            if (isHidden) {
+              loadReviews(); // Load reviews when showing the sidebar
+            }
+          };
+
+          // Review form controls
+          writeReviewBtn.onclick = () => {
+            reviewForm.classList.remove("hidden");
+          };
+
+          cancelReview.onclick = () => {
+            reviewForm.classList.add("hidden");
+            resetReviewForm();
+          };
+
+          // Star rating functionality
+          ratingStars.forEach((star, index) => {
+            star.onclick = () => {
+              selectedRating = index + 1;
+              updateStarDisplay(selectedRating);
+            };
+
+            star.onmouseover = () => {
+              updateStarDisplay(index + 1, true);
+            };
+
+            star.onmouseout = () => {
+              updateStarDisplay(selectedRating);
+            };
+          });
+
+          // Submit review
+          submitReview.onclick = async () => {
+            if (!firebase.auth().currentUser) {
+              alert("Please login to submit a review");
+              return;
+            }
+
+            const reviewText = document
+              .getElementById("reviewText")
+              .value.trim();
+
+            if (selectedRating === 0) {
+              alert("Please select a rating");
+              return;
+            }
+
+            if (reviewText.length < 10) {
+              alert("Please write a review (minimum 10 characters)");
+              return;
+            }
+
+            try {
+              const user = firebase.auth().currentUser;
+
+              // Create the simple review object
+              const review = {
+                bookId: currentBookId,
+                userId: user.uid,
+                rating: selectedRating,
+                review: reviewText,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              };
+
+              // Add review to new BooksReviews collection
+              await db.collection("BooksReviews").add(review);
+
+              reviewForm.classList.add("hidden");
+              resetReviewForm();
+              await loadReviews();
+              alert("Review submitted successfully!");
+            } catch (error) {
+              console.error("Error submitting review:", error);
+              alert("Failed to submit review. Please try again.");
+            }
+          };
+        }
+
+        async function loadReviews() {
+          if (!currentBookId) {
+            console.error("No book ID available for loading reviews");
+            return;
+          }
+
+          const reviewsList = document.getElementById("reviewsList");
+          const averageRatingEl = document.getElementById("averageRating");
+          const totalReviewsEl = document.getElementById("totalReviews");
+
+          try {
+            // Show loading state
+            reviewsList.innerHTML = `
+              <div class="flex justify-center items-center py-4">
+                <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-8 h-8 animate-spin"></div>
+              </div>
+            `;
+
+            // Get reviews from BooksReviews collection
+            const reviewsSnapshot = await db
+              .collection("BooksReviews")
+              .where("bookId", "==", currentBookId)
+              .orderBy("createdAt", "desc")
+              .get();
+
+            // Calculate average rating
+            let totalRatings = 0;
+            let totalStars = 0;
+
+            reviewsSnapshot.docs.forEach((doc) => {
+              const reviewData = doc.data();
+              totalRatings++;
+              totalStars += reviewData.rating;
+            });
+
+            const averageRating =
+              totalRatings > 0 ? totalStars / totalRatings : 0;
+            averageRatingEl.textContent = averageRating.toFixed(1);
+            totalReviewsEl.textContent = `(${totalRatings})`;
+
+            if (reviewsSnapshot.empty) {
+              reviewsList.innerHTML = `
+                <div class="text-center py-8">
+                  <i class="fas fa-comments text-gray-600 text-4xl mb-4"></i>
+                  <p class="text-gray-400">No reviews yet. Be the first to review!</p>
+                </div>
+              `;
+              return;
+            }
+
+            // Load all user data at once for efficiency
+            const userIds = [
+              ...new Set(reviewsSnapshot.docs.map((doc) => doc.data().userId)),
+            ];
+            const usersSnapshot = await Promise.all(
+              userIds.map((userId) => db.collection("users").doc(userId).get())
+            );
+            const usersMap = {};
+            usersSnapshot.forEach((userDoc) => {
+              if (userDoc.exists) {
+                usersMap[userDoc.id] = userDoc.data();
+              }
+            });
+
+            reviewsList.innerHTML = reviewsSnapshot.docs
+              .map((doc) => {
+                const review = doc.data();
+                const userData = usersMap[review.userId] || {};
+                const date = review.createdAt
+                  ? new Date(
+                      review.createdAt.seconds * 1000
+                    ).toLocaleDateString()
+                  : "Unknown date";
+
+                return `
+                <div class="bg-gray-700/50 rounded-lg p-4 mb-4">
+                  <div class="flex items-start justify-between mb-2">
+                    <div class="flex items-center gap-3">
+                      <img src="${
+                        userData.photoURL || "https://via.placeholder.com/32"
+                      }" 
+                           alt="${userData.name || "Anonymous"}"
+                           class="w-8 h-8 rounded-full object-cover">
+                      <div>
+                        <h4 class="font-medium text-white">${
+                          userData.name || "Anonymous"
+                        }</h4>
+                        <div class="flex items-center gap-2">
+                          <div class="flex items-center">
+                            ${Array(5)
+                              .fill(0)
+                              .map(
+                                (_, i) =>
+                                  `<i class="fas fa-star ${
+                                    i < review.rating
+                                      ? "text-yellow-400"
+                                      : "text-gray-600"
+                                  }"></i>`
+                              )
+                              .join("")}
+                          </div>
+                          <span class="text-sm text-gray-400">${date}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-gray-300 mt-2">${review.review}</p>
+                </div>
+              `;
+              })
+              .join("");
+          } catch (error) {
+            console.error("Error loading reviews:", error);
+            reviewsList.innerHTML = `
+              <div class="text-center py-8">
+                <i class="fas fa-exclamation-circle text-red-500 text-4xl mb-4"></i>
+                <p class="text-red-500">Error loading reviews. Please try again.</p>
+                <button onclick="loadReviews()" class="mt-4 text-blue-400 hover:text-blue-300">
+                  <i class="fas fa-redo mr-2"></i>Retry
+                </button>
+              </div>
+            `;
+          }
+        }
+
+        function updateStarDisplay(rating, isHover = false) {
+          const stars = document.querySelectorAll(".rating i");
+          const ratingText = document.getElementById("ratingText");
+
+          stars.forEach((star, index) => {
+            if (index < rating) {
+              star.classList.remove("text-gray-400");
+              star.classList.add("text-yellow-400");
+            } else {
+              star.classList.remove("text-yellow-400");
+              star.classList.add("text-gray-400");
+            }
+          });
+
+          if (!isHover) {
+            ratingText.textContent =
+              rating > 0
+                ? `${rating} star${rating > 1 ? "s" : ""}`
+                : "Select rating";
+          }
+        }
+
+        function resetReviewForm() {
+          selectedRating = 0;
+          updateStarDisplay(0);
+          document.getElementById("reviewText").value = "";
+        }
       };
     </script>
   </body>

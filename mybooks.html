@@ -281,30 +281,28 @@
 
         function createBookCard(book) {
           const { title, description, image_url, pdf_url } = book;
-          const fileIdMatch = pdf_url.match(/\/d\/(.*)\/view/);
+          // Update Google Drive URL handling
+          const fileIdMatch = pdf_url.match(/\/d\/([^/]+)/);
           const fileId = fileIdMatch ? fileIdMatch[1] : null;
-          const embeddedPdfUrl = fileId
-            ? `https://drive.google.com/file/d/${fileId}/preview?usp=drivesdk&embedded=true&rm=minimal`
-            : pdf_url;
 
           const bookCard = document.createElement("div");
           bookCard.className =
             "bg-gray-800 rounded-xl overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-blue-500/20 border border-gray-700";
           bookCard.innerHTML = `
-                    <div class="relative group">
-                        <img src="${image_url}" alt="${title}" class="w-full h-48 object-cover transition duration-300 group-hover:opacity-75">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                    <div class="p-6 space-y-4">
-                        <h2 class="text-xl font-bold text-white line-clamp-2">${title}</h2>
-                        <p class="text-gray-400 text-sm line-clamp-3">${description}</p>
-                        <button class="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
-                            onclick="openPdf('${embeddedPdfUrl}', '${title}')">
-                            <i class="fas fa-book-reader"></i>
-                            <span>Read Book</span>
-                        </button>
-                    </div>
-                `;
+            <div class="relative group">
+              <img src="${image_url}" alt="${title}" class="w-full h-48 object-cover transition duration-300 group-hover:opacity-75">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+            <div class="p-6 space-y-4">
+              <h2 class="text-xl font-bold text-white line-clamp-2">${title}</h2>
+              <p class="text-gray-400 text-sm line-clamp-3">${description}</p>
+              <button class="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+                onclick="openPdf('${pdf_url}', '${title}', '${fileId}')">
+                <i class="fas fa-book-reader"></i>
+                <span>Read Book</span>
+              </button>
+            </div>
+          `;
           return bookCard;
         }
 
@@ -397,7 +395,7 @@
           viewer.appendChild(pageContainer);
         }
 
-        window.openPdf = async (url, title) => {
+        window.openPdf = async (url, title, fileId) => {
           try {
             const pdfModal = document.getElementById("pdfModal");
             viewer.innerHTML = ""; // Clear previous PDF
@@ -415,11 +413,51 @@
 
             // Handle Google Drive URLs
             let pdfUrl = url;
-            if (url.includes("drive.google.com")) {
-              const fileIdMatch = url.match(/\/d\/(.+?)(?:\/|$)/);
-              if (fileIdMatch) {
-                const fileId = fileIdMatch[1];
-                pdfUrl = `https://drive.google.com/file/d/${fileId}/preview?usp=drivesdk&embedded=true&rm=minimal`;
+            if (fileId) {
+              // Try different Google Drive URL formats
+              const urls = [
+                `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
+                `https://drive.google.com/uc?export=download&id=${fileId}`,
+                `https://drive.google.com/file/d/${fileId}/preview`,
+              ];
+
+              for (const testUrl of urls) {
+                try {
+                  const response = await fetch(testUrl, {
+                    method: "HEAD",
+                    mode: "cors",
+                  });
+                  if (response.ok) {
+                    pdfUrl = testUrl;
+                    break;
+                  }
+                } catch (error) {
+                  console.log("Trying alternative URL format...");
+                }
+              }
+
+              // If direct access fails, show alternate viewing options
+              if (pdfUrl === url) {
+                viewer.innerHTML = `
+                  <div class="flex items-center justify-center w-full h-full">
+                    <div class="text-white text-center max-w-lg p-6">
+                      <i class="fas fa-exclamation-circle text-4xl text-yellow-500 mb-4"></i>
+                      <h3 class="text-xl font-bold mb-4">PDF Viewer Options</h3>
+                      <p class="mb-6">Due to Google Drive security settings, we cannot display the PDF directly. Please choose an option below:</p>
+                      <div class="space-y-4">
+                        <a href="https://drive.google.com/file/d/${fileId}/view" target="_blank" 
+                           class="block w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                          <i class="fab fa-google-drive mr-2"></i>Open in Google Drive
+                        </a>
+                        <a href="https://drive.google.com/uc?export=download&id=${fileId}" 
+                           class="block w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                          <i class="fas fa-download mr-2"></i>Download PDF
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                `;
+                return;
               }
             }
 
@@ -431,13 +469,12 @@
               try {
                 const loadingTask = pdfjsLib.getDocument({
                   url: pdfUrl,
-                  withCredentials: true,
+                  withCredentials: false, // Changed to false for Google Drive URLs
                   cMapUrl:
                     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
                   cMapPacked: true,
                 });
 
-                // Add progress callback
                 loadingTask.onProgress = (data) => {
                   if (data.total > 0) {
                     const progress = ((data.loaded / data.total) * 100).toFixed(
@@ -455,7 +492,7 @@
                 };
 
                 pdfDoc = await loadingTask.promise;
-                viewer.innerHTML = ""; // Clear loading message
+                viewer.innerHTML = "";
 
                 // Update UI
                 document.getElementById("totalPages").textContent =
@@ -467,8 +504,21 @@
                   await renderPage(i);
                 }
 
-                // Rest of the existing PDF viewer setup...
-                // ...existing code for infinite scroll, controls setup, etc...
+                // Setup infinite scroll
+                let lastRenderedPage = 3;
+                container.onscroll = async () => {
+                  if (
+                    container.scrollTop + container.clientHeight >=
+                    container.scrollHeight - 500
+                  ) {
+                    if (lastRenderedPage < pdfDoc.numPages) {
+                      lastRenderedPage++;
+                      await renderPage(lastRenderedPage);
+                      document.getElementById("currentPage").textContent =
+                        lastRenderedPage;
+                    }
+                  }
+                };
               } catch (error) {
                 console.error("PDF loading error:", error);
                 if (retryCount < maxRetries) {
@@ -481,23 +531,53 @@
                   );
                   return loadPDF();
                 }
-                throw new Error(
-                  `Failed to load PDF after ${maxRetries} attempts`
-                );
+
+                // If all attempts fail, show error with options
+                viewer.innerHTML = `
+                  <div class="flex items-center justify-center w-full h-full">
+                    <div class="text-white text-center max-w-lg p-6">
+                      <i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
+                      <h3 class="text-xl font-bold mb-4">Unable to Load PDF</h3>
+                      <p class="mb-6">We couldn't load the PDF directly. Please try one of these options:</p>
+                      <div class="space-y-4">
+                        ${
+                          fileId
+                            ? `
+                          <a href="https://drive.google.com/file/d/${fileId}/view" target="_blank" 
+                             class="block w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                            <i class="fab fa-google-drive mr-2"></i>Open in Google Drive
+                          </a>
+                          <a href="https://drive.google.com/uc?export=download&id=${fileId}" 
+                             class="block w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300">
+                            <i class="fas fa-download mr-2"></i>Download PDF
+                          </a>
+                        `
+                            : `
+                          <a href="${url}" target="_blank" 
+                             class="block w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                            <i class="fas fa-external-link-alt mr-2"></i>Open PDF in New Tab
+                          </a>
+                        `
+                        }
+                        <button onclick="location.reload()" 
+                                class="block w-full bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
+                          <i class="fas fa-redo mr-2"></i>Retry
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                `;
               }
             }
 
             await loadPDF();
           } catch (error) {
             console.error("Error in openPdf:", error);
-            const errorMessage =
-              error.message ||
-              "Unable to load the PDF. Please try again later.";
             viewer.innerHTML = `
               <div class="flex items-center justify-center w-full h-full">
                 <div class="text-white text-center">
                   <i class="fas fa-exclamation-circle text-4xl text-red-500 mb-4"></i>
-                  <p class="text-red-500">${errorMessage}</p>
+                  <p class="text-red-500">Unable to load the PDF. Please try again later.</p>
                   <button onclick="location.reload()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                     Retry
                   </button>

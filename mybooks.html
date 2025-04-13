@@ -58,6 +58,62 @@
         }
       }
     </style>
+    <script>
+      // Secure PDF URL handling
+      const SecurePdfHandler = {
+        _store: new WeakMap(),
+        _key: new Uint8Array(16).map(() => Math.floor(Math.random() * 256)),
+
+        // Convert array to hex string
+        _toHex(buffer) {
+          return Array.from(new Uint8Array(buffer))
+            .map((b) => b.toString(16).padStart(2, "0"))
+            .join("");
+        },
+
+        // Convert hex string to array
+        _fromHex(hex) {
+          const pairs = hex.match(/.{2}/g) || [];
+          return new Uint8Array(pairs.map((pair) => parseInt(pair, 16)));
+        },
+
+        // XOR encryption
+        async _encrypt(text) {
+          const encoder = new TextEncoder();
+          const data = encoder.encode(text);
+          const encrypted = new Uint8Array(data.length);
+          for (let i = 0; i < data.length; i++) {
+            encrypted[i] = data[i] ^ this._key[i % this._key.length];
+          }
+          return this._toHex(encrypted);
+        },
+
+        // XOR decryption
+        async _decrypt(hex) {
+          const encrypted = this._fromHex(hex);
+          const decrypted = new Uint8Array(encrypted.length);
+          for (let i = 0; i < encrypted.length; i++) {
+            decrypted[i] = encrypted[i] ^ this._key[i % this._key.length];
+          }
+          return new TextDecoder().decode(decrypted);
+        },
+
+        // Store URL and get token
+        async protect(url) {
+          const token = {};
+          const encrypted = await this._encrypt(url);
+          this._store.set(token, encrypted);
+          return token;
+        },
+
+        // Retrieve URL using token
+        async retrieve(token) {
+          const encrypted = this._store.get(token);
+          if (!encrypted) return null;
+          return await this._decrypt(encrypted);
+        },
+      };
+    </script>
   </head>
   <body class="bg-gray-900 text-white p-5 flex flex-col items-center">
     <div
@@ -219,24 +275,64 @@
             ? `https://drive.google.com/file/d/${fileId}/preview?usp=drivesdk&embedded=true&rm=minimal`
             : pdf_url;
 
+          // Create card elements
           const bookCard = document.createElement("div");
           bookCard.className =
             "bg-gray-800 rounded-xl overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-blue-500/20 border border-gray-700";
-          bookCard.innerHTML = `
-                    <div class="relative group">
-                        <img src="${image_url}" alt="${title}" class="w-full h-48 object-cover transition duration-300 group-hover:opacity-75">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                    <div class="p-6 space-y-4">
-                        <h2 class="text-xl font-bold text-white line-clamp-2">${title}</h2>
-                        <p class="text-gray-400 text-sm line-clamp-3">${description}</p>
-                        <button class="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
-                            onclick="openPdf('${embeddedPdfUrl}', '${title}')">
-                            <i class="fas fa-book-reader"></i>
-                            <span>Read Book</span>
-                        </button>
-                    </div>
-                `;
+
+          // Create elements programmatically
+          const imageContainer = document.createElement("div");
+          imageContainer.className = "relative group";
+
+          const img = document.createElement("img");
+          img.src = image_url;
+          img.alt = title;
+          img.className =
+            "w-full h-48 object-cover transition duration-300 group-hover:opacity-75";
+
+          const gradient = document.createElement("div");
+          gradient.className =
+            "absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300";
+
+          const contentDiv = document.createElement("div");
+          contentDiv.className = "p-6 space-y-4";
+
+          const titleEl = document.createElement("h2");
+          titleEl.className = "text-xl font-bold text-white line-clamp-2";
+          titleEl.textContent = title;
+
+          const descEl = document.createElement("p");
+          descEl.className = "text-gray-400 text-sm line-clamp-3";
+          descEl.textContent = description;
+
+          const button = document.createElement("button");
+          button.className =
+            "w-full flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300";
+
+          // Secure the PDF URL
+          SecurePdfHandler.protect(embeddedPdfUrl).then((token) => {
+            button.onclick = async () => {
+              const url = await SecurePdfHandler.retrieve(token);
+              if (url) openPdf(url, title);
+            };
+          });
+
+          const icon = document.createElement("i");
+          icon.className = "fas fa-book-reader";
+          const span = document.createElement("span");
+          span.textContent = "Read Book";
+
+          // Assemble the elements
+          button.appendChild(icon);
+          button.appendChild(span);
+          imageContainer.appendChild(img);
+          imageContainer.appendChild(gradient);
+          contentDiv.appendChild(titleEl);
+          contentDiv.appendChild(descEl);
+          contentDiv.appendChild(button);
+          bookCard.appendChild(imageContainer);
+          bookCard.appendChild(contentDiv);
+
           return bookCard;
         }
 
@@ -285,22 +381,40 @@
         });
 
         // Enhanced PDF viewer functionality
-        window.openPdf = (pdfUrl, title) => {
+        window.openPdf = (url, title) => {
           const watermark = document.querySelector(".watermark");
           watermark.textContent = `${
             firebase.auth().currentUser.email
           } - ${new Date().toLocaleDateString()}`;
 
-          pdfViewer.src = pdfUrl;
-          pdfModal.classList.remove("hidden");
+          const pdfViewer = document.getElementById("pdfViewer");
 
-          // Disable right-click
-          pdfViewer.contentWindow.document.addEventListener(
-            "contextmenu",
-            (e) => e.preventDefault()
-          );
+          // Additional security for iframe
+          const secureUrl = new URL(url);
+          pdfViewer.sandbox = "allow-scripts allow-same-origin";
+          pdfViewer.src = secureUrl.toString();
 
-          // Prevent keyboard shortcuts
+          document.getElementById("pdfModal").classList.remove("hidden");
+
+          // Enhanced security measures
+          const protectViewer = () => {
+            try {
+              const doc = pdfViewer.contentWindow.document;
+              doc.addEventListener("contextmenu", (e) => e.preventDefault());
+              doc.addEventListener("selectstart", (e) => e.preventDefault());
+              doc.addEventListener("copy", (e) => e.preventDefault());
+              doc.addEventListener("dragstart", (e) => e.preventDefault());
+              doc.addEventListener("keydown", (e) => {
+                if (e.ctrlKey || e.metaKey) e.preventDefault();
+              });
+            } catch (e) {
+              console.warn(
+                "Some security measures couldn't be applied due to cross-origin restrictions"
+              );
+            }
+          };
+
+          pdfViewer.onload = protectViewer;
           document.addEventListener("keydown", preventKeyboardShortcuts);
         };
 

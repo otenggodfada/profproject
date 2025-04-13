@@ -193,27 +193,35 @@
 
       /* Add these classes to existing elements */
       .stat-card {
-        @apply hover-card bg-opacity-95 backdrop-blur-sm;
+        background-color: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(4px);
+        transition: transform 0.3s ease;
+      }
+      .stat-card:hover {
+        transform: translateY(-5px);
       }
 
       .action-button {
-        @apply button-pulse hover:button-pulse-none;
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      .action-button:hover {
+        animation: none;
       }
 
       .success-message {
-        @apply success-checkmark;
+        animation: checkmark 0.5s ease-out forwards;
       }
 
       .error-message {
-        @apply error-shake;
+        animation: shake 0.5s ease-in-out;
       }
 
       .progress-bar {
-        @apply animate-progress;
+        animation: progress 2s ease-out forwards;
       }
 
       .notification {
-        @apply toast-slide;
+        animation: slideIn 0.3s ease-out forwards;
       }
     </style>
   </head>
@@ -607,6 +615,8 @@
         query,
         where,
         getDocs,
+        deleteDoc,
+    
       } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
       import {
         getAuth,
@@ -684,8 +694,8 @@
       // Update UI with data
       function updateUI(userData) {
         animateCount("total-referrals", 0, userData.totalrefs, 2000);
-        animateCount("total-earnings", 0, userData.earnings, 2500);
-        animateCount("total-withdrawals", 0, 0, 2000);
+        animateCount("total-earnings", 0, userData.earnings || 0.00, 2500);
+        animateCount("total-withdrawals", 0, userData.totalw || 0.00, 2000);
 
     
 
@@ -741,59 +751,147 @@
         const pendingList = document.getElementById("pending-withdrawals");
         const noWithdrawals = document.getElementById("no-withdrawals");
 
-        if (withdrawals.length > 0) {
-          noWithdrawals.classList.add("hidden");
-          pendingList.innerHTML = withdrawals
-            .map(
-              (withdrawal, index) => `
-            <tr class="bg-gray-800/30 hover:bg-gray-800/50 transition-colors" 
-                style="animation: fadeIn 0.3s ease-out ${index * 0.1}s both;">
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                ${new Date(
-                  withdrawal.timestamp.seconds * 1000
-                ).toLocaleDateString()}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="text-green-400 font-medium">GH₵${
-                  withdrawal.amount
-                }</span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
-                  ${
-                    withdrawal.method === "mobile-money"
-                      ? "bg-blue-100 text-blue-800"
-                      : withdrawal.method === "bank"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-purple-100 text-purple-800"
-                  }">
-                  ${withdrawal.method}
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                  ${
-                    withdrawal.status === "pending"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : withdrawal.status === "completed"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-red-100 text-red-800"
-                  }">
-                  ${withdrawal.status}
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                ${withdrawal.paymentaddress}
-              </td>
-            </tr>
-          `
-            )
-            .join("");
-        } else {
-          pendingList.innerHTML = "";
-          noWithdrawals.classList.remove("hidden");
+        // Pagination settings
+        const itemsPerPage = 7;
+        const totalPages = Math.ceil(withdrawals.length / itemsPerPage);
+        let currentPage = 1;
+
+        function displayWithdrawals(page) {
+          const start = (page - 1) * itemsPerPage;
+          const end = start + itemsPerPage;
+          const paginatedWithdrawals = withdrawals.slice(start, end);
+
+          if (withdrawals.length > 0) {
+            noWithdrawals.classList.add("hidden");
+            pendingList.innerHTML = paginatedWithdrawals
+              .map(
+                (withdrawal, index) => `
+                  <tr class="bg-gray-800/30 hover:bg-gray-800/50 transition-colors" 
+                      style="animation: fadeIn 0.3s ease-out ${index * 0.1}s both;">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                      ${new Date(withdrawal.timestamp.seconds * 1000).toLocaleDateString()}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="text-green-400 font-medium">GH₵${withdrawal.amount}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
+                        ${withdrawal.method === "mobile-money"
+                          ? "bg-blue-100 text-blue-800"
+                          : withdrawal.method === "bank"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-purple-100 text-purple-800"
+                        }">
+                        ${withdrawal.method}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                        ${withdrawal.status === "pending"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : withdrawal.status === "completed"
+                          ? "bg-green-100 text-green-800" 
+                          : "bg-red-100 text-red-800"
+                        }">
+                        ${withdrawal.status}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                      ${withdrawal.paymentaddress}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      ${withdrawal.status === "pending" 
+                        ? `<button onclick="deleteWithdrawal('${withdrawal.id}')" 
+                            class="text-red-400 hover:text-red-600 transition-colors">
+                            <i class="fas fa-trash"></i>
+                          </button>`
+                        : ''
+                      }
+                    </td>
+                  </tr>
+                `
+              )
+              .join("");
+
+            // Add pagination controls
+            const paginationHTML = `
+              <tr>
+                <td colspan="6">
+                  <div class="flex items-center justify-center space-x-2 mt-4 pb-4">
+                    <button 
+                      onclick="changePage(${currentPage - 1})"
+                      class="px-3 py-1 rounded-md bg-gray-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                      ${currentPage === 1 ? 'disabled' : ''}>
+                      Previous
+                    </button>
+                    <span class="text-gray-400">
+                      Page ${currentPage} of ${totalPages}
+                    </span>
+                    <button 
+                      onclick="changePage(${currentPage + 1})"
+                      class="px-3 py-1 rounded-md bg-gray-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                      ${currentPage === totalPages ? 'disabled' : ''}>
+                      Next
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            `;
+            pendingList.innerHTML += paginationHTML;
+          } else {
+            pendingList.innerHTML = "";
+            noWithdrawals.classList.remove("hidden");
+          }
         }
+
+        // Initialize pagination
+        displayWithdrawals(currentPage);
+
+        // Add changePage function to window object so it can be called from pagination buttons
+        window.changePage = function(page) {
+          if (page >= 1 && page <= totalPages) {
+            currentPage = page;
+            displayWithdrawals(currentPage);
+          }
+        };
       }
+
+    // Add this function to handle withdrawal deletion
+    // Make deleteWithdrawal function global
+    window.deleteWithdrawal = async function(withdrawalId) {
+      try {
+        const user = auth.currentUser;
+        if (!user) {
+          showToast("Please login to delete withdrawals", "error");
+          return;
+        }
+
+        // Query to find the withdrawal document
+        const withdrawalsRef = collection(db, "withdrawals");
+        const q = query(withdrawalsRef, 
+          where("userId", "==", user.uid),
+       
+        );
+        
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          showToast("Withdrawal not found", "error");
+          return;
+        }
+
+        // Delete the first matching document
+        const docToDelete = querySnapshot.docs[0];
+        await deleteDoc(doc(db, "withdrawals", docToDelete.id));
+        
+        showToast("Withdrawal request deleted successfully!", "success");
+        
+        // Refresh the withdrawals list
+        await fetchPendingWithdrawals(user.uid);
+      } catch (error) {
+        console.error("Error deleting withdrawal:", error);
+        showToast("Error deleting withdrawal request", "error");
+      }
+    }
 
       document
         .getElementById("withdraw-button")
@@ -828,7 +926,8 @@
                     "Insufficient earnings to withdraw this amount.";
                 } else {
                   const newEarnings = currentEarnings - withdrawAmount;
-                  await updateDoc(userDoc, { earnings: newEarnings });
+                  const totalWithdrawals = (userData.totalw || 0) + withdrawAmount; // Calculate total withdrawals
+                  await updateDoc(userDoc, { earnings: newEarnings, totalw: totalWithdrawals });
 
                   await addDoc(collection(db, "withdrawals"), {
                     userId,
@@ -856,6 +955,8 @@
               "Error processing withdrawal. Please try again.";
           }
         });
+
+
     </script>
     <script>
       AOS.init();
@@ -945,6 +1046,9 @@
         }
       }
 
+
+        
+
       // Update form validation with better feedback
       function validateForm() {
         const amount = document.getElementById("withdraw-amount");
@@ -995,6 +1099,109 @@
         // Initialize loading states
         const loadingElements = document.querySelectorAll(".loading-shimmer");
         loadingElements.forEach((element) => hideLoading(element));
+
+        // Add event listener for withdrawal form
+        document.getElementById("withdraw-button").addEventListener("click", processWithdrawal);
+      });
+
+      // Add copy to clipboard functionality
+      async function copyReferralLink() {
+        const referralLink = document.getElementById("referral-link").textContent;
+        try {
+          await navigator.clipboard.writeText(referralLink);
+          showToast("✅ Referral link copied!", "success");
+        } catch (error) {
+          showToast("❌ Failed to copy", "error");
+        }
+      }
+
+      // Submission handler for withdrawal
+      async function submitWithdrawal() {
+        const storedUserId = localStorage.getItem("userId");
+        const amount = parseFloat(document.getElementById("withdraw-amount").value);
+        const method = document.getElementById("withdraw-method").value;
+        const details = document.getElementById("payment-address").value;
+
+        if (!amount || !method || !details) {
+          throw new Error("Please fill in all fields");
+        }
+
+        if (amount < 50) {
+          throw new Error("Minimum withdrawal amount is GH₵50");
+        }
+
+        const user = storedUserId;
+        if (!user) {
+          throw new Error("Please login to make a withdrawal");
+        }
+
+        // This will trigger the existing withdrawal logic in the Firebase event listener
+        document.getElementById("withdraw-button").click();
+      }
+
+      // Form validation with visual feedback
+      function validateForm() {
+        const amount = document.getElementById("withdraw-amount");
+        const method = document.getElementById("withdraw-method");
+        const details = document.getElementById("payment-address");
+
+        let isValid = true;
+
+        [amount, method, details].forEach((field) => {
+          if (!field.value) {
+            field.classList.add("border-red-500", "error-shake");
+            isValid = false;
+            setTimeout(() => {
+              field.classList.remove("error-shake");
+              field.addEventListener("input", () => {
+                field.classList.remove("border-red-500");
+              }, { once: true });
+            }, 500);
+          } else {
+            field.classList.remove("border-red-500");
+          }
+        });
+
+        if (amount.value && parseFloat(amount.value) < 50) {
+          amount.classList.add("border-red-500", "error-shake");
+          showToast("Minimum withdrawal amount is GH₵50", "error");
+          isValid = false;
+        }
+
+        return isValid;
+      }
+
+      // Add loading indicators during async operations
+      async function processWithdrawal() {
+        const button = document.getElementById("withdraw-button");
+        if (!validateForm()) return;
+
+        showLoading(button);
+        try {
+          await submitWithdrawal();
+       
+          showToast("Withdrawal request submitted successfully!");
+        } catch (error) {
+          showToast(error.message, "error");
+        } finally {
+          hideLoading(button);
+ 
+        }
+      }
+
+      // Initialize animations when page loads
+      document.addEventListener("DOMContentLoaded", () => {
+        // Add animation classes to stat cards
+        document.querySelectorAll(".stat-card").forEach((card, index) => {
+          card.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s forwards`;
+        });
+
+        // Initialize loading states
+        const loadingElements = document.querySelectorAll(".loading-shimmer");
+        loadingElements.forEach((element) => hideLoading(element));
+
+        // Add event listener for withdrawal form
+        document.getElementById("withdraw-button").addEventListener("click", processWithdrawal);
       });
     </script>
   </body>

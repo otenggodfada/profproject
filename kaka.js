@@ -19,7 +19,7 @@ function createBottomNav() {
     },
     {
       id: "shop",
-      href: "store.html?title=shop",
+      href: "store.html",
       icon: "fas fa-shopping-cart",
       text: "Shop",
       file: "store.html",

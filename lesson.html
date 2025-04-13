@@ -79,8 +79,8 @@
         <!-- Lesson Content -->
         <div class="space-y-8">
           <!-- Title and Progress -->
-          <div class="flex justify-between items-center">
-            <div>
+          <div class="flex flex-col lg:flex-row justify-between items-start gap-6 p-6 bg-gray-800/50 rounded-xl backdrop-blur-sm">
+            <div class="flex-1">
               <h1 id="lessonTitle" class="text-3xl font-bold"></h1>
               <p id="lessonDescription" class="text-gray-400 mt-2"></p>
             </div>
@@ -260,6 +260,7 @@
         getFirestore,
         doc,
         getDoc,
+        setDoc,
         updateDoc,
         arrayUnion,
         collection,
@@ -631,18 +632,25 @@
         });
 
       // Handle marking lesson as complete
+      const nextButton = document.getElementById("nextLesson");
       document
         .getElementById("markComplete")
         .addEventListener("click", async () => {
           try {
-            await updateDoc(
-              doc(db, "users", auth.currentUser.uid, "progress", courseId),
-              {
+            const docRef = doc(db, "users", auth.currentUser.uid, "completedLessons", courseId);
+            const docSnap = await getDoc(docRef);
+            
+            if (!docSnap.exists()) {
+              await setDoc(docRef, {
                 [`${sectionId}.${lessonId}.completed`]: true,
-                [`${sectionId}.${lessonId}.completedAt`]:
-                  new Date().toISOString(),
-              }
-            );
+                [`${sectionId}.${lessonId}.completedAt`]: new Date().toISOString(),
+              });
+            } else {
+              await updateDoc(docRef, {
+                [`${sectionId}.${lessonId}.completed`]: true,
+                [`${sectionId}.${lessonId}.completedAt`]: new Date().toISOString(),
+              });
+            }
 
             // Update UI to reflect completion
             document.getElementById("markComplete").textContent = "Completed";
@@ -668,7 +676,7 @@
             }).showToast();
 
             // Automatically move to next lesson if available
-            if (!nextButton.disabled) {
+            if (nextButton && !nextButton.disabled) {
               setTimeout(() => nextButton.click(), 1500);
             }
           } catch (error) {

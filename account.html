@@ -11,22 +11,37 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-<script src="kaka.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <script src="kaka.js"></script>
+    <style>
+      .referral-badge {
+        position: absolute;
+        top: -12px;
+        right: -12px;
+        background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+    </style>
   </head>
-  <body
-    class="bg-gray-900 text-white min-h-screen  "
-  >
-  <div class=" bg-[#172554] fixed  top-0 z-20 w-full">
-    <div id="navbar-container"></div>
-  </div>
+  <body class="bg-gray-900 text-white min-h-screen">
+    <div class="bg-[#172554] fixed top-0 z-20 w-full">
+      <div id="navbar-container"></div>
+    </div>
     <div
       id="account-modal"
-      class="fixed inset-0 flex z-50 justify-center items-center overflow-auto   bg-black/50 p-4"
+      class="fixed inset-0 flex z-50 justify-center items-center overflow-auto bg-black/50 p-4"
     >
       <div
-        class="relative max-w-lg w-full bg-[#242525] p-8 rounded-2xl border border-gray-600 mt-72 mb-32  shadow-xl"
+        class="relative max-w-lg w-full bg-[#242525] p-8 rounded-2xl border border-gray-600 mt-72 mb-32 shadow-xl"
       >
+        <div class="referral-badge">Earn 20% Commission!</div>
         <button
           id="close-modal"
           class="absolute top-4 right-4 text-gray-300 text-3xl"
@@ -37,11 +52,25 @@
           <h2 class="text-2xl font-semibold text-center mb-6">
             Create an Account
           </h2>
-          <form  id="account-form" class="space-y-4">
+
+          <!-- Add Referral Program Highlight Box -->
+          <div
+            class="bg-gradient-to-r from-blue-900 to-purple-900 p-4 rounded-lg mb-6"
+          >
+            <h3 class="text-lg font-semibold mb-2">
+              🎁 Join Our Referral Program
+            </h3>
+            <p class="text-sm text-gray-300">
+              Get 20% commission on all referral earnings for life! Share your
+              unique code and start earning.
+            </p>
+          </div>
+
+          <form id="account-form" class="space-y-4">
             <div>
               <label class="text-red-500" for="user-type">*</label>
               <select
-              required
+                required
                 id="user-type"
                 name="user-type"
                 class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
@@ -54,7 +83,7 @@
             <div>
               <label class="text-red-500" for="full-name">*</label>
               <input
-placeholder="Full name"
+                placeholder="Full name"
                 type="text"
                 id="full-name"
                 class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
@@ -64,7 +93,7 @@ placeholder="Full name"
             <div>
               <label class="text-red-500" for="email">*</label>
               <input
-              placeholder="Email address"
+                placeholder="Email address"
                 type="email"
                 id="email"
                 class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
@@ -74,18 +103,17 @@ placeholder="Full name"
             <div>
               <label class="text-red-500" for="telephone">*</label>
               <input
-               
-              placeholder="Tel"
+                placeholder="Tel"
                 type="tel"
                 id="telephone"
-                class=" w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500 "
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
             <div>
-            <label class="text-red-500" for="password">*</label>
+              <label class="text-red-500" for="password">*</label>
               <input
-              placeholder="Password"
+                placeholder="Password"
                 type="password"
                 id="password"
                 class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
@@ -93,40 +121,41 @@ placeholder="Full name"
               />
             </div>
             <div>
-             
               <input
-placeholder="Registration number"
+                placeholder="Registration number"
                 type="text"
                 id="reg-number"
                 class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
-               
               />
             </div>
             <div>
-            
               <input
-              placeholder="Referral code"
+                placeholder="Referral code (Optional)"
                 type="text"
                 id="referral"
-             
+                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
+              />
+              <p class="text-sm text-gray-400 mt-1">
+                Have a referral code? Enter it here!
+              </p>
+            </div>
+            <div id="author-fields" class="hidden">
+              <div>
+                Create ZoomLInk
+                <span id="unhide-zoom" class="text-blue-500">Here</span>
+              </div>
+              <input
+                placeholder="Zoom Invitation link"
+                type="text"
+                id="zoom-id"
                 class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div id="author-fields" class="hidden">
-            <div>
-             Create ZoomLInk <span id="unhide-zoom" class="text-blue-500" >Here</span> 
-            </div>
-              <input
-              placeholder="Zoom Invitation link"
-                type="text"
-                id="zoom-id"
-                class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500 "
-              />
-           
-            </div>
             <p class="text-center mt-4">
               By signing up, I agree with the website's
-              <a href="terms_conditions.html"  class="text-blue-400 underline"> Terms and Conditions</a>
+              <a href="terms_conditions.html" class="text-blue-400 underline">
+                Terms and Conditions</a
+              >
             </p>
             <button
               type="submit"
@@ -139,7 +168,10 @@ placeholder="Registration number"
             Already have an account?
             <a href="#" id="toggle-login" class="text-blue-400">Login</a>
           </p>
-        
+          <p class="text-center mt-2 text-sm text-gray-400">
+            Want to learn more about our referral program?
+            <a href="referralp.html" class="text-blue-400">View Details</a>
+          </p>
         </div>
         <!-- Login Section -->
         <div id="login-section" class="hidden">
@@ -148,9 +180,8 @@ placeholder="Registration number"
           </h2>
           <form id="login-form" class="space-y-4">
             <div>
-             
               <input
-              placeholder="Email address"
+                placeholder="Email address"
                 type="email"
                 id="login-email"
                 class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
@@ -158,10 +189,8 @@ placeholder="Registration number"
               />
             </div>
             <div>
-            
               <input
-              
-              placeholder="Password"
+                placeholder="Password"
                 type="password"
                 id="login-password"
                 class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
@@ -171,9 +200,7 @@ placeholder="Registration number"
 
             <p class="text-center mt-4">
               Forgot Password?
-              <a href="#" id="toggle-reset" class="text-blue-400"
-                >Reset</a
-              >
+              <a href="#" id="toggle-reset" class="text-blue-400">Reset</a>
             </p>
             <button
               type="submit"
@@ -189,16 +216,15 @@ placeholder="Registration number"
             >
           </p>
         </div>
-<!-- Reset Section -->
-        <div id="reset-section" class="hidden ">
+        <!-- Reset Section -->
+        <div id="reset-section" class="hidden">
           <h2 class="text-2xl font-semibold text-center mb-6 mt-10">
             Reset Your Account
           </h2>
           <form id="reset-form" class="space-y-4">
             <div>
-             
               <input
-              placeholder="Email address"
+                placeholder="Email address"
                 type="email"
                 id="reset-email"
                 class="w-full mt-1 p-3 rounded-lg bg-[#242525] border border-gray-500 focus:ring-2 focus:ring-blue-500"
@@ -206,9 +232,6 @@ placeholder="Registration number"
               />
               <p id="message"></p>
             </div>
-       
-
-      
             <button
               type="submit"
               class="w-full p-3 mt-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg"
@@ -216,42 +239,57 @@ placeholder="Registration number"
               Reset
             </button>
           </form>
-       
         </div>
       </div>
 
-      
-
-      <div id="zoom-inv" class="fixed bg-black bg-opacity-80 top-0 left-0 bottom-0 w-screen h-screen flex justify-center items-center overflow-y-auto hidden ">
-        <div class="max-w-md mx-auto bg-gradient-to-r from-indigo-600 to-purple-700 p-8 rounded-3xl shadow-2xl text-white text-center space-y-6 relative overflow-y-auto mb-48 mt-48">
+      <div
+        id="zoom-inv"
+        class="fixed bg-black bg-opacity-80 top-0 left-0 bottom-0 w-screen h-screen flex justify-center items-center overflow-y-auto hidden"
+      >
+        <div
+          class="max-w-md mx-auto bg-gradient-to-r from-indigo-600 to-purple-700 p-8 rounded-3xl shadow-2xl text-white text-center space-y-6 relative overflow-y-auto mb-48 mt-48"
+        >
           <div class="flex justify-center">
-              <img src="https://fv5-5.files.fm/thumb_show.php?i=4y2mjbe7hs&view&v=1&PHPSESSID=d1c81dd908e350a345f15abddaa35c3e6a73f36d" 
-                  alt="Profile Image" class="">
+            <img
+              src="https://fv5-5.files.fm/thumb_show.php?i=4y2mjbe7hs&view&v=1&PHPSESSID=d1c81dd908e350a345f15abddaa35c3e6a73f36d"
+              alt="Profile Image"
+              class=""
+            />
           </div>
-          <div id="close-zoom" class="absolute top-4 right-4 text-white bg-black/50 hover:bg-red-700 rounded-full w-10 h-10 flex justify-center items-center shadow-lg cursor-pointer transition-all duration-300 ease-in-out">
+          <div
+            id="close-zoom"
+            class="absolute top-4 right-4 text-white bg-black/50 hover:bg-red-700 rounded-full w-10 h-10 flex justify-center items-center shadow-lg cursor-pointer transition-all duration-300 ease-in-out"
+          >
             X
           </div>
-          
-          <h2 class="text-4xl font-extrabold tracking-wide">Zoom Invitation Link</h2>
-          <p class="text-lg leading-relaxed opacity-90">Get access to your Zoom invitation link! Click below to enter:</p>
-          <a href="https://app.zoom.us/wc/home" 
-              class="inline-block bg-white text-indigo-600 px-8 py-3 rounded-full font-bold text-lg transition-all hover:bg-gray-100 shadow-xl transform hover:scale-105">
-              🚀 Get Link
+
+          <h2 class="text-4xl font-extrabold tracking-wide">
+            Zoom Invitation Link
+          </h2>
+          <p class="text-lg leading-relaxed opacity-90">
+            Get access to your Zoom invitation link! Click below to enter:
+          </p>
+          <a
+            href="https://app.zoom.us/wc/home"
+            class="inline-block bg-white text-indigo-600 px-8 py-3 rounded-full font-bold text-lg transition-all hover:bg-gray-100 shadow-xl transform hover:scale-105"
+          >
+            🚀 Get Link
           </a>
         </div>
       </div>
-      
-
     </div>
     <script>
+      document
+        .getElementById("unhide-zoom")
+        .addEventListener("click", function () {
+          document.getElementById("zoom-inv").classList.remove("hidden");
+        });
 
-document.getElementById("unhide-zoom").addEventListener("click", function () {
-    document.getElementById("zoom-inv").classList.remove("hidden");
-});
-
-document.getElementById("close-zoom").addEventListener("click", function () {
-    document.getElementById("zoom-inv").classList.add("hidden");
-});
+      document
+        .getElementById("close-zoom")
+        .addEventListener("click", function () {
+          document.getElementById("zoom-inv").classList.add("hidden");
+        });
 
       document
         .getElementById("user-type")
@@ -260,11 +298,13 @@ document.getElementById("close-zoom").addEventListener("click", function () {
             .getElementById("author-fields")
             .classList.toggle("hidden", this.value !== "author");
         });
+
       document
         .getElementById("close-modal")
         .addEventListener("click", function () {
           window.location.href = "./index.html";
         });
+
       document
         .getElementById("toggle-login")
         .addEventListener("click", function () {
@@ -274,12 +314,10 @@ document.getElementById("close-zoom").addEventListener("click", function () {
           document.getElementById("login-section").classList.remove("hidden");
         });
 
-        document
+      document
         .getElementById("toggle-reset")
         .addEventListener("click", function () {
-          document
-            .getElementById("login-section")
-            .classList.add("hidden");
+          document.getElementById("login-section").classList.add("hidden");
           document.getElementById("reset-section").classList.remove("hidden");
         });
 
@@ -296,24 +334,38 @@ document.getElementById("close-zoom").addEventListener("click", function () {
       function populateReferral() {
         const urlParams = new URLSearchParams(window.location.search);
         const referralCode = urlParams.get("referral");
-     const reff=   localStorage.getItem("referral")
+        const reff = localStorage.getItem("referral");
         if (referralCode) {
           const referralInput = document.getElementById("referral");
           referralInput.value = referralCode;
-        } else if (reff){
-
+        } else if (reff) {
           const referralInput = document.getElementById("referral");
           referralInput.value = reff;
-
         }
       }
 
       // Call the function when the page loads
       window.addEventListener("DOMContentLoaded", populateReferral);
     </script>
-     <div id="loading-screen" class="fixed hidden bg-black opacity-60 top-0 right-0 bottom-0 left-0 text-white text-center flex items-center justify-center "><svg class="w-6 h-6 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.93 4.93a10.5 10.5 0 0114.14 0m-14.14 14.14a10.5 10.5 0 0114.14 0M9.17 9.17a5.25 5.25 0 017.66 0m-7.66 7.66a5.25 5.25 0 017.66 0" />
-    </svg></div>
+    <div
+      id="loading-screen"
+      class="fixed hidden bg-black opacity-60 top-0 right-0 bottom-0 left-0 text-white text-center flex items-center justify-center"
+    >
+      <svg
+        class="w-6 h-6 animate-spin"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4.93 4.93a10.5 10.5 0 0114.14 0m-14.14 14.14a10.5 10.5 0 0114.14 0M9.17 9.17a5.25 5.25 0 017.66 0m-7.66 7.66a5.25 5.25 0 017.66 0"
+        />
+      </svg>
+    </div>
     <script src="navbar.js"></script>
     <script type="module" src="./dynamiccon.js"></script>
   </body>

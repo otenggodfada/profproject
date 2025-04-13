@@ -104,7 +104,15 @@
                 <h3 class="text-xl font-semibold text-white">
                   Profile Picture
                 </h3>
+                <input
+                  type="file"
+                  id="photoInput"
+                  accept="image/*"
+                  class="hidden"
+                />
                 <button
+                  type="button"
+                  onclick="document.getElementById('photoInput').click()"
                   class="w-full px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
                 >
                   <i class="fas fa-camera mr-2"></i>
@@ -115,6 +123,8 @@
 
             <button
               class="save-button mt-8 px-8 py-3 rounded-lg text-white font-medium inline-flex items-center justify-center gap-2"
+              type="submit"
+              form="editProfileForm"
             >
               <i class="fas fa-save"></i>
               Save Changes
@@ -122,13 +132,14 @@
           </div>
 
           <!-- Right Section -->
-          <div class="bg-[#1a1a1a] lg:w-2/3 p-8">
+          <form id="editProfileForm" class="bg-[#1a1a1a] lg:w-2/3 p-8">
             <div class="space-y-6">
               <div class="space-y-4">
                 <div>
                   <label class="block text-white/80 mb-2">Full Name</label>
                   <input
                     type="text"
+                    id="name"
                     class="input-field w-full px-4 py-3 rounded-lg text-white"
                     placeholder="Enter your full name"
                   />
@@ -137,8 +148,27 @@
                   <label class="block text-white/80 mb-2">Email Address</label>
                   <input
                     type="email"
+                    id="email"
                     class="input-field w-full px-4 py-3 rounded-lg text-white"
                     placeholder="Enter your email"
+                  />
+                </div>
+                <div>
+                  <label class="block text-white/80 mb-2">Telephone</label>
+                  <input
+                    type="tel"
+                    id="telephone"
+                    class="input-field w-full px-4 py-3 rounded-lg text-white"
+                    placeholder="Enter your telephone number"
+                  />
+                </div>
+                <div>
+                  <label class="block text-white/80 mb-2">Zoom ID</label>
+                  <input
+                    type="text"
+                    id="zoomId"
+                    class="input-field w-full px-4 py-3 rounded-lg text-white"
+                    placeholder="Enter your Zoom ID"
                   />
                 </div>
                 <div>
@@ -152,13 +182,14 @@
                 <div>
                   <label class="block text-white/80 mb-2">Bio</label>
                   <textarea
+                    id="bio"
                     class="input-field w-full px-4 py-3 rounded-lg text-white h-32"
                     placeholder="Tell us about yourself"
                   ></textarea>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -182,6 +213,12 @@
         getAuth,
         onAuthStateChanged,
       } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+      import {
+        getStorage,
+        ref,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-storage.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
@@ -195,6 +232,46 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
       const auth = getAuth(app);
+      const storage = getStorage(app);
+
+      // Handle photo upload
+      document
+        .getElementById("photoInput")
+        .addEventListener("change", async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+
+          const user = auth.currentUser;
+          if (!user) return;
+
+          try {
+            // Create a reference to the file in Firebase Storage
+            const storageRef = ref(
+              storage,
+              `profile_photos/${user.uid}/${file.name}`
+            );
+
+            // Upload the file
+            const snapshot = await uploadBytes(storageRef, file);
+
+            // Get the download URL
+            const downloadURL = await getDownloadURL(snapshot.ref);
+
+            // Update the profile photo in Firestore
+            const userDoc = doc(db, "users", user.uid);
+            await updateDoc(userDoc, {
+              photoURL: downloadURL,
+            });
+
+            // Update the displayed photo
+            document.getElementById("photo").src = downloadURL;
+
+            alert("Profile photo updated successfully!");
+          } catch (error) {
+            console.error("Error uploading photo:", error);
+            alert("Error uploading photo. Please try again.");
+          }
+        });
 
       onAuthStateChanged(auth, async (user) => {
         if (!user) {
@@ -208,14 +285,12 @@
           const userData = docSnap.data();
           document.getElementById("name").value = userData.name || "";
           document.getElementById("email").value = userData.email || "";
-          document.getElementById("photoURL").value = userData.photoURL || "";
-
-          if (userData.role === "author") {
-            document.getElementById("zoomFields").classList.remove("hidden");
-            document.getElementById("zoomId").value = userData.zoomId || "";
-            document.getElementById("zoomPasscode").value =
-              userData.zoomPasscode || "";
-          }
+          document.getElementById("telephone").value = userData.telephone || "";
+          document.getElementById("zoomId").value = userData.zoomId || "";
+          document.getElementById("photo").src =
+            userData.photoURL ||
+            "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw";
+          document.getElementById("bio").value = userData.bio || "";
         }
       });
 
@@ -230,20 +305,14 @@
           const userDoc = doc(db, "users", user.uid);
           const updatedData = {
             name: document.getElementById("name").value,
-            photoURL: document.getElementById("photoURL").value,
+            telephone: document.getElementById("telephone").value,
+            zoomId: document.getElementById("zoomId").value,
+            bio: document.getElementById("bio").value,
           };
-
-          if (
-            !document.getElementById("zoomFields").classList.contains("hidden")
-          ) {
-            updatedData.zoomId = document.getElementById("zoomId").value;
-            updatedData.zoomPasscode =
-              document.getElementById("zoomPasscode").value;
-          }
 
           await updateDoc(userDoc, updatedData);
           alert("Profile updated successfully!");
-          window.location.href = "profile.html";
+          window.location.href = "myprofile.html?title=account";
         });
     </script>
     <script>

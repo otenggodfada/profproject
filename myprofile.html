@@ -122,6 +122,7 @@
                   Profile Details
                 </h3>
                 <p id="email" class="text-white/80">Loading...</p>
+                <p id="bio" class="text-white/80 mt-4">Loading...</p>
               </div>
             </div>
 
@@ -209,6 +210,10 @@
         // Update email
         const emailElement = document.getElementById("email");
         emailElement.textContent = userData.email || "Not set";
+
+        // Update bio
+        const bioElement = document.getElementById("bio");
+        bioElement.textContent = userData.bio || "Not set";
       }
 
       // Function to fetch user data
@@ -252,6 +257,7 @@
             photoURL:
               user.photoURL ||
               "https://lh3.googleusercontent.com/UQ87KPOblgk0PB0NTpQ_WtKY4KlNCSeBoCULytIy6tkkh4YWqpRCHA4a8igNziYicM-1AcKDJFWGDWeXgUoNDeOm21_gZt87TYBn0A=rw",
+            bio: "Not set",
             createdAt: new Date(),
           };
 
@@ -263,6 +269,7 @@
             name: "Error loading data",
             role: "Error loading data",
             email: "Error loading data",
+            bio: "Error loading data",
           });
         }
       }

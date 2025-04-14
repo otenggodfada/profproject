@@ -83,7 +83,7 @@
       }
 
       .search-bar:focus-within {
-        border-color: var(--primary);
+        border-color: var (--primary);
         box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
       }
 
@@ -123,6 +123,7 @@
 
       .gradient-text {
         background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
@@ -452,6 +453,41 @@
       <div class="modal-dialog"></div>
     </div>
 
+    <!-- Review Modal -->
+    <div
+      id="review-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center"
+    >
+      <div
+        class="bg-gray-900 rounded-xl shadow-2xl max-w-2xl w-full mx-4 transform transition-all duration-300 scale-95 opacity-0"
+        id="modal-content"
+      >
+        <div class="p-6 border-b border-gray-800">
+          <div class="flex justify-between items-center">
+            <h3 class="text-2xl font-bold text-white" id="review-modal-title">
+              Book Reviews
+            </h3>
+            <button
+              onclick="closeReviewModal()"
+              class="text-gray-400 hover:text-white transition-colors"
+            >
+              <i class="fas fa-times text-xl"></i>
+            </button>
+          </div>
+        </div>
+        <div class="p-6">
+          <div
+            id="reviews-container"
+            class="space-y-6 max-h-[60vh] overflow-y-auto scrollbar-hide"
+          >
+            <!-- Reviews will be inserted here dynamically -->
+          </div>
+
+        
+        </div>
+      </div>
+    </div>
+
     <!-- Firebase SDKs -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
@@ -466,6 +502,10 @@
         setDoc,
         serverTimestamp,
         deleteDoc,
+        query,
+        where,
+        orderBy,
+        addDoc,
       } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
       import {
         getAuth,
@@ -473,6 +513,7 @@
         signInWithEmailAndPassword,
         onAuthStateChanged,
       } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+
       // Your web app's Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyCtaftgrL4p4wqNC2w211mUi8amkjw2kzM",
@@ -487,6 +528,21 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
       const auth = getAuth(app);
+
+      // Expose Firebase functions and instances to global scope
+      window.db = db;
+      window.auth = auth;
+      window.collection = collection;
+      window.query = query;
+      window.where = where;
+      window.orderBy = orderBy;
+      window.getDocs = getDocs;
+      window.doc = doc;
+      window.getDoc = getDoc;
+      window.addDoc = addDoc;
+      window.serverTimestamp = serverTimestamp;
+      window.docRef = doc; // Expose doc function with a different name to avoid confusion
+
       // Constants for pagination
       let currentPage = 1;
       const booksPerPage = 8;
@@ -568,49 +624,114 @@
       }
 
       // Add this function to create book cards
-      function createBookCard(book) {
+      async function createBookCard(book) {
         const bookCard = document.createElement("div");
         bookCard.className =
-          "book-card mx-auto bg-gray-800 shadow-md rounded-lg overflow-hidden flex flex-col";
+          "book-card mx-auto bg-gray-800 shadow-lg rounded-xl overflow-hidden flex flex-col transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl";
+
+        // Get book reviews and calculate rating
+        let averageRating = 0;
+        let totalRatings = 0;
+        try {
+          const reviewsRef = collection(db, "BooksReviews");
+          const q = query(reviewsRef, where("bookId", "==", book.id));
+          const reviewsSnapshot = await getDocs(q);
+
+          const allReviews = [];
+          reviewsSnapshot.forEach((doc) => {
+            allReviews.push(doc.data());
+          });
+
+          if (!reviewsSnapshot.empty) {
+            let totalStars = 0;
+            reviewsSnapshot.forEach((doc) => {
+              const reviewData = doc.data();
+              totalStars += reviewData.rating;
+              totalRatings++;
+            });
+            averageRating = totalStars / totalRatings;
+          }
+        } catch (error) {
+          console.error("Error fetching reviews:", error);
+        }
+
         bookCard.innerHTML = `
-            <div class="relative flex-shrink-0">
-              <a href="#" class="block">
+          <div class="relative flex-shrink-0 group">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-0 group-hover:opacity-70 transition-opacity duration-300"></div>
+            <a href="#" class="block">
               <div class="aspect-w-16 aspect-h-9">
-                  <img src="${book.image_url}" alt="${book.title}" class="w-full h-56 lg:hover:h-full object-cover">
-      <button class="absolute top-2 right-2 bg-black bg-opacity-50 w-12 h-12 p-2 rounded-full text-white hover:bg-opacity-75 transition" 
-              onclick="openFullscreen('${book.image_url}')">
-        <i class="fas fa-expand"></i>
-      </button>
-                </div>
-              </a>
-            </div>
-            <div class="p-4 flex flex-col flex-grow">
-              <div class="flex items-center mb-2">
-                <div class="flex space-x-1">
-                <i class="fas fa-star star-icon"></i>
-                  <i class="fas fa-star star-icon"></i>
-                  <i class="fas fa-star star-icon"></i>
-                  <i class="fas fa-star star-icon"></i>
-                  <i class="fas fa-star star-icon"></i>
-                </div>
+                <img src="${book.image_url}" alt="${
+          book.title
+        }" class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
+                <button class="absolute top-4 right-4 bg-black bg-opacity-50 w-10 h-10 flex items-center justify-center rounded-full text-white hover:bg-opacity-75 transition transform hover:scale-110" 
+                  onclick="openFullscreen('${book.image_url}')">
+                  <i class="fas fa-expand"></i>
+                </button>
               </div>
-              <h3 class="text-xl font-semibold mb-3" title="${book.title}">
-                <a href="#" class="hover:text-blue-400">${book.title}</a>
-              </h3>
-              <p class="text-gray-400 mb-3 flex-grow">${book.description}</p>
-              <div class="mt-auto">
-                <div class="flex items-center justify-between">
-                  <div class="text-white font-bold text-lg">
-                    <span>₵${book.amount}</span>
-                  </div>
-                <button class="flex items-center space-x-2 border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-500 hover:text-white transition add-to-cart-btn">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Checkout</span>
-                  </button>
-                </div>
+            </a>
+          </div>
+          <div class="p-6 flex flex-col flex-grow bg-gradient-to-b from-gray-800 to-gray-900">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-1">
+                ${Array(5)
+                  .fill(0)
+                  .map(
+                    (_, i) =>
+                      `<i class="fas fa-star ${
+                        i < Math.round(averageRating)
+                          ? "text-yellow-400"
+                          : "text-gray-600"
+                      } transform transition-all duration-200 hover:scale-110"></i>`
+                  )
+                  .join("")}
+                <span class="ml-2 text-gray-400 text-sm">${
+                  averageRating ? averageRating.toFixed(1) : "0"
+                }</span>
               </div>
+              <span class="text-gray-400 text-sm font-medium">${
+                totalRatings
+                  ? `${totalRatings} ${
+                      totalRatings === 1 ? "review" : "reviews"
+                    }`
+                  : "No reviews"
+              }</span>
             </div>
-          `;
+            <h3 class="text-2xl font-bold mb-3 text-white hover:text-blue-400 transition-colors" title="${
+              book.title
+            }">
+              <a href="#" class="hover:text-blue-400 transition-colors">${
+                book.title
+              }</a>
+            </h3>
+            <p class="text-gray-400 mb-4 flex-grow line-clamp-3 hover:line-clamp-none transition-all duration-300">${
+              book.description
+            }</p>
+            <div class="mt-auto space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="text-white font-bold text-xl">
+                  ${
+                    book.amount === "0" || book.amount === 0
+                      ? '<span class="text-green-400">Free</span>'
+                      : `<span class="text-blue-400">₵${book.amount}</span>`
+                  }
+                </div>
+                <button class="reviews-btn flex items-center space-x-2 text-gray-400 hover:text-blue-400 transition-colors" 
+                  onclick="showReviews('${book.id}')">
+                  <i class="fas fa-comments"></i>
+                  <span>View Reviews</span>
+                </button>
+              </div>
+              <button class="w-full flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 add-to-cart-btn">
+                <i class="fas fa-shopping-cart"></i>
+                <span>${
+                  book.amount === "0" || book.amount === 0
+                    ? "Get it Free"
+                    : "Purchase Now"
+                }</span>
+              </button>
+            </div>
+          </div>
+        `;
 
         // Add click event listener to add to cart button
         const addToCartBtn = bookCard.querySelector(".add-to-cart-btn");
@@ -723,15 +844,23 @@
           const endIndex = startIndex + booksPerPage;
           const paginatedBooks = books.slice(startIndex, endIndex);
 
-          // Render books
-          paginatedBooks.forEach((book) => {
-            const bookCard = createBookCard(book);
-            booksContainer.appendChild(bookCard);
+          // Render books - using Promise.all to wait for all book cards to be created
+          const bookCardPromises = paginatedBooks.map((book) =>
+            createBookCard(book)
+          );
+          const bookCards = await Promise.all(bookCardPromises);
+
+          bookCards.forEach((bookCard) => {
+            if (bookCard) {
+              booksContainer.appendChild(bookCard);
+            }
           });
 
           renderPagination(books.length);
         } catch (error) {
           console.error("Error fetching books: ", error);
+          booksContainer.innerHTML =
+            '<p class="text-red-500 text-center">Error loading books. Please try again.</p>';
         } finally {
           hideLoading();
         }
@@ -1093,8 +1222,111 @@
         currentPage = 1; // Reset to first page when searching
         fetchBooks(e.target.value);
       });
-    </script>
-    <script>
+
+      // Additional functionality can be added here if needed
+
+      // Star rating functionality
+      const ratingStars = document.querySelectorAll("#rating-stars i");
+      let selectedRating = 0;
+
+      ratingStars.forEach((star) => {
+        star.addEventListener("mouseover", () => {
+          const rating = parseInt(star.dataset.rating);
+          updateStars(rating);
+        });
+
+        star.addEventListener("mouseout", () => {
+          updateStars(selectedRating);
+        });
+
+        star.addEventListener("click", () => {
+          selectedRating = parseInt(star.dataset.rating);
+          updateStars(selectedRating);
+          document.getElementById(
+            "rating-text"
+          ).textContent = `${selectedRating} ${
+            selectedRating === 1 ? "Star" : "Stars"
+          }`;
+        });
+      });
+
+      function updateStars(rating) {
+        ratingStars.forEach((star, index) => {
+          star.classList.toggle("text-yellow-400", index < rating);
+          star.classList.toggle("text-gray-600", index >= rating);
+        });
+      }
+
+      async function submitReview() {
+        if (!auth.currentUser) {
+          window.location.href = "./account.html";
+          return;
+        }
+
+        const reviewText = document.getElementById("review-text").value.trim();
+
+        if (!selectedRating) {
+          Toastify({
+            text: "Please select a rating",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#EF4444",
+          }).showToast();
+          return;
+        }
+
+        if (!reviewText) {
+          Toastify({
+            text: "Please write a review",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#EF4444",
+          }).showToast();
+          return;
+        }
+
+        try {
+          const reviewData = {
+            bookId: currentBookId,
+            userId: auth.currentUser.uid,
+            rating: selectedRating,
+            text: reviewText,
+            timestamp: serverTimestamp(),
+          };
+
+          await addDoc(collection(db, "BooksReviews"), reviewData);
+
+          Toastify({
+            text: "Review submitted successfully!",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#10B981",
+          }).showToast();
+
+          // Reset form
+          selectedRating = 0;
+          updateStars(0);
+          document.getElementById("review-text").value = "";
+          document.getElementById("rating-text").textContent =
+            "Select your rating";
+
+          // Refresh reviews
+          await showReviews(currentBookId);
+        } catch (error) {
+          console.error("Error submitting review:", error);
+          Toastify({
+            text: "Error submitting review. Please try again.",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#EF4444",
+          }).showToast();
+        }
+      }
+
       function openFullscreen(imageUrl) {
         const fullscreenDiv = document.createElement("div");
         fullscreenDiv.className =
@@ -1121,6 +1353,106 @@
         document.getElementById("loading-state").classList.add("hidden");
         document.getElementById("books-container").classList.remove("hidden");
       }
+    </script>
+    <script>
+      window.closeReviewModal = () => {
+        const modal = document.getElementById("review-modal");
+        const modalContent = document.getElementById("modal-content");
+
+        modalContent.classList.remove("scale-100", "opacity-100");
+        modalContent.classList.add("scale-95", "opacity-0");
+
+        setTimeout(() => {
+          modal.classList.add("hidden");
+        }, 300);
+      };
+
+      window.showReviews = async function (bookId) {
+        currentBookId = bookId;
+        const modal = document.getElementById("review-modal");
+        const modalContent = document.getElementById("modal-content");
+        const reviewsContainer = document.getElementById("reviews-container");
+
+        modal.classList.remove("hidden");
+        setTimeout(() => {
+          modalContent.classList.remove("scale-95", "opacity-0");
+          modalContent.classList.add("scale-100", "opacity-100");
+        }, 10);
+
+        // Load reviews
+        try {
+          const reviewsRef = collection(db, "BooksReviews");
+          const q = query(
+            reviewsRef,
+            where("bookId", "==", bookId),
+            orderBy("createdAt", "desc")
+          );
+          const reviewsSnapshot = await getDocs(q);
+
+          reviewsContainer.innerHTML = "";
+
+          if (reviewsSnapshot.empty) {
+            reviewsContainer.innerHTML = `
+            <div class="text-center py-8">
+              <i class="fas fa-comments text-4xl text-gray-600 mb-4"></i>
+              <p class="text-gray-400">No reviews yet. Be the first to review!</p>
+            </div>
+          `;
+            return;
+          }
+
+          reviewsSnapshot.forEach(async (docSnapshot) => {
+            const review = docSnapshot.data();
+            const userRef = docRef(db, "users", review.userId);
+            const userSnap = await getDoc(userRef);
+            const userData = userSnap.exists()
+              ? userSnap.data()
+              : { name: "Anonymous" };
+
+            const reviewElement = document.createElement("div");
+            reviewElement.className = "bg-gray-800 rounded-lg p-4 mb-4";
+            reviewElement.innerHTML = `
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center">
+                 <img src="${
+                        userData.photoURL || "https://via.placeholder.com/32"
+                      }" 
+                           alt="${userData.name || "Anonymous"}"
+                           class="w-8 h-8 rounded-full object-cover">
+                <div class="ml-3">
+                  <h4 class="text-white font-semibold">${
+                    userData.name || "Anonymous"
+                  }</h4>
+                  <div class="flex items-center mt-1">
+                    ${Array(5)
+                      .fill(0)
+                      .map(
+                        (_, i) =>
+                          `<i class="fas fa-star ${
+                            i < review.rating
+                              ? "text-yellow-400"
+                              : "text-gray-600"
+                          } text-sm"></i>`
+                      )
+                      .join("")}
+                  </div>
+                </div>
+              </div>
+              <span class="text-gray-400 text-sm">${new Date(
+                review.createdAt?.toDate()
+              ).toLocaleDateString()}</span>
+            </div>
+            <p class="text-gray-300 mt-2">${review.review}</p>
+          `;
+
+            reviewsContainer.appendChild(reviewElement);
+          });
+        } catch (error) {
+          console.error("Error loading reviews:", error);
+          reviewsContainer.innerHTML =
+            '<p class="text-red-500">Error loading reviews. Please try again.</p>';
+        }
+      };
     </script>
     <script src="footerp.js"></script>
     <div id="footer-container"></div>

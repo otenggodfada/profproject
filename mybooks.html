@@ -428,7 +428,7 @@
           // Update Google Drive URL handling
           const fileIdMatch = pdf_url.match(/\/d\/([^/]+)/);
           const fileId = fileIdMatch ? fileIdMatch[1] : null;
-
+const fileId1 =book.id
           const bookCard = document.createElement("div");
           bookCard.className =
             "bg-gray-800 rounded-xl overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-blue-500/20 border border-gray-700";
@@ -441,7 +441,7 @@
               <h2 class="text-xl font-bold text-white line-clamp-2">${title}</h2>
               <p class="text-gray-400 text-sm line-clamp-3">${description}</p>
               <button class="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
-                onclick="openPdf('${pdf_url}', '${title}', '${fileId}')">
+                onclick="openPdf('${pdf_url}', '${title}', '${fileId}', '${fileId1}')">
                 <i class="fas fa-book-reader"></i>
                 <span>Read Book</span>
               </button>
@@ -539,7 +539,7 @@
           viewer.appendChild(pageContainer);
         }
 
-        window.openPdf = async (url, title, fileId) => {
+        window.openPdf = async (url, title, fileId, fileId1) => {
           try {
             const pdfModal = document.getElementById("pdfModal");
             const viewer = document.getElementById("pdfViewer");
@@ -553,6 +553,7 @@
               url: url,
               title: title,
               fileId: fileId,
+
             };
 
             // Show loading state
@@ -566,7 +567,7 @@
             `;
 
             // Initialize reviews system
-            initializeReviews(fileId);
+            initializeReviews(fileId1);
 
             // Handle Google Drive URLs with clean parameters
             let pdfUrl = url;

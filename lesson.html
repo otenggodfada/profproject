@@ -80,7 +80,9 @@
         <!-- Lesson Content -->
         <div class="space-y-8">
           <!-- Title and Progress -->
-          <div class="flex flex-col lg:flex-row justify-between items-start gap-6 p-6 bg-gray-800/50 rounded-xl backdrop-blur-sm">
+          <div
+            class="flex flex-col lg:flex-row justify-between items-start gap-6 p-6 bg-gray-800/50 rounded-xl backdrop-blur-sm"
+          >
             <div class="flex-1">
               <h1 id="lessonTitle" class="text-3xl font-bold"></h1>
               <p id="lessonDescription" class="text-gray-400 mt-2"></p>
@@ -489,66 +491,89 @@
             videoContainer.classList.remove("hidden");
             quizContainer.classList.add("hidden");
 
-            // Handle different video URL types
-            if (
-              lesson.video_url.includes("youtube.com") ||
-              lesson.video_url.includes("youtu.be")
-            ) {
-              // Convert URL to embed format if needed
-              const videoId = lesson.video_url.includes("youtu.be")
-                ? lesson.video_url.split("/").pop()
-                : new URLSearchParams(new URL(lesson.video_url).search).get(
-                    "v"
-                  );
+      // Handle different video URL types
+if (
+  lesson.video_url.includes("youtube.com") ||
+  lesson.video_url.includes("youtu.be")
+) {
+  // Convert URL to embed format if needed
+  const videoId = lesson.video_url.includes("youtu.be")
+    ? lesson.video_url.split("/").pop()
+    : new URLSearchParams(new URL(lesson.video_url).search).get("v");
 
-              videoContainer.innerHTML = `
-                <iframe 
-                  src="https://www.youtube.com/embed/${videoId}" 
-                  class="w-full h-full" 
-                  frameborder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                  allowfullscreen>
-                </iframe>`;
-            } else {
-              videoContainer.innerHTML = `
-                <video class="w-full h-full" controls>
-                  <source src="${lesson.video_url}" type="video/mp4">
-                  Your browser does not support the video tag.
-                </video>`;
-            }
+  videoContainer.innerHTML = `
+    <iframe 
+      src="https://www.youtube.com/embed/${videoId}" 
+      class="w-full h-full" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+    </iframe>`;
+} else if (lesson.video_url.includes("drive.google.com")) {
+  // Extract file ID from Google Drive URL
+  const fileIdMatch = lesson.video_url.match(/\/d\/(.*?)\//);
+  const fileId = fileIdMatch ? fileIdMatch[1] : null;
+
+  if (fileId) {
+    videoContainer.innerHTML = `
+      <iframe 
+        src="https://drive.google.com/file/d/${fileId}/preview" 
+        class="w-full h-full" 
+        frameborder="0" 
+        allow="autoplay; encrypted-media" 
+        allowfullscreen>
+      </iframe>`;
+  } else {
+    videoContainer.innerHTML = `<p>Invalid Google Drive URL.</p>`;
+  }
+} else {
+  // Default to direct video
+  videoContainer.innerHTML = `
+    <video class="w-full h-full" controls>
+      <source src="${lesson.video_url}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>`;
+}
+
           } else if (contentType === "quiz" && lesson.quiz) {
             videoContainer.classList.add("hidden");
             quizContainer.classList.remove("hidden");
 
             // Generate quiz content
+
             const quizContent = document.getElementById("quizContent");
-            quizContent.innerHTML = lesson.quiz.questions
-              .map(
-                (question, index) => `
-                <div class="space-y-3">
-                  <p class="font-medium">${index + 1}. ${question.text}</p>
-                  <div class="space-y-2">
-                    ${question.options
-                      .map(
-                        (option, optIndex) => `
-                        <label class="flex items-center gap-2 p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                          <input type="radio" name="q${index}" value="${optIndex}" class="text-blue-500"
-                            ${
-                              lessonProgress.quiz?.[index]?.answerIndex ===
-                              optIndex
-                                ? "checked"
-                                : ""
-                            }>
-                          <span>${option}</span>
-                        </label>
-                      `
-                      )
-                      .join("")}
-                  </div>
-                </div>
-              `
-              )
-              .join("");
+
+            // check if lesson.quiz exists and is an array
+            if (Array.isArray(lesson.quiz)) {
+              quizContent.innerHTML = lesson.quiz
+                .map(
+                  (question, index) => `
+      <div class="space-y-3">
+        <p class="font-medium">${index + 1}. ${question.question}</p>
+        <div class="space-y-2">
+          ${question.options
+            .map(
+              (option, optIndex) => `
+              <label class="flex items-center gap-2 p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
+                <input type="radio" name="q${index}" value="${optIndex}" class="text-blue-500"
+                  ${
+                    lessonProgress.quiz?.[index]?.answerIndex === optIndex
+                      ? "checked"
+                      : ""
+                  }>
+                <span>${option}</span>
+              </label>
+            `
+            )
+            .join("")}
+        </div>
+      </div>
+    `
+                )
+                .join("");
+            } else {
+              quizContent.innerHTML = `<p class="text-red-500">No quiz available for this lesson.</p>`;
+            }
           } else {
             // Hide both video and quiz containers if neither type
             videoContainer.classList.add("hidden");
@@ -638,18 +663,26 @@
         .getElementById("markComplete")
         .addEventListener("click", async () => {
           try {
-            const docRef = doc(db, "users", auth.currentUser.uid, "completedLessons", lessonId);
+            const docRef = doc(
+              db,
+              "users",
+              auth.currentUser.uid,
+              "completedLessons",
+              lessonId
+            );
             const docSnap = await getDoc(docRef);
-            
+
             if (!docSnap.exists()) {
               await setDoc(docRef, {
                 [`${sectionId}.${lessonId}.completed`]: true,
-                [`${sectionId}.${lessonId}.completedAt`]: new Date().toISOString(),
+                [`${sectionId}.${lessonId}.completedAt`]:
+                  new Date().toISOString(),
               });
             } else {
               await updateDoc(docRef, {
                 [`${sectionId}.${lessonId}.completed`]: true,
-                [`${sectionId}.${lessonId}.completedAt`]: new Date().toISOString(),
+                [`${sectionId}.${lessonId}.completedAt`]:
+                  new Date().toISOString(),
               });
             }
 
@@ -842,14 +875,13 @@
           reviewsList.innerHTML = reviewsSnapshot.docs
             .map((doc) => {
               const review = doc.data();
-              const date = new Date(review.created_at.seconds * 1000).toLocaleDateString(
-                "en-US",
-                {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                }
-              );
+              const date = new Date(
+                review.created_at.seconds * 1000
+              ).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              });
 
               return `
               <div class="border border-gray-700 rounded-lg p-4 space-y-3">

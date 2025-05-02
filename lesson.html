@@ -85,7 +85,7 @@
           >
             <div class="flex-1">
               <h1 id="lessonTitle" class="text-3xl font-bold"></h1>
-              <p id="lessonDescription" class="text-gray-400 mt-2"></p>
+           
             </div>
             <div class="flex items-center gap-4">
               <div class="flex items-center gap-2">
@@ -112,10 +112,18 @@
           <!-- Video Section -->
           <div
             id="videoContainer"
-            class="bg-gray-800 rounded-xl overflow-hidden aspect-w-16 aspect-h-9 hidden"
+            class="bg-gray-800 rounded-xl overflow-hidden aspect-w-16 aspect-h-9"
           >
             <!-- Video will be inserted here -->
           </div>
+
+     <!-- Article Section -->
+     <div
+     id="articleContainer"
+     class="bg-gray-800 rounded-xl overflow-hidden aspect-w-16 aspect-h-9"
+   >
+     <!-- Video will be inserted here -->
+   </div>
 
           <!-- Description Section -->
           <div
@@ -137,7 +145,7 @@
           <!-- Quiz Section -->
           <div
             id="quizContainer"
-            class="hidden space-y-6 bg-gray-800 p-6 rounded-xl"
+            class=" space-y-6 bg-gray-800 p-6 rounded-xl"
           >
             <h2 class="text-2xl font-bold flex items-center gap-2">
               <i class="fas fa-question-circle text-blue-400"></i>
@@ -466,8 +474,7 @@
           document.getElementById("courseName").textContent = course.name;
           document.getElementById("lessonTitle").textContent =
             lesson.name || "Untitled Lesson";
-          document.getElementById("lessonDescription").textContent =
-            lesson.description || "No description available";
+       
           document.getElementById("lessonDuration").textContent =
             lesson.duration || "No duration set";
 
@@ -478,6 +485,7 @@
           );
           const videoContainer = document.getElementById("videoContainer");
           const quizContainer = document.getElementById("quizContainer");
+          const articleContainer = document.getElementById("articleContainer");
 
           // Set content type indicator
           contentTypeIndicator.textContent =
@@ -487,11 +495,10 @@
             (contentType === "video" ? "bg-blue-500" : "bg-purple-500");
 
           // Show/hide appropriate content sections
-          if (contentType === "video" && lesson.video_url) {
-            videoContainer.classList.remove("hidden");
-            quizContainer.classList.add("hidden");
+          if ( lesson.video_url) {
+           
 
-      // Handle different video URL types
+ 
 if (
   lesson.video_url.includes("youtube.com") ||
   lesson.video_url.includes("youtu.be")
@@ -535,9 +542,8 @@ if (
     </video>`;
 }
 
-          } else if (contentType === "quiz" && lesson.quiz) {
-            videoContainer.classList.add("hidden");
-            quizContainer.classList.remove("hidden");
+          } else if (  lesson.quiz) {
+         
 
             // Generate quiz content
 
@@ -574,11 +580,19 @@ if (
             } else {
               quizContent.innerHTML = `<p class="text-red-500">No quiz available for this lesson.</p>`;
             }
-          } else {
-            // Hide both video and quiz containers if neither type
-            videoContainer.classList.add("hidden");
-            quizContainer.classList.add("hidden");
           }
+          
+          
+          // else if ( lesson.description) {
+        
+
+          //   // Load article content
+          //   const articleContent = document.getElementById("articleContainer");
+          //   articleContent.innerHTML = lesson.description;
+          // } else {
+         
+          // } 
+      
 
           // Update complete button state
           const markCompleteButton = document.getElementById("markComplete");

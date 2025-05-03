@@ -490,7 +490,7 @@ const progressData = progressSnap.data();
 
 
   // Example: Access specific lesson
-  const lessonProgress = progressData?.[`${sectionId}.${lessonId}`] || {}; // Ensure lessonProgress is an object if undefined
+  const lessonProgress = progressData?.[`${sectionId}.${lessonId}`] || []; // Ensure lessonProgress is an object if undefined
        // Update UI based on lesson type and progress
           document.getElementById("courseName").textContent = course.name;
           document.getElementById("lessonTitle").textContent =
@@ -589,10 +589,12 @@ const progressData = progressSnap.data();
               let bgClass = "bg-gray-700/50";
               let labelText = "";
 
-              if (isCorrect) {
-                bgClass = "bg-green-600/80 border border-green-500";
-                labelText = '<span class="ml-auto text-green-200 text-xs">Correct</span>';
-              }
+            // if (isSelected ==null){
+            //   if (isCorrect) {
+            //     bgClass = "bg-green-600/80 border border-green-500";
+            //     labelText = '<span class="ml-auto text-green-200 text-xs">Correct Answer</span>';
+            //   }
+            // }
 
               if (isSelected && !isCorrect) {
                 bgClass = "bg-red-600/70 border border-red-500";
@@ -601,6 +603,7 @@ const progressData = progressSnap.data();
 
               if (isSelected && isCorrect) {
                 // Both correct and selected
+                bgClass = "bg-green-600/80 border border-green-500";
                 labelText =
                   '<span class="ml-auto text-green-200 text-xs">Your Answer ✔️</span>';
               }
@@ -623,17 +626,28 @@ const progressData = progressSnap.data();
   .join("");
 
 
-
+  let matches = 0
       // Calculate and display the score summary
       const totalQuestions = lesson.quiz.length;
-  const correctAnswers =  totalQuestions - lessonProgress.filter(
-    (question) => question.questionIndex !== question.answerIndex
-  ).length; // Count the number of correct answers
+      const correctAnswers = lessonProgress
+  .filter((question) => question.answerIndex !== undefined)  // Filters out questions with no answerIndex
+  .map((question) => question.answerIndex);
+
+  const isCorrectAnswers = lesson.quiz.filter((question) => question.correct_ans_index !== undefined)  // Filters out questions with no answerIndex
+  .map((question) => question.correct_ans_index);
+
+  for (let i = 0; i < correctAnswers.length; i++) {
+  if (correctAnswers[i] === isCorrectAnswers[i]) {
+    matches++;
+  }
+}
+
+
   document.getElementById("quizSummary").innerHTML = `
     <p class="text-xl font-semibold text-white">Quiz Results</p>
     <div class="mt-2 flex justify-center items-center space-x-3">
       <div class="flex items-center">
-        <div class="text-green-400 font-bold text-4xl">${correctAnswers}</div>
+        <div class="text-green-400 font-bold text-4xl">${matches}</div>
         <span class="text-xl text-slate-300">/</span>
         <div class="text-indigo-500 font-bold text-4xl">${totalQuestions}</div>
       </div>

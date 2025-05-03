@@ -309,7 +309,7 @@ option {
       </div>
       <div>
         <p class="text-sm font-medium text-gray-400">Students</p>
-        <span id="model-students" class="text-white font-medium">0 students</span>
+        <span id="model-students1" class="text-white font-medium">0 students</span>
   </div>
   </div>
 
@@ -1204,6 +1204,35 @@ document.addEventListener("DOMContentLoaded", function () {
 };
 
 
+
+
+//Get number of courses 
+
+async function countUsersWithCourse(targetCourseId) {
+  let count = 0;
+
+  const usersSnapshot = await db.collection("users").get();
+
+  for (const userDoc of usersSnapshot.docs) {
+    const coursesSnapshot = await db
+      .collection("users")
+      .doc(userDoc.id)
+      .collection("Courses")
+      .get();
+
+    const hasCourse = coursesSnapshot.docs.some(courseDoc => {
+      return courseDoc.data().course_id === targetCourseId;
+    });
+
+    if (hasCourse) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+
 const fetchAllTags1 = async () => {
     try {
         const tagsSnapshot = await db.collection("tags").get();
@@ -1608,6 +1637,8 @@ const cateRef = db.collection("categories");
 
 // Populate Modal
 document.getElementById("modal1-id").innerText= courseId;
+document.getElementById("model-students").innerText = course.students + " students" || "0 students";
+document.getElementById("model-students1").innerText = course.students + " students" || "0 students"; // Updated line
 document.getElementById("modal-image").src = course.image_url;
 document.getElementById("modal-title").innerText = course.name;
 document.getElementById("modal-description").innerHTML = course.meta?.description || "<p>No description available.</p>";

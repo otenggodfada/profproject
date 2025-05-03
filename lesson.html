@@ -112,7 +112,7 @@
           <!-- Video Section -->
           <div
             id="videoContainer"
-            class="bg-gray-800 rounded-xl overflow-hidden aspect-w-16 aspect-h-9"
+            class="bg-gray-800 rounded-xl overflow-hidden aspect-w-16 p-4 aspect-h-9"
           >
             <!-- Video will be inserted here -->
           </div>
@@ -120,9 +120,9 @@
      <!-- Article Section -->
      <div
      id="articleContainer"
-     class="bg-gray-800 rounded-xl overflow-hidden aspect-w-16 aspect-h-9"
+     class="bg-white text-black rounded-xl overflow-hidden aspect-w-16 p-4 aspect-h-9"
    >
-     <!-- Video will be inserted here -->
+     <!-- Article content will be inserted here -->
    </div>
 
           <!-- Description Section -->
@@ -583,15 +583,15 @@ if (
           }
           
           
-          // else if ( lesson.description) {
+          else if ( lesson.description) {
         
 
-          //   // Load article content
-          //   const articleContent = document.getElementById("articleContainer");
-          //   articleContent.innerHTML = lesson.description;
-          // } else {
+            // Load article content
+            const articleContent = document.getElementById("articleContainer");
+            articleContent.innerHTML = lesson.description;
+          } else {
          
-          // } 
+          } 
       
 
           // Update complete button state

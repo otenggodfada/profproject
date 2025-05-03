@@ -319,9 +319,8 @@ class CourseCard {
     }
 
     return hasLessons
-      ? `<button onclick="window.showCourseContent('${encodeURIComponent(
-          JSON.stringify(course)
-        )}')" 
+      ? `<button   onclick="window.showCourseContent(this.getAttribute('data-course'))"
+  data-course='${btoa(unescape(encodeURIComponent(JSON.stringify(course))))}'
                         class="w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg 
                                hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -462,9 +461,11 @@ class CourseContentModal {
 const courseService = new CourseService();
 
 // Global UI handlers
-window.showCourseContent = (courseData) => {
+window.showCourseContent = (encodedData) => {
   try {
-    const course = JSON.parse(decodeURIComponent(courseData));
+    const jsonStr = decodeURIComponent(escape(atob(encodedData)));
+    const course = JSON.parse(jsonStr);
+
     const modal = document.getElementById("modal-container");
     const content = document.getElementById("modal-content");
 
@@ -472,7 +473,6 @@ window.showCourseContent = (courseData) => {
     content.innerHTML = CourseContentModal.render(course);
   } catch (error) {
     console.error("Error showing course content:", error);
-    // Show error toast
     Toastify({
       text: "Failed to load course content",
       duration: 3000,
@@ -483,6 +483,8 @@ window.showCourseContent = (courseData) => {
     }).showToast();
   }
 };
+
+
 
 window.startLesson = (courseId, sectionId, lessonId) => {
   window.location.href = `lesson.html?course=${courseId}&section=${sectionId}&lesson=${lessonId}`;

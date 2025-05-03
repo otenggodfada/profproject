@@ -514,7 +514,8 @@
             (contentType === "video" ? "bg-blue-500" : "bg-purple-500");
 
           // Show/hide appropriate content sections
-          if (lesson.video_url) {
+          if (lesson.video_url!=="") {
+            videoContainer.classList.remove("hidden");
             if (
               lesson.video_url.includes("youtube.com") ||
               lesson.video_url.includes("youtu.be")

@@ -487,11 +487,11 @@
 const progressSnap = await getDoc(progressRef);
 
 const progressData = progressSnap.data();
-  console.log("User progress:", progressData);
+
 
   // Example: Access specific lesson
   const lessonProgress = progressData?.[`${sectionId}.${lessonId}`] || {}; // Ensure lessonProgress is an object if undefined
-  console.log("Specific lesson progress:", lessonProgress);        // Update UI based on lesson type and progress
+       // Update UI based on lesson type and progress
           document.getElementById("courseName").textContent = course.name;
           document.getElementById("lessonTitle").textContent =
             lesson.name || "Untitled Lesson";
@@ -576,8 +576,7 @@ const progressData = progressSnap.data();
     const correctIndex = question.correct_ans_index;
     const selectedIndex = savedAnswer?.answerIndex; // Reverting to optional chaining
 
-console.log("Correct index:", correctIndex); // Log the correct answer index
-console.log("Selected index:", selectedIndex); // Log the selected answer index
+
     return `
       <div class="space-y-3">
         <p class="font-medium text-slate-100">${index + 1}. ${question.question}</p>

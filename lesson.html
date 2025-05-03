@@ -627,7 +627,9 @@ console.log("Selected index:", selectedIndex); // Log the selected answer index
 
       // Calculate and display the score summary
       const totalQuestions = lesson.quiz.length;
-  const correctAnswers = lessonProgress.filter(q => q.isCorrect).length || 0; // Reverting to original logic
+  const correctAnswers =  totalQuestions - lessonProgress.filter(
+    (question) => question.questionIndex !== question.answerIndex
+  ).length; // Count the number of correct answers
   document.getElementById("quizSummary").innerHTML = `
     <p class="text-xl font-semibold text-white">Quiz Results</p>
     <div class="mt-2 flex justify-center items-center space-x-3">

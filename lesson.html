@@ -143,7 +143,7 @@
           </div>
 
           <!-- Quiz Section -->
-          <div id="quizContainer" class="space-y-6 bg-gray-800 p-6 rounded-xl">
+          <div id="quizContainer" class="space-y-6 bg-gray-800 p-6 rounded-xl hidden">
             <h2 class="text-2xl font-bold flex items-center gap-2">
               <i class="fas fa-question-circle text-blue-400"></i>
               Quiz
@@ -559,7 +559,8 @@
       Your browser does not support the video tag.
     </video>`;
             }
-          } else if (lesson.quiz) {
+          } else if (lesson.quiz!==null) {
+            document.getElementById("quizContainer").classList.remove("hidden");
     const quizContent = document.getElementById("quizContent");
 
     if (Array.isArray(lesson.quiz)) {
@@ -635,8 +636,10 @@
       <span class="text-slate-300">Great job! Keep it up!</span> 🎉
     </p>
       `;
+    } else if (lesson.quiz === null) {
+      document.getElementById("quizContainer").classList.add("hidden");
     } else {
-      quizContent.innerHTML = `<p class="text-red-500">No quiz available for this lesson.</p>`;
+      document.getElementById("quizContainer").classList.remove("hidden");
     }
   }
  else if (lesson.description) {

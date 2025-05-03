@@ -51,7 +51,7 @@ class Course {
       id: data.author?.id,
     };
     this.students = data.students || 0;
-    this.language = data.language;
+    this.language = data.meta?.language;
     this.sections = [];
     this.progress = { total: 0, completed: 0, percentage: 0 };
   }
@@ -245,7 +245,7 @@ class CourseCard {
                             ${course.name}
                         </h3>
                         <span class="px-2 py-1 text-xs font-medium bg-blue-500/10 text-blue-400 rounded-full whitespace-nowrap">
-                            ${course.language || "Not specified"}
+                            ${course.language  || "Not specified"}
                         </span>
                     </div>
 

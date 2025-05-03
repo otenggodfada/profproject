@@ -111,16 +111,16 @@
 
           <!-- Video Section -->
           <div
-            id="videoContainer"
-            class="bg-gray-800 rounded-xl overflow-hidden aspect-w-16 p-4 aspect-h-9"
-          >
-            <!-- Video will be inserted here -->
-          </div>
+          id="videoContainer"
+          class="bg-gray-800 rounded-xl overflow-hidden p-4 h-[600px] hidden"
+        >
+          <!-- Video will be inserted here -->
+        </div>
 
      <!-- Article Section -->
      <div
      id="articleContainer"
-     class="bg-white text-black rounded-xl overflow-hidden aspect-w-16 p-4 aspect-h-9"
+     class="bg-white text-black rounded-xl overflow-hidden aspect-w-16 p-4 aspect-h-9 hidden"
    >
      <!-- Article content will be inserted here -->
    </div>
@@ -145,7 +145,7 @@
           <!-- Quiz Section -->
           <div
             id="quizContainer"
-            class=" space-y-6 bg-gray-800 p-6 rounded-xl"
+            class=" space-y-6 bg-gray-800 p-6 rounded-xl hidden "
           >
             <h2 class="text-2xl font-bold flex items-center gap-2">
               <i class="fas fa-question-circle text-blue-400"></i>
@@ -495,9 +495,9 @@
             (contentType === "video" ? "bg-blue-500" : "bg-purple-500");
 
           // Show/hide appropriate content sections
-          if ( lesson.video_url) {
+          if ( lesson.video_url!=="") {
            
-
+            videoContainer.classList.remove("hidden");
  
 if (
   lesson.video_url.includes("youtube.com") ||
@@ -540,10 +540,12 @@ if (
       <source src="${lesson.video_url}" type="video/mp4">
       Your browser does not support the video tag.
     </video>`;
-}
+} 
+          } else if (lesson.video_url === "") {
+            videoContainer.classList.add("hidden");
 
-          } else if (  lesson.quiz) {
-         
+          } else if (lesson.quiz !== null) {
+            document.getElementById("quizContainer").classList.remove("hidden");
 
             // Generate quiz content
 
@@ -577,19 +579,25 @@ if (
     `
                 )
                 .join("");
-            } else {
-              quizContent.innerHTML = `<p class="text-red-500">No quiz available for this lesson.</p>`;
+            } else if (lesson.quiz === null) {
+             
+             document.getElementById("quizContainer").classList.add("hidden")
             }
           }
           
           
-          else if ( lesson.description) {
+          else if ( lesson.description!==null ) {
+            // Show article container and hide video container
+           
+            articleContainer.classList.remove("hidden");
         
 
             // Load article content
             const articleContent = document.getElementById("articleContainer");
             articleContent.innerHTML = lesson.description;
-          } else {
+          } else if (lesson.description === null) {
+            // Hide article container if no description
+            articleContainer.classList.add("hidden");
          
           } 
       

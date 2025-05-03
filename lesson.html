@@ -85,7 +85,6 @@
           >
             <div class="flex-1">
               <h1 id="lessonTitle" class="text-3xl font-bold"></h1>
-           
             </div>
             <div class="flex items-center gap-4">
               <div class="flex items-center gap-2">
@@ -111,19 +110,20 @@
 
           <!-- Video Section -->
           <div
-          id="videoContainer"
-          class="bg-gray-800 rounded-xl overflow-hidden p-4 h-[600px] hidden"
-        >
-          <!-- Video will be inserted here -->
-        </div>
+            id="videoContainer"
+            class="bg-gray-800 rounded-xl overflow-hidden p-4 h-[600px] hidden"
+          >
+            <!-- Video will be inserted here -->
+          </div>
 
-     <!-- Article Section -->
-     <div
-     id="articleContainer"
-     class="bg-white text-black rounded-xl overflow-hidden aspect-w-16 p-4 aspect-h-9 hidden"
-   >
-     <!-- Article content will be inserted here -->
-   </div>
+          <!-- Article Section -->
+          <div
+          id="articleContainer"
+          class="relative bg-slate-800/70 backdrop-blur-md rounded-2xl shadow-lg p-6 text-slate-50  mx-auto transition-all duration-500 ease-in-out overflow-hidden"
+        >
+          <!-- Article content will be inserted here -->
+        </div>
+        
 
           <!-- Description Section -->
           <div
@@ -143,10 +143,7 @@
           </div>
 
           <!-- Quiz Section -->
-          <div
-            id="quizContainer"
-            class=" space-y-6 bg-gray-800 p-6 rounded-xl hidden "
-          >
+          <div id="quizContainer" class="space-y-6 bg-gray-800 p-6 rounded-xl">
             <h2 class="text-2xl font-bold flex items-center gap-2">
               <i class="fas fa-question-circle text-blue-400"></i>
               Quiz
@@ -468,13 +465,13 @@
             doc(db, "users", auth.currentUser.uid, "progress", courseId)
           );
           const userProgress = userProgressDoc.data();
-          const lessonProgress = userProgress?.[sectionId]?.[lessonId] || {};
+          const lessonProgress = userProgress?.[sectionId]?.[lessonId]?.quiz || {};
 
           // Update UI based on lesson type and progress
           document.getElementById("courseName").textContent = course.name;
           document.getElementById("lessonTitle").textContent =
             lesson.name || "Untitled Lesson";
-       
+
           document.getElementById("lessonDuration").textContent =
             lesson.duration || "No duration set";
 
@@ -495,20 +492,19 @@
             (contentType === "video" ? "bg-blue-500" : "bg-purple-500");
 
           // Show/hide appropriate content sections
-          if ( lesson.video_url!=="") {
-           
-            videoContainer.classList.remove("hidden");
- 
-if (
-  lesson.video_url.includes("youtube.com") ||
-  lesson.video_url.includes("youtu.be")
-) {
-  // Convert URL to embed format if needed
-  const videoId = lesson.video_url.includes("youtu.be")
-    ? lesson.video_url.split("/").pop()
-    : new URLSearchParams(new URL(lesson.video_url).search).get("v");
+          if (lesson.video_url) {
+            if (
+              lesson.video_url.includes("youtube.com") ||
+              lesson.video_url.includes("youtu.be")
+            ) {
+              // Convert URL to embed format if needed
+              const videoId = lesson.video_url.includes("youtu.be")
+                ? lesson.video_url.split("/").pop()
+                : new URLSearchParams(new URL(lesson.video_url).search).get(
+                    "v"
+                  );
 
-  videoContainer.innerHTML = `
+              videoContainer.innerHTML = `
     <iframe 
       src="https://www.youtube.com/embed/${videoId}" 
       class="w-full h-full" 
@@ -516,13 +512,13 @@ if (
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
       allowfullscreen>
     </iframe>`;
-} else if (lesson.video_url.includes("drive.google.com")) {
-  // Extract file ID from Google Drive URL
-  const fileIdMatch = lesson.video_url.match(/\/d\/(.*?)\//);
-  const fileId = fileIdMatch ? fileIdMatch[1] : null;
+            } else if (lesson.video_url.includes("drive.google.com")) {
+              // Extract file ID from Google Drive URL
+              const fileIdMatch = lesson.video_url.match(/\/d\/(.*?)\//);
+              const fileId = fileIdMatch ? fileIdMatch[1] : null;
 
-  if (fileId) {
-    videoContainer.innerHTML = `
+              if (fileId) {
+                videoContainer.innerHTML = `
       <iframe 
         src="https://drive.google.com/file/d/${fileId}/preview" 
         class="w-full h-full" 
@@ -530,77 +526,86 @@ if (
         allow="autoplay; encrypted-media" 
         allowfullscreen>
       </iframe>`;
-  } else {
-    videoContainer.innerHTML = `<p>Invalid Google Drive URL.</p>`;
-  }
-} else {
-  // Default to direct video
-  videoContainer.innerHTML = `
+              } else {
+                videoContainer.innerHTML = `<p>Invalid Google Drive URL.</p>`;
+              }
+            } else {
+              // Default to direct video
+              videoContainer.innerHTML = `
     <video class="w-full h-full" controls>
       <source src="${lesson.video_url}" type="video/mp4">
       Your browser does not support the video tag.
     </video>`;
-} 
-          } else if (lesson.video_url === "") {
-            videoContainer.classList.add("hidden");
-
-          } else if (lesson.quiz !== null) {
-            document.getElementById("quizContainer").classList.remove("hidden");
-
-            // Generate quiz content
-
-            const quizContent = document.getElementById("quizContent");
-
-            // check if lesson.quiz exists and is an array
-            if (Array.isArray(lesson.quiz)) {
-              quizContent.innerHTML = lesson.quiz
-                .map(
-                  (question, index) => `
-      <div class="space-y-3">
-        <p class="font-medium">${index + 1}. ${question.question}</p>
-        <div class="space-y-2">
-          ${question.options
-            .map(
-              (option, optIndex) => `
-              <label class="flex items-center gap-2 p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <input type="radio" name="q${index}" value="${optIndex}" class="text-blue-500"
-                  ${
-                    lessonProgress.quiz?.[index]?.answerIndex === optIndex
-                      ? "checked"
-                      : ""
-                  }>
-                <span>${option}</span>
-              </label>
-            `
-            )
-            .join("")}
-        </div>
-      </div>
-    `
-                )
-                .join("");
-            } else if (lesson.quiz === null) {
-             
-             document.getElementById("quizContainer").classList.add("hidden")
             }
-          }
-          
-          
-          else if ( lesson.description!==null ) {
-            // Show article container and hide video container
-           
-            articleContainer.classList.remove("hidden");
-        
+          }else if (lesson.quiz) {
+  const quizContent = document.getElementById("quizContent");
 
-            // Load article content
-            const articleContent = document.getElementById("articleContainer");
-            articleContent.innerHTML = lesson.description;
-          } else if (lesson.description === null) {
-            // Hide article container if no description
-            articleContainer.classList.add("hidden");
-         
-          } 
-      
+  if (Array.isArray(lesson.quiz)) {
+    quizContent.innerHTML = lesson.quiz
+      .map((question, index) => {
+        const savedAnswer = lessonProgress.quiz?.find(
+          (q) => q.questionIndex === index
+        )?.answerIndex;
+
+        return `
+          <div class="space-y-3">
+            <p class="font-medium">${index + 1}. ${question.question}</p>
+            <div class="space-y-2">
+              ${question.options
+                .map(
+                  (option, optIndex) => `
+                    <label class="flex items-center gap-2 p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
+                      <input type="radio" name="q${index}" value="${optIndex}" class="text-blue-500"
+                        ${savedAnswer === optIndex ? "checked" : ""}>
+                      <span>${option}</span>
+                    </label>
+                  `
+                )
+                .join("")}
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+  } else {
+    quizContent.innerHTML = `<p class="text-red-500">No quiz available for this lesson.</p>`;
+  }
+} else if (lesson.description) {
+    const articleContent = document.getElementById("articleContainer");
+
+    const maxLength = 4000;
+    const fullText = lesson.description;
+    const truncatedText = fullText.length > maxLength 
+        ? fullText.substring(0, maxLength) + "..." 
+        : fullText;
+
+    // Build the HTML with Tailwind styling
+    articleContent.innerHTML = `
+        <div id="descriptionText" class="text-slate-400 mb-2">${truncatedText}</div>
+        ${fullText.length > maxLength ? `
+            <button id="toggleBtn" 
+                class="text-indigo-600 hover:text-pink-500 transition-colors duration-300 text-sm font-medium underline">
+                Read more
+            </button>` : ''
+        }
+    `;
+
+    const toggleBtn = document.getElementById("toggleBtn");
+    const descriptionText = document.getElementById("descriptionText");
+
+    if (toggleBtn) {
+        let expanded = false;
+        toggleBtn.addEventListener("click", () => {
+            expanded = !expanded;
+            descriptionText.innerHTML = expanded ? fullText : truncatedText;
+            toggleBtn.textContent = expanded ? "Show less" : "Read more";
+        });
+    }
+} else {
+    document.getElementById("articleContainer").innerHTML = 
+        `<em class="text-slate-500 italic">No description available.</em>`;
+}
+
 
           // Update complete button state
           const markCompleteButton = document.getElementById("markComplete");
@@ -632,52 +637,69 @@ if (
       }
 
       // Handle quiz submission
-      document
-        .getElementById("submitQuiz")
-        ?.addEventListener("click", async () => {
-          const answers = [];
-          const quizInputs = document.querySelectorAll(
-            'input[type="radio"]:checked'
-          );
+ // Handle quiz submission
+document.getElementById("submitQuiz")?.addEventListener("click", async () => {
+  const answers = [];
+  const quizInputs = document.querySelectorAll('input[type="radio"]:checked');
 
-          quizInputs.forEach((input) => {
-            answers.push({
-              questionIndex: parseInt(input.name.replace("q", "")),
-              answerIndex: parseInt(input.value),
-            });
-          });
+  quizInputs.forEach((input) => {
+    answers.push({
+      questionIndex: parseInt(input.name.replace("q", "")),
+      answerIndex: parseInt(input.value),
+    });
+  });
 
-          // Save answers to Firebase
-          try {
-            await updateDoc(
-              doc(db, "users", auth.currentUser.uid, "progress", courseId),
-              {
-                [`${sectionId}.${lessonId}.quiz`]: answers,
-              }
-            );
+  // Debugging values
+  const userId = auth.currentUser?.uid;
 
-            Toastify({
-              text: "Quiz submitted successfully!",
-              duration: 3000,
-              gravity: "top",
-              position: "right",
-              style: {
-                background: "linear-gradient(to right, #10B981, #059669)",
-              },
-            }).showToast();
-          } catch (error) {
-            console.error("Error submitting quiz:", error);
-            Toastify({
-              text: "Error submitting quiz. Please try again.",
-              duration: 3000,
-              gravity: "top",
-              position: "right",
-              style: {
-                background: "linear-gradient(to right, #EF4444, #DC2626)",
-              },
-            }).showToast();
-          }
-        });
+
+  if (!userId || !courseId || !sectionId || !lessonId) {
+    Toastify({
+      text: "Invalid quiz submission data. Check identifiers.",
+      duration: 3000,
+      gravity: "top",
+      position: "right",
+      style: {
+        background: "linear-gradient(to right, #F97316, #EA580C)",
+      },
+    }).showToast();
+    return;
+  }
+
+  try {
+    const progressRef = doc(db, "users", userId, "progress", courseId);
+    await setDoc(
+      progressRef,
+      {
+        [`${sectionId}.${lessonId}.quiz`]: answers,
+      },
+      { merge: true } // ensures it doesn't overwrite the whole document
+    );
+
+    Toastify({
+      text: "✅ Quiz submitted successfully!",
+      duration: 3000,
+      gravity: "top",
+      position: "right",
+      style: {
+        background: "linear-gradient(to right, #10B981, #059669)",
+      },
+    }).showToast();
+  } catch (error) {
+    console.error("Error submitting quiz:", error.message);
+
+    Toastify({
+      text: `❌ Error: ${error.message || "Quiz submission failed."}`,
+      duration: 3000,
+      gravity: "top",
+      position: "right",
+      style: {
+        background: "linear-gradient(to right, #EF4444, #DC2626)",
+      },
+    }).showToast();
+  }
+});
+
 
       // Handle marking lesson as complete
       const nextButton = document.getElementById("nextLesson");
@@ -980,3 +1002,12 @@ if (
     </script>
   </body>
 </html>
+
+
+
+
+
+
+
+
+

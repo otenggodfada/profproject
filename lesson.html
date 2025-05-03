@@ -483,13 +483,15 @@
 
           // Rest of the loadLesson function remains the same...
           // Get user's progress for this lesson
-          const userProgressDoc = await getDoc(
-            doc(db, "users", auth.currentUser.uid, "progress", courseId)
-          );
-          const userProgress = userProgressDoc.data();
-          const lessonProgress = userProgress?.[sectionId]?.[lessonId]?.quiz || {};
+          const progressRef = doc(db, "users", auth.currentUser.uid, "progress", courseId);
+const progressSnap = await getDoc(progressRef);
 
-          // Update UI based on lesson type and progress
+const progressData = progressSnap.data();
+  console.log("User progress:", progressData);
+
+  // Example: Access specific lesson
+  const lessonProgress = progressData?.[`${sectionId}.${lessonId}`] || {}; // Ensure lessonProgress is an object if undefined
+  console.log("Specific lesson progress:", lessonProgress);        // Update UI based on lesson type and progress
           document.getElementById("courseName").textContent = course.name;
           document.getElementById("lessonTitle").textContent =
             lesson.name || "Untitled Lesson";
@@ -567,13 +569,15 @@
     if (Array.isArray(lesson.quiz)) {
       quizContent.innerHTML = lesson.quiz
   .map((question, index) => {
-    const savedAnswer = lessonProgress.quiz?.find(
+    const savedAnswer = lessonProgress.find(
       (q) => q.questionIndex === index
     );
 
     const correctIndex = question.correct_ans_index;
-    const selectedIndex = savedAnswer?.answerIndex;
+    const selectedIndex = savedAnswer?.answerIndex; // Reverting to optional chaining
 
+console.log("Correct index:", correctIndex); // Log the correct answer index
+console.log("Selected index:", selectedIndex); // Log the selected answer index
     return `
       <div class="space-y-3">
         <p class="font-medium text-slate-100">${index + 1}. ${question.question}</p>
@@ -593,19 +597,19 @@
 
               if (isSelected && !isCorrect) {
                 bgClass = "bg-red-600/70 border border-red-500";
-                labelText = '<span class="ml-auto text-red-200 text-xs">Your Answer</span>';
+                labelText = '<span class="ml-auto text-red-200 text-xs">Your Answer❌</span>';
               }
 
               if (isSelected && isCorrect) {
                 // Both correct and selected
                 labelText =
-                  '<span class="ml-auto text-green-200 text-xs">Your Answer ✓</span>';
+                  '<span class="ml-auto text-green-200 text-xs">Your Answer ✔️</span>';
               }
 
               return `
                 <label class="flex items-center justify-between gap-2 p-3 rounded-lg ${bgClass} transition-colors duration-300">
                   <div class="flex items-center gap-2">
-                    <input type="radio" name="q${index}" value="${optIndex}" disabled class="text-blue-500 hidden" ${isSelected ? "checked" : ""}>
+                    <input type="radio" name="q${index}" value="${optIndex}" class="text-blue-500 " ${isSelected ? "checked" : ""}>
                     <span class="text-white">${option}</span>
                   </div>
                   ${labelText}
@@ -623,7 +627,7 @@
 
       // Calculate and display the score summary
       const totalQuestions = lesson.quiz.length;
-  const correctAnswers = lessonProgress.quiz?.filter(q => q.isCorrect).length || 0;
+  const correctAnswers = lessonProgress.filter(q => q.isCorrect).length || 0; // Reverting to original logic
   document.getElementById("quizSummary").innerHTML = `
     <p class="text-xl font-semibold text-white">Quiz Results</p>
     <div class="mt-2 flex justify-center items-center space-x-3">
@@ -711,62 +715,69 @@
 
       // Handle quiz submission
  // Handle quiz submission
- document
-  .getElementById("submitQuiz")
-  ?.addEventListener("click", async () => {
-    const answers = [];
-    const quizInputs = document.querySelectorAll(
-      'input[type="radio"]:checked'
-    );
+// Handle quiz submission
+document.getElementById("submitQuiz")?.addEventListener("click", async () => {
+  const answers = [];
+  const quizInputs = document.querySelectorAll('input[type="radio"]:checked');
 
-    // Re-fetch lesson data to access correct answers
-    const lessonDoc = await getDoc(
-      doc(db, "courses", courseId, "sections", sectionId, "lessons", lessonId)
-    );
-    const lesson = lessonDoc.data();
-
-    quizInputs.forEach((input) => {
-      const questionIndex = parseInt(input.name.replace("q", ""));
-      const answerIndex = parseInt(input.value);
-      const correctIndex = lesson.quiz?.[questionIndex]?.correct_ans_index;
-
-      answers.push({
-        questionIndex,
-        answerIndex,
-        isCorrect: answerIndex === correctIndex,
-      });
+  quizInputs.forEach((input) => {
+    answers.push({
+      questionIndex: parseInt(input.name.replace("q", "")),
+      answerIndex: parseInt(input.value),
     });
-
-    try {
-      await updateDoc(
-        doc(db, "users", auth.currentUser.uid, "progress", courseId),
-        {
-          [`${sectionId}.${lessonId}.quiz`]: answers,
-        }
-      );
-
-      Toastify({
-        text: "Quiz submitted successfully!",
-        duration: 3000,
-        gravity: "top",
-        position: "right",
-        style: {
-          background: "linear-gradient(to right, #10B981, #059669)",
-        },
-      }).showToast();
-    } catch (error) {
-      console.error("Error submitting quiz:", error);
-      Toastify({
-        text: "Error submitting quiz. Please try again.",
-        duration: 3000,
-        gravity: "top",
-        position: "right",
-        style: {
-          background: "linear-gradient(to right, #EF4444, #DC2626)",
-        },
-      }).showToast();
-    }
   });
+
+  // Debugging values
+  const userId = auth.currentUser?.uid;
+
+
+  if (!userId || !courseId || !sectionId || !lessonId) {
+    Toastify({
+      text: "Invalid quiz submission data. Check identifiers.",
+      duration: 3000,
+      gravity: "top",
+      position: "right",
+      style: {
+        background: "linear-gradient(to right, #F97316, #EA580C)",
+      },
+    }).showToast();
+    return;
+  }
+
+  try {
+    const progressRef = doc(db, "users", userId, "progress", courseId);
+    await setDoc(
+      progressRef,
+      {
+        [`${sectionId}.${lessonId}`]: answers,
+      },
+      { merge: true } // ensures it doesn't overwrite the whole document
+    );
+
+    Toastify({
+      text: "✅ Quiz submitted successfully!",
+      duration: 3000,
+      gravity: "top",
+      position: "right",
+      style: {
+        background: "linear-gradient(to right, #10B981, #059669)",
+      },
+    }).showToast();
+  } catch (error) {
+    console.error("Error submitting quiz:", error.message);
+
+    Toastify({
+      text: `❌ Error: ${error.message || "Quiz submission failed."}`,
+      duration: 3000,
+      gravity: "top",
+      position: "right",
+      style: {
+        background: "linear-gradient(to right, #EF4444, #DC2626)",
+      },
+    }).showToast();
+  }
+});
+
 
 
 
@@ -1071,12 +1082,3 @@
     </script>
   </body>
 </html>
-
-
-
-
-
-
-
-
-

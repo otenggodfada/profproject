@@ -79,6 +79,7 @@
       }
 
       .page-container {
+        position: relative;
         margin-bottom: 20px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         background: white;
@@ -116,6 +117,159 @@
         display: flex;
         align-items: center;
         gap: 10px;
+      }
+      
+      /* Search highlighting styles */
+      .search-highlight {
+        background-color: yellow;
+        opacity: 0.7;
+        position: absolute;
+        z-index: 10;
+      }
+      
+      .search-highlight.active {
+        background-color: orange;
+        opacity: 0.9;
+      }
+      
+      /* Input focus styles */
+      #searchInput:focus, #gotoPageInput:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+      }
+      
+      /* Enhanced PDF viewer styles */
+      #pdfjsViewer {
+        background: #525659;
+      }
+      
+      /* Thumbnails styles */
+      .thumbnail-item {
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.2s ease;
+        background: white;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      
+      .thumbnail-item:hover {
+        border-color: #3b82f6;
+        transform: scale(1.02);
+      }
+      
+      .thumbnail-item.active {
+        border-color: #3b82f6;
+        background: #dbeafe;
+      }
+      
+      .thumbnail-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      
+      .thumbnail-item .page-number {
+        position: absolute;
+        bottom: 4px;
+        right: 4px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 10px;
+      }
+      
+      /* Outline styles */
+      .outline-item {
+        cursor: pointer;
+        padding: 6px 8px;
+        border-radius: 4px;
+        transition: background 0.2s ease;
+        color: #e5e7eb;
+        font-size: 14px;
+      }
+      
+      .outline-item:hover {
+        background: rgba(59, 130, 246, 0.1);
+      }
+      
+      .outline-item.active {
+        background: rgba(59, 130, 246, 0.2);
+        color: #3b82f6;
+      }
+      
+      .outline-item .outline-level-1 { padding-left: 0; }
+      .outline-item .outline-level-2 { padding-left: 16px; }
+      .outline-item .outline-level-3 { padding-left: 32px; }
+      .outline-item .outline-level-4 { padding-left: 48px; }
+      
+      /* Sidebar toggle animations */
+      #leftSidebar, #reviewsSidebar {
+        transition: transform 0.3s ease, width 0.3s ease;
+      }
+      
+      /* PDF.js viewer integration */
+      .pdfjs-viewer {
+        background: #525659;
+        color: #fff;
+      }
+      
+      .pdfjs-viewer .toolbar {
+        background: #374151;
+        border-bottom: 1px solid #4b5563;
+      }
+      
+      .pdfjs-viewer .toolbarButton {
+        background: transparent;
+        border: none;
+        color: #e5e7eb;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background 0.2s ease;
+      }
+      
+      .pdfjs-viewer .toolbarButton:hover {
+        background: rgba(59, 130, 246, 0.1);
+      }
+      
+      .pdfjs-viewer .toolbarButton.toggled {
+        background: rgba(59, 130, 246, 0.2);
+        color: #3b82f6;
+      }
+      
+      /* Loading states */
+      .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #3b82f6;
+        animation: spin 1s ease-in-out infinite;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      /* Responsive design */
+      @media (max-width: 768px) {
+        #leftSidebar, #reviewsSidebar {
+          width: 100%;
+          max-width: 300px;
+        }
+        
+        .pdf-controls {
+          bottom: 10px;
+          padding: 8px 16px;
+          gap: 10px;
+        }
+        
+        .pdf-page-info {
+          font-size: 12px;
+        }
       }
     </style>
   </head>
@@ -209,6 +363,77 @@
               <i class="fas fa-redo"></i>
             </button>
             <div class="h-6 w-px bg-gray-600"></div>
+            
+            <!-- Search functionality -->
+            <div class="flex items-center space-x-2">
+              <button
+                id="searchBtn"
+                class="text-white hover:text-blue-400 transition tooltip"
+                title="Search in PDF (Ctrl+F)"
+              >
+                <i class="fas fa-search"></i>
+              </button>
+              <div id="searchContainer" class="hidden flex items-center space-x-2">
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Search in PDF..."
+                  class="bg-gray-700 text-white px-3 py-1 rounded text-sm w-48 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  id="searchPrev"
+                  class="text-white hover:text-blue-400 transition"
+                  title="Previous (Shift+F3)"
+                >
+                  <i class="fas fa-chevron-up"></i>
+                </button>
+                <button
+                  id="searchNext"
+                  class="text-white hover:text-blue-400 transition"
+                  title="Next (F3)"
+                >
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <span id="searchResults" class="text-gray-400 text-sm"></span>
+                <button
+                  id="closeSearch"
+                  class="text-white hover:text-red-400 transition"
+                  title="Close Search (Esc)"
+                >
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            
+        
+            
+            <!-- Goto page functionality -->
+         
+            
+          
+            
+            <!-- Additional PDF features -->
+            <button
+              id="toggleSidebar"
+              class="text-white hover:text-blue-400 transition tooltip"
+              title="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <button
+              id="toggleThumbnails"
+              class="text-white hover:text-blue-400 transition tooltip"
+              title="Toggle Thumbnails"
+            >
+              <i class="fas fa-th"></i>
+            </button>
+            <button
+              id="toggleOutline"
+              class="text-white hover:text-blue-400 transition tooltip"
+              title="Toggle Outline"
+            >
+              <i class="fas fa-list"></i>
+            </button>
             <button
               id="toggleReviews"
               class="text-white hover:text-blue-400 transition tooltip flex items-center gap-2"
@@ -219,7 +444,20 @@
             </button>
           </div>
           <div class="flex items-center gap-4">
-         
+            <button
+              id="downloadBtn"
+              class="text-white hover:text-green-400 transition tooltip"
+              title="Download PDF"
+            >
+              <i class="fas fa-download"></i>
+            </button>
+            <button
+              id="printBtn"
+              class="text-white hover:text-blue-400 transition tooltip"
+              title="Print PDF"
+            >
+              <i class="fas fa-print"></i>
+            </button>
             <button
               id="closeModal"
               class="text-white hover:text-red-500 transition tooltip"
@@ -232,11 +470,40 @@
 
         <div class="watermark"></div>
 
-        <!-- Main content area with PDF and Reviews -->
+        <!-- Main content area with PDF and Sidebars -->
         <div class="flex h-full pt-12">
+          <!-- Left Sidebar (Thumbnails/Outline) -->
+          <div
+            id="leftSidebar"
+            class="hidden w-64 bg-gray-800 border-r border-gray-700 overflow-y-auto"
+          >
+            <div class="p-4">
+              <!-- Thumbnails Panel -->
+              <div id="thumbnailsPanel" class="space-y-2">
+                <h3 class="text-lg font-semibold text-white mb-4">Thumbnails</h3>
+                <div id="thumbnailsContainer" class="space-y-2">
+                  <!-- Thumbnails will be loaded here -->
+                </div>
+              </div>
+              
+              <!-- Outline Panel -->
+              <div id="outlinePanel" class="hidden space-y-2">
+                <h3 class="text-lg font-semibold text-white mb-4">Outline</h3>
+                <div id="outlineContainer" class="space-y-1">
+                  <!-- Outline will be loaded here -->
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- PDF Viewer -->
-          <div id="pdfContainer" class="flex-1">
-            <div id="pdfViewer"></div>
+          <div id="pdfContainer" class="flex-1 relative">
+            <div id="pdfViewer" class="w-full h-full"></div>
+            
+            <!-- PDF.js Viewer Container -->
+            <div id="pdfjsViewer" class="w-full h-full hidden">
+              <div id="pdfjsContainer" class="w-full h-full"></div>
+            </div>
           </div>
 
           <!-- Reviews Sidebar (hidden by default) -->
@@ -331,15 +598,8 @@
           </div>
         </div>
 
-        <!-- Bottom Controls -->
-        <div class="pdf-controls">
-          <button id="prevPage"><i class="fas fa-chevron-left"></i></button>
-          <div class="pdf-page-info">
-            Page <span id="currentPage">0</span> of
-            <span id="totalPages">0</span>
-          </div>
-          <button id="nextPage"><i class="fas fa-chevron-right"></i></button>
-        </div>
+    
+   
       </div>
     </div>
 
@@ -375,7 +635,6 @@
 
         // Initialize UI elements
         const pdfModal = document.getElementById("pdfModal");
-        const pdfViewer = document.getElementById("pdfViewer");
         const closeModal = document.getElementById("closeModal");
         const searchInput = document.getElementById("searchInput");
         const sortSelect = document.getElementById("sortSelect");
@@ -499,14 +758,28 @@ const fileId1 =book.id
           "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
         let pdfDoc = null;
-        let pageNum = 1;
+        let currentPage = 1;
         let scale = 1.5;
-        const viewer = document.getElementById("pdfViewer");
-        const container = document.getElementById("pdfContainer");
+        let rotation = 0;
+        let pdfViewer = null;
+        let pdfLinkService = null;
+        let pdfFindController = null;
+        let pdfOutlineViewer = null;
+        let pdfThumbnailViewer = null;
+        let currentPdfUrl = null;
 
+        // PDF viewer state
+        let isSidebarOpen = false;
+        let isThumbnailsVisible = false;
+        let isOutlineVisible = false;
+        let isReviewsVisible = false;
+
+        // Enhanced renderPage function
         async function renderPage(num) {
+          if (!pdfDoc) return;
+          
           const page = await pdfDoc.getPage(num);
-          const viewport = page.getViewport({ scale });
+          const viewport = page.getViewport({ scale, rotation });
 
           // Create canvas for this page
           const canvas = document.createElement("canvas");
@@ -517,6 +790,7 @@ const fileId1 =book.id
           // Create container for the page
           const pageContainer = document.createElement("div");
           pageContainer.className = "page-container";
+          pageContainer.setAttribute("data-page", num);
           pageContainer.appendChild(canvas);
 
           // Add watermark to each page
@@ -536,240 +810,747 @@ const fileId1 =book.id
           };
 
           await page.render(renderContext);
-          viewer.appendChild(pageContainer);
+          
+          // Add search highlighting if search is active
+          if (searchText && searchResults.length > 0) {
+            await addSearchHighlights(page, pageContainer, viewport);
+          }
+          
+          return pageContainer;
         }
 
-        window.openPdf = async (url, title, fileId, fileId1) => {
+        // Initialize comprehensive PDF viewer
+        async function initializePdfViewer(pdfUrl) {
           try {
-            const pdfModal = document.getElementById("pdfModal");
-            const viewer = document.getElementById("pdfViewer");
-            const reviewsSidebar = document.getElementById("reviewsSidebar");
-            viewer.innerHTML = ""; // Clear previous PDF
-            pdfModal.classList.remove("hidden");
-            reviewsSidebar.classList.add("hidden"); // Hide reviews sidebar initially
+            currentPdfUrl = pdfUrl;
+            
+            // Load PDF document
+            const loadingTask = pdfjsLib.getDocument({
+              url: pdfUrl,
+              cMapUrl: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
+              cMapPacked: true,
+            });
 
-            // Store the current PDF information
-            window.currentPdfInfo = {
-              url: url,
-              title: title,
-              fileId: fileId,
+            pdfDoc = await loadingTask.promise;
+            
+            // Initialize PDF.js viewer components
+            await initializePdfJsViewer();
+            
+            // Load thumbnails
+            await loadThumbnails();
+            
+            // Load outline
+            await loadOutline();
+            
+            // Update UI
+            document.getElementById("totalPages").textContent = pdfDoc.numPages;
+            document.getElementById("currentPage").textContent = "1";
+            
+            // Setup event listeners
+            setupPdfControls();
+            
+            console.log("PDF viewer initialized successfully");
+            
+              } catch (error) {
+            console.error("Error initializing PDF viewer:", error);
+            throw error;
+          }
+        }
 
+        // Initialize PDF.js viewer components
+        async function initializePdfJsViewer() {
+          const container = document.getElementById("pdfjsContainer");
+          
+          // Create PDF.js viewer components
+          pdfLinkService = new pdfjsLib.PDFLinkService();
+          pdfFindController = new pdfjsLib.PDFFindController({
+            linkService: pdfLinkService,
+          });
+          
+          // Create viewer
+          pdfViewer = new pdfjsLib.PDFViewer({
+            container: container,
+            linkService: pdfLinkService,
+            findController: pdfFindController,
+            textLayerMode: 2, // Enable text layer
+            renderInteractiveForms: true,
+          });
+          
+          // Link the components
+          pdfLinkService.setViewer(pdfViewer);
+          pdfFindController.setViewer(pdfViewer);
+          
+          // Load the document
+          await pdfViewer.setDocument(pdfDoc);
+          
+          // Show the viewer
+          document.getElementById("pdfjsViewer").classList.remove("hidden");
+          document.getElementById("pdfViewer").classList.add("hidden");
+        }
+
+        // Load thumbnails
+        async function loadThumbnails() {
+          const container = document.getElementById("thumbnailsContainer");
+          container.innerHTML = "";
+          
+          const thumbnailScale = 0.2;
+          
+          for (let pageNum = 1; pageNum <= Math.min(pdfDoc.numPages, 50); pageNum++) {
+            try {
+              const page = await pdfDoc.getPage(pageNum);
+              const viewport = page.getViewport({ scale: thumbnailScale });
+              
+              const canvas = document.createElement("canvas");
+              const context = canvas.getContext("2d");
+              canvas.height = viewport.height;
+              canvas.width = viewport.width;
+              
+              const renderContext = {
+                canvasContext: context,
+                viewport: viewport,
+              };
+              
+              await page.render(renderContext);
+              
+              const thumbnailItem = document.createElement("div");
+              thumbnailItem.className = "thumbnail-item relative";
+              thumbnailItem.setAttribute("data-page", pageNum);
+              
+              thumbnailItem.innerHTML = `
+                <img src="${canvas.toDataURL()}" alt="Page ${pageNum}">
+                <div class="page-number">${pageNum}</div>
+              `;
+              
+              thumbnailItem.onclick = () => {
+                goToPage(pageNum);
+                updateActiveThumbnail(pageNum);
+              };
+              
+              container.appendChild(thumbnailItem);
+            } catch (error) {
+              console.error(`Error loading thumbnail for page ${pageNum}:`, error);
+            }
+          }
+        }
+
+        // Load outline
+        async function loadOutline() {
+          const container = document.getElementById("outlineContainer");
+          container.innerHTML = "";
+          
+          try {
+            const outline = await pdfDoc.getOutline();
+            
+            if (outline && outline.length > 0) {
+              outline.forEach(item => {
+                const outlineItem = createOutlineItem(item, 1);
+                container.appendChild(outlineItem);
+              });
+            } else {
+              container.innerHTML = '<p class="text-gray-400 text-sm">No outline available</p>';
+            }
+          } catch (error) {
+            console.error("Error loading outline:", error);
+            container.innerHTML = '<p class="text-gray-400 text-sm">Error loading outline</p>';
+          }
+        }
+
+        // Create outline item
+        function createOutlineItem(item, level) {
+          const div = document.createElement("div");
+          div.className = `outline-item outline-level-${level}`;
+          div.textContent = item.title;
+          
+          div.onclick = async () => {
+            try {
+              const dest = await pdfDoc.getDestination(item.dest);
+              const page = await pdfDoc.getPageIndex(dest[0]);
+              goToPage(page + 1);
+              updateActiveOutlineItem(div);
+            } catch (error) {
+              console.error("Error navigating to outline item:", error);
+            }
+          };
+          
+          if (item.items && item.items.length > 0) {
+            item.items.forEach(subItem => {
+              const subDiv = createOutlineItem(subItem, level + 1);
+              div.appendChild(subDiv);
+            });
+          }
+          
+          return div;
+        }
+
+        // Update active thumbnail
+        function updateActiveThumbnail(pageNum) {
+          document.querySelectorAll('.thumbnail-item').forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          const activeThumbnail = document.querySelector(`[data-page="${pageNum}"]`);
+          if (activeThumbnail) {
+            activeThumbnail.classList.add('active');
+            activeThumbnail.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+
+        // Update active outline item
+        function updateActiveOutlineItem(activeItem) {
+          document.querySelectorAll('.outline-item').forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          if (activeItem) {
+            activeItem.classList.add('active');
+            activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+
+        // Enhanced goToPage function
+        function goToPage(pageNumber) {
+          if (!pdfDoc) {
+            console.log("PDF not loaded yet");
+            return;
+          }
+          
+          if (pageNumber < 1 || pageNumber > pdfDoc.numPages) {
+            console.log(`Invalid page number: ${pageNumber}`);
+            return;
+          }
+          
+          console.log(`Going to page ${pageNumber}`);
+          currentPage = pageNumber;
+          
+          if (pdfViewer) {
+            pdfViewer.currentPageNumber = pageNumber;
+          }
+          
+          // Update current page display if it exists
+          const currentPageElement = document.getElementById("currentPage");
+          if (currentPageElement) {
+            currentPageElement.textContent = pageNumber;
+          }
+          
+          // Update active thumbnail
+          updateActiveThumbnail(pageNumber);
+        }
+
+        // Download PDF
+        async function downloadPdf() {
+          if (!currentPdfUrl) return;
+          
+          try {
+            const response = await fetch(currentPdfUrl);
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `document-${Date.now()}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+                    } catch (error) {
+            console.error("Error downloading PDF:", error);
+            alert("Error downloading PDF. Please try again.");
+          }
+        }
+
+        // Print PDF
+        function printPdf() {
+          if (pdfViewer) {
+            pdfViewer.print();
+          } else {
+            window.print();
+          }
+        }
+
+        // Toggle sidebar
+        function toggleSidebar() {
+          const sidebar = document.getElementById("leftSidebar");
+          isSidebarOpen = !isSidebarOpen;
+          
+          if (isSidebarOpen) {
+            sidebar.classList.remove("hidden");
+          } else {
+            sidebar.classList.add("hidden");
+          }
+        }
+
+        // Toggle thumbnails
+        function toggleThumbnails() {
+          const thumbnailsPanel = document.getElementById("thumbnailsPanel");
+          const outlinePanel = document.getElementById("outlinePanel");
+          
+          isThumbnailsVisible = !isThumbnailsVisible;
+          isOutlineVisible = false;
+          
+          if (isThumbnailsVisible) {
+            thumbnailsPanel.classList.remove("hidden");
+            outlinePanel.classList.add("hidden");
+            toggleSidebar();
+          } else {
+            thumbnailsPanel.classList.add("hidden");
+            if (!isOutlineVisible) {
+              toggleSidebar();
+            }
+          }
+        }
+
+        // Toggle outline
+        function toggleOutline() {
+          const thumbnailsPanel = document.getElementById("thumbnailsPanel");
+          const outlinePanel = document.getElementById("outlinePanel");
+          
+          isOutlineVisible = !isOutlineVisible;
+          isThumbnailsVisible = false;
+          
+          if (isOutlineVisible) {
+            outlinePanel.classList.remove("hidden");
+            thumbnailsPanel.classList.add("hidden");
+            toggleSidebar();
+          } else {
+            outlinePanel.classList.add("hidden");
+            if (!isThumbnailsVisible) {
+              toggleSidebar();
+            }
+          }
+        }
+
+        // Toggle reviews
+        function toggleReviews() {
+          const reviewsSidebar = document.getElementById("reviewsSidebar");
+          isReviewsVisible = !isReviewsVisible;
+          
+          if (isReviewsVisible) {
+            reviewsSidebar.classList.remove("hidden");
+            loadReviews();
+          } else {
+            reviewsSidebar.classList.add("hidden");
+          }
+        }
+
+        // Search functionality variables
+        let searchResults = [];
+        let currentSearchIndex = -1;
+        let searchText = '';
+
+        // Enhanced setupPdfControls function with all new features
+        function setupPdfControls() {
+          console.log("Setting up PDF controls...");
+          
+          // Existing search and goto page functionality
+          const searchBtn = document.getElementById("searchBtn");
+          const closeSearch = document.getElementById("closeSearch");
+          const searchInput = document.getElementById("searchInput");
+          const searchNext = document.getElementById("searchNext");
+          const searchPrev = document.getElementById("searchPrev");
+          
+          console.log("Search elements found:", { searchBtn, closeSearch, searchInput, searchNext, searchPrev });
+          
+          if (searchBtn) {
+            searchBtn.onclick = handleSearchButtonClick;
+          }
+
+          if (closeSearch) {
+            closeSearch.onclick = () => {
+              console.log("Close search clicked");
+              document.getElementById("searchContainer").classList.add("hidden");
+              clearSearchHighlights();
             };
+          }
 
-            // Show loading state
-            viewer.innerHTML = `
-              <div class="flex items-center justify-center w-full h-full">
-                <div class="text-white">
-                  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-12 h-12 animate-spin mb-4 mx-auto"></div>
-                  <p>Loading PDF...</p>
+          if (searchInput) {
+            searchInput.addEventListener("input", handleSearchInput);
+          }
+
+          if (searchNext) {
+            searchNext.onclick = () => {
+              console.log("Search next clicked");
+              if (searchResults.length > 0) {
+                currentSearchIndex = (currentSearchIndex + 1) % searchResults.length;
+                highlightCurrentSearch();
+              }
+            };
+          }
+
+          if (searchPrev) {
+            searchPrev.onclick = () => {
+              console.log("Search prev clicked");
+              if (searchResults.length > 0) {
+                currentSearchIndex = currentSearchIndex <= 0 ? searchResults.length - 1 : currentSearchIndex - 1;
+                highlightCurrentSearch();
+              }
+            };
+          }
+
+          // Goto page functionality
+          const gotoPageBtn = document.getElementById("gotoPageBtn");
+          const closeGotoPage = document.getElementById("closeGotoPage");
+          const gotoPageGo = document.getElementById("gotoPageGo");
+          const gotoPageInput = document.getElementById("gotoPageInput");
+          
+          console.log("Goto page elements found:", { gotoPageBtn, closeGotoPage, gotoPageGo, gotoPageInput });
+          
+          if (gotoPageBtn) {
+            gotoPageBtn.onclick = () => {
+              console.log("Goto page button clicked");
+              const gotoPageContainer = document.getElementById("gotoPageContainer");
+              const searchContainer = document.getElementById("searchContainer");
+              
+              gotoPageContainer.classList.toggle("hidden");
+              searchContainer.classList.add("hidden");
+              
+              if (!gotoPageContainer.classList.contains("hidden")) {
+                document.getElementById("gotoPageInput").focus();
+              }
+            };
+          }
+
+          if (closeGotoPage) {
+            closeGotoPage.onclick = () => {
+              console.log("Close goto page clicked");
+              document.getElementById("gotoPageContainer").classList.add("hidden");
+            };
+          }
+
+          if (gotoPageGo) {
+            gotoPageGo.onclick = () => {
+              console.log("Goto page go clicked");
+              const pageInput = document.getElementById("gotoPageInput");
+              const pageNumber = parseInt(pageInput.value);
+              
+              if (pageNumber && pageNumber > 0 && pdfDoc && pageNumber <= pdfDoc.numPages) {
+                goToPage(pageNumber);
+                pageInput.value = '';
+                document.getElementById("gotoPageContainer").classList.add("hidden");
+              } else if (pageNumber && pageNumber > 0) {
+                alert(`Please enter a valid page number between 1 and ${pdfDoc ? pdfDoc.numPages : 'unknown'}`);
+              } else {
+                alert("Please enter a valid page number");
+              }
+            };
+          }
+
+          if (gotoPageInput) {
+            gotoPageInput.addEventListener("keypress", (e) => {
+              if (e.key === "Enter") {
+                document.getElementById("gotoPageGo").click();
+              }
+            });
+          }
+
+          // New PDF features
+          const toggleSidebarBtn = document.getElementById("toggleSidebar");
+          const toggleThumbnailsBtn = document.getElementById("toggleThumbnails");
+          const toggleOutlineBtn = document.getElementById("toggleOutline");
+          const toggleReviewsBtn = document.getElementById("toggleReviews");
+          const downloadBtn = document.getElementById("downloadBtn");
+          const printBtn = document.getElementById("printBtn");
+          const closeModalBtn = document.getElementById("closeModal");
+          const zoomInBtn = document.getElementById("zoomIn");
+          const zoomOutBtn = document.getElementById("zoomOut");
+          const rotateLeftBtn = document.getElementById("rotateLeft");
+          const rotateRightBtn = document.getElementById("rotateRight");
+
+          console.log("PDF control elements found:", {
+            toggleSidebarBtn, toggleThumbnailsBtn, toggleOutlineBtn, toggleReviewsBtn,
+            downloadBtn, printBtn, closeModalBtn, zoomInBtn, zoomOutBtn, rotateLeftBtn, rotateRightBtn
+          });
+
+          if (toggleSidebarBtn) {
+            toggleSidebarBtn.onclick = () => {
+              console.log("Toggle sidebar clicked");
+              toggleSidebar();
+            };
+          }
+
+          if (toggleThumbnailsBtn) {
+            toggleThumbnailsBtn.onclick = () => {
+              console.log("Toggle thumbnails clicked");
+              toggleThumbnails();
+            };
+          }
+
+          if (toggleOutlineBtn) {
+            toggleOutlineBtn.onclick = () => {
+              console.log("Toggle outline clicked");
+              toggleOutline();
+            };
+          }
+
+          if (toggleReviewsBtn) {
+            toggleReviewsBtn.onclick = () => {
+              console.log("Toggle reviews clicked");
+              toggleReviews();
+            };
+          }
+
+          if (downloadBtn) {
+            downloadBtn.onclick = () => {
+              console.log("Download clicked");
+              downloadPdf();
+            };
+          }
+
+          if (printBtn) {
+            printBtn.onclick = () => {
+              console.log("Print clicked");
+              printPdf();
+            };
+          }
+
+          if (closeModalBtn) {
+            closeModalBtn.onclick = () => {
+              console.log("Close modal clicked");
+              const pdfModal = document.getElementById("pdfModal");
+              const viewer = document.getElementById("pdfViewer");
+          pdfModal.classList.add("hidden");
+          viewer.innerHTML = "";
+              document.getElementById("pdfjsViewer").classList.add("hidden");
+          pdfDoc = null;
+              pdfViewer = null;
+            };
+          }
+
+          if (zoomInBtn) {
+            zoomInBtn.onclick = () => {
+              console.log("Zoom in clicked");
+              scale *= 1.2;
+              if (pdfViewer) {
+                pdfViewer.currentScale = scale;
+              }
+            };
+          }
+
+          if (zoomOutBtn) {
+            zoomOutBtn.onclick = () => {
+              console.log("Zoom out clicked");
+              scale /= 1.2;
+              if (pdfViewer) {
+                pdfViewer.currentScale = scale;
+              }
+            };
+          }
+
+          if (rotateLeftBtn) {
+            rotateLeftBtn.onclick = () => {
+              console.log("Rotate left clicked");
+              rotation -= 90;
+              if (pdfViewer) {
+                pdfViewer.pagesRotation = rotation;
+              }
+            };
+          }
+
+          if (rotateRightBtn) {
+            rotateRightBtn.onclick = () => {
+              console.log("Rotate right clicked");
+              rotation += 90;
+              if (pdfViewer) {
+                pdfViewer.pagesRotation = rotation;
+              }
+            };
+          }
+          
+          console.log("PDF controls setup complete");
+        }
+
+        // Enhanced search input handler
+        function handleSearchInput(e) {
+          searchText = e.target.value;
+          if (searchText.length > 0) {
+            if (pdfDoc) {
+              // For PDF.js viewer, perform full search
+              performSearch(searchText);
+            } else {
+              // For iframe PDFs, show browser search instructions
+              const resultsElement = document.getElementById("searchResults");
+              if (resultsElement) {
+                resultsElement.textContent = "Use Ctrl+F to search in browser";
+              }
+              
+              // Show a helpful tooltip or message
+              showSearchHelp();
+            }
+          } else {
+            clearSearchHighlights();
+            hideSearchHelp();
+          }
+        }
+
+        // Show search help for iframe PDFs
+        function showSearchHelp() {
+          // Remove existing help message
+          hideSearchHelp();
+          
+          const searchContainer = document.getElementById("searchContainer");
+          if (searchContainer) {
+            const helpDiv = document.createElement("div");
+            helpDiv.id = "searchHelp";
+            helpDiv.className = "absolute top-full left-0 mt-2 bg-blue-600 text-white p-3 rounded-lg text-sm z-50 max-w-xs";
+            helpDiv.innerHTML = `
+              <div class="flex items-start gap-2">
+                <i class="fas fa-info-circle mt-0.5"></i>
+                <div>
+                  <p class="font-semibold mb-1">Search in PDF</p>
+                  <p class="text-xs opacity-90">For this PDF type, use your browser's search:</p>
+                  <ul class="text-xs opacity-90 mt-1 space-y-1">
+                    <li>• Press <kbd class="bg-blue-700 px-1 rounded">Ctrl+F</kbd> (Windows/Linux)</li>
+                    <li>• Press <kbd class="bg-blue-700 px-1 rounded">Cmd+F</kbd> (Mac)</li>
+                    <li>• Type your search term</li>
+                  </ul>
                 </div>
               </div>
             `;
+            searchContainer.appendChild(helpDiv);
+          }
+        }
 
-            // Initialize reviews system
-            initializeReviews(fileId1);
+        // Hide search help
+        function hideSearchHelp() {
+          const helpDiv = document.getElementById("searchHelp");
+          if (helpDiv) {
+            helpDiv.remove();
+          }
+        }
 
-            // Handle Google Drive URLs with clean parameters
-            let pdfUrl = url;
-            if (fileId) {
-              // Use embed URL with parameters to hide controls
-              pdfUrl = `https://drive.google.com/file/d/${fileId}/preview?usp=embed_view&rm=minimal&hl=en&embedded=true&usp=drivesdk&chrome=false&disablekb=1`;
-
-              try {
-                viewer.innerHTML = `
-                  <div class="w-full h-full relative">
-                    <div class="absolute inset-0 z-10" style="pointer-events: none;"></div>
-                    <iframe 
-                      src="${pdfUrl}"
-                      class="w-full h-full"
-                      style="border: none; background: #fff;"
-                      sandbox="allow-scripts allow-same-origin allow-popups"
-                    ></iframe>
-                  </div>
-                `;
-
-                // Add an overlay to prevent interactions with Google Drive controls
-                const overlay = document.createElement("div");
-                overlay.className =
-                  "absolute top-0 left-0 right-0 h-[50px] z-20";
-                overlay.style.background = "#525659";
-                viewer.firstElementChild.appendChild(overlay);
-
-                return; // Exit since we're using iframe for Google Drive
-              } catch (error) {
-                console.log("Cannot embed file directly, showing alternatives");
-                viewer.innerHTML = `
-                
-                `;
-                return;
+        // Enhanced search button click handler
+        function handleSearchButtonClick() {
+          const searchContainer = document.getElementById("searchContainer");
+          const gotoPageContainer = document.getElementById("gotoPageContainer");
+          
+          searchContainer.classList.toggle("hidden");
+          gotoPageContainer.classList.add("hidden");
+          
+          if (!searchContainer.classList.contains("hidden")) {
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) {
+              searchInput.focus();
+              
+              // If it's an iframe PDF, show help immediately
+              if (!pdfDoc) {
+                setTimeout(() => {
+                  showSearchHelp();
+                }, 100);
               }
             }
+          } else {
+            hideSearchHelp();
+          }
+        }
 
-            // Validate PDF before loading
-            try {
-              const response = await fetch(pdfUrl);
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-
-              // Check if the response is actually a PDF
-              const contentType = response.headers.get("content-type");
-              if (contentType && !contentType.includes("application/pdf")) {
-                // If it's not a PDF, try to get it as a blob and validate the magic number
-                const blob = await response.blob();
-                const arr = new Uint8Array(await blob.arrayBuffer());
-                const pdfHeader = [0x25, 0x50, 0x44, 0x46]; // %PDF
-
-                const isPDF = pdfHeader.every((byte, i) => arr[i] === byte);
-                if (!isPDF) {
-                  throw new Error("Invalid PDF format");
-                }
-              }
-
-              // Create a blob URL from the response
-              const pdfBlob = await response.blob();
-              const blobUrl = URL.createObjectURL(pdfBlob);
-
-              // Load and render PDF
-              const loadingTask = pdfjsLib.getDocument({
-                url: blobUrl,
-                cMapUrl:
-                  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/",
-                cMapPacked: true,
-              });
-
-              loadingTask.onProgress = (data) => {
-                if (data.total > 0) {
-                  const progress = ((data.loaded / data.total) * 100).toFixed(
-                    0
-                  );
-                  viewer.innerHTML = `
-                    <div class="flex items-center justify-center w-full h-full">
-                      <div class="text-white text-center">
-                        <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-12 h-12 animate-spin mb-4"></div>
-                        <p>Loading PDF... ${progress}%</p>
-                      </div>
-                    </div>
-                  `;
-                }
-              };
-
-              pdfDoc = await loadingTask.promise;
-              viewer.innerHTML = "";
-
-              // Clean up the blob URL after loading
-              URL.revokeObjectURL(blobUrl);
-
-              // Update UI
-              document.getElementById("totalPages").textContent =
-                pdfDoc.numPages;
-              document.getElementById("currentPage").textContent = "1";
-
-              // Render first few pages
-              const initialPages = Math.min(3, pdfDoc.numPages);
-              for (let i = 1; i <= initialPages; i++) {
-                await renderPage(i);
-              }
-
-              // Setup infinite scroll with error handling
-              let lastRenderedPage = initialPages;
-              container.onscroll = async () => {
-                if (
-                  container.scrollTop + container.clientHeight >=
-                  container.scrollHeight - 500
-                ) {
-                  if (lastRenderedPage < pdfDoc.numPages) {
-                    try {
-                      lastRenderedPage++;
-                      await renderPage(lastRenderedPage);
-                      document.getElementById("currentPage").textContent =
-                        lastRenderedPage;
-                    } catch (error) {
-                      console.error("Error rendering page:", error);
-                      // Show error message but don't interrupt scrolling
-                      const errorDiv = document.createElement("div");
-                      errorDiv.className = "text-red-500 text-center p-4";
-                      errorDiv.textContent = `Error loading page ${lastRenderedPage}. Please try refreshing.`;
-                      viewer.appendChild(errorDiv);
-                    }
-                  }
-                }
-              };
-            } catch (error) {
-              console.error("Error loading PDF:", error);
-              viewer.innerHTML = `
+        // Search functions
+        async function performSearch(searchTerm) {
+          if (!pdfDoc) {
+            console.log("PDF not loaded yet - using iframe search");
+            // For iframe PDFs, we can't search the content directly
+            // Show a message to the user
+            const resultsElement = document.getElementById("searchResults");
+            if (resultsElement) {
+              resultsElement.textContent = "Search not available for this PDF type";
+            }
+            return;
+          }
+          
+          console.log("Performing search for:", searchTerm);
+          clearSearchHighlights();
+          searchResults = [];
+          currentSearchIndex = -1;
+          
+          try {
+            // Search through all pages
+            for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+              console.log(`Searching page ${pageNum}`);
+              const page = await pdfDoc.getPage(pageNum);
+              const textContent = await page.getTextContent();
               
-              `;
+              let pageText = '';
+              textContent.items.forEach(item => {
+                pageText += item.str + ' ';
+              });
+              
+              // Find all occurrences of search term
+              const regex = new RegExp(searchTerm, 'gi');
+              let match;
+              while ((match = regex.exec(pageText)) !== null) {
+                searchResults.push({
+                  page: pageNum,
+                  index: match.index,
+                  text: match[0]
+                });
+              }
+            }
+            
+            console.log(`Found ${searchResults.length} results`);
+            updateSearchResults();
+            
+            if (searchResults.length > 0) {
+              currentSearchIndex = 0;
+              highlightCurrentSearch();
             }
           } catch (error) {
-            console.error("Fatal error:", error);
-            viewer.innerHTML = `
+            console.error("Error performing search:", error);
+            const resultsElement = document.getElementById("searchResults");
+            if (resultsElement) {
+              resultsElement.textContent = "Search error occurred";
+            }
+          }
+        }
+
+        function updateSearchResults() {
+          const resultsElement = document.getElementById("searchResults");
+          if (searchResults.length > 0) {
+            resultsElement.textContent = `${currentSearchIndex + 1} of ${searchResults.length}`;
+          } else {
+            resultsElement.textContent = "No results";
+          }
+        }
+
+        function highlightCurrentSearch() {
+          if (currentSearchIndex >= 0 && currentSearchIndex < searchResults.length) {
+            const result = searchResults[currentSearchIndex];
+            
+            // Scroll to the page
+            goToPage(result.page);
+            
+            // Highlight the current result
+            setTimeout(() => {
+              highlightSearchResult(result);
+            }, 500);
+            
+            updateSearchResults();
+          }
+        }
+
+        function highlightSearchResult(result) {
+          // Remove previous active highlights
+          document.querySelectorAll('.search-highlight.active').forEach(el => {
+            el.classList.remove('active');
+          });
           
-            `;
+          // Add active highlight to current result
+          const highlights = document.querySelectorAll('.search-highlight');
+          if (highlights.length > 0) {
+            highlights[currentSearchIndex % highlights.length].classList.add('active');
           }
-          initializeReviews(fileId);
-        };
+        }
 
-        document.getElementById("prevPage").onclick = () => {
-          if (container.firstElementChild) {
-            container.scrollTo({
-              top: container.scrollTop - container.clientHeight,
-              behavior: "smooth",
-            });
+        function clearSearchHighlights() {
+          document.querySelectorAll('.search-highlight').forEach(el => {
+            el.remove();
+          });
+          searchResults = [];
+          currentSearchIndex = -1;
+          const resultsElement = document.getElementById("searchResults");
+          if (resultsElement) {
+            resultsElement.textContent = "";
           }
-        };
+        }
 
-        document.getElementById("nextPage").onclick = () => {
-          if (container.lastElementChild) {
-            container.scrollTo({
-              top: container.scrollTop + container.clientHeight,
-              behavior: "smooth",
-            });
-          }
-        };
-
-        document.getElementById("zoomIn").onclick = async () => {
-          scale *= 1.2;
-          viewer.innerHTML = "";
-          lastRenderedPage = 0;
-          container.scrollTop = 0;
-          for (let i = 1; i <= Math.min(3, pdfDoc.numPages); i++) {
-            await renderPage(i);
-          }
-        };
-
-        document.getElementById("zoomOut").onclick = async () => {
-          scale /= 1.2;
-          viewer.innerHTML = "";
-          lastRenderedPage = 0;
-          container.scrollTop = 0;
-          for (let i = 1; i <= Math.min(3, pdfDoc.numPages); i++) {
-            await renderPage(i);
-          }
-        };
-
-        document.getElementById("closeModal").onclick = () => {
-          pdfModal.classList.add("hidden");
-          viewer.innerHTML = "";
-          pdfDoc = null;
-        };
-
-        container.addEventListener("contextmenu", (e) => e.preventDefault());
-        container.addEventListener("selectstart", (e) => e.preventDefault());
-        container.addEventListener("copy", (e) => e.preventDefault());
-        container.addEventListener("dragstart", (e) => e.preventDefault());
-
-        document.addEventListener("keydown", (e) => {
-          if (
-            (e.ctrlKey && ["p", "P", "s", "S"].includes(e.key)) ||
-            e.key === "PrintScreen" ||
-            (e.altKey && e.key === "PrintScreen")
-          ) {
-            e.preventDefault();
-            return false;
-          }
-        });
-
+        // Reviews functionality
         let currentBookId = null;
         let selectedRating = 0;
 
@@ -789,6 +1570,7 @@ const fileId1 =book.id
           const reviewsSidebar = document.getElementById("reviewsSidebar");
 
           // Toggle reviews sidebar with immediate load
+          if (toggleReviews) {
           toggleReviews.onclick = () => {
             const isHidden = reviewsSidebar.classList.contains("hidden");
             reviewsSidebar.classList.toggle("hidden");
@@ -796,18 +1578,24 @@ const fileId1 =book.id
               loadReviews(); // Load reviews when showing the sidebar
             }
           };
+          }
 
           // Review form controls
+          if (writeReviewBtn) {
           writeReviewBtn.onclick = () => {
             reviewForm.classList.remove("hidden");
           };
+          }
 
+          if (cancelReview) {
           cancelReview.onclick = () => {
             reviewForm.classList.add("hidden");
             resetReviewForm();
           };
+          }
 
           // Star rating functionality
+          if (ratingStars.length > 0) {
           ratingStars.forEach((star, index) => {
             star.onclick = () => {
               selectedRating = index + 1;
@@ -822,8 +1610,10 @@ const fileId1 =book.id
               updateStarDisplay(selectedRating);
             };
           });
+          }
 
           // Submit review
+          if (submitReview) {
           submitReview.onclick = async () => {
             if (!firebase.auth().currentUser) {
               alert("Please login to submit a review");
@@ -868,6 +1658,7 @@ const fileId1 =book.id
               alert("Failed to submit review. Please try again.");
             }
           };
+          }
         }
 
         async function loadReviews() {
@@ -899,68 +1690,34 @@ const fileId1 =book.id
             let totalRatings = 0;
             let totalStars = 0;
 
-            reviewsSnapshot.docs.forEach((doc) => {
-              const reviewData = doc.data();
+            reviewsSnapshot.forEach((doc) => {
+              const review = doc.data();
               totalRatings++;
-              totalStars += reviewData.rating;
+              totalStars += review.rating;
             });
 
-            const averageRating =
-              totalRatings > 0 ? totalStars / totalRatings : 0;
-            averageRatingEl.textContent = averageRating.toFixed(1);
+            const averageRating = totalRatings > 0 ? (totalStars / totalRatings).toFixed(1) : "0.0";
+
+            // Update UI
+            averageRatingEl.textContent = averageRating;
             totalReviewsEl.textContent = `(${totalRatings})`;
 
-            if (reviewsSnapshot.empty) {
-              reviewsList.innerHTML = `
-                <div class="text-center py-8">
-                  <i class="fas fa-comments text-gray-600 text-4xl mb-4"></i>
-                  <p class="text-gray-400">No reviews yet. Be the first to review!</p>
-                </div>
-              `;
-              return;
-            }
-
-            // Load all user data at once for efficiency
-            const userIds = [
-              ...new Set(reviewsSnapshot.docs.map((doc) => doc.data().userId)),
-            ];
-            const usersSnapshot = await Promise.all(
-              userIds.map((userId) => db.collection("users").doc(userId).get())
-            );
-            const usersMap = {};
-            usersSnapshot.forEach((userDoc) => {
-              if (userDoc.exists) {
-                usersMap[userDoc.id] = userDoc.data();
-              }
-            });
-
+            // Render reviews
+            if (totalRatings > 0) {
             reviewsList.innerHTML = reviewsSnapshot.docs
               .map((doc) => {
                 const review = doc.data();
-                const userData = usersMap[review.userId] || {};
                 const date = review.createdAt
-                  ? new Date(
-                      review.createdAt.seconds * 1000
-                    ).toLocaleDateString()
+                    ? new Date(review.createdAt.toDate()).toLocaleDateString()
                   : "Unknown date";
 
                 return `
-                <div class="bg-gray-700/50 rounded-lg p-4 mb-4">
-                  <div class="flex items-start justify-between mb-2">
-                    <div class="flex items-center gap-3">
-                      <img src="${
-                        userData.photoURL || "https://via.placeholder.com/32"
-                      }" 
-                           alt="${userData.name || "Anonymous"}"
-                           class="w-8 h-8 rounded-full object-cover">
-                      <div>
-                        <h4 class="font-medium text-white">${
-                          userData.name || "Anonymous"
-                        }</h4>
+                    <div class="bg-gray-700 rounded-lg p-4">
+                      <div class="flex justify-between items-start mb-2">
                         <div class="flex items-center gap-2">
-                          <div class="flex items-center">
+                          <div class="flex">
                             ${Array(5)
-                              .fill(0)
+                              .fill()
                               .map(
                                 (_, i) =>
                                   `<i class="fas fa-star ${
@@ -972,8 +1729,6 @@ const fileId1 =book.id
                               .join("")}
                           </div>
                           <span class="text-sm text-gray-400">${date}</span>
-                        </div>
-                      </div>
                     </div>
                   </div>
                   <p class="text-gray-300 mt-2">${review.review}</p>
@@ -981,6 +1736,14 @@ const fileId1 =book.id
               `;
               })
               .join("");
+            } else {
+              reviewsList.innerHTML = `
+                <div class="text-center py-8">
+                  <i class="fas fa-comments text-gray-500 text-4xl mb-4"></i>
+                  <p class="text-gray-400">No reviews yet. Be the first to review this book!</p>
+                </div>
+              `;
+            }
           } catch (error) {
             console.error("Error loading reviews:", error);
             reviewsList.innerHTML = `
@@ -999,6 +1762,7 @@ const fileId1 =book.id
           const stars = document.querySelectorAll(".rating i");
           const ratingText = document.getElementById("ratingText");
 
+          if (stars.length > 0) {
           stars.forEach((star, index) => {
             if (index < rating) {
               star.classList.remove("text-gray-400");
@@ -1008,8 +1772,9 @@ const fileId1 =book.id
               star.classList.add("text-gray-400");
             }
           });
+          }
 
-          if (!isHover) {
+          if (ratingText && !isHover) {
             ratingText.textContent =
               rating > 0
                 ? `${rating} star${rating > 1 ? "s" : ""}`
@@ -1020,8 +1785,132 @@ const fileId1 =book.id
         function resetReviewForm() {
           selectedRating = 0;
           updateStarDisplay(0);
-          document.getElementById("reviewText").value = "";
+          const reviewText = document.getElementById("reviewText");
+          if (reviewText) {
+            reviewText.value = "";
+          }
         }
+
+        // Comprehensive openPdf function
+        window.openPdf = async (url, title, fileId, fileId1) => {
+          try {
+            const pdfModal = document.getElementById("pdfModal");
+            const viewer = document.getElementById("pdfViewer");
+            const reviewsSidebar = document.getElementById("reviewsSidebar");
+            const container = document.getElementById("pdfContainer");
+            
+            // Clear previous PDF and reset state
+            viewer.innerHTML = "";
+            document.getElementById("pdfjsViewer").classList.add("hidden");
+            viewer.classList.remove("hidden");
+            pdfModal.classList.remove("hidden");
+            reviewsSidebar.classList.add("hidden");
+            
+            // Reset sidebar states
+            isSidebarOpen = false;
+            isThumbnailsVisible = false;
+            isOutlineVisible = false;
+            isReviewsVisible = false;
+            document.getElementById("leftSidebar").classList.add("hidden");
+            document.getElementById("thumbnailsPanel").classList.remove("hidden");
+            document.getElementById("outlinePanel").classList.add("hidden");
+
+            // Setup PDF controls immediately
+            setupPdfControls();
+
+            // Store the current PDF information
+            window.currentPdfInfo = {
+              url: url,
+              title: title,
+              fileId: fileId,
+            };
+
+            // Show loading state
+            viewer.innerHTML = `
+              <div class="flex items-center justify-center w-full h-full">
+                <div class="text-white text-center">
+                  <div class="loader border-t-4 border-blue-500 border-solid rounded-full w-12 h-12 animate-spin mb-4 mx-auto"></div>
+                  <p>Loading PDF...</p>
+                </div>
+              </div>
+            `;
+
+            // Initialize reviews system
+            initializeReviews(fileId1);
+
+            // Handle Google Drive URLs
+            let pdfUrl = url;
+            if (fileId) {
+              pdfUrl = `https://drive.google.com/file/d/${fileId}/preview?usp=embed_view&rm=minimal&hl=en&embedded=true&usp=drivesdk&chrome=false&disablekb=1`;
+
+              try {
+                viewer.innerHTML = `
+                  <div class="w-full h-full relative">
+                    <div class="absolute inset-0 z-10" style="pointer-events: none;"></div>
+                    <iframe 
+                      src="${pdfUrl}"
+                      class="w-full h-full"
+                      style="border: none; background: #fff;"
+                      sandbox="allow-scripts allow-same-origin allow-popups"
+                    ></iframe>
+                  </div>
+                `;
+
+                const overlay = document.createElement("div");
+                overlay.className = "absolute top-0 left-0 right-0 h-[50px] z-20";
+                overlay.style.background = "#525659";
+                viewer.firstElementChild.appendChild(overlay);
+
+                return;
+              } catch (error) {
+                console.log("Cannot embed file directly, showing alternatives");
+                viewer.innerHTML = `
+                  <div class="flex items-center justify-center w-full h-full">
+                    <div class="text-white text-center">
+                      <i class="fas fa-exclamation-triangle text-4xl mb-4"></i>
+                      <p>Unable to display PDF directly.</p>
+                      <a href="${url}" target="_blank" class="text-blue-400 hover:text-blue-300 mt-2 block">
+                        Open in new tab
+                      </a>
+                    </div>
+                  </div>
+                `;
+                return;
+              }
+            }
+
+            // Initialize comprehensive PDF viewer
+            try {
+              await initializePdfViewer(pdfUrl);
+            } catch (error) {
+              console.error("Error initializing PDF viewer:", error);
+              viewer.innerHTML = `
+                <div class="flex items-center justify-center w-full h-full">
+                  <div class="text-white text-center">
+                    <i class="fas fa-exclamation-triangle text-4xl mb-4"></i>
+                    <p>Error loading PDF. Please try again.</p>
+                    <a href="${url}" target="_blank" class="text-blue-400 hover:text-blue-300 mt-2 block">
+                      Open in new tab
+                    </a>
+                  </div>
+                </div>
+              `;
+            }
+          } catch (error) {
+            console.error("Fatal error:", error);
+            const viewer = document.getElementById("pdfViewer");
+            if (viewer) {
+              viewer.innerHTML = `
+                <div class="flex items-center justify-center w-full h-full">
+                  <div class="text-white text-center">
+                    <i class="fas fa-exclamation-triangle text-4xl mb-4"></i>
+                    <p>An error occurred. Please try again.</p>
+                  </div>
+                </div>
+              `;
+            }
+          }
+        };
       };
     </script>
   </body>

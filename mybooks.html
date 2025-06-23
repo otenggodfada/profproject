@@ -1318,9 +1318,28 @@ const fileId1 =book.id
           if (zoomInBtn) {
             zoomInBtn.onclick = () => {
               console.log("Zoom in clicked");
-              scale *= 1.2;
-              if (pdfViewer) {
-                pdfViewer.currentScale = scale;
+              const newScale = scale * 1.2;
+              
+              // Limit maximum zoom to 3x
+              if (newScale <= 3) {
+                scale = newScale;
+                if (pdfViewer) {
+                  // For PDF.js viewer
+                  pdfViewer.currentScale = scale;
+                } else {
+                  // For iframe PDFs, try to zoom the iframe
+                  const iframe = document.querySelector('#pdfViewer iframe');
+                  if (iframe) {
+                    // Apply CSS transform to zoom the iframe
+                    iframe.style.transform = `scale(${scale})`;
+                    iframe.style.transformOrigin = 'top left';
+                    
+                    // Add some visual feedback
+                    showZoomFeedback(`Zoom: ${Math.round(scale * 100)}%`);
+                  }
+                }
+              } else {
+                showZoomFeedback("Maximum zoom reached");
               }
             };
           }
@@ -1328,11 +1347,38 @@ const fileId1 =book.id
           if (zoomOutBtn) {
             zoomOutBtn.onclick = () => {
               console.log("Zoom out clicked");
-              scale /= 1.2;
-              if (pdfViewer) {
-                pdfViewer.currentScale = scale;
+              const newScale = scale / 1.2;
+              
+              // Limit minimum zoom to 0.5x
+              if (newScale >= 0.5) {
+                scale = newScale;
+                if (pdfViewer) {
+                  // For PDF.js viewer
+                  pdfViewer.currentScale = scale;
+                } else {
+                  // For iframe PDFs, try to zoom the iframe
+                  const iframe = document.querySelector('#pdfViewer iframe');
+                  if (iframe) {
+                    // Apply CSS transform to zoom the iframe
+                    iframe.style.transform = `scale(${scale})`;
+                    iframe.style.transformOrigin = 'top left';
+                    
+                    // Add some visual feedback
+                    showZoomFeedback(`Zoom: ${Math.round(scale * 100)}%`);
+                  }
+                }
+              } else {
+                showZoomFeedback("Minimum zoom reached");
               }
             };
+          }
+
+          // Add double-click to reset zoom
+          const pdfContainer = document.getElementById("pdfContainer");
+          if (pdfContainer) {
+            pdfContainer.addEventListener("dblclick", () => {
+              resetZoom();
+            });
           }
 
           if (rotateLeftBtn) {
@@ -1356,6 +1402,55 @@ const fileId1 =book.id
           }
           
           console.log("PDF controls setup complete");
+        }
+
+        // Reset zoom function
+        function resetZoom() {
+          console.log("Resetting zoom");
+          scale = 1.5; // Reset to default scale
+          
+          if (pdfViewer) {
+            // For PDF.js viewer
+            pdfViewer.currentScale = scale;
+          } else {
+            // For iframe PDFs, reset the iframe zoom
+            const iframe = document.querySelector('#pdfViewer iframe');
+            if (iframe) {
+              iframe.style.transform = `scale(${scale})`;
+              iframe.style.transformOrigin = 'top left';
+            }
+          }
+          
+          showZoomFeedback(`Zoom: ${Math.round(scale * 100)}%`);
+        }
+
+        // Show zoom feedback
+        function showZoomFeedback(message) {
+          // Remove existing feedback
+          const existingFeedback = document.getElementById("zoomFeedback");
+          if (existingFeedback) {
+            existingFeedback.remove();
+          }
+          
+          // Create new feedback element
+          const feedback = document.createElement("div");
+          feedback.id = "zoomFeedback";
+          feedback.className = "fixed top-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-opacity duration-300";
+          feedback.textContent = message;
+          
+          document.body.appendChild(feedback);
+          
+          // Remove after 2 seconds
+          setTimeout(() => {
+            if (feedback.parentNode) {
+              feedback.style.opacity = "0";
+              setTimeout(() => {
+                if (feedback.parentNode) {
+                  feedback.remove();
+                }
+              }, 300);
+            }
+          }, 2000);
         }
 
         // Enhanced search input handler

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room - ProfStudyMate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .chat-container {
+            height: calc(100vh - 140px);
+        }
+        
+        .messages-container {
+            height: calc(100vh - 280px);
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            word-wrap: break-word;
+            position: relative;
+            animation: messageSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message-bubble.own {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+        }
+        
+        .message-bubble.other {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 18px 18px 18px 4px;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            margin: 8px 0;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #3b82f6;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .online-indicator {
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+        }
+        
+        .offline-indicator {
+            width: 10px;
+            height: 10px;
+            background: #6b7280;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            opacity: 0.6;
+        }
+        
+        .away-indicator {
+            width: 10px;
+            height: 10px;
+            background: #f59e0b;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse 3s infinite;
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        
+        .sidebar {
+            transition: transform 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+        }
+        
+        .message-date-divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .message-date-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .message-date-divider span {
+            background: rgba(15, 23, 42, 0.9);
+            padding: 8px 16px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .emoji-picker {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            display: none;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 6px;
+            max-width: 320px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .emoji-picker.show {
+            display: grid;
+            animation: fadeIn 0.2s ease-out;
+        }
+        
+        .emoji-btn {
+            padding: 6px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 18px;
+        }
+        
+        .emoji-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .message-input {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .message-input:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .send-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .send-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .send-btn:hover::before {
+            left: 100%;
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .member-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .member-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .scrollbar-custom::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .scrollbar-custom::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        
+        .scrollbar-custom::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.5);
+            border-radius: 3px;
+        }
+        
+        .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.7);
+        }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .messages-container {
+                height: calc(100vh - 200px);
+                padding: 1rem;
+                padding-bottom: calc(120px + env(safe-area-inset-bottom));
+            }
+            
+            .message-input-container {
+                padding: 1rem;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(15, 23, 42, 0.95);
+                backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                z-index: 40;
+                padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+            }
+            
+            .mobile-message-form {
+                display: flex;
+                align-items: flex-end;
+                gap: 0.75rem;
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            
+            .mobile-textarea {
+                min-height: 56px;
+                max-height: 120px;
+                font-size: 16px; /* Prevents zoom on iOS */
+                line-height: 1.4;
+                padding: 0.875rem 1rem;
+            }
+            
+            .mobile-emoji-btn {
+                padding: 0.875rem;
+                min-width: 48px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .mobile-send-btn {
+                padding: 0.875rem 1.25rem;
+                min-width: 48px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .mobile-send-btn i {
+                font-size: 1.125rem;
+            }
+            
+            .emoji-picker {
+                bottom: calc(100% + 10px);
+                right: 0;
+                max-width: 280px;
+                grid-template-columns: repeat(7, 1fr);
+            }
+            
+            .emoji-btn {
+                padding: 0.5rem;
+                font-size: 1.25rem;
+            }
+            
+            /* Adjust navigation for mobile */
+            .mobile-nav {
+                padding: 0.75rem 1rem;
+            }
+            
+            .mobile-nav-content {
+                gap: 0.75rem;
+            }
+            
+            .mobile-classroom-info {
+                min-width: 0;
+                flex: 1;
+            }
+            
+            .mobile-classroom-name {
+                font-size: 1.125rem;
+                line-height: 1.3;
+            }
+            
+            .mobile-classroom-subject {
+                font-size: 0.875rem;
+            }
+            
+            .mobile-back-btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            
+            .mobile-back-btn i {
+                margin-right: 0.25rem;
+            }
+            
+            /* Hide sidebar on mobile by default */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 280px;
+                z-index: 50;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            /* Overlay for sidebar */
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 45;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .sidebar-overlay.open {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        
+        /* Tablet styles */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .messages-container {
+                height: calc(100vh - 220px);
+            }
+            
+            .message-input-container {
+                padding: 1.25rem 1.5rem;
+            }
+        }
+        
+        /* Mobile keyboard handling */
+        @media (max-width: 768px) {
+            /* Prevent zoom on input focus */
+            input, textarea, select {
+                font-size: 16px !important;
+            }
+            
+            /* Improve touch targets */
+            button, .emoji-btn, .send-btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            /* Better message bubble spacing on mobile */
+            .message-bubble {
+                max-width: 85%;
+                margin-bottom: 0.5rem;
+            }
+            
+            /* Improve emoji picker positioning */
+            .emoji-picker.show {
+                bottom: calc(100% + 15px);
+                max-height: 200px;
+                overflow-y: auto;
+            }
+            
+            /* Show message actions on mobile */
+            .message-actions {
+                opacity: 1 !important;
+                position: static !important;
+                margin-top: 0.5rem;
+                justify-content: flex-end;
+            }
+            
+            .message-actions button {
+                min-height: 32px;
+                min-width: 32px;
+                font-size: 14px;
+            }
+        }
+        
+        /* Landscape mobile adjustments */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .messages-container {
+                height: calc(100vh - 160px);
+                padding-bottom: calc(100px + env(safe-area-inset-bottom));
+            }
+            
+            .message-input-container {
+                padding: 0.75rem 1rem;
+                padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+            }
+            
+            .mobile-textarea {
+                min-height: 48px;
+                max-height: 80px;
+            }
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Navigation -->
+    <nav class="glass-effect border-b border-white/10 px-4 py-3 sticky top-0 z-50 mobile-nav">
+        <div class="flex justify-between items-center mobile-nav-content">
+            <div class="flex items-center space-x-4">
+                <button id="sidebar-toggle" class="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="flex items-center space-x-3 mobile-classroom-info">
+                    <div id="classroom-profile-image" class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg classroom-profile-image">
+                        <i class="fas fa-chalkboard-teacher text-white text-xl"></i>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <h1 id="classroom-name" class="text-xl font-semibold mobile-classroom-name truncate">Loading...</h1>
+                        <p id="classroom-subject" class="text-sm text-gray-400 flex items-center mobile-classroom-subject">
+                            <i class="fas fa-book mr-1"></i>Loading...
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="user-info" class="text-sm opacity-75 hidden md:inline"></span>
+                <button id="back-btn" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors mobile-back-btn">
+                    <i class="fas fa-arrow-left mr-2"></i><span class="hidden sm:inline">Back to Classrooms</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Chat Layout -->
+    <div class="flex h-full">
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar glass-effect w-80 border-r border-white/10 md:block">
+            <div class="p-6">
+                <h3 class="text-xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-info-circle mr-3 text-blue-400"></i>
+                    Classroom Info
+                </h3>
+                <div class="space-y-6">
+                    <div class="slide-in">
+                        <h4 class="font-medium mb-3 text-blue-300">Description</h4>
+                        <p id="classroom-description" class="text-sm text-gray-300 leading-relaxed">Loading...</p>
+                    </div>
+                    <div class="slide-in" style="animation-delay: 0.1s;">
+                        <h4 class="font-medium mb-3 text-blue-300">Created by</h4>
+                        <p id="classroom-creator" class="text-sm text-gray-300">Loading...</p>
+                    </div>
+                    <div class="slide-in" style="animation-delay: 0.2s;">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-medium text-blue-300">
+                                Members (<span id="member-count">0</span>)
+                                <span id="online-count" class="text-sm text-green-400 font-medium">• <span id="online-count-number">0</span> online</span>
+                            </h4>
+                            <button id="refresh-status" class="p-1 text-gray-400 hover:text-white hover:bg-white/10 rounded transition-colors" title="Refresh online status">
+                                <i class="fas fa-sync-alt text-sm"></i>
+                            </button>
+                        </div>
+                        <div id="members-list" class="space-y-2 max-h-64 overflow-y-auto scrollbar-custom">
+                            <!-- Members will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="flex-1 flex flex-col">
+            <!-- Messages Container -->
+            <div id="messages-container" class="messages-container p-6 space-y-4 scrollbar-custom">
+                <!-- Messages will be populated here -->
+            </div>
+
+            <!-- Typing Indicator -->
+            <div id="typing-indicator" class="px-6 py-2 hidden">
+                <div class="typing-indicator">
+                    <span class="text-sm text-gray-400">Someone is typing</span>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+
+            <!-- Message Input -->
+            <div class="glass-effect border-t border-white/10 p-6 message-input-container">
+                <form id="message-form" class="flex items-end space-x-4 mobile-message-form">
+                    <div class="flex-1 relative">
+                        <textarea 
+                            id="message-input" 
+                            placeholder="Type your message..."
+                            rows="1"
+                            class="w-full px-4 py-3 message-input rounded-xl focus:outline-none resize-none text-white placeholder-gray-400 mobile-textarea"
+                            style="min-height: 48px; max-height: 120px;"
+                        ></textarea>
+                        
+                        <!-- Emoji Picker -->
+                        <div id="emoji-picker" class="emoji-picker">
+                            <!-- Emojis will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="emoji-btn" class="p-3 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors mobile-emoji-btn">
+                        <i class="fas fa-smile text-lg"></i>
+                    </button>
+                    
+                    <button type="submit" id="send-btn" class="send-btn px-6 py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed mobile-send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Floating Action Button for Mobile -->
+    <button id="mobile-actions-btn" class="fixed bottom-20 right-4 md:hidden z-40 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-white">
+        <i class="fas fa-users text-xl"></i>
+    </button>
+
+    <!-- Delete Message Modal -->
+    <div id="delete-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="glass-effect rounded-xl p-8 max-w-md w-full mx-4 border border-red-500/20">
+            <div class="text-center mb-6">
+                <i class="fas fa-exclamation-triangle text-4xl text-red-400 mb-4"></i>
+                <h3 class="text-2xl font-semibold mb-2">Delete Message</h3>
+                <p class="text-gray-300">Are you sure you want to delete this message? This action cannot be undone.</p>
+            </div>
+            <div class="flex gap-4">
+                <button id="confirm-delete" class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg transition-colors font-medium">
+                    <i class="fas fa-trash mr-2"></i>Delete
+                </button>
+                <button id="cancel-delete" class="flex-1 px-6 py-3 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ban User Modal -->
+    <div id="ban-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="glass-effect rounded-xl p-8 max-w-md w-full mx-4 border border-red-500/20">
+            <div class="text-center mb-6">
+                <i class="fas fa-ban text-4xl text-red-400 mb-4"></i>
+                <h3 class="text-2xl font-semibold mb-2">Ban User</h3>
+                <p class="text-gray-300">Are you sure you want to ban <span id="ban-user-info" class="font-semibold text-white"></span> from this classroom?</p>
+            </div>
+            <div class="mb-6">
+                <label for="ban-reason" class="block text-sm font-medium text-gray-300 mb-2">Reason (optional)</label>
+                <textarea id="ban-reason" rows="3" class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-500" placeholder="Enter reason for banning this user..."></textarea>
+            </div>
+            <div class="flex gap-4">
+                <button id="confirm-ban" class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg transition-colors font-medium">
+                    <i class="fas fa-ban mr-2"></i>Ban User
+                </button>
+                <button id="cancel-ban" class="flex-1 px-6 py-3 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Private Chat Modal -->
+    <div id="private-chat-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="glass-effect rounded-xl w-full max-w-4xl h-[80vh] flex flex-col border border-purple-500/20">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b border-white/10">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
+                        <i class="fas fa-lock text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 id="private-chat-title" class="text-lg font-semibold">Private Chat</h3>
+                        <p id="private-chat-subtitle" class="text-sm text-gray-400">Loading...</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="px-2 py-1 bg-purple-600/20 text-purple-400 text-xs rounded-full border border-purple-500/30">
+                        <i class="fas fa-lock mr-1"></i>Private
+                    </span>
+                    <button id="close-private-chat" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages Container -->
+            <div id="private-messages-container" class="flex-1 p-6 space-y-4 overflow-y-auto scrollbar-custom">
+                <div class="text-center text-gray-400 py-8">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto mb-4"></div>
+                    <p>Loading messages...</p>
+                </div>
+            </div>
+
+            <!-- Message Input -->
+            <div class="p-6 border-t border-white/10">
+                <form id="private-message-form" class="flex items-end space-x-4">
+                    <div class="flex-1">
+                        <textarea 
+                            id="private-message-input" 
+                            placeholder="Type your private message..."
+                            rows="1"
+                            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 resize-none"
+                            style="min-height: 48px; max-height: 120px;"
+                        ></textarea>
+                    </div>
+                    <button type="submit" id="private-send-btn" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Sound -->
+    <audio id="notification-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+
+    <script type="module" src="./js/chatroom.js"></script>
+</body>
+</html> 

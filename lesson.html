@@ -627,13 +627,13 @@ const progressData = progressSnap.data();
 
 
   let matches = 0
-      // Calculate and display the score summary
+      // Calculating and displaying the score summary
       const totalQuestions = lesson.quiz.length;
       const correctAnswers = lessonProgress
-  .filter((question) => question.answerIndex !== undefined)  // Filters out questions with no answerIndex
+  .filter((question) => question.answerIndex !== undefined)  
   .map((question) => question.answerIndex);
 
-  const isCorrectAnswers = lesson.quiz.filter((question) => question.correct_ans_index !== undefined)  // Filters out questions with no answerIndex
+  const isCorrectAnswers = lesson.quiz.filter((question) => question.correct_ans_index !== undefined)  
   .map((question) => question.correct_ans_index);
 
   for (let i = 0; i < correctAnswers.length; i++) {

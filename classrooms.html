@@ -361,17 +361,23 @@
 </head>
 <body class="text-white">
     <!-- Navigation -->
-    <nav class="glass-effect border-b border-white/10 px-4 py-3 sticky top-0 z-50">
+    <nav class="glass-effect border-b border-white/10 px-6 py-4 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <a href="index.html" class="text-2xl font-bold gradient-text hover:scale-105 transition-transform">
-                    <i class="fas fa-graduation-cap mr-2"></i>ProfStudyMate
-                </a>
-            </div>
             <div class="flex items-center space-x-4">
-                <span id="user-info" class="text-sm opacity-75"></span>
-                <button id="signOut" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors">
-                    <i class="fas fa-sign-out-alt mr-2"></i>Sign Out
+                <a href="index.html" class="text-xl font-bold gradient-text hover:scale-105 transition-transform flex items-center">
+                    <i class="fas fa-graduation-cap mr-2 text-blue-400"></i>ProfStudyMate
+                </a>
+                <div class="hidden md:block w-px h-6 bg-white/20"></div>
+                <span class="hidden md:block text-sm text-gray-300">Virtual Classrooms</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2 text-sm text-gray-300">
+                    <i class="fas fa-user-circle text-blue-400"></i>
+                    <span id="user-info" class="opacity-90"></span>
+                </div>
+                <div class="w-px h-6 bg-white/20"></div>
+                <button id="signOut" class="p-2 bg-red-600/20 hover:bg-red-600/40 text-red-400 hover:text-red-300 rounded-lg transition-all duration-200 group" title="Sign Out">
+                    <i class="fas fa-sign-out-alt text-sm group-hover:scale-110 transition-transform"></i>
                 </button>
             </div>
         </div>

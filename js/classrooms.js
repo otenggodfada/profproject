@@ -638,7 +638,7 @@ function createClassroomCard(classroom) {
       </div>
     </div>
     <p class="text-gray-300 text-sm mb-6 leading-relaxed line-clamp-2 cursor-pointer">${classroom.description}</p>
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col gap-3">
         <div class="flex items-center text-sm text-gray-400">
           <div class="w-8 h-8 bg-blue-600/20 rounded-full flex items-center justify-center mr-2">
             <i class="fas fa-user-tie text-blue-400 text-xs"></i>
@@ -651,9 +651,11 @@ function createClassroomCard(classroom) {
             </span>
           </div>
         </div>
-        <button class="join-classroom-btn px-6 py-2 rounded-lg transition-all duration-300 text-sm font-medium transform hover:scale-105 ${hasJoined ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800' : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'}">
-          <i class="fas ${hasJoined ? 'fa-comments' : 'fa-sign-in-alt'} mr-2"></i>${hasJoined ? 'Enter Chat' : 'Join'}
-        </button>
+        <div class="flex justify-end">
+          <button class="join-classroom-btn px-3 py-1.5 rounded-md transition-all duration-300 text-xs font-medium transform hover:scale-105 ${hasJoined ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800' : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'}">
+            <i class="fas ${hasJoined ? 'fa-comments' : 'fa-sign-in-alt'} mr-1"></i>${hasJoined ? 'Enter Chat' : 'Join'}
+          </button>
+        </div>
       </div>
   `;
   

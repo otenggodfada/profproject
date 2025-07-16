@@ -376,7 +376,7 @@
               <div id="searchContainer" class="hidden flex items-center space-x-2">
                 <input
                   type="text"
-                  id="searchInput"
+                  id="pdfSearchInput"
                   placeholder="Search in PDF..."
                   class="bg-gray-700 text-white px-3 py-1 rounded text-sm w-48 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -408,9 +408,38 @@
         
             
             <!-- Goto page functionality -->
-         
-            
-          
+            <div class="flex items-center space-x-2">
+              <button
+                id="gotoPageBtn"
+                class="text-white hover:text-blue-400 transition tooltip"
+                title="Go to Page"
+              >
+                <i class="fas fa-file-alt"></i>
+              </button>
+              <div id="gotoPageContainer" class="hidden flex items-center space-x-2">
+                <input
+                  type="number"
+                  id="gotoPageInput"
+                  placeholder="Page #"
+                  class="bg-gray-700 text-white px-3 py-1 rounded text-sm w-20 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  min="1"
+                />
+                <button
+                  id="gotoPageGo"
+                  class="text-white hover:text-blue-400 transition"
+                  title="Go"
+                >
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+                <button
+                  id="closeGotoPage"
+                  class="text-white hover:text-red-400 transition"
+                  title="Close"
+                >
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
             
             <!-- Additional PDF features -->
             <button
@@ -442,6 +471,14 @@
               <i class="fas fa-comments"></i>
               <span class="text-sm">Reviews</span>
             </button>
+            
+            <!-- Page Navigation -->
+            <div class="flex items-center space-x-2 text-white">
+              <span class="text-sm">Page</span>
+              <span id="currentPage" class="text-sm font-bold">1</span>
+              <span class="text-sm">of</span>
+              <span id="totalPages" class="text-sm font-bold">1</span>
+            </div>
           </div>
           <div class="flex items-center gap-4">
             <button
@@ -819,6 +856,44 @@ const fileId1 =book.id
           return pageContainer;
         }
 
+        // Add search highlights to a page
+        async function addSearchHighlights(page, pageContainer, viewport) {
+          if (!searchText || searchResults.length === 0) return;
+          
+          try {
+            const textContent = await page.getTextContent();
+            const pageResults = searchResults.filter(result => result.page === page.pageNumber);
+            
+            pageResults.forEach(result => {
+              // Find the text item that contains this result
+              let currentIndex = 0;
+              for (const item of textContent.items) {
+                const itemLength = item.str.length;
+                if (currentIndex <= result.index && result.index < currentIndex + itemLength) {
+                  // Create highlight element
+                  const highlight = document.createElement('div');
+                  highlight.className = 'search-highlight';
+                  highlight.style.position = 'absolute';
+                  highlight.style.left = `${item.transform[4]}px`;
+                  highlight.style.top = `${item.transform[5]}px`;
+                  highlight.style.width = `${item.width}px`;
+                  highlight.style.height = `${item.height}px`;
+                  highlight.style.backgroundColor = 'yellow';
+                  highlight.style.opacity = '0.7';
+                  highlight.style.pointerEvents = 'none';
+                  highlight.style.zIndex = '10';
+                  
+                  pageContainer.appendChild(highlight);
+                  break;
+                }
+                currentIndex += itemLength + 1; // +1 for space
+              }
+            });
+          } catch (error) {
+            console.error('Error adding search highlights:', error);
+          }
+        }
+
         // Initialize comprehensive PDF viewer
         async function initializePdfViewer(pdfUrl) {
           try {
@@ -1016,7 +1091,7 @@ const fileId1 =book.id
           
           if (pageNumber < 1 || pageNumber > pdfDoc.numPages) {
             console.log(`Invalid page number: ${pageNumber}`);
-            return; 
+            return;
           }
           
           console.log(`Going to page ${pageNumber}`);
@@ -1052,7 +1127,7 @@ const fileId1 =book.id
             a.click();
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
-                    } catch (error) {
+          } catch (error) {
             console.error("Error downloading PDF:", error);
             alert("Error downloading PDF. Please try again.");
           }
@@ -1144,7 +1219,7 @@ const fileId1 =book.id
           // Existing search and goto page functionality
           const searchBtn = document.getElementById("searchBtn");
           const closeSearch = document.getElementById("closeSearch");
-          const searchInput = document.getElementById("searchInput");
+          const searchInput = document.getElementById("pdfSearchInput");
           const searchNext = document.getElementById("searchNext");
           const searchPrev = document.getElementById("searchPrev");
           
@@ -1521,7 +1596,7 @@ const fileId1 =book.id
           gotoPageContainer.classList.add("hidden");
           
           if (!searchContainer.classList.contains("hidden")) {
-            const searchInput = document.getElementById("searchInput");
+            const searchInput = document.getElementById("pdfSearchInput");
             if (searchInput) {
               searchInput.focus();
               

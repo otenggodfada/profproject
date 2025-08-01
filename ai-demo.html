@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free AI Demo - ProfStudyMate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .demo-chat {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="glass-card rounded-3xl p-8 mb-8">
+                <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-robot text-3xl text-white"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-white mb-4">Free AI Assistant Demo</h1>
+                <p class="text-xl text-white/90 mb-6">Experience intelligent responses without any cost!</p>
+                <div class="flex justify-center space-x-4">
+                    <a href="index.html" class="bg-white/20 hover:bg-white/30 px-6 py-3 rounded-lg text-white font-semibold transition-all duration-300">
+                        <i class="fas fa-home mr-2"></i>Back to Home
+                    </a>
+                    <a href="ai-config.html" class="bg-white/20 hover:bg-white/30 px-6 py-3 rounded-lg text-white font-semibold transition-all duration-300">
+                        <i class="fas fa-cog mr-2"></i>AI Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+            <div class="feature-card rounded-2xl p-6 text-center">
+                <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-rocket text-2xl text-green-300"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">🆓 Local AI Mode</h3>
+                <p class="text-white/80">Works immediately without any setup. No API keys or internet required!</p>
+            </div>
+            
+            <div class="feature-card rounded-2xl p-6 text-center">
+                <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-cloud text-2xl text-blue-300"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">☁️ Hugging Face AI</h3>
+                <p class="text-white/80">Free cloud-based AI with optional API token for enhanced responses.</p>
+            </div>
+            
+            <div class="feature-card rounded-2xl p-6 text-center">
+                <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-database text-2xl text-purple-300"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">📚 Smart Fallback</h3>
+                <p class="text-white/80">Always available ProfStudyMate-specific knowledge and responses.</p>
+            </div>
+        </div>
+
+        <!-- Demo Chat -->
+        <div class="demo-chat p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Try the Free AI Assistant</h2>
+            
+            <div class="space-y-4 mb-6">
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">U</div>
+                    <div class="bg-blue-100 rounded-lg p-3 max-w-xs">
+                        <p class="text-gray-800">What is ProfStudyMate?</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start space-x-3 justify-end">
+                    <div class="bg-green-100 rounded-lg p-3 max-w-xs">
+                        <p class="text-gray-800">ProfStudyMate is Ghana's premier professional education platform. We specialize in ICAG, CITG, and business growth strategies with a 95% success rate! We've trained over 2000+ students successfully.</p>
+                    </div>
+                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">AI</div>
+                </div>
+                
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">U</div>
+                    <div class="bg-blue-100 rounded-lg p-3 max-w-xs">
+                        <p class="text-gray-800">How can I contact you?</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start space-x-3 justify-end">
+                    <div class="bg-green-100 rounded-lg p-3 max-w-xs">
+                        <p class="text-gray-800">You can contact ProfStudyMate at:<br>📞 Phone: +233 243 44 39 34<br>📧 Email: Profstraining52@gmail.com<br>📍 Location: Fefeti Drive, Spintex Road, Tema</p>
+                    </div>
+                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">AI</div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-gray-600 mb-4">Try these example questions:</p>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <button onclick="demoQuestion('What courses do you offer?')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                        What courses do you offer?
+                    </button>
+                    <button onclick="demoQuestion('Give me study tips')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                        Give me study tips
+                    </button>
+                    <button onclick="demoQuestion('Help me with math')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+                        Help me with math
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="glass-card rounded-2xl p-8 mt-12">
+            <h2 class="text-2xl font-bold text-white mb-6 text-center">How It Works</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-4">🆓 Local AI Mode (Default)</h3>
+                    <ul class="text-white/80 space-y-2">
+                        <li>• Works immediately - no setup required</li>
+                        <li>• Intelligent pattern matching</li>
+                        <li>• Context-aware responses</li>
+                        <li>• No internet connection needed</li>
+                        <li>• Completely free forever</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-white mb-4">☁️ Enhanced Cloud AI (Optional)</h3>
+                    <ul class="text-white/80 space-y-2">
+                        <li>• Free Hugging Face API access</li>
+                        <li>• More sophisticated responses</li>
+                        <li>• Better conversation flow</li>
+                        <li>• Requires internet connection</li>
+                        <li>• Free tier with generous limits</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center mt-12">
+            <div class="glass-card rounded-2xl p-8">
+                <h2 class="text-2xl font-bold text-white mb-4">Ready to Try?</h2>
+                <p class="text-white/80 mb-6">Click the floating AI button on any page to start chatting!</p>
+                <a href="index.html" class="bg-white/20 hover:bg-white/30 px-8 py-4 rounded-lg text-white font-semibold text-lg transition-all duration-300 inline-block">
+                    <i class="fas fa-comments mr-2"></i>Start Chatting Now
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function demoQuestion(question) {
+            alert(`Try asking: "${question}"\n\nGo to any page and click the floating AI button to start chatting!`);
+        }
+    </script>
+</body>
+</html> 

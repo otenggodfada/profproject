@@ -1,21 +1,24 @@
 {
+  "name": "profstudymate-ai-chatbot",
+  "version": "1.0.0",
+  "description": "ProfStudyMate AI Chatbot with NLUX integration",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000"
+  },
   "dependencies": {
     "toastify-js": "^1.12.0"
   },
-  "name": "profproject",
-  "version": "1.0.0",
-  "main": "bottomnv.js",
   "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.5.3",
-    "tailwind-scrollbar-hide": "^2.0.0",
-    "tailwindcss": "^4.0.14"
+    "vite": "^5.0.0"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "keywords": [
+    "ai",
+    "chatbot",
+    "profstudymate",
+    "education"
+  ],
+  "author": "ProfStudyMate",
+  "license": "MIT"
 }

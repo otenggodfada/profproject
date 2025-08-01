@@ -273,7 +273,8 @@ class ChatbotFAB {
           
           #chat-messages {
             padding: 20px;
-            max-height: 60vh;
+            max-height: 70vh;
+            min-height: 300px;
           }
           
           .message-bubble {
@@ -325,7 +326,8 @@ class ChatbotFAB {
           
           #chat-messages {
             padding: 16px;
-            max-height: 55vh;
+            max-height: 65vh;
+            min-height: 250px;
           }
           
           .message-bubble {
@@ -568,7 +570,8 @@ class ChatbotFAB {
           border-radius: 28px;
           width: 100%;
           max-width: 650px;
-          max-height: 90vh;
+          max-height: 95vh;
+          min-height: 600px;
           display: flex;
           flex-direction: column;
           box-shadow: 
@@ -660,7 +663,8 @@ class ChatbotFAB {
             flex: 1;
             padding: 28px;
             overflow-y: auto;
-            max-height: 450px;
+            max-height: 600px;
+            min-height: 400px;
             background: linear-gradient(135deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.6));
             position: relative;
             z-index: 1;

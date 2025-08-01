@@ -242,6 +242,113 @@ class ChatbotFAB {
         #chat-messages::-webkit-scrollbar-thumb:hover {
           background: linear-gradient(135deg, #5a67d8, #6b46c1);
         }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+          #chat-modal {
+            padding: 10px;
+          }
+          
+          #chat-modal > div {
+            max-width: 100%;
+            max-height: 95vh;
+            border-radius: 20px;
+          }
+          
+          #chat-form {
+            padding: 12px 16px 16px 16px;
+            gap: 8px;
+          }
+          
+          #chat-input {
+            min-width: 150px;
+            padding: 12px 16px;
+            font-size: 16px; /* Prevents zoom on iOS */
+          }
+          
+          button[type="submit"] {
+            padding: 12px 16px;
+            font-size: 14px;
+          }
+          
+          #chat-messages {
+            padding: 20px;
+            max-height: 60vh;
+          }
+          
+          .message-bubble {
+            max-width: 85%;
+          }
+          
+          .suggested-question {
+            padding: 14px 16px;
+            font-size: 13px;
+          }
+          
+          #welcome-message {
+            padding: 20px;
+          }
+          
+          #welcome-message h3 {
+            font-size: 18px;
+          }
+          
+          #welcome-message p {
+            font-size: 14px;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          #chat-modal {
+            padding: 5px;
+          }
+          
+          #chat-modal > div {
+            border-radius: 16px;
+          }
+          
+          #chat-form {
+            padding: 10px 12px 12px 12px;
+            gap: 6px;
+          }
+          
+          #chat-input {
+            min-width: 120px;
+            padding: 10px 14px;
+            font-size: 16px;
+          }
+          
+          button[type="submit"] {
+            padding: 10px 14px;
+            font-size: 13px;
+          }
+          
+          #chat-messages {
+            padding: 16px;
+            max-height: 55vh;
+          }
+          
+          .message-bubble {
+            max-width: 90%;
+          }
+          
+          .suggested-question {
+            padding: 12px 14px;
+            font-size: 12px;
+          }
+          
+          #welcome-message {
+            padding: 16px;
+          }
+          
+          #welcome-message h3 {
+            font-size: 16px;
+          }
+          
+          #welcome-message p {
+            font-size: 13px;
+          }
+        }
       </style>
               <button id="fab-button" style="
           position: fixed;
@@ -719,47 +826,54 @@ class ChatbotFAB {
           </div>
           
           <form id="chat-form" style="
-            padding: 24px 28px 28px 28px;
+            padding: 16px 20px 20px 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
-            gap: 16px;
+            gap: 12px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
             border-radius: 0 0 28px 28px;
             position: relative;
             z-index: 1;
             backdrop-filter: blur(10px);
+            flex-wrap: wrap;
           ">
-                         <input type="text" id="chat-input" placeholder="Ask me anything about your studies..." style="
+                         <input type="text" id="chat-input" placeholder="Ask me anything..." style="
                flex: 1;
-               padding: 16px 24px;
+               min-width: 200px;
+               padding: 14px 18px;
                border: 2px solid rgba(226, 232, 240, 0.8);
-               border-radius: 30px;
-               font-size: 15px;
+               border-radius: 25px;
+               font-size: 14px;
                outline: none;
                transition: all 0.3s ease;
                background: rgba(249, 250, 251, 0.8);
                color: #000000;
                font-weight: 500;
                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+               -webkit-appearance: none;
+               -moz-appearance: none;
+               appearance: none;
              ">
             <button type="submit" style="
-              padding: 16px 28px;
+              padding: 14px 20px;
               background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
               color: white;
               border: none;
-              border-radius: 30px;
+              border-radius: 25px;
               cursor: pointer;
-              font-weight: 700;
-              font-size: 15px;
+              font-weight: 600;
+              font-size: 14px;
               transition: all 0.3s ease;
               display: flex;
               align-items: center;
-              gap: 10px;
-              box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
-              letter-spacing: 0.5px;
+              gap: 8px;
+              box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+              letter-spacing: 0.3px;
+              white-space: nowrap;
+              min-width: fit-content;
             ">
               <span>Send</span>
-              <span style="font-size: 18px;">→</span>
+              <span style="font-size: 16px;">→</span>
             </button>
           </form>
         </div>

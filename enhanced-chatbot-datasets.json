@@ -1,0 +1,331 @@
+{
+  "project": "ProfStudyMate Enhanced AI Assistant",
+  "version": "2.0",
+  "description": "Comprehensive Q&A datasets combining educational content with ProfStudyMate platform information",
+  "source": "Original datasets + https://profstudymate.com/",
+  "datasets": {
+    "profstudymate_platform": {
+      "company_info": {
+        "about": {
+          "question": "What is ProfStudyMate?",
+          "answer": "ProfStudyMate is Ghana's premier professional education platform that transforms careers with expert-led professional education. We specialize in ICAG, CITG, and business growth strategies with industry experts and practical learning experiences.",
+          "keywords": ["profstudymate", "ghana", "professional education", "icag", "citg", "business growth", "platform"],
+          "difficulty": "beginner"
+        },
+        "success_rate": {
+          "question": "What is ProfStudyMate's success rate?",
+          "answer": "ProfStudyMate has a 95% success rate with over 2000+ students trained. Our first attempt pass rate is also 95%, demonstrating our commitment to student success.",
+          "keywords": ["success rate", "95%", "students trained", "first attempt", "pass rate", "achievement"],
+          "difficulty": "beginner"
+        },
+        "location_contact": {
+          "question": "Where is ProfStudyMate located and how can I contact them?",
+          "answer": "ProfStudyMate is located at Fefeti Drive, Spintex Road, Tema, Greater Accra, Ghana. You can contact us at +233 243 44 39 34, +233 244 990 773, or +233 246 752 130, or email us at Profstraining52@gmail.com or profsa35@gmail.com. Business hours are Mon-Fri: 9am-5pm.",
+          "keywords": ["location", "tema", "ghana", "phone", "email", "contact", "address", "business hours"],
+          "difficulty": "beginner"
+        },
+        "detailed_contact": {
+          "question": "What are ProfStudyMate's complete contact details?",
+          "answer": "**Visit Us:** Fefeti Drive, Spintex Road, Tema, Greater Accra, Ghana\n\n**Call Us:**\n• +233 243 44 39 34\n• +233 244 990 773\n• +233 246 752 130\n\n**Email Us:**\n• Profstraining52@gmail.com\n• profsa35@gmail.com\n\n**Business Hours:** Mon-Fri: 9am-5pm",
+          "keywords": ["contact details", "phone numbers", "email addresses", "business hours", "address", "location"],
+          "difficulty": "beginner"
+        },
+        "social_media": {
+          "question": "What are ProfStudyMate's social media platforms?",
+          "answer": "ProfStudyMate maintains an active presence on social media platforms. You can follow us to stay updated with the latest courses, learning resources, and announcements. Our social media channels provide regular updates about new courses, student success stories, and educational tips.",
+          "keywords": ["social media", "follow", "updates", "courses", "announcements", "platforms"],
+          "difficulty": "beginner"
+        },
+        "mobile_apps": {
+          "question": "How can I download ProfStudyMate mobile apps?",
+          "answer": "ProfStudyMate offers mobile apps for convenient learning on the go. You can download our apps from:\n\n• **Google Play Store** - Available for Android devices\n• **Apple App Store** - Available for iOS devices\n\nThe mobile apps provide access to courses anytime, anywhere with offline learning and progress tracking features.",
+          "keywords": ["mobile app", "download", "google play", "app store", "android", "ios", "offline learning"],
+          "difficulty": "beginner"
+        }
+      },
+      "courses": {
+        "icagh": {
+          "question": "What is ICAGH and what does ProfStudyMate offer?",
+          "answer": "ICAGH refers to Institute of Chartered Accountants Ghana certification. ProfStudyMate offers 15+ professional accounting courses designed for ICAG certification success, with over 1000+ students enrolled. Our courses provide comprehensive preparation for the ICAG exams.",
+          "keywords": ["icagh", "icag", "chartered accountants", "ghana", "accounting", "certification", "courses"],
+          "difficulty": "intermediate"
+        },
+        "citgh": {
+          "question": "What is CITGH and what does ProfStudyMate offer?",
+          "answer": "CITGH refers to Chartered Institute of Taxation Ghana certification. ProfStudyMate offers 12+ comprehensive training courses for CITG certification with over 800+ students. Our programs provide thorough preparation for taxation certification exams.",
+          "keywords": ["citgh", "citg", "taxation", "ghana", "certification", "courses", "training"],
+          "difficulty": "intermediate"
+        },
+        "corporate_training": {
+          "question": "Does ProfStudyMate offer corporate training?",
+          "answer": "Yes, ProfStudyMate offers customized corporate training programs for organizational development. We have 10+ programs serving 50+ companies, focusing on professional development and organizational growth.",
+          "keywords": ["corporate training", "organizational development", "companies", "professional development"],
+          "difficulty": "intermediate"
+        },
+        "digital_marketing": {
+          "question": "Does ProfStudyMate offer digital marketing courses?",
+          "answer": "Yes, ProfStudyMate offers 8+ digital marketing courses with over 500+ students. Our programs focus on mastering modern marketing strategies and digital tools for business growth.",
+          "keywords": ["digital marketing", "marketing strategies", "digital tools", "business growth"],
+          "difficulty": "intermediate"
+        },
+        "business_growth": {
+          "question": "Does ProfStudyMate offer business growth courses?",
+          "answer": "Yes, ProfStudyMate offers 6+ business growth courses with over 300+ students. Our programs focus on strategies and tools for sustainable business expansion and development.",
+          "keywords": ["business growth", "business expansion", "strategies", "sustainable growth"],
+          "difficulty": "intermediate"
+        }
+      },
+      "platform_features": {
+        "support": {
+          "question": "What kind of support does ProfStudyMate provide?",
+          "answer": "ProfStudyMate provides 24/7 support with round-the-clock assistance, quick response times, and expert guidance. We have 50+ expert instructors and a dedicated support team available to help students succeed.",
+          "keywords": ["24/7 support", "expert instructors", "dedicated support", "quick response", "help"],
+          "difficulty": "beginner"
+        },
+        "mobile_app": {
+          "question": "Does ProfStudyMate have a mobile app?",
+          "answer": "Yes, ProfStudyMate offers mobile apps available on Google Play and App Store. The apps provide access to courses anytime, anywhere with offline learning and progress tracking features for convenient learning.",
+          "keywords": ["mobile app", "google play", "app store", "offline learning", "progress tracking", "convenient"],
+          "difficulty": "beginner"
+        },
+        "learning_features": {
+          "question": "What learning features does ProfStudyMate offer?",
+          "answer": "ProfStudyMate offers comprehensive course content with detailed study materials, practice questions, and expert guidance. We provide interactive learning modules, real-world case studies, and practice exercises for effective learning.",
+          "keywords": ["learning features", "study materials", "practice questions", "interactive modules", "case studies"],
+          "difficulty": "beginner"
+        }
+      },
+      "contact_social": {
+        "phone_numbers": {
+          "question": "What are ProfStudyMate's phone numbers?",
+          "answer": "You can reach ProfStudyMate at the following phone numbers:\n\n• **+233 243 44 39 34**\n• **+233 244 990 773**\n• **+233 246 752 130**\n\nOur support team is available during business hours: **Mon-Fri: 9am-5pm**",
+          "keywords": ["phone", "call", "contact", "support", "business hours"],
+          "difficulty": "beginner"
+        },
+        "email_addresses": {
+          "question": "What are ProfStudyMate's email addresses?",
+          "answer": "You can contact ProfStudyMate via email at:\n\n• **Profstraining52@gmail.com**\n• **profsa35@gmail.com**\n\nFeel free to reach out for course inquiries, support, or general questions.",
+          "keywords": ["email", "contact", "inquiry", "support", "questions"],
+          "difficulty": "beginner"
+        },
+        "physical_address": {
+          "question": "What is ProfStudyMate's physical address?",
+          "answer": "ProfStudyMate is located at:\n\n**Fefeti Drive, Spintex Road**\n**Tema, Greater Accra**\n**Ghana**\n\nYou can visit us during business hours: **Mon-Fri: 9am-5pm**",
+          "keywords": ["address", "location", "visit", "physical", "tema", "ghana"],
+          "difficulty": "beginner"
+        },
+        "business_hours": {
+          "question": "What are ProfStudyMate's business hours?",
+          "answer": "ProfStudyMate's business hours are:\n\n**Monday - Friday: 9:00 AM - 5:00 PM**\n\nWe are closed on weekends and public holidays. For urgent matters outside business hours, you can send us an email and we'll respond as soon as possible.",
+          "keywords": ["business hours", "working hours", "open", "closed", "weekend", "holiday"],
+          "difficulty": "beginner"
+        },
+        "app_download": {
+          "question": "Where can I download ProfStudyMate mobile apps?",
+          "answer": "ProfStudyMate mobile apps are available for download on:\n\n**📱 Android Devices:**\n• Google Play Store\n\n**📱 iOS Devices:**\n• Apple App Store\n\n**Features include:**\n• Access courses anytime, anywhere\n• Offline learning capabilities\n• Progress tracking\n• Mobile-friendly interface",
+          "keywords": ["mobile app", "download", "google play", "app store", "android", "ios", "offline"],
+          "difficulty": "beginner"
+        },
+        "social_media_presence": {
+          "question": "How can I follow ProfStudyMate on social media?",
+          "answer": "ProfStudyMate maintains an active social media presence to keep you updated with:\n\n**📢 What we share:**\n• Latest course announcements\n• Student success stories\n• Study tips and educational content\n• Industry insights and updates\n• Special offers and promotions\n\n**📱 Follow us** on our social media platforms to stay connected and never miss important updates!",
+          "keywords": ["social media", "follow", "updates", "announcements", "success stories", "tips"],
+          "difficulty": "beginner"
+        }
+      }
+    },
+    "mathematics": {
+      "calculus": {
+        "derivatives": {
+          "question": "What are derivatives in calculus?",
+          "answer": "Derivatives measure how a function changes as its input changes. The derivative of f(x) at point a is the slope of the tangent line at that point. Key concepts include power rule, chain rule, and product rule.",
+          "keywords": ["derivative", "calculus", "slope", "tangent", "power rule", "chain rule", "product rule"],
+          "difficulty": "intermediate"
+        },
+        "integrals": {
+          "question": "What are integrals in calculus?",
+          "answer": "Integration is the reverse process of differentiation. It finds the area under a curve and is used to solve accumulation problems.",
+          "keywords": ["integral", "integration", "area under curve", "accumulation", "antiderivative"],
+          "difficulty": "intermediate"
+        },
+        "limits": {
+          "question": "What are limits in calculus?",
+          "answer": "Limits describe the behavior of a function as the input approaches a certain value. They're fundamental to calculus and help define derivatives and continuity.",
+          "keywords": ["limit", "continuity", "approaches", "behavior", "fundamental"],
+          "difficulty": "beginner"
+        }
+      },
+      "algebra": {
+        "equations": {
+          "question": "How do I solve algebraic equations?",
+          "answer": "Algebraic equations involve variables and constants. Solving them requires isolating the variable using inverse operations.",
+          "keywords": ["equation", "variable", "constant", "isolate", "inverse operations"],
+          "difficulty": "beginner"
+        },
+        "functions": {
+          "question": "What are functions in algebra?",
+          "answer": "Functions are relationships between inputs and outputs. They can be linear, quadratic, exponential, or more complex forms.",
+          "keywords": ["function", "input", "output", "linear", "quadratic", "exponential"],
+          "difficulty": "beginner"
+        }
+      },
+      "general": {
+        "overview": {
+          "question": "What math topics can you help with?",
+          "answer": "I'd be happy to help you with mathematics! I can assist with:\n\n• Calculus (derivatives, integrals, limits)\n• Algebra (equations, functions, systems)\n• Geometry and trigonometry\n• Statistics and probability\n• Linear algebra\n\nWhat specific math topic would you like to explore?",
+          "keywords": ["math", "mathematics", "calculus", "algebra", "geometry", "trigonometry", "statistics", "probability"],
+          "difficulty": "all"
+        }
+      }
+    },
+    "programming": {
+      "oop": {
+        "question": "What is Object-Oriented Programming (OOP)?",
+        "answer": "Object-Oriented Programming (OOP) organizes code into objects that contain data and code. Key principles include encapsulation, inheritance, polymorphism, and abstraction.",
+        "keywords": ["oop", "object-oriented", "encapsulation", "inheritance", "polymorphism", "abstraction"],
+        "difficulty": "intermediate"
+      },
+      "algorithms": {
+        "question": "What are algorithms in programming?",
+        "answer": "Algorithms are step-by-step procedures for solving problems. They can be analyzed for efficiency using Big O notation.",
+        "keywords": ["algorithm", "step-by-step", "problem solving", "big o notation", "efficiency"],
+        "difficulty": "intermediate"
+      },
+      "dataStructures": {
+        "question": "What are data structures?",
+        "answer": "Data structures organize and store data efficiently. Common types include arrays, linked lists, stacks, queues, trees, and graphs.",
+        "keywords": ["data structure", "array", "linked list", "stack", "queue", "tree", "graph"],
+        "difficulty": "intermediate"
+      },
+      "general": {
+        "overview": {
+          "question": "What programming topics can you help with?",
+          "answer": "I can help you with programming concepts! Here are some areas I can assist with:\n\n• Object-Oriented Programming (OOP)\n• Data structures and algorithms\n• Web development (HTML, CSS, JavaScript)\n• Database concepts\n• Software design patterns\n• Debugging and problem-solving\n\nWhat programming topic interests you?",
+          "keywords": ["programming", "code", "web development", "database", "design patterns", "debugging"],
+          "difficulty": "all"
+        }
+      }
+    },
+    "accounting": {
+      "balanceSheets": {
+        "question": "What is a balance sheet?",
+        "answer": "A balance sheet shows a company's financial position at a specific point in time. It follows the equation: Assets = Liabilities + Equity.",
+        "keywords": ["balance sheet", "financial position", "assets", "liabilities", "equity"],
+        "difficulty": "beginner"
+      },
+      "incomeStatements": {
+        "question": "What is an income statement?",
+        "answer": "Income statements show revenue, expenses, and profit over a period. They help assess profitability and performance.",
+        "keywords": ["income statement", "revenue", "expenses", "profit", "profitability", "performance"],
+        "difficulty": "beginner"
+      },
+      "cashFlow": {
+        "question": "What is a cash flow statement?",
+        "answer": "Cash flow statements track cash inflows and outflows, showing how a company generates and uses cash.",
+        "keywords": ["cash flow", "inflows", "outflows", "cash generation", "cash usage"],
+        "difficulty": "intermediate"
+      }
+    },
+    "study_skills": {
+      "study_tips": {
+        "question": "What are effective study tips?",
+        "answers": [
+          "Use active recall techniques like flashcards and self-quizzing",
+          "Practice spaced repetition to strengthen memory",
+          "Break complex topics into smaller, manageable chunks",
+          "Teach concepts to others to reinforce understanding",
+          "Create mind maps to visualize relationships between ideas",
+          "Use the Pomodoro Technique for focused study sessions",
+          "Review material regularly rather than cramming",
+          "Connect new information to what you already know"
+        ],
+        "keywords": ["study tips", "active recall", "spaced repetition", "mind maps", "pomodoro", "teaching"],
+        "difficulty": "all"
+      },
+      "exam_preparation": {
+        "question": "How should I prepare for exams?",
+        "answers": [
+          "Start studying early and create a study schedule",
+          "Practice with past exams and sample questions",
+          "Focus on understanding concepts, not just memorizing",
+          "Use different study methods (visual, auditory, kinesthetic)",
+          "Get adequate sleep and maintain a healthy diet",
+          "Practice time management during exams",
+          "Review and revise regularly",
+          "Stay calm and confident on exam day"
+        ],
+        "keywords": ["exam prep", "study schedule", "practice tests", "understanding", "time management", "confidence"],
+        "difficulty": "all"
+      }
+    },
+    "success_stories": {
+      "martin_asare": {
+        "question": "What do students say about ProfStudyMate?",
+        "answer": "Martin Asare, Accounts Manager and ICAGH Graduate, says: 'Prof has the ability to break down concepts to your levels. I never believed I could pass Corporate Reporting on my first try. The support and guidance were exceptional!'",
+        "keywords": ["student testimonial", "martin asare", "icagh graduate", "corporate reporting", "first try success"],
+        "difficulty": "beginner"
+      },
+      "ephraim_tetteh": {
+        "question": "How does ProfStudyMate help with busy schedules?",
+        "answer": "Ephraim Tetteh, Senior Auditor and CITGH Certified, says: 'Profstudymate has transformed the way I learn for my CA exam even with my busy schedule. The courses are well structured and the instructors are incredibly knowledgeable.'",
+        "keywords": ["busy schedule", "ephraim tetteh", "citgh certified", "well structured courses", "knowledgeable instructors"],
+        "difficulty": "beginner"
+      },
+      "isaac_kumi": {
+        "question": "What about first attempt success rates?",
+        "answer": "Isaac Kumi, Internal Auditor, says: 'Prof told me I could pass my CITG exam on first attempt but I didn't believe. Fast forward to today, I am shocked… We just graduated. The guy knows his stuff!'",
+        "keywords": ["first attempt", "isaac kumi", "citg exam", "graduation", "expert knowledge"],
+        "difficulty": "beginner"
+      }
+    }
+  },
+  "response_patterns": {
+    "default_responses": [
+      "I'm here to help you with your studies and ProfStudyMate platform information! Could you tell me more about what you're working on?",
+      "That's an interesting question. Let me help you understand this better. What specific aspect would you like to focus on?",
+      "I'd love to help you with that! To give you the best assistance, could you provide a bit more context about your question?",
+      "Great question! I can help you with various subjects including math, programming, accounting, study strategies, and ProfStudyMate platform information. What would you like to explore?"
+    ],
+    "keywords": {
+      "profstudymate": ["profstudymate", "platform", "ghana", "professional education"],
+      "icag": ["icag", "icagh", "chartered accountants", "accounting certification"],
+      "citg": ["citg", "citgh", "taxation", "tax certification"],
+      "courses": ["courses", "training", "programs", "learning"],
+      "support": ["support", "help", "assistance", "24/7"],
+      "math": ["math", "mathematics", "equation", "formula", "calculus", "algebra", "geometry"],
+      "programming": ["programming", "code", "oop", "object-oriented", "algorithm", "data structure"],
+      "accounting": ["accounting", "balance sheet", "income statement", "cash flow", "financial"],
+      "study": ["study", "learn", "tip", "exam", "test preparation", "technique"],
+      "derivatives": ["derivative", "calculus"],
+      "integrals": ["integral", "integration"],
+      "balance_sheet": ["balance sheet", "accounting"],
+      "oop": ["oop", "object-oriented"]
+    }
+  },
+  "metadata": {
+    "total_questions": 31,
+    "total_answers": 41,
+    "subjects": ["profstudymate_platform", "mathematics", "programming", "accounting", "study_skills", "success_stories"],
+    "difficulty_levels": ["beginner", "intermediate", "all"],
+    "sources": ["js/chatbot.js", "chatbot-fab.js", "https://profstudymate.com/"],
+    "last_updated": "2024-01-01",
+    "enhancements": [
+      "Added ProfStudyMate platform information",
+      "Integrated student testimonials",
+      "Added course offerings and features",
+      "Enhanced contact and location information",
+      "Included success stories and statistics",
+      "Added comprehensive contact and social media details",
+      "Included mobile app download information",
+      "Added business hours and support details"
+    ],
+    "contact_info": {
+      "phone_numbers": ["+233 243 44 39 34", "+233 244 990 773", "+233 246 752 130"],
+      "email_addresses": ["Profstraining52@gmail.com", "profsa35@gmail.com"],
+      "physical_address": "Fefeti Drive, Spintex Road, Tema, Greater Accra, Ghana",
+      "business_hours": "Monday - Friday: 9:00 AM - 5:00 PM",
+      "mobile_apps": ["Google Play Store", "Apple App Store"],
+      "social_media": "Active presence on social media platforms"
+    }
+  }
+} 

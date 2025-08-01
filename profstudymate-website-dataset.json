@@ -1,0 +1,270 @@
+{
+  "source": "https://profstudymate.com/",
+  "extraction_date": "2024-01-01",
+  "company_info": {
+    "name": "ProfStudyMate",
+    "tagline": "Professional Excellence Starts Here",
+    "description": "Transform Your Career with Expert-Led Professional Education. Join Ghana's premier professional education platform. Master ICAG, CITG, and business growth strategies with industry experts and practical learning experiences.",
+    "location": {
+      "address": "Fefeti Drive, Spintex Road",
+      "city": "Tema",
+      "region": "Greater Accra",
+      "country": "Ghana"
+    },
+    "contact": {
+      "phone": [
+        "+233 243 44 39 34",
+        "+233 244 990 773",
+        "+233 246 752 130"
+      ],
+      "email": [
+        "Profstraining52@gmail.com",
+        "profsa35@gmail.com"
+      ],
+      "hours": "Mon-Fri: 9am-5pm"
+    }
+  },
+  "statistics": {
+    "students_trained": "2000+",
+    "success_rate": "95%",
+    "expert_instructors": "50+",
+    "support_availability": "24/7",
+    "first_attempt_pass_rate": "95%",
+    "students_helped": "2000+",
+    "years_of_excellence": "0+"
+  },
+  "course_categories": {
+    "ICAGH": {
+      "name": "ICAGH",
+      "description": "Professional accounting courses designed for ICAG certification success",
+      "courses_count": "15+",
+      "students_count": "1000+",
+      "focus": "Institute of Chartered Accountants Ghana certification"
+    },
+    "CITGH": {
+      "name": "CITGH", 
+      "description": "Comprehensive training for Chartered Institute of Taxation certification",
+      "courses_count": "12+",
+      "students_count": "800+",
+      "focus": "Chartered Institute of Taxation Ghana certification"
+    },
+    "corporate_training": {
+      "name": "Corporate Training",
+      "description": "Customized training programs for organizational development",
+      "programs_count": "10+",
+      "companies_count": "50+",
+      "focus": "Organizational development and corporate training"
+    },
+    "digital_marketing": {
+      "name": "Digital Marketing",
+      "description": "Master modern marketing strategies and digital tools",
+      "courses_count": "8+",
+      "students_count": "500+",
+      "focus": "Modern marketing strategies and digital tools"
+    },
+    "business_growth": {
+      "name": "Business Growth",
+      "description": "Strategies and tools for sustainable business expansion",
+      "courses_count": "6+",
+      "students_count": "300+",
+      "focus": "Sustainable business expansion strategies"
+    }
+  },
+  "platform_features": {
+    "comprehensive_course_content": {
+      "title": "Comprehensive Course Content",
+      "description": "Access detailed study materials, practice questions, and expert guidance for every topic",
+      "features": [
+        "Detailed study materials",
+        "Practice questions", 
+        "Expert guidance"
+      ]
+    },
+    "expert_instructors": {
+      "title": "Expert Instructors",
+      "description": "Learn from industry experts with years of experience in accounting and finance",
+      "features": [
+        "Industry experts",
+        "Practical experience",
+        "Personalized support"
+      ]
+    },
+    "interactive_learning": {
+      "title": "Interactive Learning",
+      "description": "Engage with interactive modules and real-world case studies",
+      "features": [
+        "Interactive modules",
+        "Case studies",
+        "Practice exercises"
+      ]
+    },
+    "certification": {
+      "title": "Certification",
+      "description": "Earn recognized certifications upon course completion",
+      "features": [
+        "Industry recognition",
+        "Career advancement",
+        "Professional growth"
+      ]
+    },
+    "support_24_7": {
+      "title": "24/7 Support",
+      "description": "Get help whenever you need it with our dedicated support team",
+      "features": [
+        "Round-the-clock assistance",
+        "Quick response time",
+        "Expert guidance"
+      ]
+    },
+    "mobile_learning": {
+      "title": "Mobile Learning",
+      "description": "Learn on the go with our mobile-friendly platform",
+      "features": [
+        "Mobile app access",
+        "Offline learning",
+        "Progress tracking"
+      ]
+    }
+  },
+  "student_testimonials": {
+    "martin_asare": {
+      "name": "Martin Asare",
+      "position": "Accounts Manager",
+      "testimonial": "Prof has the ability to break down concepts to your levels. I never believed I could pass Corporate Reporting on my first try. The support and guidance were exceptional!",
+      "achievement": "ICAGH Graduate",
+      "key_points": [
+        "Concept breakdown to student level",
+        "First attempt success in Corporate Reporting",
+        "Exceptional support and guidance"
+      ]
+    },
+    "ephraim_tetteh": {
+      "name": "Ephraim Tetteh",
+      "position": "Senior Auditor",
+      "testimonial": "Profstudymate has transformed the way I learn for my CA exam even with my busy schedule. The courses are well structured and the instructors are incredibly knowledgeable.",
+      "achievement": "CITGH Certified",
+      "key_points": [
+        "Transformed learning approach",
+        "Well-structured courses",
+        "Knowledgeable instructors",
+        "Flexible for busy schedules"
+      ]
+    },
+    "isaac_kumi": {
+      "name": "Isaac Kumi",
+      "position": "Internal Auditor",
+      "testimonial": "Prof told me I could pass my CITG exam on first attempt but I didn't believe. Fast forward to today, I am shocked… We just graduated. The guy knows his stuff!",
+      "achievement": "First Attempt Success",
+      "key_points": [
+        "First attempt success prediction",
+        "Graduation achievement",
+        "Expert knowledge validation"
+      ]
+    }
+  },
+  "success_stories": {
+    "career_advancement": {
+      "name": "Kwame Mensah",
+      "achievement": "ICAG Graduate",
+      "story": "After completing the ICAG program, I was promoted to Senior Accountant within 6 months. The practical knowledge and skills I gained were invaluable.",
+      "outcome": "Promoted to Senior Accountant within 6 months",
+      "key_benefits": [
+        "Practical knowledge",
+        "Valuable skills",
+        "Career advancement"
+      ]
+    },
+    "career_switch": {
+      "name": "Ama Osei",
+      "achievement": "CITG Graduate",
+      "story": "The CITG program helped me transition from finance to taxation. The practical approach and industry connections were game-changing for my career.",
+      "outcome": "Successfully transitioned from finance to taxation",
+      "key_benefits": [
+        "Career transition support",
+        "Practical approach",
+        "Industry connections"
+      ]
+    },
+    "business_growth": {
+      "name": "Kofi Asante",
+      "achievement": "Business Growth Graduate",
+      "story": "The business growth program transformed my small accounting firm. We've doubled our client base and expanded our services within a year.",
+      "outcome": "Doubled client base and expanded services within a year",
+      "key_benefits": [
+        "Business transformation",
+        "Client base growth",
+        "Service expansion"
+      ]
+    }
+  },
+  "partners": {
+    "ICAG": "Institute of Chartered Accountants Ghana",
+    "CITG": "Chartered Institute of Taxation Ghana",
+    "corporate_partners": "Leading businesses in Ghana",
+    "industry_leaders": "Professional organizations and networks"
+  },
+  "mobile_app": {
+    "availability": "Available on Google Play and App Store",
+    "features": [
+      "Access courses anytime, anywhere",
+      "Mobile app access",
+      "Offline learning",
+      "Progress tracking"
+    ]
+  },
+  "qa_dataset": {
+    "about_profstudymate": {
+      "question": "What is ProfStudyMate?",
+      "answer": "ProfStudyMate is Ghana's premier professional education platform that transforms careers with expert-led professional education. We specialize in ICAG, CITG, and business growth strategies with industry experts and practical learning experiences.",
+      "keywords": ["profstudymate", "ghana", "professional education", "icag", "citg", "business growth"]
+    },
+    "success_rate": {
+      "question": "What is ProfStudyMate's success rate?",
+      "answer": "ProfStudyMate has a 95% success rate with over 2000+ students trained. Our first attempt pass rate is also 95%, demonstrating our commitment to student success.",
+      "keywords": ["success rate", "95%", "students trained", "first attempt", "pass rate"]
+    },
+    "course_offerings": {
+      "question": "What courses does ProfStudyMate offer?",
+      "answer": "ProfStudyMate offers comprehensive courses in ICAGH (15+ courses), CITGH (12+ courses), Corporate Training (10+ programs), Digital Marketing (8+ courses), and Business Growth (6+ courses).",
+      "keywords": ["courses", "icagh", "citgh", "corporate training", "digital marketing", "business growth"]
+    },
+    "support_availability": {
+      "question": "What kind of support does ProfStudyMate provide?",
+      "answer": "ProfStudyMate provides 24/7 support with round-the-clock assistance, quick response times, and expert guidance. We have 50+ expert instructors and a dedicated support team.",
+      "keywords": ["24/7 support", "expert instructors", "dedicated support", "quick response"]
+    },
+    "location_contact": {
+      "question": "Where is ProfStudyMate located and how can I contact them?",
+      "answer": "ProfStudyMate is located at Fefeti Drive, Spintex Road, Tema, Greater Accra, Ghana. You can contact us at +233 243 44 39 34, +233 244 990 773, or +233 246 752 130, or email us at Profstraining52@gmail.com or profsa35@gmail.com.",
+      "keywords": ["location", "tema", "ghana", "phone", "email", "contact"]
+    },
+    "mobile_app": {
+      "question": "Does ProfStudyMate have a mobile app?",
+      "answer": "Yes, ProfStudyMate offers mobile apps available on Google Play and App Store. The apps provide access to courses anytime, anywhere with offline learning and progress tracking features.",
+      "keywords": ["mobile app", "google play", "app store", "offline learning", "progress tracking"]
+    },
+    "certification_programs": {
+      "question": "What certification programs does ProfStudyMate offer?",
+      "answer": "ProfStudyMate offers certification programs for ICAG (Institute of Chartered Accountants Ghana) and CITG (Chartered Institute of Taxation Ghana), along with corporate training and business growth programs.",
+      "keywords": ["certification", "icag", "citg", "corporate training", "business growth"]
+    }
+  },
+  "metadata": {
+    "total_testimonials": 3,
+    "total_success_stories": 3,
+    "total_course_categories": 5,
+    "total_platform_features": 6,
+    "total_qa_pairs": 7,
+    "website_sections": [
+      "company_info",
+      "statistics", 
+      "course_categories",
+      "platform_features",
+      "testimonials",
+      "success_stories",
+      "partners",
+      "mobile_app",
+      "qa_dataset"
+    ]
+  }
+} 

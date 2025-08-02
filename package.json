@@ -1,7 +1,7 @@
 {
-  "name": "profstudymate-ai-chatbot",
+  "name": "profstudymate",
   "version": "1.0.0",
-  "description": "ProfStudyMate AI Chatbot with NLUX integration",
+  "description": "ProfStudyMate Educational Platform",
   "main": "index.html",
   "scripts": {
     "start": "python -m http.server 8000",
@@ -14,10 +14,9 @@
     "vite": "^5.0.0"
   },
   "keywords": [
-    "ai",
-    "chatbot",
     "profstudymate",
-    "education"
+    "education",
+    "platform"
   ],
   "author": "ProfStudyMate",
   "license": "MIT"

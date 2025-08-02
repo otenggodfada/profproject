@@ -18,8 +18,46 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script defer src="https://static.getbutton.io/widget/bundle.js?id=0xkdq" ></script>
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script defer src="https://static.getbutton.io/widget/bundle.js?id=0xkdq" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+      // Remove GetButton widget when page loads
+      document.addEventListener('DOMContentLoaded', function() {
+        // Function to remove GetButton elements
+        function removeGetButton() {
+          const getButtonElements = document.querySelectorAll('[class*="sc-1au8ryl-0"], [class*="dkuywW"]');
+          getButtonElements.forEach(element => {
+            if (element.innerHTML.includes('getbutton.io') || element.querySelector('svg')) {
+              element.remove();
+            }
+          });
+        }
+        
+        // Remove immediately
+        removeGetButton();
+        
+        // Also remove after a short delay to catch any dynamically added elements
+        setTimeout(removeGetButton, 1000);
+        
+        // Set up a mutation observer to catch any future additions
+        const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+              if (node.nodeType === 1 && (node.classList.contains('sc-1au8ryl-0') || node.classList.contains('dkuywW'))) {
+                if (node.innerHTML.includes('getbutton.io') || node.querySelector('svg')) {
+                  node.remove();
+                }
+              }
+            });
+          });
+        });
+        
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true
+        });
+      });
+    </script>
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"

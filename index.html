@@ -21,42 +21,105 @@
         <script defer src="https://static.getbutton.io/widget/bundle.js?id=0xkdq" ></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
-      // Remove GetButton widget when page loads
-      document.addEventListener('DOMContentLoaded', function() {
-        // Function to remove GetButton elements
-        function removeGetButton() {
-          const getButtonElements = document.querySelectorAll('[class*="sc-1au8ryl-0"], [class*="dkuywW"]');
-          getButtonElements.forEach(element => {
-            if (element.innerHTML.includes('getbutton.io') || element.querySelector('svg')) {
+      // Remove GetButton widget immediately and continuously
+      function removeGetButton() {
+        // Target multiple possible selectors for GetButton
+        const selectors = [
+          '[class*="sc-1au8ryl-0"]',
+          '[class*="dkuywW"]',
+          '[id*="getbutton"]',
+          '[class*="getbutton"]',
+          'div[style*="position: fixed"]',
+          'div[style*="z-index"]'
+        ];
+        
+        selectors.forEach(selector => {
+          const elements = document.querySelectorAll(selector);
+          elements.forEach(element => {
+            // Check if it's a GetButton element
+            if (element.innerHTML.includes('getbutton.io') || 
+                element.querySelector('svg') || 
+                element.innerHTML.includes('sc-1au8ryl-0') ||
+                element.innerHTML.includes('dkuywW') ||
+                element.style.position === 'fixed') {
               element.remove();
+              console.log('GetButton element removed');
             }
           });
-        }
-        
-        // Remove immediately
+        });
+      }
+      
+      // Run immediately
+      removeGetButton();
+      
+      // Run when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', removeGetButton);
+      } else {
         removeGetButton();
-        
-        // Also remove after a short delay to catch any dynamically added elements
-        setTimeout(removeGetButton, 1000);
-        
-        // Set up a mutation observer to catch any future additions
-        const observer = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            mutation.addedNodes.forEach(function(node) {
-              if (node.nodeType === 1 && (node.classList.contains('sc-1au8ryl-0') || node.classList.contains('dkuywW'))) {
-                if (node.innerHTML.includes('getbutton.io') || node.querySelector('svg')) {
-                  node.remove();
-                }
+      }
+      
+      // Run when window loads
+      window.addEventListener('load', removeGetButton);
+      
+      // Run continuously every 500ms for the first 5 seconds
+      let intervalCount = 0;
+      const interval = setInterval(() => {
+        removeGetButton();
+        intervalCount++;
+        if (intervalCount >= 10) { // 5 seconds (10 * 500ms)
+          clearInterval(interval);
+        }
+      }, 500);
+      
+      // Set up a mutation observer to catch any future additions
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType === 1) {
+              // Check if the added node is a GetButton element
+              if (node.classList && (
+                node.classList.contains('sc-1au8ryl-0') || 
+                node.classList.contains('dkuywW') ||
+                node.innerHTML.includes('getbutton.io') ||
+                node.querySelector('svg')
+              )) {
+                node.remove();
+                console.log('GetButton element removed via observer');
               }
-            });
+              
+              // Also check children of added nodes
+              const getButtonChildren = node.querySelectorAll && node.querySelectorAll('[class*="sc-1au8ryl-0"], [class*="dkuywW"]');
+              if (getButtonChildren) {
+                getButtonChildren.forEach(child => {
+                  if (child.innerHTML.includes('getbutton.io') || child.querySelector('svg')) {
+                    child.remove();
+                    console.log('GetButton child element removed via observer');
+                  }
+                });
+              }
+            }
           });
         });
-        
+      });
+      
+      // Start observing as soon as possible
+      if (document.body) {
         observer.observe(document.body, {
           childList: true,
           subtree: true
         });
-      });
+      } else {
+        document.addEventListener('DOMContentLoaded', () => {
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true
+          });
+        });
+      }
+      
+      // Also run periodically to catch any missed elements
+      setInterval(removeGetButton, 2000);
     </script>
   <link
     rel="stylesheet"

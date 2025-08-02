@@ -51,12 +51,26 @@
             });
           }
           
+          // Function to move AI button up by 100px
+          function moveAIButton() {
+            const aiButton = document.querySelector('.sc-q8c6tt-3.hKYcqG');
+            if (aiButton) {
+              aiButton.style.transform = 'translateY(-100px)';
+              console.log('AI button moved up by 100px');
+            }
+          }
+          
           // Remove immediately
           removeGetButton();
+          
+          // Move AI button if it exists
+          moveAIButton();
           
           // Also remove after a short delay to catch any dynamically added elements
           setTimeout(removeGetButton, 1000);
           setTimeout(removeGetButton, 2000);
+          setTimeout(moveAIButton, 1000);
+          setTimeout(moveAIButton, 2000);
           
           // Set up a mutation observer to catch any future additions
           const observer = new MutationObserver(function(mutations) {
@@ -77,6 +91,14 @@
                     }
                   }
                   
+                  // Check for AI button and move it up
+                  if (node.classList && node.classList.contains('sc-q8c6tt-3')) {
+                    setTimeout(() => {
+                      node.style.transform = 'translateY(-100px)';
+                      console.log('AI button moved up by 100px (observer)');
+                    }, 100);
+                  }
+                  
                   // Check children for GetButton elements
                   const getButtonChildren = node.querySelectorAll && node.querySelectorAll('[class*="sc-1au8ryl-0"], [class*="dkuywW"], a[href*="getbutton.io"]');
                   if (getButtonChildren) {
@@ -84,6 +106,15 @@
                       if (child.innerHTML.includes('getbutton.io') || child.querySelector('svg') || child.innerHTML.includes('Powered by')) {
                         child.remove();
                       }
+                    });
+                  }
+                  
+                  // Check children for AI button
+                  const aiButtonChildren = node.querySelectorAll && node.querySelectorAll('.sc-q8c6tt-3.hKYcqG');
+                  if (aiButtonChildren) {
+                    aiButtonChildren.forEach(child => {
+                      child.style.transform = 'translateY(-100px)';
+                      console.log('AI button child moved up by 100px');
                     });
                   }
                 }

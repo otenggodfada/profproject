@@ -20,44 +20,83 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
         <script defer src="https://static.getbutton.io/widget/bundle.js?id=0xkdq" ></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script>
-      // Remove GetButton widget when page loads
-      document.addEventListener('DOMContentLoaded', function() {
-        // Function to remove GetButton elements
-        function removeGetButton() {
-          const getButtonElements = document.querySelectorAll('[class*="sc-1au8ryl-0"], [class*="dkuywW"]');
-          getButtonElements.forEach(element => {
-            if (element.innerHTML.includes('getbutton.io') || element.querySelector('svg')) {
-              element.remove();
-            }
-          });
-        }
-        
-        // Remove immediately
-        removeGetButton();
-        
-        // Also remove after a short delay to catch any dynamically added elements
-        setTimeout(removeGetButton, 1000);
-        
-        // Set up a mutation observer to catch any future additions
-        const observer = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            mutation.addedNodes.forEach(function(node) {
-              if (node.nodeType === 1 && (node.classList.contains('sc-1au8ryl-0') || node.classList.contains('dkuywW'))) {
-                if (node.innerHTML.includes('getbutton.io') || node.querySelector('svg')) {
-                  node.remove();
-                }
+          <script>
+        // Remove GetButton widget when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+          // Function to remove GetButton elements
+          function removeGetButton() {
+            // Remove main GetButton elements
+            const getButtonElements = document.querySelectorAll('[class*="sc-1au8ryl-0"], [class*="dkuywW"]');
+            getButtonElements.forEach(element => {
+              if (element.innerHTML.includes('getbutton.io') || element.querySelector('svg')) {
+                element.remove();
               }
             });
+            
+            // Remove "Powered by GetButton" links
+            const poweredByLinks = document.querySelectorAll('a[href*="getbutton.io"], a[class*="svelte-6myrnq"]');
+            poweredByLinks.forEach(link => {
+              if (link.innerHTML.includes('Powered by') || link.innerHTML.includes('getbutton.io')) {
+                link.remove();
+              }
+            });
+            
+            // Remove any elements with GetButton SVG logos
+            const svgElements = document.querySelectorAll('svg');
+            svgElements.forEach(svg => {
+              const parent = svg.closest('a, div');
+              if (parent && (parent.innerHTML.includes('getbutton.io') || parent.innerHTML.includes('Powered by'))) {
+                parent.remove();
+              }
+            });
+          }
+          
+          // Remove immediately
+          removeGetButton();
+          
+          // Also remove after a short delay to catch any dynamically added elements
+          setTimeout(removeGetButton, 1000);
+          setTimeout(removeGetButton, 2000);
+          
+          // Set up a mutation observer to catch any future additions
+          const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+              mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1) {
+                  // Check for GetButton elements
+                  if (node.classList && (node.classList.contains('sc-1au8ryl-0') || node.classList.contains('dkuywW'))) {
+                    if (node.innerHTML.includes('getbutton.io') || node.querySelector('svg')) {
+                      node.remove();
+                    }
+                  }
+                  
+                  // Check for "Powered by" links
+                  if (node.tagName === 'A' && (node.href.includes('getbutton.io') || node.classList.contains('svelte-6myrnq'))) {
+                    if (node.innerHTML.includes('Powered by') || node.innerHTML.includes('getbutton.io')) {
+                      node.remove();
+                    }
+                  }
+                  
+                  // Check children for GetButton elements
+                  const getButtonChildren = node.querySelectorAll && node.querySelectorAll('[class*="sc-1au8ryl-0"], [class*="dkuywW"], a[href*="getbutton.io"]');
+                  if (getButtonChildren) {
+                    getButtonChildren.forEach(child => {
+                      if (child.innerHTML.includes('getbutton.io') || child.querySelector('svg') || child.innerHTML.includes('Powered by')) {
+                        child.remove();
+                      }
+                    });
+                  }
+                }
+              });
+            });
+          });
+          
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true
           });
         });
-        
-        observer.observe(document.body, {
-          childList: true,
-          subtree: true
-        });
-      });
-    </script>
+      </script>
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"

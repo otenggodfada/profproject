@@ -3,7 +3,7 @@
 function createBottomNav() {
   const nav = document.createElement("nav");
   nav.className =
-    "fixed bottom-0 z-50 left-0 right-0 bg-gradient-to-b from-transparent to-black/20 backdrop-blur-xl md:hidden";
+    "fixed bottom-4 z-50 left-4 right-4 bg-gradient-to-b from-transparent to-black/20 backdrop-blur-xl md:hidden rounded-2xl border border-white/10";
 
   const navContainer = document.createElement("div");
   navContainer.className = "flex justify-around items-center py-3 px-4";
